@@ -3,7 +3,7 @@
 import React from "react";
 
 import { Coins, Portfolio, Summary } from "pages";
-import { SubNavbar, Navbar, MobileHeader } from "components";
+import Navigation from "./Components/Navigation"
 import { ThemeProvider, GlobalStyles } from "styled-components";
 import { lightTheme, darkTheme } from './theme';
 import { GlobalStyles } from './global';
@@ -28,7 +28,7 @@ const theme = {
     <ThemeProvider theme={theme}>
         <GlobalStyles/>
         <div>
-      <Navbar />
+      <Navigation />
       <Layout>
         <Routes>
           <Route path="/" element={<Page />}></Route>
