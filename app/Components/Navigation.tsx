@@ -1,24 +1,53 @@
 "use client";
 
-
 import Link from "next/link";
 import { useState, useEffect, ChangeEvent } from "react";
 import aveta from "aveta";
 import styled from "styled-components";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
+import type { NextPage } from "next";
+import { RadioGroup, Switch } from "@headlessui/react";
 
 const Bar = styled.div`
   width: 16%;
 `;
 
-export default function Navigation({ darkMode }) {
+const colors = ["green", "red", "blue"];
+const modes = ["light", "dark"];
+
+function useStickyState(
+  defaultValue: string | undefined,
+  key: string
+): [string | undefined, (v: string) => void] {
+  const [value, setValue] = useState<string | undefined>(defaultValue);
+
+  useEffect(() => {
+    const stickyValue = localStorage.getItem(key);
+    if (stickyValue !== null) {
+      setValue(stickyValue);
+    }
+  }, [key, setValue]);
+
+  return [
+    value,
+    (v) => {
+      localStorage.setItem(key, v);
+      setValue(v);
+    },
+  ];
+}
+
+export default function Navigation() {
   const [currency, setCurrency] = useState("usd");
   const [currencySymbol, setCurrencySymbol] = useState("$");
   const [barData, setBarData] = useState({});
   const [searchValue, setSearchValue] = useState("");
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-const router = useRouter();
+  const [color, setColor] = useStickyState(colors[0], "theme-color");
+  const [mode, setMode] = useStickyState(modes[0], "theme-mode");
+
+  const router = useRouter();
   const marketCoins = barData?.data?.active_cryptocurrencies;
   const totalVolume = Math.floor(barData?.data?.total_volume?.usd);
   const totalMarketCap = Math.floor(barData?.data?.total_market_cap.usd);
@@ -60,18 +89,27 @@ const router = useRouter();
 
   const handleSearch = (e) => {
     if (searchValue) return router.push(`/pages/cardinfo/${searchValue}`);
-    if (!searchValue){ return router.push("/")};
-    console.log("search", searchValue)
+    if (!searchValue) {
+      return router.push("/");
+    }
+    console.log("search", searchValue);
   };
 
   const handleKeyPress = (event: { key: any }) => {
     if (event.key === "Enter") return handleSearch();
   };
 
-
   return (
     <>
-      <nav className="flex items-center flex-col">
+      <nav
+        className={[
+          "flex bg-primaryBg flex-col",
+          color && `theme-${color}`,
+          color && `theme-${mode}`,
+        ]
+          .filter(Boolean)
+          .join(" ")}
+      >
         <div className="flex justify-between items-center w-screen  ">
           <div className="flex justify-between min-w-fit ml-5">
             <div className="m-5">Logo Area</div>
@@ -91,7 +129,12 @@ const router = useRouter();
               placeholder="Search..."
               type="text"
               className="m-5"
-            /><button onClick={(e)=> router.push(`/pages/cardinfo/${searchValue}`)}>submit test</button>
+            />
+            <button
+              onClick={(e) => router.push(`/pages/cardinfo/${searchValue}`)}
+            >
+              submit test
+            </button>
             <select
               onChange={(e) => handleCurrency(e)}
               name="currency"
@@ -100,7 +143,49 @@ const router = useRouter();
               <option value="USD">$USD</option>
               <option value="Euro">Euro</option>
             </select>
-            <button>Theme</button>
+
+            <div className="flex">
+              <div >
+             
+                <RadioGroup value={color} onChange={setColor}>
+                  <RadioGroup.Label className="mt-5 block">
+                    Select a color:
+                  </RadioGroup.Label>
+                  <div className="mt-2 flex justify-between space-x-8">
+                    {colors.map((c) => {
+                      return (
+                        <RadioGroup.Option
+                          className="ui-checked:text-onPrimaryBg ui-checked:bg-primaryBg ui-checked:ring-primary ui-not-checked:ring-onNeutralBg flex h-20 w-full cursor-pointer items-center justify-center font-bold uppercase ring-4"
+                          value={c}
+                          key={c}
+                        >
+                          {c}
+                        </RadioGroup.Option>
+                      );
+                    })}
+                  </div>
+                </RadioGroup>
+              </div>
+
+              <div>
+                 <Switch.Group>
+                  <div className="mt-10">
+                    <Switch.Label className="block">
+                      Enable dark mode:
+                    </Switch.Label>
+                    <Switch
+                      className="bg-onNeutralBg relative inline-flex h-6 w-11 items-center rounded-full"
+                      checked={mode === "dark"}
+                      onChange={() =>
+                        setMode(mode === "light" ? "dark" : "light")
+                      }
+                    >
+                      <span className="bg-neutralBg ui-not-checked:translate-x-1 ui-checked:translate-x-6 inline-block h-4 w-4 transform rounded-full transition" />
+                    </Switch>
+                  </div>
+                </Switch.Group>
+              </div>
+            </div>
           </div>
         </div>
         <div className="flex  ">

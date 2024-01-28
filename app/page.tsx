@@ -6,7 +6,6 @@ import { useState, useEffect } from "react";
 import CoinRow from "./Components/CoinRow";
 import LineChart from "./Components/LineChart";
 
-import styled, { ThemeProvider } from "styled-components";
 
 export default function Page() {
   const [isLoading, setIsLoading] = useState(false);
@@ -16,7 +15,8 @@ export default function Page() {
   const [singleCoin, setSingleCoin] = useState();
   const [darkMode, setDarkMode] = useState(true);
   const [chartCoin, setChartCoin] = useState();
-  const [barData, setBarData] = useState()
+  const [barData, setBarData] = useState();
+
 
   const getCoins = async () => {
     try {
@@ -61,30 +61,6 @@ export default function Page() {
     getChartInfo();
   }, []);
 
-
-
-
-  
-  const getBarInfo = async () => {
-    try {
-      setIsLoading(true);
-      const { data } = await axios(
-        `https://api.coingecko.com/api/v3/global`
-      );
-      setBarData(data);
-      console.log("bardata", data);
-      setIsLoading(false);
-    } catch (err) {
-      setError(true);
-      setIsLoading(false);
-    }
-  };
- 
-  useEffect(() => {
-    getBarInfo();
-  }, []);
-
-
   const theme = {
     dark: {
       primary: "black",
@@ -97,27 +73,23 @@ export default function Page() {
   };
 
   return (
-    <body>
-      <ThemeProvider theme={theme}>
+    
+      <div>
+        <div>{isLoading && <h2>fetching data...</h2>}</div>
+        <div>{error && <h2>page loading</h2>}</div>
+
         <div>
-          <Navigation darkMode={darkMode} toggleDarkMode={toggleDarkMode} barData={barData}/>
-          <div>{isLoading && <h2>fetching data...</h2>}</div>
-          <div>{error && <h2>page loading</h2>}</div>
-
-          <div>
-            <LineChart />
-          </div>
-
-          <div>
-            {currentCoins?.map((coin, index, currency) => (
-              <div key={coin.id}>
-                <CoinRow coin={coin} index={index + 1} currency={currency} />
-              </div>
-            ))}
-          </div>
-          <LineChart chartCoin={chartCoin} />
+          <LineChart />
         </div>
-      </ThemeProvider>
-    </body>
+
+        <div>
+          {currentCoins?.map((coin, index, currency) => (
+            <div key={coin.id}>
+              <CoinRow coin={coin} index={index + 1} currency={currency} />
+            </div>
+          ))}
+        </div>
+      </div>
+    
   );
 }
