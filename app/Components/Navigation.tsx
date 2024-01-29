@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import aveta from "aveta";
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
@@ -40,13 +41,12 @@ function useStickyState(
 export default function Navigation() {
   const [currency, setCurrency] = useState("usd");
   const [currencySymbol, setCurrencySymbol] = useState("$");
-  const [barData, setBarData] = useState({});
+  const [barData, setBarData] = useState<{data: any}>({});
   const [searchValue, setSearchValue] = useState("");
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [color, setColor] = useStickyState(colors[0], "theme-color");
   const [mode, setMode] = useStickyState(modes[0], "theme-mode");
-
   const router = useRouter();
   const marketCoins = barData?.data?.active_cryptocurrencies;
   const totalVolume = Math.floor(barData?.data?.total_volume?.usd);
@@ -57,7 +57,6 @@ export default function Navigation() {
   const marketCapPercentageETH = barData?.data?.market_cap_percentage?.eth.toFixed(
     2
   );
-
   const width = marketCapPercentageETH / 100;
 
   const getBarInfo = async () => {
@@ -96,7 +95,7 @@ export default function Navigation() {
   };
 
   const handleKeyPress = (event: { key: any }) => {
-    if (event.key === "Enter") return handleSearch();
+    if (event.key === "Enter") return handleSearch(e);
   };
 
   return (
@@ -130,11 +129,7 @@ export default function Navigation() {
               type="text"
               className="m-5"
             />
-            <button
-              onClick={(e) => router.push(`/pages/cardinfo/${searchValue}`)}
-            >
-              submit test
-            </button>
+           
             <select
               onChange={(e) => handleCurrency(e)}
               name="currency"

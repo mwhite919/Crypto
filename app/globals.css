@@ -73,3 +73,17 @@
   --onPrimaryBg: var(--color-primary-50);
   --primary: var(--color-primary-400);
 }
+
+
+.dropdown {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid gray;
+}
+
+.dropdown-row {
+  cursor: pointer;
+  text-align: start;
+  margin: 2px, 0;
+}
