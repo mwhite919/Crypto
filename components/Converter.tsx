@@ -21,11 +21,11 @@ const Converter = ({ currentCoins }) => {
   const [coin2, setCoin2] = useState({});
   const [currencySymbol, setCurrencySymbol] = useState("$");
   const [varible1, setVarible1] = useState("1")
-  const [varible2, setVarible2] = useState("1")
+  const [varible2, setVarible2] = useState("")
 
   const handleConversion= (e)=>{
     setVarible1(e.target.value)
-  const conversion = varible1 * coin1.current_price / coin2.current_price
+  const conversion = e.target.value * coin1.current_price / coin2.current_price
   setVarible2(conversion)
   console.log("v1", varible1, "v2", varible2, "con", conversion)
   }

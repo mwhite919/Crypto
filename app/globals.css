@@ -4,16 +4,16 @@
 
 @layer base {
   :root {
-      --color-neutral-50: theme('colors.gray.50');
-      --color-neutral-100: theme('colors.gray.100');
-      --color-neutral-200: theme('colors.gray.200');
-      --color-neutral-300: theme('colors.gray.300');
-      --color-neutral-400: theme('colors.gray.400');
-      --color-neutral-500: theme('colors.gray.500');
-      --color-neutral-600: theme('colors.gray.600');
-      --color-neutral-700: theme('colors.gray.700');
-      --color-neutral-800: theme('colors.gray.800');
-      --color-neutral-900: theme('colors.gray.900');
+    --color-neutral-50: theme('colors.green.50');
+    --color-background-base: theme('colors.green.100');
+    --color-background-second: theme('colors.green.200');
+    --color-neutral-300: theme('colors.green.300');
+    --color-neutral-400: theme('colors.green.400');
+    --color-neutral-500: theme('colors.green.500');
+    --color-text-primary: theme('colors.green.600');
+    --color-text-second: theme('colors.green.700');
+    --color-neutral-800: theme('colors.green.800');
+    --color-neutral-900: theme('colors.green.900');
   }
 }
 
@@ -72,18 +72,4 @@
   --primaryBg: var(--color-primary-900);
   --onPrimaryBg: var(--color-primary-50);
   --primary: var(--color-primary-400);
-}
-
-
-.dropdown {
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid gray;
-}
-
-.dropdown-row {
-  cursor: pointer;
-  text-align: start;
-  margin: 2px, 0;
 }

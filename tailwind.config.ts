@@ -9,9 +9,9 @@ module.exports = {
   ],
   theme: {
       extend: {
-          colors: {
-              onNeutralBg: 'var(--onNeutralBg)',
-              neutralBg: 'var(--neutralBg)',
+          backgroundColor: {
+              base: 'var(--color-background-base)',
+              second: 'var(--color-background-second)',
               onPrimaryBg: 'var(--onPrimaryBg)',
               primaryBg: 'var(--primaryBg)',
               primary: 'var(--primary)',

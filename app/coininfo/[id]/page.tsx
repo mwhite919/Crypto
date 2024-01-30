@@ -2,7 +2,10 @@
 
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Navigation from "@/app/Components/Navigation";
+import ReactDOM from 'react-dom';
+import {CopyToClipboard } from 'react-copy-to-clipboard';
+import { CopyIcon } from "@/icons/Icons";
+
 
 
 export default function Page({ params }: { params: { id: string } }) {
@@ -11,12 +14,17 @@ export default function Page({ params }: { params: { id: string } }) {
   const [isLoading, setIsLoading] = useState(false);
   const [currency, setCurrency] = useState("usd");
   const [currencySymbol, setCurrencySymbol] = useState("$");
+  const [copied, setCopied] = useState(false);
 
  
 
   const icon = coinInfo?.image?.small;
   const name = coinInfo.name;
   const webPage = coinInfo?.links?.homepage[0];
+  const blockChainwebPage = coinInfo?.links?.blockchain_site[0];
+  const officialForumwebPage = coinInfo?.links?.official_forum_url
+  [0];
+
   const ath = coinInfo.market_data?.ath.usd; //come back to put currency in state//
   const athChange = coinInfo.market_data?.ath_change_percentage?.usd;
   const athDate = coinInfo.market_data?.ath_data?.usd;
@@ -32,7 +40,11 @@ export default function Page({ params }: { params: { id: string } }) {
   const maxSupply = coinInfo.market_data?.max_supply;
   const description = coinInfo?.description?.en; //should I used dangerouslysetHTML for these descriptions? the text contains a few a tags written in html//
   
-  
+  const markup = { __html: {description} };
+
+
+
+
   const getCoinInfo = async () => {
     try {
       setIsLoading(true);
@@ -64,7 +76,7 @@ export default function Page({ params }: { params: { id: string } }) {
               <img src={icon} />
             </div>
             <div>{name}</div>
-            <div>{webPage}</div>
+            <div></div>
           </div>
 
           <div className="flex flex-col items-center justify-between w-2/6 h-60 bg-slate-400 p-5  max-w-96 min-w-72 m-3">
@@ -127,7 +139,28 @@ export default function Page({ params }: { params: { id: string } }) {
             </div>
           </div>
         </div>
-        <div className="bg-slate-400 m-3 p-5" style={{maxWidth: 918}}>{description}</div>
+        <div className="flex">
+    
+        <CopyToClipboard className="h-6 bg-slate-300 m-5 p-8 flex items-center" text={webPage}
+          onCopy={() => setCopied(true)}>
+          <button>{webPage}<CopyIcon/></button>
+        </CopyToClipboard >
+
+        <CopyToClipboard className="h-5 bg-slate-300 m-5 p-8  flex items-center" text={blockChainwebPage}
+          onCopy={() => setCopied(true)}>
+          <button>{blockChainwebPage}<CopyIcon/></button>
+        </CopyToClipboard >
+
+        <CopyToClipboard className="h-5 bg-slate-300 m-5 p-8  flex items-center" text={officialForumwebPage}
+          onCopy={() => setCopied(true)}>
+          <button>{officialForumwebPage}<CopyIcon/></button>
+        </CopyToClipboard >
+
+        </div>
+        <div className="bg-slate-400 m-3 p-5" style={{maxWidth: 918}}>
+        <div dangerouslySetInnerHTML={{__html: description}}  />
+        
+        </div>
       </div>
     </>
   );

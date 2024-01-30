@@ -6,13 +6,12 @@ import styled from "styled-components";
 
 const Row = styled.div`
 width: 1000px;
-height: 50px;
-background-color: rgb(226 232 240);
+
 display: flex;
 justify-content: flex-start;
 align-items: center;
 margin: 10px;
-padding: 3px;
+padding-top: 4px;
 border-radius: 10px;
 `
 
@@ -50,13 +49,13 @@ datasets:[{
 
 
   return (
-    <Row>
+    <Row className="bg-primaryBg bg-second">
       <div className="m-3">{index}</div>
       <div>
         <img src={coin.image} className="max-w-8 max-h-8 ml-2 " alt="coin icon" />
       </div>
       <div className="max-w-40 min-w-40 px-10 flex justify-start items-center">
-        <Link href={`/cardinfo/${coin.name}`}>{coin.name}</Link>
+        <Link href={`/coininfo/${coin.name}`}>{coin.name}</Link>
       </div>
       <div className="max-w-20 min-w-20 flex justify-start items-center">
         ${coinPrice}
@@ -136,7 +135,7 @@ datasets:[{
         </div>
       </div>
       
-      <div className="h-40">
+      <div className="">
 
    
       </div>
