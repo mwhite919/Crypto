@@ -4,13 +4,11 @@
 
 @layer base {
   :root {
-  
     --color-background-base: rgb(226, 234, 252);
     --color-background-second: rgb(237, 242, 251);
-    --color-buttons-base: rgb(67, 97, 238);
-    --color-text-primary: theme(#111827);
-    --color-text-second: theme(#111827);
-
+    --color-buttons-base: rgb(110, 67, 238);
+    --color-primary: rgb(29, 211, 176);
+    --color-text-second: theme('colors.gray.900'));
   }
 }
 

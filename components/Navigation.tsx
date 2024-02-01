@@ -55,6 +55,35 @@ export default function Navigation() {
   return (
     <>
       <nav className="flex flex-col justify-center ">
+      <div className="flex items-center justify-center bg-accent ">
+            <div className="mx-4 text-second">Coins:{marketCoins}</div>
+            <div className="mx-4 text-second">{totalVolume && aveta(totalVolume)}</div>
+            <div className="mx-4 text-second">{totalMarketCap && aveta(totalMarketCap)}</div>
+
+            <div className="mx-4 text-second flex items-center justify-center">
+              <div>BTC {marketCapPercentageBTC}%</div>
+              <div className="h-2 w-20 bg-base">
+                <div
+                  className="bg-primary min-h-2"
+                  style={{ width: `${marketCapPercentageBTC}%` }}
+                ></div>
+              </div>
+            </div>
+
+            <div>
+              <div className="mx-4 text-second flex items-center justify-center">
+                <div>ETH {marketCapPercentageETH}%</div>
+                <div>
+                  <div className="min-h-2 w-20 bg-base">
+                    <div
+                      style={{ width: `${marketCapPercentageETH}%` }}
+                      className="bg-primary min-h-2 max-w-32"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         <div className="bg-second">
           <div className="flex justify-between items-center w-screen  ">
             <div className="flex justify-between min-w-fit ml-5">
@@ -82,40 +111,13 @@ export default function Navigation() {
                 name="currency"
                 className="m-5"
               >
-                <option value="USD">$USD</option>
-                <option value="Euro">Euro</option>
+                {/* //how to also change currency symbol at the same time? with an object with both? */}
+                <option value="USD">$USD</option> 
+                <option value="Eur">Euro</option>
               </select>
             </div>
           </div>
-          <div className="flex items-center justify-center ">
-            <div className="mx-4">Coins:{marketCoins}</div>
-            <div className="mx-4">{totalVolume && aveta(totalVolume)}</div>
-            <div className="mx-4">{totalMarketCap && aveta(totalMarketCap)}</div>
-
-            <div className="mx-4  flex items-center justify-center">
-              <div>BTC {marketCapPercentageBTC}%</div>
-              <div className="h-2 w-20 bg-base">
-                <div
-                  className="bg-accent min-h-2"
-                  style={{ width: `${marketCapPercentageBTC}%` }}
-                ></div>
-              </div>
-            </div>
-
-            <div>
-              <div className="mx-4  flex items-center justify-center">
-                <div>ETH {marketCapPercentageETH}%</div>
-                <div>
-                  <div className="min-h-2 w-20 bg-base">
-                    <div
-                      style={{ width: `${marketCapPercentageETH}%` }}
-                      className="bg-accent min-h-2 max-w-32"
-                    ></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          
         </div>
       </nav>
     </>

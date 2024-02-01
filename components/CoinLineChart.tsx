@@ -24,7 +24,7 @@ console.log("here", currency)
       <stop offset="95%" stopColor="#6c31e0" stopOpacity={0}/>
     </linearGradient>
   </defs>
-  <XAxis dataKey="time" interval={interval}  />
+  <XAxis dataKey="name" interval={interval}  />
   <YAxis scale="log" domain={["auto", "auto"]} interval={interval} hide/>
   <Tooltip />
   <Area type="monotone" dataKey="price" stroke="#82ca9d" fillOpacity={1} fill="url(#colorP)" />

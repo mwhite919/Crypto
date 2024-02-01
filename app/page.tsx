@@ -8,6 +8,7 @@ import ChartsMain from "../components/ChartsMain";
 import Converter from "../components/Converter";
 import styled from "styled-components";
 import { RadioGroup } from "@headlessui/react";
+import { Swiper } from "@/components/Swiper";
 
 const Row = styled.div`
   width: 1010px;
@@ -21,7 +22,7 @@ const Row = styled.div`
 `;
 
 export default function Page() {
-  const { getCoins, barData, currentCoins } = useCrypto();
+  const { getCoins, barData, currentCoins, currency, currencySymbol } = useCrypto();
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -30,7 +31,7 @@ export default function Page() {
 
   useEffect(() => {
     getCoins();
-  }, []);
+  }, [currency, currentCoins, barData]);
 
   return (
     <div className="bg-base flex justify-center items-center flex-col">
@@ -39,7 +40,7 @@ export default function Page() {
         <div>{error && <h2>page loading</h2>}</div>
       </div>
       <div >
-        <RadioGroup className="flex items-center mt-5" value={calculator} onChange={setCalculator}>
+        <RadioGroup className="flex items-center justify-center mt-5 text-base" value={calculator} onChange={setCalculator}>
           <RadioGroup.Option className={({ active, checked }) =>
                   `${
                     active
@@ -67,6 +68,9 @@ export default function Page() {
             )}
           </RadioGroup.Option>
         </RadioGroup>
+      </div>
+      <div>
+        <Swiper />
       </div>
       <div>
         {calculator ? (

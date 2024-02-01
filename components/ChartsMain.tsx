@@ -6,6 +6,7 @@ import axios from "axios";
 import { CoinLineChart } from "./CoinLineChart";
 import { CoinBarChart } from "./CoinBarChart";
 import { RadioGroup } from "@headlessui/react";
+import { useCrypto } from "@/app/Providers/CryptoProvider";
 
 export const ChartsMain = () => {
   const [chartCoin, setChartCoin] = useState({});
@@ -13,11 +14,17 @@ export const ChartsMain = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [numberOfDays, setNumberOfDays] = useState("1");
 
+  const { currency, currencySymbol} = useCrypto();
+ 
+
+
+
+
   const getChartInfo = async () => {
     try {
       setIsLoading(true);
       const { data } = await axios(
-        `https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=${numberOfDays}&x_cg_demo_api_key=CG-du5JzYuTcSZtNRw58BTw3e27`
+        `https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=${currency}&days=${numberOfDays}&x_cg_demo_api_key=CG-du5JzYuTcSZtNRw58BTw3e27`
       );
       setChartCoin(data);
       console.log("chartdata", data);
@@ -39,17 +46,17 @@ export const ChartsMain = () => {
     console.log(numberOfDays, "numberofdays");
   }
 
-  const graphDataPrices = chartCoin?.prices?.map((item) => {
-    return { time: item[0], price: item[1] };
+  const graphDataPrices = chartCoin?.prices?.map((item, i) => {
+    return { name: i, time: item[0], price: item[1] };
   });
 
-  const everyThird =graphDataPrices?.filter((_,i) => i % 10 == 0)
+  const everyThird =graphDataPrices?.filter((_,i) => i % 24 == 0)
 
-  const graphDataV = chartCoin?.total_volumes?.map((item) => {
-    return { time: item[0], price: item[1] };
+  const graphDataV = chartCoin?.total_volumes?.map((item, i) => {
+    return { name: i, time: item[0], price: item[1] };
   });
 
-  const everyThirdV =graphDataV?.filter((_,i) => i %  10 == 0)
+  const everyThirdV =graphDataV?.filter((_,i) => i %  24 == 0)
 
   return (
     <>
@@ -57,7 +64,7 @@ export const ChartsMain = () => {
         <div>
           <CoinLineChart
             graphData={everyThird}
-            interval="preserveStartEnd"
+            interval="preserveEnd"
           />
         </div>
         <div>
