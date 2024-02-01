@@ -55,11 +55,11 @@ export default function Navigation() {
   return (
     <>
       <nav className="flex flex-col justify-center ">
-        <div className="bg-base">
+        <div className="bg-second">
           <div className="flex justify-between items-center w-screen  ">
             <div className="flex justify-between min-w-fit ml-5">
-              <div className="m-5 ">Logo Area</div>
-              <Link href="/" className="m-5">
+              <div className="m-5">Logo Area</div>
+              <Link href="/" className="m-5 ">
                 Home
               </Link>
               <Link href="/Portfolio" className="m-5">
@@ -88,28 +88,28 @@ export default function Navigation() {
             </div>
           </div>
           <div className="flex items-center justify-center ">
-            <div className="m-4">Coins:{marketCoins}</div>
-            <div className="m-4">{totalVolume && aveta(totalVolume)}</div>
-            <div className="m-4">{totalMarketCap && aveta(totalMarketCap)}</div>
+            <div className="mx-4">Coins:{marketCoins}</div>
+            <div className="mx-4">{totalVolume && aveta(totalVolume)}</div>
+            <div className="mx-4">{totalMarketCap && aveta(totalMarketCap)}</div>
 
-            <div className="m-4  flex items-center justify-center">
+            <div className="mx-4  flex items-center justify-center">
               <div>BTC {marketCapPercentageBTC}%</div>
-              <div className="h-2 w-20 bg-gray-900">
+              <div className="h-2 w-20 bg-base">
                 <div
-                  className="bg-blue-200 min-h-2"
+                  className="bg-accent min-h-2"
                   style={{ width: `${marketCapPercentageBTC}%` }}
                 ></div>
               </div>
             </div>
 
             <div>
-              <div className="m-4  flex items-center justify-center">
+              <div className="mx-4  flex items-center justify-center">
                 <div>ETH {marketCapPercentageETH}%</div>
                 <div>
-                  <div className="min-h-2 w-20 bg-gray-900">
+                  <div className="min-h-2 w-20 bg-base">
                     <div
                       style={{ width: `${marketCapPercentageETH}%` }}
-                      className="bg-blue-200 min-h-2 max-w-32"
+                      className="bg-accent min-h-2 max-w-32"
                     ></div>
                   </div>
                 </div>

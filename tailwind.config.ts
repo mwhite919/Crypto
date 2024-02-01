@@ -1,5 +1,3 @@
-
-
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -8,18 +6,21 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-      extend: {
-          backgroundColor: {
-              base: 'var(--color-background-base)',
-              second: 'var(--color-background-second)',
-              onPrimaryBg: 'var(--onPrimaryBg)',
-              primaryBg: 'var(--primaryBg)',
-              primary: 'var(--primary)',
-          }
+    extend: {
+      backgroundColor: {
+        base: "var(--color-background-base)",
+        second: "var(--color-background-second)",
+        accent: "var(--color-buttons-base)",
+        primaryBg: "var(--primaryBg)",
+        primary: "var(--primary)",
       },
+      textColor: {
+        base: "var(--color-text-primary)",
+      },
+      color: {
+        accent2: "var(--color-buttons-base)",
+      },
+    },
   },
-  plugins: [require('@headlessui/tailwindcss')],
-}
-
-
-
+  plugins: [require("@headlessui/tailwindcss")],
+};

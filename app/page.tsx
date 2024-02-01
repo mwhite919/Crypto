@@ -7,9 +7,10 @@ import CoinRow from "../components/CoinRow";
 import ChartsMain from "../components/ChartsMain";
 import Converter from "../components/Converter";
 import styled from "styled-components";
+import { RadioGroup } from "@headlessui/react";
 
 const Row = styled.div`
-  width: 1000px;
+  width: 1010px;
   height: 50px;
   display: flex;
   justify-content: flex-start;
@@ -37,19 +38,35 @@ export default function Page() {
         <div>{isLoading && <h2>fetching data...</h2>}</div>
         <div>{error && <h2>page loading</h2>}</div>
       </div>
-      <div className="flex">
-        <div
-          onClick={() => setCalculator(false)}
-          className="border-black bg-gray-300 w-16 m-5"
-        >
-          Coins
-        </div>
-        <div
-          onClick={() => setCalculator(true)}
-          className="border-black bg-gray-300 w-18 m-5"
-        >
-          Converter
-        </div>
+      <div >
+        <RadioGroup className="flex items-center mt-5" value={calculator} onChange={setCalculator}>
+          <RadioGroup.Option className={({ active, checked }) =>
+                  `${
+                    active
+                      ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300"
+                      : ""
+                  }
+                      ${checked ? "bg-accent text-white" : "bg-white"}
+                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none`
+                } value={false}>
+            {({ checked }) => (
+              <span className={checked && ""}>Coins</span>
+            )}
+          </RadioGroup.Option>
+          <RadioGroup.Option className={({ active, checked }) =>
+                  `${
+                    active
+                      ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300"
+                      : ""
+                  }
+                      ${checked ? "bg-accent text-white" : "bg-white"}
+                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none`
+                }  value={true}>
+            {({ checked }) => (
+              <span className={checked && ""}>Converter</span>
+            )}
+          </RadioGroup.Option>
+        </RadioGroup>
       </div>
       <div>
         {calculator ? (
@@ -61,7 +78,7 @@ export default function Page() {
         )}
       </div>
       <div>
-        <Row className="bg-second">
+        <Row className="bg-second flex">
           <div className="m-3">#</div>
           <div className="w-9 max-h-8 ml-2"></div>
           <div className="max-w-40 min-w-40 px-10 ">Name</div>
@@ -69,8 +86,12 @@ export default function Page() {
           <div className="max-w-20 min-w-20 pl-5">1h%</div>
           <div className="max-w-20 min-w-20 pl-5">24hr%</div>
           <div className="max-w-20 min-w-20 pl-5">7d%</div>
-          <div className="max-w-40 min-w-40 pl-5">24h Volume/<br></br>Market Cap</div>
-          <div className="max-w-40 min-w-40 pl-5">Circulating/<br></br> Total Supply</div>
+          <div className="max-w-40 min-w-40 pl-5">
+            24h Volume/<br></br>Market Cap
+          </div>
+          <div className="max-w-40 min-w-40 pl-5">
+            Circulating/<br></br> Total Supply
+          </div>
           <div className="pl-4">Last 7d</div>
         </Row>
       </div>

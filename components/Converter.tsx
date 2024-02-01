@@ -51,7 +51,7 @@ const Converter = ({ currentCoins }) => {
   };
 
   return (
-    <div className="bg-primaryBg bg-slate-300 m-11 h-96 flex justify-center items-center flex-col">
+    <div className="bg-primaryBg bg-second m-11 h-96 flex justify-center items-center flex-col">
       <h1>Converter</h1>
       <div className=" flex">
         <div className="flex flex-col">

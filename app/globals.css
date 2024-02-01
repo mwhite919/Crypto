@@ -4,16 +4,13 @@
 
 @layer base {
   :root {
-    --color-neutral-50: theme('colors.green.50');
-    --color-background-base: theme('colors.green.100');
-    --color-background-second: theme('colors.green.200');
-    --color-neutral-300: theme('colors.green.300');
-    --color-neutral-400: theme('colors.green.400');
-    --color-neutral-500: theme('colors.green.500');
-    --color-text-primary: theme('colors.green.600');
-    --color-text-second: theme('colors.green.700');
-    --color-neutral-800: theme('colors.green.800');
-    --color-neutral-900: theme('colors.green.900');
+  
+    --color-background-base: rgb(226, 234, 252);
+    --color-background-second: rgb(237, 242, 251);
+    --color-buttons-base: rgb(67, 97, 238);
+    --color-text-primary: theme(#111827);
+    --color-text-second: theme(#111827);
+
   }
 }
 
