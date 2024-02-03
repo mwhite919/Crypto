@@ -18,18 +18,19 @@ export default function CryptoProvider({ children }) {
   const [calculator, setCalculator] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [sortValue, setSortValue]= useState("volume_desc")
 
   const getCoins = async () => {
     try {
       setIsLoading(true);
       const { data } = await axios(
-        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_demo_api_key=CG-du5JzYuTcSZtNRw58BTw3e27`
+        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&order=${sortValue}&per_page=250&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&locale=en&x_cg_demo_api_key=CG-du5JzYuTcSZtNRw58BTw3e27`
       );
       setCurrentCoins(data);
       console.log("current", data)
       setIsLoading(false);
     } catch (err) {
-      console.log("michelle", err)
+      console.log("coinsmichelle", err)
       setError(true);
       setIsLoading(false);
     }
@@ -42,7 +43,7 @@ export default function CryptoProvider({ children }) {
       setBarData(data);
       setIsLoading(false);
     } catch (err) {
-      console.log("michelle", err)
+      console.log("barsmichbaelle", err)
       setError(true);
       setIsLoading(false);
     }
@@ -54,6 +55,11 @@ export default function CryptoProvider({ children }) {
   }
 
 
+  function handleSort(e : string) {
+    setSortValue(e.target.value);
+  }
+  
+
   return (
     <CryptoContext.Provider
       value={{
@@ -64,6 +70,7 @@ export default function CryptoProvider({ children }) {
         currencySymbol,
         getBarInfo,
         barData,
+        handleSort
       }}
     >
       {children}

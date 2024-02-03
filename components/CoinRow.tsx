@@ -1,6 +1,6 @@
 import React from "react";
 import ArrowDown, { ArrowUp } from "../icons/Icons";
-import aveta from "aveta";
+import { formatNumber } from "@/app/formatNumber";
 import Link from "next/link";
 import styled from "styled-components";
 import {
@@ -24,23 +24,26 @@ const Row = styled.div`
 `;
 
 export default function CoinRow({ coin, index, currency }) {
-  const oneHourPercent = coin.price_change_percentage_1h_in_currency.toFixed(2);
-  const oneDayPercent = coin.price_change_percentage_24h_in_currency.toFixed(2);
-  const sevenDayPercent = coin.price_change_percentage_7d_in_currency.toFixed(
+  const oneHourPercent = coin?.price_change_percentage_1h_in_currency?.toFixed(2);
+  const oneDayPercent = coin?.price_change_percentage_24h_in_currency?.toFixed(2);
+  const sevenDayPercent = coin?.price_change_percentage_7d_in_currency?.toFixed(
     2
   );
-  const volume = coin.total_volume;
-  const marketCap = coin.market_cap;
-  const volumeMarketCap = (volume / marketCap).toFixed(2) * 30;
-  const circulating = coin.circulating_supply;
+  const volume = coin?.total_volume;
+  const marketCap = coin?.market_cap;
+  const volumeMarketCap = (volume / marketCap).toFixed(2)
+  const circulating = coin?.circulating_supply;
   const totalSupply = Math.floor(coin.total_supply);
-  const circulatingTotalSupply = (circulating / totalSupply).toFixed(2) * 30;
-  const coinPrice = coin.current_price.toFixed(2);
-  const dataSet = coin.price;
+  const circulatingTotalSupply = (circulating / totalSupply).toFixed(2);
+  const coinPrice = coin?.current_price?.toFixed(2);
+  const dataSet = coin?.price;
 
   const graphData = coin?.sparkline_in_7d?.price.map((item) => {
     return { x: index, price: item };
   });
+
+console.log("here", totalSupply)
+
 
   const data = {
     label: "",
@@ -94,11 +97,11 @@ export default function CoinRow({ coin, index, currency }) {
                   : "h-2 w-2 rounded-full bg-red-500"
               }
             ></div>
-            {aveta(volume)}
+           {formatNumber(volume)}
           </div>
           <div className="flex items-center">
             <div className="h-2 w-2 rounded-full  bg-gray-500"></div>
-            {aveta(marketCap)}
+            {formatNumber(marketCap)}
           </div>
         </div>
         <div className="h-2 w-30 bg-gray-500">
@@ -123,11 +126,11 @@ export default function CoinRow({ coin, index, currency }) {
                   : "h-2 w-2 rounded-full bg-red-500"
               }
             ></div>
-            {aveta(circulating)}
-          </div>
+            {formatNumber(circulating)}
+                    </div>
           <div className="flex items-center">
             <div className="h-2 w-2 rounded-full bg-gray-500"></div>
-            {aveta(totalSupply)}
+            {formatNumber(totalSupply)}
           </div>
         </div>
         <div className="h-2 w-30 bg-gray-500">
@@ -157,7 +160,7 @@ export default function CoinRow({ coin, index, currency }) {
           </defs>
           <XAxis hide domain={["auto", "auto"]} />
           <YAxis scale="log" domain={["auto", "auto"]} hide />
-          <Tooltip />
+
           <Area
             type="monotone"
             dataKey="price"

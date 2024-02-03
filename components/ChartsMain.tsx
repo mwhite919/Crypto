@@ -14,11 +14,7 @@ export const ChartsMain = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [numberOfDays, setNumberOfDays] = useState("1");
 
-  const { currency, currencySymbol} = useCrypto();
- 
-
-
-
+  const { currency } = useCrypto();
 
   const getChartInfo = async () => {
     try {
@@ -31,7 +27,7 @@ export const ChartsMain = () => {
 
       setIsLoading(false);
     } catch (err) {
-      console.log("michelle", err);
+      console.log("chatmichelle", err);
       setError(true);
       setIsLoading(false);
     }
@@ -43,32 +39,38 @@ export const ChartsMain = () => {
 
   function handleTime(value: string) {
     setNumberOfDays(value);
-    console.log(numberOfDays, "numberofdays");
+  
   }
 
-  const graphDataPrices = chartCoin?.prices?.map((item, i) => {
-    return { name: i, time: item[0], price: item[1] };
+
+
+  function convertUnixToDate(time) {
+    const date = new Date(time)
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    return  `${month}/${day}` ;
+  }
+
+  const graphDataPrices = chartCoin?.prices?.map((item) => {
+    return { time: convertUnixToDate(item[0]), price: item[1] };
   });
 
-  const everyThird =graphDataPrices?.filter((_,i) => i % 24 == 0)
 
-  const graphDataV = chartCoin?.total_volumes?.map((item, i) => {
-    return { name: i, time: item[0], price: item[1] };
+  const graphDataV = chartCoin?.total_volumes?.map((item) => {
+    return { time: item[0], price: item[1] };
+ 
   });
 
-  const everyThirdV =graphDataV?.filter((_,i) => i %  24 == 0)
-
+console.log(graphDataV)
   return (
     <>
       <div className="flex my-12">
         <div>
-          <CoinLineChart
-            graphData={everyThird}
-            interval="preserveEnd"
-          />
+          <CoinLineChart graphData={graphDataPrices} interval="preserveStartEnd" />
         </div>
         <div>
-          <CoinBarChart graphData={everyThirdV} />
+          <CoinBarChart graphData={graphDataV} />
         </div>
       </div>
       <div>

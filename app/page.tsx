@@ -8,7 +8,7 @@ import ChartsMain from "../components/ChartsMain";
 import Converter from "../components/Converter";
 import styled from "styled-components";
 import { RadioGroup } from "@headlessui/react";
-import { Swiper } from "@/components/Swiper";
+import { CoinSwiper } from "@/components/CoinSwiper";
 
 const Row = styled.div`
   width: 1010px;
@@ -31,7 +31,9 @@ export default function Page() {
 
   useEffect(() => {
     getCoins();
-  }, [currency, currentCoins, barData]);
+  }, [currency]);
+
+  console.log(currentCoins)
 
   return (
     <div className="bg-base flex justify-center items-center flex-col">
@@ -70,7 +72,7 @@ export default function Page() {
         </RadioGroup>
       </div>
       <div>
-        <Swiper />
+        <CoinSwiper currentCoins={currentCoins} currencySymbol={currencySymbol} />
       </div>
       <div>
         {calculator ? (

@@ -13,7 +13,7 @@ export const CoinLineChart = ({ graphData, interval }) => {
 
   const { currency, currencySymbol } = useCrypto();
 
-console.log("here", currency)
+
 
   return (
 <div><AreaChart width={430} height={250} data={graphData}
@@ -24,7 +24,7 @@ console.log("here", currency)
       <stop offset="95%" stopColor="#6c31e0" stopOpacity={0}/>
     </linearGradient>
   </defs>
-  <XAxis dataKey="name" interval={interval}  />
+  <XAxis dataKey="time" interval={interval}  />
   <YAxis scale="log" domain={["auto", "auto"]} interval={interval} hide/>
   <Tooltip />
   <Area type="monotone" dataKey="price" stroke="#82ca9d" fillOpacity={1} fill="url(#colorP)" />
