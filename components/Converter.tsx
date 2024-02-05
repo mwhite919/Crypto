@@ -151,7 +151,7 @@ const Converter = ({ currentCoins }) => {
             onChange={onChange2}
             placeholder="Search Coins..."
           />
-        </div>
+        </div> 
         {value2 &&
           currentCoins?.map((coin) => {
             const name = coin.name.toLowerCase();
