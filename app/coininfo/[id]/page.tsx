@@ -50,7 +50,7 @@ export default function Page({ params }: { params: { id: string } }) {
     try {
       setIsLoading(true);
       const { data } = await axios(
-        `https://api.coingecko.com/api/v3/coins/${params.id}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
+        `https://api.coingecko.com/api/v3/coins/${params.id}?tickers=true&market_data=true&community_data=true&developer_data=true&sparkline=true`
       );
       console.log();
       setCoinInfo(data);
