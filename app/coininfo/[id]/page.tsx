@@ -8,6 +8,7 @@ import { CopyIcon } from "@/icons/Icons";
 
 
 
+
 export default function Page({ params }: { params: { id: string } }) {
   const [coinInfo, setCoinInfo] = useState({});
   const [error, setError] = useState(false);

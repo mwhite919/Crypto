@@ -86,12 +86,14 @@ export default function Navigation() {
           </div>
         <div className="bg-second">
           <div className="flex justify-between items-center w-screen  ">
-            <div className="flex justify-between min-w-fit ml-5">
-              <div className="m-5">Logo Area</div>
-              <Link href="/" className="m-5 ">
+            <div className="flex justify-between items-center min-w-fit ml-5">
+              <div className="m-5 drop-shadow-md">
+              <img src="https://i.ibb.co/RBwgfPy/Logo.png"></img>
+              </div>
+              <Link href="/" className="m-5 drop-shadow-md text-accent ">
                 Home
               </Link>
-              <Link href="/Portfolio" className="m-5">
+              <Link href="/Portfolio" className="m-5 drop-shadow-md text-accent">
                 Portfolio
               </Link>
             </div>
@@ -103,13 +105,13 @@ export default function Navigation() {
                 onKeyDown={handleKeyPress}
                 placeholder="Search..."
                 type="text"
-                className="m-5"
+                className="m-5 drop-shadow-md rounded-sm pl-3"
               />
 
               <select
                 onChange={(e) => handleCurrency(e)}
                 name="currency"
-                className="m-5"
+                className="m-5 drop-shadow-md rounded-sm "
               >
                 {/* //how to also change currency symbol at the same time? with an object with both? */}
                 <option value="USD">$USD</option> 

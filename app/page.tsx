@@ -9,6 +9,8 @@ import Converter from "../components/Converter";
 import styled from "styled-components";
 import { RadioGroup } from "@headlessui/react";
 import { CoinSwiper } from "@/components/CoinSwiper";
+import InfiniteScroll from 'react-infinite-scroll-component';
+
 
 const Row = styled.div`
   width: 1010px;
@@ -23,15 +25,21 @@ const Row = styled.div`
 
 export default function Page() {
   const { getCoins, barData, currentCoins, currency, currencySymbol } = useCrypto();
-
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [chartCoin, setChartCoin] = useState();
   const [calculator, setCalculator] = useState(false);
+  const [hasMore, setHasMore]=useState(true)
 
   useEffect(() => {
     getCoins();
   }, [currency]);
+
+  
+ const fetchMore = () => {
+    if (currentCoins >= 250) {
+      setHasMore(false)
+      return;
+    }}
 
   console.log(currentCoins)
 
@@ -42,7 +50,7 @@ export default function Page() {
         <div>{error && <h2>page loading</h2>}</div>
       </div>
       <div >
-        <RadioGroup className="flex items-center justify-center mt-5 text-base" value={calculator} onChange={setCalculator}>
+        <RadioGroup className="flex items-center justify-center m-5 text-base " value={calculator} onChange={setCalculator}>
           <RadioGroup.Option className={({ active, checked }) =>
                   `${
                     active
@@ -50,7 +58,7 @@ export default function Page() {
                       : ""
                   }
                       ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none`
+                        relative flex cursor-pointer rounded-lg px-5 py-4 w-36 m-1 justify-center shadow-md focus:outline-none`
                 } value={false}>
             {({ checked }) => (
               <span className={checked && ""}>Coins</span>
@@ -63,7 +71,7 @@ export default function Page() {
                       : ""
                   }
                       ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none`
+                        relative flex cursor-pointer rounded-lg px-5 py-4 m-1 w-36 justify-center shadow-md focus:outline-none`
                 }  value={true}>
             {({ checked }) => (
               <span className={checked && ""}>Converter</span>
@@ -72,7 +80,7 @@ export default function Page() {
         </RadioGroup>
       </div>
       <div>
-        <CoinSwiper currentCoins={currentCoins} currencySymbol={currencySymbol} />
+        <CoinSwiper currentCoins={currentCoins} currency={currency} />
       </div>
       <div>
         {calculator ? (
@@ -85,29 +93,50 @@ export default function Page() {
       </div>
       <div>
         <Row className="bg-second flex">
-          <div className="m-3">#</div>
-          <div className="w-9 max-h-8 ml-2"></div>
-          <div className="max-w-40 min-w-40 px-10 ">Name</div>
-          <div className="max-w-20 min-w-20 ">Price</div>
-          <div className="max-w-20 min-w-20 pl-5">1h%</div>
-          <div className="max-w-20 min-w-20 pl-5">24hr%</div>
-          <div className="max-w-20 min-w-20 pl-5">7d%</div>
-          <div className="max-w-40 min-w-40 pl-5">
+          <div className="w-3 m-3">#</div>
+          <div className="w-8 max-h-8 ml-2"></div>
+          <div className="w-40 ml-8 flex justify-start items-center">Name</div>
+          <div className="w-20">Price</div>
+          <div className="w-20 ml-5">1h%</div>
+          <div className="w-20 ml-5">24hr%</div>
+          <div className="w-20 ml-5">7d%</div>
+          <div className="w-32 ml-5">
             24h Volume/<br></br>Market Cap
           </div>
-          <div className="max-w-40 min-w-40 pl-5">
+          <div className="w-32 ml-5">
             Circulating/<br></br> Total Supply
           </div>
-          <div className="pl-4">Last 7d</div>
+          <div className="ml-4">Last 7d</div>
         </Row>
       </div>
-      <div>
-        {currentCoins?.map((coin, index, currency) => (
+
+
+
+  
+<InfiniteScroll
+dataLength={currentCoins.length}
+next={fetchMore}
+hasMore={hasMore}
+loader={<h4>Loading...</h4>}
+endMessage={
+  <p style={{ textAlign: "center" }}>
+    <b>No more coins to see here!</b>
+  </p>}
+
+> 
+  
+   {currentCoins?.map((coin, index, currency) => (
           <div key={coin.id}>
             <CoinRow coin={coin} index={index + 1} currency={currency} />
           </div>
-        ))}
-      </div>
+        ))}</InfiniteScroll>
+
+  
+
+
+
+
+     
     </div>
   );
 }

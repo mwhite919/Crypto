@@ -3,26 +3,62 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useCrypto } from "@/app/Providers/CryptoProvider";
 import { CoinLineChart } from "./CoinLineChart";
 import { CoinBarChart } from "./CoinBarChart";
 import { RadioGroup } from "@headlessui/react";
-import { useCrypto } from "@/app/Providers/CryptoProvider";
 
 export const ChartsMain = () => {
-  const [chartCoin, setChartCoin] = useState({});
+  const { inputCoin1, inputCoin2, currency, inputCoin3 } = useCrypto();
+
+  const [chartCoin1, setChartCoin1] = useState({});
+  const [chartCoin2, setChartCoin2] = useState({});
+  const [chartCoin3, setChartCoin3] = useState({});
+  const [combined, setCombined] = useState([]);
+
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [numberOfDays, setNumberOfDays] = useState("1");
 
-  const { currency } = useCrypto();
-
-  const getChartInfo = async () => {
+  const getChartInfo1 = async () => {
     try {
       setIsLoading(true);
       const { data } = await axios(
-        `https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=${currency}&days=${numberOfDays}&x_cg_demo_api_key=CG-du5JzYuTcSZtNRw58BTw3e27`
+        `https://api.coingecko.com/api/v3/coins/${inputCoin1}/market_chart?vs_currency=${currency}&days=${numberOfDays}&x_cg_demo_api_key=CG-du5JzYuTcSZtNRw58BTw3e27`
       );
-      setChartCoin(data);
+      setChartCoin1(data);
+      console.log("chartdata", data);
+      setIsLoading(false);
+    } catch (err) {
+      console.log("chatmichelle", err);
+      setError(true);
+      setIsLoading(false);
+    }
+  };
+
+  const getChartInfo2 = async () => {
+    try {
+      setIsLoading(true);
+      const { data } = await axios(
+        `https://api.coingecko.com/api/v3/coins/${inputCoin2}/market_chart?vs_currency=${currency}&days=${numberOfDays}&x_cg_demo_api_key=CG-du5JzYuTcSZtNRw58BTw3e27`
+      );
+      setChartCoin2(data);
+      console.log("chartdata", data);
+      setIsLoading(false);
+    } catch (err) {
+      console.log("chatmichelle", err);
+      setError(true);
+      setIsLoading(false);
+    }
+  };
+
+  const getChartInfo3 = async () => {
+    try {
+      setIsLoading(true);
+      const { data } = await axios(
+        `https://api.coingecko.com/api/v3/coins/${inputCoin3}/market_chart?vs_currency=${currency}&days=${numberOfDays}&x_cg_demo_api_key=CG-du5JzYuTcSZtNRw58BTw3e27`
+      );
+      setChartCoin3(data);
       console.log("chartdata", data);
 
       setIsLoading(false);
@@ -34,43 +70,60 @@ export const ChartsMain = () => {
   };
 
   useEffect(() => {
-    getChartInfo();
-  }, [numberOfDays]);
+    getChartInfo1();
+    getChartInfo2();
+    getChartInfo3();
+  }, [numberOfDays, inputCoin1, inputCoin2, inputCoin3]);
 
   function handleTime(value: string) {
     setNumberOfDays(value);
-  
   }
 
-
-
   function convertUnixToDate(time) {
-    const date = new Date(time)
+    const date = new Date(time);
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const day = date.getDate();
-    return  `${month}/${day}` ;
+    return `${month}/${day}`;
   }
 
-  const graphDataPrices = chartCoin?.prices?.map((item) => {
+  const graphDataPricesC1 = chartCoin1?.prices?.map((item) => {
     return { time: convertUnixToDate(item[0]), price: item[1] };
   });
 
-
-  const graphDataV = chartCoin?.total_volumes?.map((item) => {
-    return { time: item[0], price: item[1] };
- 
+  const graphDataPricesC2 = chartCoin2?.prices?.map((item) => {
+    return { time: convertUnixToDate(item[0]), price: item[1] };
   });
 
-console.log(graphDataV)
+  const graphDataPricesC3 = chartCoin3?.prices?.map((item) => {
+    return { time: convertUnixToDate(item[0]), price: item[1] };
+  });
+
+  const graphDataV1 = chartCoin1?.total_volumes?.map((item) => {
+    return { time: item[0], price: item[1] };
+  });
+
+  const graphDataV2 = chartCoin2?.total_volumes?.map((item) => {
+    return { time: item[0], price: item[1] };
+  });
+
+  const graphDataV3 = chartCoin3?.total_volumes?.map((item) => {
+    return { time: item[0], price: item[1] };
+  });
+
+
   return (
     <>
       <div className="flex my-12">
         <div>
-          <CoinLineChart graphData={graphDataPrices} interval="preserveStartEnd" />
+          <h1>{chartCoin1.name}</h1>
+          <CoinLineChart
+            graphData={graphDataPricesC1}
+            interval="preserveStartEnd"
+          />
         </div>
         <div>
-          <CoinBarChart graphData={graphDataV} />
+          <CoinBarChart graphData={graphDataV1} />
         </div>
       </div>
       <div>
@@ -87,7 +140,7 @@ console.log(graphDataV)
                   : ""
               }
                       ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none`
+                        relative flex cursor-pointer rounded-lg px-5 py-4 m-1 shadow-md focus:outline-none`
             }
             value="1"
           >
@@ -101,7 +154,7 @@ console.log(graphDataV)
                   : ""
               }
                       ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none`
+                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md m-1 focus:outline-none`
             }
             value="7"
           >
@@ -115,7 +168,7 @@ console.log(graphDataV)
                   : ""
               }
                       ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none`
+                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md m-1 focus:outline-none`
             }
             value="14"
           >
@@ -129,7 +182,7 @@ console.log(graphDataV)
                   : ""
               }
                       ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none`
+                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md m-1 focus:outline-none`
             }
             value="90"
           >
@@ -143,7 +196,7 @@ console.log(graphDataV)
                   : ""
               }
                       ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none`
+                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md m-1 focus:outline-none`
             }
             value="180"
           >
@@ -157,7 +210,7 @@ console.log(graphDataV)
                   : ""
               }
                       ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none`
+                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md m-1 focus:outline-none`
             }
             value="365"
           >
@@ -171,7 +224,7 @@ console.log(graphDataV)
                   : ""
               }
                       ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none`
+                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md m-1 focus:outline-none`
             }
             value="1825"
           >
