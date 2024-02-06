@@ -7,6 +7,7 @@ import aveta from "aveta";
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
 import { useCrypto } from "../app/Providers/CryptoProvider";
+import { CurrencyArray } from "./Currencies";
 
 const Bar = styled.div`
   width: 16%;
@@ -20,13 +21,14 @@ const DropdownRow = styled.div`
   z-index: 1;
 `;
 
+
 export default function Navigation() {
   const { getBarInfo, handleCurrency, barData, currentCoins } = useCrypto();
 
   const [searchValue, setSearchValue] = useState("");
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
+
   const marketCoins = barData?.data?.active_cryptocurrencies;
   const totalVolume = Math.floor(barData?.data?.total_volume?.usd);
   const totalMarketCap = Math.floor(barData?.data?.total_market_cap.usd);
@@ -49,17 +51,17 @@ export default function Navigation() {
 
   const handleSearch = (coinId) => {
     if (searchValue) {
-      setSearchValue("")
-      return router.push(`/coininfo/${coinId}`)
-      
-  }
+      setSearchValue("");
+      const fixString = coinId.replace(/\W+/g, "-");
+      return router.push(`/coininfo/${fixString}`);
+    }
     if (!searchValue) {
       return router.push("/");
     }
   };
 
   const handleKeyPress = (e: { key: any }) => {
-    if (e.key === "Enter") return handleSearch(e);
+    if (e.key === "Enter") return handleSearch(searchValue);
   };
 
   return (
@@ -131,8 +133,9 @@ export default function Navigation() {
                     const search = searchValue.toLowerCase();
                     if (name.startsWith(search))
                       return (
-                        <div className="border-slate-300">
+                        <div key={coin.id} className="border-slate-300">
                           <DropdownRow
+                          key={coin.id}
                             className="bg-second"
                             onClick={() => handleSearch(coin.id)}
                           >
@@ -142,14 +145,19 @@ export default function Navigation() {
                       );
                   })}
               </div>
+
               <select
                 onChange={(e) => handleCurrency(e)}
                 name="currency"
                 className="m-5 drop-shadow-md rounded-sm "
               >
-                {/* //how to also change currency symbol at the same time? with an object with both? */}
-                <option value="USD">$USD</option>
-                <option value="Eur">Euro</option>
+                <option>here</option>
+                {CurrencyArray?.map((currency) => {
+                  return (<option key={currency} value={currency}>{currency}</option>)
+                   
+
+                
+                })}
               </select>
             </div>
           </div>

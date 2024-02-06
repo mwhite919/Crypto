@@ -29,18 +29,15 @@ const Converter = ({ currentCoins }) => {
   const [varible2, setVarible2] = useState("");
 
   const handleConversion = (e) => {
-  
     const conversion =
       (e.target.value * coin1.current_price) / coin2.current_price;
-      if(e.target.id=== "vari1"){
-         setVarible2(conversion);
-        console.log("v1")}
-        if(e.target.id=== "vari1"){
-          setVarible2(conversion);
-         console.log("v2")}
-   
-     
-    console.log("v1", varible1, "v2", varible2, "con", conversion);
+    if (e.target.id === "vari1") {
+      setVarible2(conversion);
+    }
+    if (e.target.id === "vari1") {
+      setVarible2(conversion);
+    }
+
   };
 
   const onChange1 = (e) => {
@@ -54,13 +51,13 @@ const Converter = ({ currentCoins }) => {
   const onSearch1 = (coin) => {
     setCoin1(coin);
     setValue1("");
-    console.log("fixed", coin1);
+
   };
 
   const onSearch2 = (coin) => {
     setCoin2(coin);
     setValue2("");
-    console.log("fixed2", coin2);
+ 
   };
 
   return (
@@ -70,14 +67,14 @@ const Converter = ({ currentCoins }) => {
           <div className="flex justify-between items-end w-full px-5 ">
             <div>
               <h2 className="text-sm">You sell:</h2>
-               {coin1 &&
-               <div className="flex items-center">
-                <img src={coin1.image} className="h-8 m-2" />
-                <h1 className="text-xl">
-                {coin1.name} ({coin1?.symbol?.toUpperCase()}) 
-                </h1>
-              </div>
-               }
+              {coin1 && (
+                <div className="flex items-center">
+                  <img src={coin1.image} className="h-8 m-2" />
+                  <h1 className="text-xl">
+                    {coin1.name} ({coin1?.symbol?.toUpperCase()})
+                  </h1>
+                </div>
+              )}
             </div>
             <div>
               <input
@@ -113,7 +110,7 @@ const Converter = ({ currentCoins }) => {
             const searchValue = value1.toLowerCase();
             if (name.startsWith(searchValue))
               return (
-                <DropdownRow onClick={() => onSearch1(coin)}>
+                <DropdownRow key={coin.id} onClick={() => onSearch1(coin)}>
                   {coin.name}
                 </DropdownRow>
               );
@@ -129,14 +126,14 @@ const Converter = ({ currentCoins }) => {
           <div className="flex flex-col">
             <div className="w-7/12">
               <h2 className="text-sm">You buy:</h2>
-             {coin2 && 
-              <div className="flex items-center">
-                <img src={coin2.image} className="h-8 m-2" />
-                <h1 className="text-xl">
-                 {coin2.name}({coin2?.symbol?.toUpperCase()})
-                </h1>
-              </div>
-                  }
+              {coin2 && (
+                <div className="flex items-center">
+                  <img src={coin2.image} className="h-8 m-2" />
+                  <h1 className="text-xl">
+                    {coin2.name}({coin2?.symbol?.toUpperCase()})
+                  </h1>
+                </div>
+              )}
             </div>
           </div>
           <input
@@ -145,7 +142,6 @@ const Converter = ({ currentCoins }) => {
             onChange={(e) => handleConversion(e)}
             id="vari2"
             className="my-2 w-44 rounded-md pl-2 text-right"
-
           />
         </div>
 
@@ -164,7 +160,7 @@ const Converter = ({ currentCoins }) => {
             onChange={onChange2}
             placeholder="Search Coins..."
           />
-        </div> 
+        </div>
         {value2 &&
           currentCoins?.map((coin) => {
             const name = coin.name.toLowerCase();

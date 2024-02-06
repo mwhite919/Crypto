@@ -3,6 +3,7 @@ import ArrowDown, { ArrowUp } from "../icons/Icons";
 import { formatNumber } from "@/app/formatNumber";
 import Link from "next/link";
 import styled from "styled-components";
+import { useRouter } from "next/navigation";
 import { AreaChart, Area, XAxis, YAxis, Tooltip, Legend } from "recharts";
 
 const Row = styled.div`
@@ -27,9 +28,10 @@ export default function CoinRow({ coin, index, currency }) {
   );
   const volume = coin?.total_volume;
   const marketCap = coin?.market_cap;
-  const volumeMarketCap = (volume / marketCap).toFixed(2) * 30; // need to make a function to prevent over 100%
+  const volumeMarketCap = (volume / marketCap).toFixed(2) * 30; 
   const circulating = coin?.circulating_supply;
   const totalSupply = Math.floor(coin.total_supply);
+  const router = useRouter();
 
   function limiter(x) {
     if (x < 1) {
@@ -61,6 +63,15 @@ export default function CoinRow({ coin, index, currency }) {
     ],
   };
 
+
+  const handleRoute = (coinId) => {
+    const fixString = coinId.replace(/\W+/g, "-");
+    return router.push(`/coininfo/${fixString}`);
+  };
+
+
+
+
   return (
     <Row className=" bg-second">
       <div className="m-3">{index}</div>
@@ -71,8 +82,8 @@ export default function CoinRow({ coin, index, currency }) {
           alt="coin icon"
         />
       </div>
-      <div className="w-40  mx-10 flex justify-start items-center">
-        <Link href={`/coininfo/${coin.name}`}>{coin.name}</Link>
+      <div className="w-40 cursor-pointer mx-10 flex justify-start items-center">
+        <div onClick={() => handleRoute(coin.id)}>{coin.name}</div>
       </div>
       <div className="w-20  flex justify-start items-center">
         ${coinPrice}

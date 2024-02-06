@@ -30,10 +30,8 @@ export default function CryptoProvider({ children }) {
         `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&order=${sortValue}&per_page=250&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&locale=en&x_cg_demo_api_key=CG-du5JzYuTcSZtNRw58BTw3e27`
       );
       setCurrentCoins(data);
-      console.log("current", data);
       setIsLoading(false);
     } catch (err) {
-      console.log("coinsmichelle", err);
       setError(true);
       setIsLoading(false);
     }
@@ -46,12 +44,10 @@ export default function CryptoProvider({ children }) {
       setBarData(data);
       setIsLoading(false);
     } catch (err) {
-      console.log("barsmichbaelle", err);
       setError(true);
       setIsLoading(false);
     }
   };
-
 
   function handleCurrency(e: string) {
     setCurrency(e.target.value);
@@ -75,7 +71,6 @@ export default function CryptoProvider({ children }) {
         inputCoin1,
         inputCoin2,
         inputCoin3,
-    
       }}
     >
       {children}

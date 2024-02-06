@@ -7,18 +7,19 @@ import { useCrypto } from "@/app/Providers/CryptoProvider";
 import { CoinLineChart } from "./CoinLineChart";
 import { CoinBarChart } from "./CoinBarChart";
 import { RadioGroup } from "@headlessui/react";
+import { convertUnixToDate } from "./UnixTimeConverter";
+import { time } from "console";
 
 export const ChartsMain = () => {
-  const { inputCoin1, inputCoin2, currency, inputCoin3 } = useCrypto();
-
   const [chartCoin1, setChartCoin1] = useState({});
   const [chartCoin2, setChartCoin2] = useState({});
   const [chartCoin3, setChartCoin3] = useState({});
   const [combined, setCombined] = useState([]);
-
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [numberOfDays, setNumberOfDays] = useState("1");
+
+  const { inputCoin1, inputCoin2, currency, inputCoin3 } = useCrypto();
 
   const getChartInfo1 = async () => {
     try {
@@ -27,10 +28,8 @@ export const ChartsMain = () => {
         `https://api.coingecko.com/api/v3/coins/${inputCoin1}/market_chart?vs_currency=${currency}&days=${numberOfDays}&x_cg_demo_api_key=CG-du5JzYuTcSZtNRw58BTw3e27`
       );
       setChartCoin1(data);
-      console.log("chartdata", data);
       setIsLoading(false);
     } catch (err) {
-      console.log("chatmichelle", err);
       setError(true);
       setIsLoading(false);
     }
@@ -43,10 +42,8 @@ export const ChartsMain = () => {
         `https://api.coingecko.com/api/v3/coins/${inputCoin2}/market_chart?vs_currency=${currency}&days=${numberOfDays}&x_cg_demo_api_key=CG-du5JzYuTcSZtNRw58BTw3e27`
       );
       setChartCoin2(data);
-      console.log("chartdata", data);
       setIsLoading(false);
     } catch (err) {
-      console.log("chatmichelle", err);
       setError(true);
       setIsLoading(false);
     }
@@ -59,15 +56,15 @@ export const ChartsMain = () => {
         `https://api.coingecko.com/api/v3/coins/${inputCoin3}/market_chart?vs_currency=${currency}&days=${numberOfDays}&x_cg_demo_api_key=CG-du5JzYuTcSZtNRw58BTw3e27`
       );
       setChartCoin3(data);
-      console.log("chartdata", data);
 
       setIsLoading(false);
     } catch (err) {
-      console.log("chatmichelle", err);
       setError(true);
       setIsLoading(false);
     }
   };
+
+
 
   useEffect(() => {
     getChartInfo1();
@@ -79,17 +76,13 @@ export const ChartsMain = () => {
     setNumberOfDays(value);
   }
 
-  function convertUnixToDate(time) {
-    const date = new Date(time);
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    return `${month}/${day}`;
-  }
 
   const graphDataPricesC1 = chartCoin1?.prices?.map((item) => {
     return { time: convertUnixToDate(item[0]), price: item[1] };
   });
+
+  console.log("chartcoin", chartCoin1, chartCoin2, chartCoin3)
+  console.log("graphdata", graphDataPricesC1)
 
   const graphDataPricesC2 = chartCoin2?.prices?.map((item) => {
     return { time: convertUnixToDate(item[0]), price: item[1] };
@@ -110,7 +103,6 @@ export const ChartsMain = () => {
   const graphDataV3 = chartCoin3?.total_volumes?.map((item) => {
     return { time: item[0], price: item[1] };
   });
-
 
   return (
     <>
