@@ -3,6 +3,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Providers from "./Providers/CryptoProvider";
+import {store} from './store'
+import { Provider } from 'react-redux'
 import Navigation from "../components/Navigation";
 import CryptoProvider from "./Providers/CryptoProvider";
 
@@ -20,12 +22,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-    
+        <Provider store={store}>
         <CryptoProvider>
           <Navigation />
           {children}
         </CryptoProvider>
-
+        </Provider>
       </body>
     </html>
   );
