@@ -19,9 +19,10 @@ export default function CryptoProvider({ children }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [sortValue, setSortValue] = useState("volume_desc");
-  const [inputCoin1, setInputCoin1] = useState("bitcoin");
-  const [inputCoin2, setInputCoin2] = useState("ethereum");
-  const [inputCoin3, setInputCoin3] = useState("ethereum");
+  const [chartCoins, setChartCoins] = useState([]);
+  const [inputCoin1, setInputCoin1] = useState({});
+  const [numberOfDays, setNumberOfDays] = useState("7");
+  const top10Coins = Object.values(currentCoins).slice(0, 10);
 
   const getCoins = async () => {
     try {
@@ -49,12 +50,57 @@ export default function CryptoProvider({ children }) {
     }
   };
 
+
+  const getChartInfo = async (input) => {
+    try {
+      setIsLoading(true);
+      console.log("isloading");
+      const { data } = await axios(
+        `https://api.coingecko.com/api/v3/coins/${input.id}/market_chart?vs_currency=${currency}&days=${numberOfDays}&x_cg_demo_api_key=CG-du5JzYuTcSZtNRw58BTw3e27`
+      );
+      const selectedCoin = {
+        name: input.name,
+        prices: data.prices,
+        volume: data.total_volumes,
+      };
+      setChartCoins([...chartCoins, selectedCoin]);
+      console.log("coins", chartCoins);
+    } catch (err) {
+      console.log("charterror", err);
+      setError(true);
+      setIsLoading(false);
+    }
+  };
+
+
+  function handleTime(value: string) {
+    setNumberOfDays(value);
+  }
+
+
   function handleCurrency(e: string) {
     setCurrency(e.target.value);
   }
 
   function handleSort(e: string) {
     setSortValue(e.target.value);
+  }
+
+  const handleSelect = (coin) => {
+   
+    if (chartCoins.includes(coin)) {
+      const removed = chartCoins.filter((e) => e !== coin);
+       if(chartCoins.length === 1)return
+      setChartCoins(removed);
+      return;
+    }
+    if (chartCoins.length === 3)return
+    getChartInfo(coin);
+    setChartCoins([...chartCoins, coin]);
+  };
+
+  function handleNumberOfDays(e: string) {
+    setNumberOfDays(e.target.value);
   }
 
   return (
@@ -69,8 +115,13 @@ export default function CryptoProvider({ children }) {
         barData,
         handleSort,
         inputCoin1,
-        inputCoin2,
-        inputCoin3,
+        handleSelect,
+        top10Coins,
+        chartCoins,
+        getChartInfo,
+        handleTime,
+        numberOfDays,
+        handleNumberOfDays
       }}
     >
       {children}
