@@ -46,11 +46,11 @@ export default function Page() {
           <RadioGroup.Option className={({ active, checked }) =>
                   `${
                     active
-                      ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300"
+                      ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300 px-5 py-4 m-2"
                       : ""
                   }
                       ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none`
+                        relative flex cursor-pointer rounded-lg px-5 py-4 m-2 shadow-md focus:outline-none`
                 } value={false}>
             {({ checked }) => (
               <span className={checked && ""}>Coins</span>
@@ -59,11 +59,11 @@ export default function Page() {
           <RadioGroup.Option className={({ active, checked }) =>
                   `${
                     active
-                      ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300"
+                      ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300 px-5 py-4 m-2"
                       : ""
                   }
                       ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none`
+                        relative flex cursor-pointer rounded-lg px-5 py-4 m-2 shadow-md focus:outline-none`
                 }  value={true}>
             {({ checked }) => (
               <span className={checked && ""}>Converter</span>

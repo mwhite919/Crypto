@@ -1,38 +1,34 @@
-import { createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
+// import { createSlice } from '@reduxjs/toolkit'
+// import type { PayloadAction } from '@reduxjs/toolkit'
 
-interface CoinsListState {
-coinsList: any[];
-isLoading: boolean;
-pageNumber: number;
-hasError: boolean;
-hasMore: boolean;
-}
+// interface CoinsListState {
+// coinsList: any[];
+// isLoading: boolean;
+// pageNumber: number;
+// hasError: boolean;
+// hasMore: boolean;
+// }
 
-const initialState: CoinsListState ={
-    listOfCoins: any[];
-    isLoading: false;
-    pageNumber: 1;
-    hasError: false;
-    hasMore: false;
-}
-
-interface CoinsList {
-    currency: string;
-    pageNumber: number;
-}
+// const initialState: CoinsListState ={
+//     listOfCoins: any[];
+//     isLoading: false;
+//     pageNumber: 1;
+//     hasError: false;
+//     hasMore: false;
+// }
 
 
-const coinsListSlice = createSlice({
-    name: 'coinsList',
-    initialState,
-    reducers: {
-      incrementPage: (state) => {
-        state.pageNumber += 1;
-      }
-    }
-  });
+
+// const coinsListSlice = createSlice({
+//     name: 'coinsList',
+//     initialState,
+//     reducers: {
+//       incrementPage: (state) => {
+//         state.pageNumber += 1;
+//       }
+//     }
+//   });
 
 
-export const { incrementPage } = coinsListSlice.actions;
-export default coinsListSlice.reducer;
+// export const { incrementPage } = coinsListSlice.actions;
+// export default coinsListSlice.reducer;
