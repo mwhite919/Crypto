@@ -8,17 +8,14 @@ import { CoinLineChart } from "./CoinLineChart";
 import { CoinBarChart } from "./CoinBarChart";
 import { RadioGroup } from "@headlessui/react";
 import { convertUnixToDate } from "./UnixTimeConverter";
-import { time } from "console";
 
 export const ChartsMain = () => {
   const [chartCoin1, setChartCoin1] = useState({});
   const [chartCoin2, setChartCoin2] = useState({});
   const [chartCoin3, setChartCoin3] = useState({});
-  const [combined, setCombined] = useState([]);
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [numberOfDays, setNumberOfDays] = useState("1");
-
   const { inputCoin1, inputCoin2, currency, inputCoin3 } = useCrypto();
 
   const getChartInfo1 = async () => {
@@ -56,15 +53,12 @@ export const ChartsMain = () => {
         `https://api.coingecko.com/api/v3/coins/${inputCoin3}/market_chart?vs_currency=${currency}&days=${numberOfDays}&x_cg_demo_api_key=CG-du5JzYuTcSZtNRw58BTw3e27`
       );
       setChartCoin3(data);
-
       setIsLoading(false);
     } catch (err) {
       setError(true);
       setIsLoading(false);
     }
   };
-
-
 
   useEffect(() => {
     getChartInfo1();
@@ -76,13 +70,9 @@ export const ChartsMain = () => {
     setNumberOfDays(value);
   }
 
-
   const graphDataPricesC1 = chartCoin1?.prices?.map((item) => {
     return { time: convertUnixToDate(item[0]), price: item[1] };
   });
-
-  console.log("chartcoin", chartCoin1, chartCoin2, chartCoin3)
-  console.log("graphdata", graphDataPricesC1)
 
   const graphDataPricesC2 = chartCoin2?.prices?.map((item) => {
     return { time: convertUnixToDate(item[0]), price: item[1] };

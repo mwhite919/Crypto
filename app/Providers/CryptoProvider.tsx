@@ -15,7 +15,6 @@ export default function CryptoProvider({ children }) {
   const [currency, setCurrency] = useState("USD");
   const [currencySymbol, setCurrencySymbol] = useState("$");
   const [barData, setBarData] = useState(null);
-  const [calculator, setCalculator] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [sortValue, setSortValue] = useState("volume_desc");

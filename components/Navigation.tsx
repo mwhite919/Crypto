@@ -2,16 +2,10 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import axios from "axios";
 import aveta from "aveta";
 import styled from "styled-components";
-import { useRouter } from "next/navigation";
 import { useCrypto } from "../app/Providers/CryptoProvider";
 import { CurrencyArray } from "./Currencies";
-
-const Bar = styled.div`
-  width: 16%;
-`;
 
 const DropdownRow = styled.div`
   cursor: pointer;
@@ -21,14 +15,11 @@ const DropdownRow = styled.div`
   z-index: 1;
 `;
 
-
 export default function Navigation() {
   const { getBarInfo, handleCurrency, barData, currentCoins } = useCrypto();
-
   const [searchValue, setSearchValue] = useState("");
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
   const marketCoins = barData?.data?.active_cryptocurrencies;
   const totalVolume = Math.floor(barData?.data?.total_volume?.usd);
   const totalMarketCap = Math.floor(barData?.data?.total_market_cap.usd);
@@ -38,7 +29,6 @@ export default function Navigation() {
   const marketCapPercentageETH = barData?.data?.market_cap_percentage?.eth.toFixed(
     2
   );
-  const width = marketCapPercentageETH / 100;
 
   useEffect(() => {
     getBarInfo();
@@ -135,7 +125,7 @@ export default function Navigation() {
                       return (
                         <div key={coin.id} className="border-slate-300">
                           <DropdownRow
-                          key={coin.id}
+                            key={coin.id}
                             className="bg-second"
                             onClick={() => handleSearch(coin.id)}
                           >
@@ -153,10 +143,11 @@ export default function Navigation() {
               >
                 <option>here</option>
                 {CurrencyArray?.map((currency) => {
-                  return (<option key={currency} value={currency}>{currency}</option>)
-                   
-
-                
+                  return (
+                    <option key={currency} value={currency}>
+                      {currency}
+                    </option>
+                  );
                 })}
               </select>
             </div>

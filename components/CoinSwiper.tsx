@@ -1,6 +1,4 @@
 import React, { useRef, useState } from "react";
-import { Pagination, Navigation } from "swiper/modules";
-import SliderWrapper from "@/app/SliderWrapper";
 import ArrowDown, { ArrowUp } from "@/icons/Icons";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";

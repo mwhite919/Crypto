@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import axios from "axios";
-import ReactDOM from "react-dom";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { CopyIcon } from "@/icons/Icons";
 
@@ -33,9 +32,7 @@ export default function Page({ params }: { params: { id: string } }) {
   const totalVolume = coinInfo.market_data?.total_volume.usd;
   const totalSupply = coinInfo.market_data?.total_supply;
   const maxSupply = coinInfo.market_data?.max_supply;
-  const description = coinInfo?.description?.en; //should I used dangerouslysetHTML for these descriptions? the text contains a few a tags written in html//
-
-  const markup = { __html: { description } };
+  const description = coinInfo?.description?.en;
 
   const getCoinInfo = async () => {
     try {

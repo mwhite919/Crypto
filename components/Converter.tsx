@@ -1,13 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { ExchangeIcon } from "@/icons/Icons";
-
-const Dropdown = styled.div`
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid gray;
-`;
 
 const DropdownRow = styled.div`
   cursor: pointer;
@@ -25,19 +18,18 @@ const Converter = ({ currentCoins }) => {
   const [coin1, setCoin1] = useState(currentCoins[0]);
   const [coin2, setCoin2] = useState(currentCoins[1]);
   const [currencySymbol, setCurrencySymbol] = useState("$");
-  const [varible1, setVarible1] = useState("1");
-  const [varible2, setVarible2] = useState("");
+  const [variable1, setvariable1] = useState("1");
+  const [variable2, setvariable2] = useState("");
 
   const handleConversion = (e) => {
     const conversion =
       (e.target.value * coin1.current_price) / coin2.current_price;
-    if (e.target.id === "vari1") {
-      setVarible2(conversion);
+    if (e.target.id === "v1") {
+      setvariable2(conversion);
     }
-    if (e.target.id === "vari1") {
-      setVarible2(conversion);
+    if (e.target.id === "v1") {
+      setvariable2(conversion);
     }
-
   };
 
   const onChange1 = (e) => {
@@ -51,13 +43,11 @@ const Converter = ({ currentCoins }) => {
   const onSearch1 = (coin) => {
     setCoin1(coin);
     setValue1("");
-
   };
 
   const onSearch2 = (coin) => {
     setCoin2(coin);
     setValue2("");
- 
   };
 
   return (
@@ -79,9 +69,9 @@ const Converter = ({ currentCoins }) => {
             <div>
               <input
                 type="number"
-                value={varible1}
-                onChange={() => handleConversion(value)}
-                id="vari1"
+                value={variable1}
+                onChange={handleConversion(value)}
+                id="v1"
                 className="my-2 rounded-md pl-2 text-right"
               />
             </div>
@@ -138,9 +128,9 @@ const Converter = ({ currentCoins }) => {
           </div>
           <input
             type="number"
-            value={varible2}
-            onChange={(e) => handleConversion(e)}
-            id="vari2"
+            value={variable2}
+            onChange={handleConversion()}
+            id="v2"
             className="my-2 w-44 rounded-md pl-2 text-right"
           />
         </div>
