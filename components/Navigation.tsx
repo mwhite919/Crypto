@@ -2,25 +2,24 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import axios from "axios";
 import aveta from "aveta";
 import styled from "styled-components";
-import { useRouter } from "next/navigation";
 import { useCrypto } from "../app/Providers/CryptoProvider";
+import { CurrencyArray } from "./Currencies";
 
-
-const Bar = styled.div`
-  width: 16%;
+const DropdownRow = styled.div`
+  cursor: pointer;
+  text-align: start;
+  margin: 2px, 0;
+  position: relative;
+  z-index: 1;
 `;
 
 export default function Navigation() {
-  const { getBarInfo, handleCurrency, barData } = useCrypto();
- 
-
+  const { getBarInfo, handleCurrency, barData, currentCoins } = useCrypto();
   const [searchValue, setSearchValue] = useState("");
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
   const marketCoins = barData?.data?.active_cryptocurrencies;
   const totalVolume = Math.floor(barData?.data?.total_volume?.usd);
   const totalMarketCap = Math.floor(barData?.data?.total_market_cap.usd);
@@ -30,7 +29,6 @@ export default function Navigation() {
   const marketCapPercentageETH = barData?.data?.market_cap_percentage?.eth.toFixed(
     2
   );
-  const width = marketCapPercentageETH / 100;
 
   useEffect(() => {
     getBarInfo();
@@ -41,57 +39,70 @@ export default function Navigation() {
     setSearchValue(inputValue);
   };
 
-  const handleSearch = (e) => {
-    if (searchValue) return router.push(`/coininfo/${searchValue}`);
+  const handleSearch = (coinId) => {
+    if (searchValue) {
+      setSearchValue("");
+      const fixString = coinId.replace(/\W+/g, "-");
+      return router.push(`/coininfo/${fixString}`);
+    }
     if (!searchValue) {
       return router.push("/");
     }
   };
 
   const handleKeyPress = (e: { key: any }) => {
-    if (e.key === "Enter") return handleSearch(e);
+    if (e.key === "Enter") return handleSearch(searchValue);
   };
 
   return (
     <>
       <nav className="flex flex-col justify-center ">
-      <div className="flex items-center justify-center bg-accent ">
-            <div className="mx-4 text-second">Coins:{marketCoins}</div>
-            <div className="mx-4 text-second">{totalVolume && aveta(totalVolume)}</div>
-            <div className="mx-4 text-second">{totalMarketCap && aveta(totalMarketCap)}</div>
+        <div className="flex items-center justify-center bg-accent ">
+          <div className="mx-4 text-second">Coins:{marketCoins}</div>
+          <div className="mx-4 text-second">
+            {totalVolume && aveta(totalVolume)}
+          </div>
+          <div className="mx-4 text-second">
+            {totalMarketCap && aveta(totalMarketCap)}
+          </div>
 
-            <div className="mx-4 text-second flex items-center justify-center">
-              <div>BTC {marketCapPercentageBTC}%</div>
-              <div className="h-2 w-20 bg-base">
-                <div
-                  className="bg-primary min-h-2"
-                  style={{ width: `${marketCapPercentageBTC}%` }}
-                ></div>
-              </div>
+          <div className="mx-4 text-second flex items-center justify-center">
+            <div>BTC {marketCapPercentageBTC}%</div>
+            <div className="h-2 w-20 bg-base">
+              <div
+                className="bg-primary min-h-2"
+                style={{ width: `${marketCapPercentageBTC}%` }}
+              ></div>
             </div>
+          </div>
 
-            <div>
-              <div className="mx-4 text-second flex items-center justify-center">
-                <div>ETH {marketCapPercentageETH}%</div>
-                <div>
-                  <div className="min-h-2 w-20 bg-base">
-                    <div
-                      style={{ width: `${marketCapPercentageETH}%` }}
-                      className="bg-primary min-h-2 max-w-32"
-                    ></div>
-                  </div>
+          <div>
+            <div className="mx-4 text-second flex items-center justify-center">
+              <div>ETH {marketCapPercentageETH}%</div>
+              <div>
+                <div className="min-h-2 w-20 bg-base">
+                  <div
+                    style={{ width: `${marketCapPercentageETH}%` }}
+                    className="bg-primary min-h-2 max-w-32"
+                  ></div>
                 </div>
               </div>
             </div>
           </div>
+        </div>
         <div className="bg-second">
           <div className="flex justify-between items-center w-screen  ">
-            <div className="flex justify-between min-w-fit ml-5">
-              <div className="m-5">Logo Area</div>
-              <Link href="/" className="m-5 ">
+            <div className="flex justify-between items-center min-w-fit ml-5">
+              <div className="m-5 drop-shadow-md">
+                <img src="https://i.ibb.co/RBwgfPy/Logo.png"></img>
+              </div>
+              <Link href="/" className="m-5 drop-shadow-md text-accent ">
                 Home
               </Link>
-              <Link href="/Portfolio" className="m-5">
+              <Link
+                href="/Portfolio"
+                className="m-5 drop-shadow-md text-accent"
+              >
                 Portfolio
               </Link>
             </div>
@@ -103,21 +114,44 @@ export default function Navigation() {
                 onKeyDown={handleKeyPress}
                 placeholder="Search..."
                 type="text"
-                className="m-5"
+                className="m-5 drop-shadow-md rounded-sm pl-3"
               />
+              <div className="absolute">
+                {searchValue &&
+                  currentCoins?.map((coin) => {
+                    const name = coin.name.toLowerCase();
+                    const search = searchValue.toLowerCase();
+                    if (name.startsWith(search))
+                      return (
+                        <div key={coin.id} className="border-slate-300">
+                          <DropdownRow
+                            key={coin.id}
+                            className="bg-second"
+                            onClick={() => handleSearch(coin.id)}
+                          >
+                            {coin.name}
+                          </DropdownRow>
+                        </div>
+                      );
+                  })}
+              </div>
 
               <select
                 onChange={(e) => handleCurrency(e)}
                 name="currency"
-                className="m-5"
+                className="m-5 drop-shadow-md rounded-sm "
               >
-                {/* //how to also change currency symbol at the same time? with an object with both? */}
-                <option value="USD">$USD</option> 
-                <option value="Eur">Euro</option>
+                <option>here</option>
+                {CurrencyArray?.map((currency) => {
+                  return (
+                    <option key={currency} value={currency}>
+                      {currency}
+                    </option>
+                  );
+                })}
               </select>
             </div>
           </div>
-          
         </div>
       </nav>
     </>
