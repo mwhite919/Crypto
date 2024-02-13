@@ -2,14 +2,12 @@
 
 import React from "react";
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { useCrypto } from "@/app/Providers/CryptoProvider";
 import { CoinLineChart } from "./CoinLineChart";
 import { CoinBarChart } from "./CoinBarChart";
 import { RadioGroup } from "@headlessui/react";
 import { convertUnixToDate } from "./UnixTimeConverter";
 import { every_nth } from "./Every_nth";
-import { time } from "console";
 
 export const ChartsMain = () => {
   const [combined, setCombined] = useState([]);
@@ -24,7 +22,7 @@ export const ChartsMain = () => {
     getChartInfo,
     handleTime,
     numberOfDays,
-    handleNumberOfDays
+    handleNumberOfDays,
   } = useCrypto();
 
   const graphDataPricesC1 = chartCoins[0]?.prices?.map((item) => {
@@ -60,8 +58,6 @@ export const ChartsMain = () => {
     }
   });
 
-  console.log("chartccoins", chartCoins, "inputcoins", inputCoins);
-
   const fixIntervalPrices = every_nth(combinedDataPrices, 30);
 
   const graphDataV1 = chartCoins?.total_volumes?.map((item) => {
@@ -89,7 +85,7 @@ export const ChartsMain = () => {
 
   useEffect(() => {
     getChartInfo(inputCoin1);
-  }, [ chartCoins, inputCoin1, combinedDataPrices]);
+  }, [chartCoins, inputCoin1, combinedDataPrices]);
 
   return (
     <>

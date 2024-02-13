@@ -3,16 +3,12 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-
 export default function Page({ params }: { params: { id: string } }) {
   const [coinInfo, setCoinInfo] = useState({});
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [currency, setCurrency] = useState("usd");
   const [currencySymbol, setCurrencySymbol] = useState("$");
-
- 
-
   const icon = coinInfo?.image?.small;
   const name = coinInfo.name;
   const webPage = coinInfo?.links?.homepage[0];
@@ -30,17 +26,14 @@ export default function Page({ params }: { params: { id: string } }) {
   const totalSupply = coinInfo.market_data?.total_supply;
   const maxSupply = coinInfo.market_data?.max_supply;
   const description = coinInfo?.description?.en; //should I used dangerouslysetHTML for these descriptions? the text contains a few a tags written in html//
-  
-  
+
   const getCoinInfo = async () => {
     try {
       setIsLoading(true);
       const { data } = await axios(
         `https://api.coingecko.com/api/v3/coins/${params.id}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
       );
-      console.log();
       setCoinInfo(data);
-      console.log("coininfo", data);
       setIsLoading(false);
     } catch (err) {
       setError(true);
@@ -53,14 +46,13 @@ export default function Page({ params }: { params: { id: string } }) {
   }, []);
   return (
     <>
-     
-      <div  className="flex items-center justify-center flex-col">
-         <h1>Your Summary:</h1>
-      <h1> ID: {params.id}</h1>
+      <div className="flex items-center justify-center flex-col">
+        <h1>Your Summary:</h1>
+        <h1> ID: {params.id}</h1>
         <div className="flex items-center justify-center">
           <div className="flex flex-col items-center justify-center  w-2/6 p-5 h-60 bg-slate-400 max-w-96 min-w-72 m-3 ">
             <div>
-              <img src={icon} />
+              <img alt="icon" src={icon} />
             </div>
             <div>{name}</div>
             <div>{webPage}</div>
@@ -126,7 +118,9 @@ export default function Page({ params }: { params: { id: string } }) {
             </div>
           </div>
         </div>
-        <div className="bg-slate-400 m-3 p-5" style={{maxWidth: 918}}>{description}</div>
+        <div className="bg-slate-400 m-3 p-5" style={{ maxWidth: 918 }}>
+          {description}
+        </div>
       </div>
     </>
   );

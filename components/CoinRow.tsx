@@ -1,7 +1,6 @@
 import React from "react";
 import ArrowDown, { ArrowUp } from "../icons/Icons";
 import { formatNumber } from "@/app/formatNumber";
-import Link from "next/link";
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
 import { AreaChart, Area, XAxis, YAxis, Tooltip, Legend } from "recharts";
@@ -16,7 +15,7 @@ const Row = styled.div`
   border-radius: 10px;
 `;
 
-export default function CoinRow({ coin, index, currency }) {
+export default function CoinRow({ coin, index }) {
   const oneHourPercent = coin?.price_change_percentage_1h_in_currency?.toFixed(
     2
   );
@@ -28,7 +27,7 @@ export default function CoinRow({ coin, index, currency }) {
   );
   const volume = coin?.total_volume;
   const marketCap = coin?.market_cap;
-  const volumeMarketCap = (volume / marketCap).toFixed(2) * 30; 
+  const volumeMarketCap = (volume / marketCap).toFixed(2) * 30;
   const circulating = coin?.circulating_supply;
   const totalSupply = Math.floor(coin.total_supply);
   const router = useRouter();
@@ -63,31 +62,21 @@ export default function CoinRow({ coin, index, currency }) {
     ],
   };
 
-
   const handleRoute = (coinId) => {
     const fixString = coinId.replace(/\W+/g, "-");
     return router.push(`/coininfo/${fixString}`);
   };
 
-
-
-
   return (
     <Row className=" bg-second">
       <div className="m-3">{index}</div>
       <div>
-        <img
-          src={coin.image}
-          className="w-8 max-h-8 ml-2 "
-          alt="coin icon"
-        />
+        <img src={coin.image} className="w-8 max-h-8 ml-2 " alt="coin icon" />
       </div>
       <div className="w-40 cursor-pointer mx-10 flex justify-start items-center">
         <div onClick={() => handleRoute(coin.id)}>{coin.name}</div>
       </div>
-      <div className="w-20  flex justify-start items-center">
-        ${coinPrice}
-      </div>
+      <div className="w-20  flex justify-start items-center">${coinPrice}</div>
       <div className="w-20  ml-5 flex justify-start items-center">
         {oneHourPercent < 0 ? <ArrowDown /> : <ArrowUp />}
         {oneHourPercent}%
@@ -111,11 +100,11 @@ export default function CoinRow({ coin, index, currency }) {
                   : "h-2 w-2 rounded-full bg-red-500"
               }
             ></div>
-             <div className="text-sm">{formatNumber(volume)}</div>  
+            <div className="text-sm">{formatNumber(volume)}</div>
           </div>
           <div className="flex items-center">
             <div className="h-2 w-2 rounded-full  bg-gray-500"></div>
-            <div className="text-sm">{formatNumber(marketCap)}</div>  
+            <div className="text-sm">{formatNumber(marketCap)}</div>
           </div>
         </div>
         <div className="h-2 w-32 bg-gray-500">
@@ -140,11 +129,11 @@ export default function CoinRow({ coin, index, currency }) {
                   : "h-2 w-2 rounded-full bg-red-500"
               }
             ></div>
-          <div className="text-sm">{formatNumber(circulating)}</div>  
+            <div className="text-sm">{formatNumber(circulating)}</div>
           </div>
           <div className="flex items-center">
             <div className="h-2 w-2 rounded-full bg-gray-500"></div>
-           <div className="text-sm">{formatNumber(totalSupply)}</div> 
+            <div className="text-sm">{formatNumber(totalSupply)}</div>
           </div>
         </div>
         <div className="h-2 w-32 bg-gray-500">

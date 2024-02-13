@@ -1,18 +1,13 @@
-import React, { useRef, useState } from "react";
-import { Pagination, Navigation } from "swiper/modules";
+import React, { useState } from "react";
 import { useCrypto } from "@/app/Providers/CryptoProvider";
-import SliderWrapper from "@/app/SliderWrapper";
 import ArrowDown, { ArrowUp } from "@/icons/Icons";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./coin-swiper.css";
 
-export const CoinSwiper = ({ currentCoins }) => {
-  
+export const CoinSwiper = () => {
   const { handleSelect, top10Coins } = useCrypto();
-
-
 
   const settings = {
     dots: true,
@@ -21,8 +16,6 @@ export const CoinSwiper = ({ currentCoins }) => {
     slidesToShow: 5,
     slidesToScroll: 1,
   };
-
-  
 
   return (
     <div>

@@ -1,7 +1,6 @@
 "use client";
 
-import axios from "axios";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { useCrypto } from "./Providers/CryptoProvider";
 import CoinRow from "../components/CoinRow";
 import ChartsMain from "../components/ChartsMain";
@@ -23,13 +22,7 @@ const Row = styled.div`
 `;
 
 export default function Page() {
-  const {
-    getCoins,
-    barData,
-    currentCoins,
-    currency,
-    currencySymbol,
-  } = useCrypto();
+  const { getCoins, currentCoins, currency, currencySymbol } = useCrypto();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [calculator, setCalculator] = useState(false);
@@ -45,10 +38,6 @@ export default function Page() {
       return;
     }
   };
-
-
-
-
 
   return (
     <div className="bg-base flex justify-center items-center flex-col">

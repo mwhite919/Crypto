@@ -1,15 +1,20 @@
 import { useCrypto } from "@/app/Providers/CryptoProvider";
-import { AreaChart, Area, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer} from "recharts";
-import { scaleLog } from 'd3-scale';
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
+import { scaleLog } from "d3-scale";
 
 const scale = scaleLog().base(Math.E);
 
-export const CoinLineChart = ({combinedDataPrices}) => {
+export const CoinLineChart = ({ combinedDataPrices }) => {
   const { currency, currencySymbol } = useCrypto();
 
-  
-  console.log("eeee", combinedDataPrices)
-  
   return (
     <div className="h-96">
       <AreaChart
@@ -33,7 +38,7 @@ export const CoinLineChart = ({combinedDataPrices}) => {
             <stop offset="95%" stopColor="#6c31e0" stopOpacity={0} />
           </linearGradient>
         </defs>
-        <XAxis dataKey="time"  />
+        <XAxis dataKey="time" />
         <YAxis scale="log" domain={["auto", "auto"]} hide />
         <Tooltip />
         <Area
@@ -50,7 +55,7 @@ export const CoinLineChart = ({combinedDataPrices}) => {
           fillOpacity={1}
           fill="url(#color2)"
         />
-         <Area
+        <Area
           type="monotone"
           dataKey="price3"
           stroke="#82ca9d"
@@ -58,7 +63,6 @@ export const CoinLineChart = ({combinedDataPrices}) => {
           fill="url(#color3)"
         />
       </AreaChart>
-
     </div>
   );
 };

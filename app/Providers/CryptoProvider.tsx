@@ -15,7 +15,6 @@ export default function CryptoProvider({ children }) {
   const [currency, setCurrency] = useState("USD");
   const [currencySymbol, setCurrencySymbol] = useState("$");
   const [barData, setBarData] = useState(null);
-  const [calculator, setCalculator] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [sortValue, setSortValue] = useState("volume_desc");
@@ -50,11 +49,9 @@ export default function CryptoProvider({ children }) {
     }
   };
 
-
   const getChartInfo = async (input) => {
     try {
       setIsLoading(true);
-      console.log("isloading");
       const { data } = await axios(
         `https://api.coingecko.com/api/v3/coins/${input.id}/market_chart?vs_currency=${currency}&days=${numberOfDays}&x_cg_demo_api_key=CG-du5JzYuTcSZtNRw58BTw3e27`
       );
@@ -64,7 +61,6 @@ export default function CryptoProvider({ children }) {
         volume: data.total_volumes,
       };
       setChartCoins([...chartCoins, selectedCoin]);
-      console.log("coins", chartCoins);
     } catch (err) {
       console.log("charterror", err);
       setError(true);
@@ -72,11 +68,9 @@ export default function CryptoProvider({ children }) {
     }
   };
 
-
   function handleTime(value: string) {
     setNumberOfDays(value);
   }
-
 
   function handleCurrency(e: string) {
     setCurrency(e.target.value);
@@ -87,14 +81,13 @@ export default function CryptoProvider({ children }) {
   }
 
   const handleSelect = (coin) => {
-   
     if (chartCoins.includes(coin)) {
       const removed = chartCoins.filter((e) => e !== coin);
-       if(chartCoins.length === 1)return
+      if (chartCoins.length === 1) return;
       setChartCoins(removed);
       return;
     }
-    if (chartCoins.length === 3)return
+    if (chartCoins.length === 3) return;
     getChartInfo(coin);
     setChartCoins([...chartCoins, coin]);
   };
@@ -121,7 +114,7 @@ export default function CryptoProvider({ children }) {
         getChartInfo,
         handleTime,
         numberOfDays,
-        handleNumberOfDays
+        handleNumberOfDays,
       }}
     >
       {children}
