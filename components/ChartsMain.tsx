@@ -2,80 +2,113 @@
 
 import React from "react";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import { useCrypto } from "@/app/Providers/CryptoProvider";
 import { CoinLineChart } from "./CoinLineChart";
 import { CoinBarChart } from "./CoinBarChart";
 import { RadioGroup } from "@headlessui/react";
-import { useCrypto } from "@/app/Providers/CryptoProvider";
+import { convertUnixToDate } from "./UnixTimeConverter";
+import { every_nth } from "./Every_nth";
 
 export const ChartsMain = () => {
-  const [chartCoin, setChartCoin] = useState({});
+  const [combined, setCombined] = useState([]);
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [numberOfDays, setNumberOfDays] = useState("1");
 
-  const { currency, currencySymbol} = useCrypto();
- 
+  const {
+    inputCoin1,
+    inputCoins,
+    currency,
+    chartCoins,
+    getChartInfo,
+    handleTime,
+    numberOfDays,
+    handleNumberOfDays,
+  } = useCrypto();
 
+  const graphDataPricesC1 = chartCoins[0]?.prices?.map((item) => {
+    return { time: item[0] / 1000, price: item[1] };
+  });
 
+  const graphDataPricesC2 = chartCoins[1]?.prices?.map((item) => {
+    return { price: item[1] };
+  });
 
+  const graphDataPricesC3 = chartCoins[2]?.prices?.map((item) => {
+    return { price: item[1] };
+  });
 
-  const getChartInfo = async () => {
-    try {
-      setIsLoading(true);
-      const { data } = await axios(
-        `https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=${currency}&days=${numberOfDays}&x_cg_demo_api_key=CG-du5JzYuTcSZtNRw58BTw3e27`
-      );
-      setChartCoin(data);
-      console.log("chartdata", data);
-
-      setIsLoading(false);
-    } catch (err) {
-      console.log("michelle", err);
-      setError(true);
-      setIsLoading(false);
+  const combinedDataPrices = graphDataPricesC1?.map((item, index) => {
+    if (chartCoins.length === 1) {
+      return graphDataPricesC1;
     }
-  };
+    if (chartCoins.length === 2) {
+      return {
+        time: item.time,
+        price1: item.price,
+        price2: graphDataPricesC2[index]?.price,
+      };
+    }
+    if (chartCoins.length === 3) {
+      return {
+        time: item.time,
+        price1: item.price,
+        price2: graphDataPricesC2[index]?.price,
+        price3: graphDataPricesC3[index]?.price,
+      };
+    }
+  });
+
+  const fixIntervalPrices = every_nth(combinedDataPrices, 30);
+
+  const graphDataV1 = chartCoins?.total_volumes?.map((item) => {
+    return { time: item[0], v: item[1] };
+  });
+
+  const graphDataV2 = chartCoins?.total_volumes?.map((item) => {
+    return { time: item[0], v: item[1] };
+  });
+
+  const graphDataV3 = chartCoins?.total_volumes?.map((item) => {
+    return { time: item[0], v: item[1] };
+  });
+
+  const combinedDataVolumes = graphDataV1?.map((item, index) => {
+    return {
+      time: item.time,
+      v1: item.v,
+      v2: graphDataV2[index]?.v,
+      v3: graphDataV3[index]?.v,
+    };
+  });
+
+  const fixIntervalVol = every_nth(combinedDataVolumes, 10);
 
   useEffect(() => {
-    getChartInfo();
-  }, [numberOfDays]);
-
-  function handleTime(value: string) {
-    setNumberOfDays(value);
-    console.log(numberOfDays, "numberofdays");
-  }
-
-  const graphDataPrices = chartCoin?.prices?.map((item, i) => {
-    return { name: i, time: item[0], price: item[1] };
-  });
-
-  const everyThird =graphDataPrices?.filter((_,i) => i % 24 == 0)
-
-  const graphDataV = chartCoin?.total_volumes?.map((item, i) => {
-    return { name: i, time: item[0], price: item[1] };
-  });
-
-  const everyThirdV =graphDataV?.filter((_,i) => i %  24 == 0)
+    getChartInfo(inputCoin1);
+  }, [chartCoins, inputCoin1, combinedDataPrices]);
 
   return (
     <>
       <div className="flex my-12">
         <div>
+          {chartCoins.map((coin) => {
+            <h1>{coin.name}</h1>;
+          })}
+
           <CoinLineChart
-            graphData={everyThird}
-            interval="preserveEnd"
+            combinedDataPrices={fixIntervalPrices}
+            interval="preserveStartEnd"
           />
         </div>
         <div>
-          <CoinBarChart graphData={everyThirdV} />
+          <CoinBarChart graphData={fixIntervalVol} />
         </div>
       </div>
       <div>
         <RadioGroup
           className="flex items-center justify-center my-5"
           value={numberOfDays}
-          onChange={setNumberOfDays}
+          onChange={handleNumberOfDays}
         >
           <RadioGroup.Option
             className={({ active, checked }) =>
@@ -85,7 +118,7 @@ export const ChartsMain = () => {
                   : ""
               }
                       ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none`
+                        relative flex cursor-pointer rounded-lg px-5 py-4 m-1 shadow-md focus:outline-none`
             }
             value="1"
           >
@@ -99,7 +132,7 @@ export const ChartsMain = () => {
                   : ""
               }
                       ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none`
+                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md m-1 focus:outline-none`
             }
             value="7"
           >
@@ -113,7 +146,7 @@ export const ChartsMain = () => {
                   : ""
               }
                       ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none`
+                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md m-1 focus:outline-none`
             }
             value="14"
           >
@@ -127,7 +160,7 @@ export const ChartsMain = () => {
                   : ""
               }
                       ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none`
+                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md m-1 focus:outline-none`
             }
             value="90"
           >
@@ -141,7 +174,7 @@ export const ChartsMain = () => {
                   : ""
               }
                       ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none`
+                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md m-1 focus:outline-none`
             }
             value="180"
           >
@@ -155,7 +188,7 @@ export const ChartsMain = () => {
                   : ""
               }
                       ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none`
+                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md m-1 focus:outline-none`
             }
             value="365"
           >
@@ -169,7 +202,7 @@ export const ChartsMain = () => {
                   : ""
               }
                       ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none`
+                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md m-1 focus:outline-none`
             }
             value="1825"
           >

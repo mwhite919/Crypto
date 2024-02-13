@@ -1,17 +1,9 @@
 import React from "react";
 import ArrowDown, { ArrowUp } from "../icons/Icons";
-import aveta from "aveta";
-import Link from "next/link";
+import { formatNumber } from "@/app/formatNumber";
 import styled from "styled-components";
-import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Legend,
-} from "recharts";
-
+import { useRouter } from "next/navigation";
+import { AreaChart, Area, XAxis, YAxis, Tooltip, Legend } from "recharts";
 
 const Row = styled.div`
   width: 1010px;
@@ -23,20 +15,35 @@ const Row = styled.div`
   border-radius: 10px;
 `;
 
-export default function CoinRow({ coin, index, currency }) {
-  const oneHourPercent = coin.price_change_percentage_1h_in_currency.toFixed(2);
-  const oneDayPercent = coin.price_change_percentage_24h_in_currency.toFixed(2);
-  const sevenDayPercent = coin.price_change_percentage_7d_in_currency.toFixed(
+export default function CoinRow({ coin, index }) {
+  const oneHourPercent = coin?.price_change_percentage_1h_in_currency?.toFixed(
     2
   );
-  const volume = coin.total_volume;
-  const marketCap = coin.market_cap;
+  const oneDayPercent = coin?.price_change_percentage_24h_in_currency?.toFixed(
+    2
+  );
+  const sevenDayPercent = coin?.price_change_percentage_7d_in_currency?.toFixed(
+    2
+  );
+  const volume = coin?.total_volume;
+  const marketCap = coin?.market_cap;
   const volumeMarketCap = (volume / marketCap).toFixed(2) * 30;
-  const circulating = coin.circulating_supply;
+  const circulating = coin?.circulating_supply;
   const totalSupply = Math.floor(coin.total_supply);
-  const circulatingTotalSupply = (circulating / totalSupply).toFixed(2) * 30;
-  const coinPrice = coin.current_price.toFixed(2);
-  const dataSet = coin.price;
+  const router = useRouter();
+
+  function limiter(x) {
+    if (x < 1) {
+      return x;
+    }
+    if (x >= 1) {
+      return 100;
+    }
+  }
+  const circulatingTotalSupply = (circulating / totalSupply).toFixed(2) * 30; // need to make a function to prevent over 100%
+
+  const coinPrice = coin?.current_price?.toFixed(2);
+  const dataSet = coin?.price;
 
   const graphData = coin?.sparkline_in_7d?.price.map((item) => {
     return { x: index, price: item };
@@ -55,36 +62,35 @@ export default function CoinRow({ coin, index, currency }) {
     ],
   };
 
+  const handleRoute = (coinId) => {
+    const fixString = coinId.replace(/\W+/g, "-");
+    return router.push(`/coininfo/${fixString}`);
+  };
+
   return (
     <Row className=" bg-second">
       <div className="m-3">{index}</div>
       <div>
-        <img
-          src={coin.image}
-          className="max-w-8 max-h-8 ml-2 "
-          alt="coin icon"
-        />
+        <img src={coin.image} className="w-8 max-h-8 ml-2 " alt="coin icon" />
       </div>
-      <div className="max-w-40 min-w-40 px-10 flex justify-start items-center">
-        <Link href={`/coininfo/${coin.name}`}>{coin.name}</Link>
+      <div className="w-40 cursor-pointer mx-10 flex justify-start items-center">
+        <div onClick={() => handleRoute(coin.id)}>{coin.name}</div>
       </div>
-      <div className="max-w-20 min-w-20 flex justify-start items-center">
-        ${coinPrice}
-      </div>
-      <div className="max-w-20 min-w-20 pl-5 flex justify-start items-center">
+      <div className="w-20  flex justify-start items-center">${coinPrice}</div>
+      <div className="w-20  ml-5 flex justify-start items-center">
         {oneHourPercent < 0 ? <ArrowDown /> : <ArrowUp />}
         {oneHourPercent}%
       </div>
-      <div className="max-w-20 min-w-20 pl-5 flex justify-start items-center">
+      <div className="w-20  ml-5 flex justify-start items-center">
         {oneDayPercent < 0 ? <ArrowDown /> : <ArrowUp />}
         {oneDayPercent}%
       </div>
-      <div className="max-w-20 min-w-20 pl-5 flex justify-start items-center">
+      <div className="w-20 ml-5 flex justify-start items-center">
         {sevenDayPercent < 0 ? <ArrowDown /> : <ArrowUp />}
         {sevenDayPercent}%
       </div>
 
-      <div className="max-w-40 min-w-40 pl-5">
+      <div className="w-32 ml-5">
         <div className="flex justify-between">
           <div className="flex items-center">
             <div
@@ -94,26 +100,26 @@ export default function CoinRow({ coin, index, currency }) {
                   : "h-2 w-2 rounded-full bg-red-500"
               }
             ></div>
-            {aveta(volume)}
+            <div className="text-sm">{formatNumber(volume)}</div>
           </div>
           <div className="flex items-center">
             <div className="h-2 w-2 rounded-full  bg-gray-500"></div>
-            {aveta(marketCap)}
+            <div className="text-sm">{formatNumber(marketCap)}</div>
           </div>
         </div>
-        <div className="h-2 w-30 bg-gray-500">
+        <div className="h-2 w-32 bg-gray-500">
           <div
             className={
               oneDayPercent > 0
                 ? "h-2 w-30 bg-green-500"
                 : "h-2 w-30 bg-red-500"
             }
-            style={{ width: volumeMarketCap }}
+            style={{ width: limiter(volumeMarketCap) }}
           ></div>
         </div>
       </div>
 
-      <div className="max-w-40 min-w-40 pl-5">
+      <div className="w-32 ml-5">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
             <div
@@ -123,26 +129,26 @@ export default function CoinRow({ coin, index, currency }) {
                   : "h-2 w-2 rounded-full bg-red-500"
               }
             ></div>
-            {aveta(circulating)}
+            <div className="text-sm">{formatNumber(circulating)}</div>
           </div>
           <div className="flex items-center">
             <div className="h-2 w-2 rounded-full bg-gray-500"></div>
-            {aveta(totalSupply)}
+            <div className="text-sm">{formatNumber(totalSupply)}</div>
           </div>
         </div>
-        <div className="h-2 w-30 bg-gray-500">
+        <div className="h-2 w-32 bg-gray-500">
           <div
             className={
               oneDayPercent > 0
                 ? "h-2 w-30 bg-green-500"
                 : "h-2 w-30 bg-red-500"
             }
-            style={{ width: circulatingTotalSupply }}
+            style={{ width: limiter(circulatingTotalSupply) }}
           ></div>
         </div>
       </div>
 
-      <div className="px-5">
+      <div className="ml-5">
         <AreaChart
           width={130}
           height={50}
@@ -157,7 +163,7 @@ export default function CoinRow({ coin, index, currency }) {
           </defs>
           <XAxis hide domain={["auto", "auto"]} />
           <YAxis scale="log" domain={["auto", "auto"]} hide />
-          <Tooltip />
+
           <Area
             type="monotone"
             dataKey="price"
