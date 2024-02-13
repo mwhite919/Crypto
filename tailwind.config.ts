@@ -7,6 +7,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        accent: "var(--color-buttons-base)",
+      },
       backgroundColor: {
         base: "var(--color-background-base)",
         second: "var(--color-background-second)",
