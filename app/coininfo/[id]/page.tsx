@@ -61,7 +61,7 @@ export default function Page({ params }: { params: { id: string } }) {
       setIsLoading(false);
     }
   };
-  console.log(coinInfo);
+
   useEffect(() => {
     getCoinInfo();
   }, []);
