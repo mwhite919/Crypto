@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useCrypto } from "./Providers/CryptoProvider";
+import { useAppSelector } from "@/redux/hooks";
 import CoinRow from "../components/CoinRow";
 import ChartsMain from "../components/ChartsMain";
 import Converter from "../components/Converter";
@@ -28,6 +29,10 @@ export default function Page() {
   const [calculator, setCalculator] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
+  const coins = useAppSelector((state) => state.portfolio);
+
+  console.log("state", coins);
+
   useEffect(() => {
     getCoins();
   }, [currency]);
@@ -42,6 +47,10 @@ export default function Page() {
   return (
     <div className="bg-base flex justify-center items-center flex-col">
       <div>
+        {coins.map((i) => (
+          <li>{i}</li>
+        ))}
+
         <div>{isLoading && <h2>fetching data...</h2>}</div>
         <div>{error && <h2>page loading</h2>}</div>
       </div>
