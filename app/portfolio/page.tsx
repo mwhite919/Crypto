@@ -13,7 +13,7 @@ export default function Page() {
   }, [currency]);
 
   return (
-    <div>
+    <div className="w-full flex items-center justify-center">
       <CoinForm currentCoins={currentCoins} />
       <div> Porfoloiolsls</div>;
     </div>

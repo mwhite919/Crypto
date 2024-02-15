@@ -19,10 +19,16 @@ export const CoinForm = ({ currentCoins }) => {
   const [date, setDate] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const { addCoin, removeCoin } = usePortfolio();
+  const coinIcon = coin?.icon;
 
-  const handleChange = (e) => {
+  const handleSearchChange = (e) => {
     const inputValue = e.target.value;
     setSearchValue(inputValue);
+  };
+
+  const handleAmountChange = (e) => {
+    const inputValue = e.target.value;
+    setAmount(inputValue);
   };
 
   const handleSearch = (searchedCoin) => {
@@ -39,19 +45,26 @@ export const CoinForm = ({ currentCoins }) => {
     if (e.key === "Enter") return handleSearch(searchValue);
   };
 
-  console.log(currentCoins, coin);
+  console.log(currentCoins, coin, amount, date);
 
   return (
-    <>
-      <div>
-        <form>
+    <div>
+      <div className="flex justify-center items-center bg-accent  m-10 ">
+        <div className="h-48 w-48">
+          <div className="w-full h-full flex items-center justify-center flex-col">
+            <img src={coin.image} className="h-16" />
+            {coin.name}
+          </div>
+        </div>
+
+        <form className="flex flex-col justify-center h-48 w-96 items-center">
           <input
             value={searchValue ?? ""}
-            onChange={handleChange}
+            onChange={handleSearchChange}
             onKeyDown={handleKeyPress}
             placeholder="Enter your coin..."
             type="text"
-            className="m-5 drop-shadow-md rounded-sm pl-3"
+            className="m-3 drop-shadow-md rounded-sm pl-3"
           />
           <div className="absolute">
             {searchValue &&
@@ -72,10 +85,24 @@ export const CoinForm = ({ currentCoins }) => {
                   );
               })}
           </div>
-          <input type="text" value={amount} placeholder="How much?" />
-          <input type="date" value={date} />
+          <input
+            type="text"
+            onChange={handleAmountChange}
+            value={amount}
+            placeholder="How much?"
+            className="m-3 drop-shadow-md rounded-sm pl-3"
+          />
+          <input
+            onChange={(e) => setDate(e.target.value)}
+            type="date"
+            id="date"
+            name="date"
+            value={date}
+            max={new Date().toISOString().split("T")[0]}
+            className="m-3 drop-shadow-md rounded-sm pl-3"
+          />
         </form>
       </div>
-    </>
+    </div>
   );
 };
