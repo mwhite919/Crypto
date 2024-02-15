@@ -102,7 +102,7 @@ export default function Navigation() {
                 Home
               </Link>
               <Link
-                href="/Portfolio"
+                href="/portfolio"
                 className="m-5 drop-shadow-md text-accent"
               >
                 Portfolio
