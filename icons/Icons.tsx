@@ -152,7 +152,8 @@ export function CloseIcon() {
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={1.5}
-      className="w-6 h-6 hover:scale-125 stroke-second drop-shadow-md"
+      stroke="currentColor"
+      className="w-6 h-6 hover:scale-125 "
     >
       <path
         strokeLinecap="round"
@@ -170,7 +171,8 @@ export function ResetIcon() {
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={1.5}
-      className="w-6 h-6 hover:scale-125 stroke-second drop-shadow-md"
+      stroke="currentColor"
+      className="w-6 h-6 hover:scale-125"
     >
       <path
         strokeLinecap="round"

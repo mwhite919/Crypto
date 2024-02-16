@@ -10,12 +10,14 @@ import { useCrypto } from "../Providers/CryptoProvider";
 import { RootState } from "@/redux/store";
 
 export default function Page() {
+  const [addFormOn, setAddFormOn] = useState(false);
   const { currentCoins, getCoins, currency } = useCrypto();
-
   const portCoins = useAppSelector((state: RootState) => state.portfolio.coins);
   const dispatch = useDispatch();
 
-  console.log("state", portCoins);
+  const handleForm = () => {
+    setAddFormOn(false);
+  };
 
   useEffect(() => {
     getCoins();
@@ -23,8 +25,22 @@ export default function Page() {
 
   return (
     <div className="w-full flex items-center justify-center flex-col">
-      <CoinForm currentCoins={currentCoins} />
-      <div> PORTFOLIO TEXT</div>
+      <div className="w-full flex justify-end my-8 mr-36">
+        <button
+          className="bg-accent p-4 rounded-lg"
+          onClick={() => setAddFormOn(!addFormOn)}
+        >
+          Add Asset
+        </button>
+      </div>
+      <div>
+        {addFormOn && (
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+            <CoinForm currentCoins={currentCoins} handleForm={handleForm} />
+          </div>
+        )}
+      </div>
+      <div> Your Assets:</div>
       <PortfolioList />
     </div>
   );

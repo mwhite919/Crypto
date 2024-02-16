@@ -15,40 +15,106 @@ const DropdownRow = styled.div`
   z-index: 1;
 `;
 
-export const CoinForm = ({ currentCoins }) => {
+export const CoinForm = ({ currentCoins, handleForm }) => {
   const [coin, setCoin] = useState({});
+  const [missingCoin, setMissingCoin] = useState(false);
   const [amount, setAmount] = useState("");
+  const [missingAmount, setMissingAmount] = useState(false);
   const [date, setDate] = useState("");
+  const [dateError, setDateError] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const [numError, setnumError] = useState(false);
 
-  console.log("coin", coin);
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(
-      addCoin({ id: Math.random(), coin: coin, amount: amount, date: date })
-    );
+    if (!date || !amount || !coin) {
+      if (!date) setDateError(true);
+    }
+    if (!amount) {
+      setMissingAmount(true);
+    }
+    if (!coin.name) {
+      setMissingCoin(true);
+    }
+    if (coin && amount && date) {
+      dispatch(
+        addCoin({ id: Math.random(), coin: coin, amount: amount, date: date })
+      );
+      setSearchValue("");
+      setCoin({});
+      setAmount("");
+      setDate("");
+      handleForm();
+    }
+  };
+
+  const closeForm = () => {
+    handleForm();
     setSearchValue("");
     setCoin({});
     setAmount("");
     setDate("");
   };
 
+  const resetForm = () => {
+    setSearchValue("");
+    setCoin({});
+    setAmount("");
+    setDate("");
+    setnumError(false);
+  };
+
   const handleSearchChange = (e) => {
+    const newValueIsValid = !e.target.validity.patternMismatch;
+    if (numError) {
+      if (newValueIsValid) {
+        setnumError(false);
+      }
+    }
     const inputValue = e.target.value;
     setSearchValue(inputValue);
   };
 
+  const handleBlur = (e) => {
+    if (e.target.validity.patternMismatch) {
+      setnumError(true);
+    }
+    const newValueIsValid = !e.target.validity.patternMismatch;
+    if (numError) {
+      if (newValueIsValid) {
+        setnumError(false);
+      }
+    }
+    if (!amount) {
+      setMissingAmount(true);
+    }
+    if (amount) {
+      setMissingAmount(false);
+    }
+  };
+
+  const handleDateBlur = (e) => {
+    if (date) {
+      setDateError(false);
+    }
+  };
+
+  const handleDate = (e) => {
+    setDateError(false);
+    setDate(e.target.value);
+  };
+
   const handleAmountChange = (e) => {
-    const inputValue = e.target.value.replace(/\D/g, "");
-    setAmount(inputValue);
+    setAmount(e.target.value);
   };
 
   const handleSearch = (searchedCoin) => {
     if (searchValue) {
       setSearchValue("");
       setCoin(searchedCoin);
+      setMissingCoin(false);
     }
     if (!searchValue) {
       return;
@@ -56,20 +122,28 @@ export const CoinForm = ({ currentCoins }) => {
   };
 
   const handleKeyPress = (e: { key: any }) => {
-    if (e.key === "Enter") return handleSearch(searchValue);
+    if (e.key === "Enter") {
+      return;
+      handleSearch(searchValue);
+      setMissingCoin(false);
+    }
   };
 
   return (
     <div>
       <div
-        style={{ width: 700 }}
-        className="flex justify-center items-center flex-col bg-accent rounded-lg m-10 shadow-lg"
+        style={{ width: 700, height: 300 }}
+        className="flex justify-center items-center flex-col bg-accent rounded-lg m-10 shadow-lg p-10"
       >
-        <div className="flex items-center justify-between w-full pt-7 px-8">
+        <div className="flex items-center justify-between w-full">
           <div className="text-second">Select Coins</div>
-          <div>
-            <ResetIcon />
-            <CloseIcon />
+          <div className="w-16 flex justify-between mb-3">
+            <button onClick={resetForm}>
+              <ResetIcon />
+            </button>
+            <button onClick={closeForm}>
+              <CloseIcon />
+            </button>
           </div>
         </div>
         <div className=" w-full flex justify-center items-center ">
@@ -86,16 +160,26 @@ export const CoinForm = ({ currentCoins }) => {
               </div>
             )}
           </div>
-          <div>
-            <form className="flex flex-col justify-start h-48 w-1/2 items-start ">
+          <div className="flex flex-col justify-start h-48 w-1/2 items-start ">
+            <form>
+              {missingCoin && (
+                <p
+                  role="alert"
+                  className="text-xs"
+                  style={{ color: "rgb(200, 0, 0)" }}
+                >
+                  Please choose a coin.
+                </p>
+              )}
               <input
-                value={searchValue ? searchValue : coin.name}
+                value={searchValue ? searchValue : coin.name || ""}
                 onChange={handleSearchChange}
                 onKeyDown={handleKeyPress}
                 placeholder={"Start typing to find your coin..."}
                 type="text"
-                className="m-3 drop-shadow-md rounded-sm pl-3 w-64 shadow-md"
-                required
+                className={`m-3 drop-shadow-md rounded-sm pl-3 w-72 shadow-md ${
+                  missingCoin && "border-2 border-rose-600"
+                }`}
               />
               <div className="absolute">
                 {searchValue &&
@@ -116,28 +200,79 @@ export const CoinForm = ({ currentCoins }) => {
                       );
                   })}
               </div>
+              {numError && (
+                <p
+                  role="alert"
+                  className="text-xs"
+                  style={{ color: "rgb(200, 0, 0)" }}
+                >
+                  Please make sure you've entered a <em>number</em>
+                </p>
+              )}
+              {missingAmount && (
+                <p
+                  role="alert"
+                  className="text-xs"
+                  style={{ color: "rgb(200, 0, 0)" }}
+                >
+                  Please enter an amount.
+                </p>
+              )}
               <input
                 type="text"
                 onChange={handleAmountChange}
                 value={amount}
                 placeholder="How much?"
-                className="m-3 drop-shadow-md rounded-sm pl-3"
-                required
+                inputMode="decimal"
+                pattern="[0-9]*[.,]?[0-9]+"
+                onBlur={handleBlur}
+                className={`m-3 drop-shadow-md rounded-sm pl-3 ${
+                  numError && "border-2 border-rose-600"
+                }`}
               />
+              {dateError && (
+                <p
+                  role="alert"
+                  className="text-xs"
+                  style={{ color: "rgb(200, 0, 0)" }}
+                >
+                  Please enter a date.
+                </p>
+              )}
               <input
-                onChange={(e) => setDate(e.target.value)}
+                onChange={(e) => handleDate(e)}
                 type="date"
                 id="date"
                 name="date"
                 value={date}
+                onBlur={handleDateBlur}
                 max={new Date().toISOString().split("T")[0]}
-                className="m-3 drop-shadow-md rounded-sm pl-3"
-                required
+                className={`m-3 drop-shadow-md rounded-sm pl-3 ${
+                  dateError && "border-2 border-rose-600"
+                }`}
               />
-              <button type="submit" onClick={handleSubmit}>
-                Add Coin
-              </button>
             </form>
+            <div className="w-72 flex justify-between items-center">
+              <button
+                className="m-3 py-2 bg-second rounded-md w-36"
+                type="submit"
+                onClick={closeForm}
+              >
+                Cancel
+              </button>
+              <button
+                disabled={numError || dateError || missingAmount || missingCoin}
+                type="submit"
+                onClick={handleSubmit}
+                className={` m-3 py-2 bg-second rounded-md w-36 ${
+                  numError || dateError || missingAmount || missingCoin
+                    ? "opacity-70"
+                    : ""
+                }`}
+              >
+                Save
+              </button>
+            </div>
           </div>
         </div>
       </div>

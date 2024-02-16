@@ -15,6 +15,7 @@ module.exports = {
       backgroundColor: {
         base: "var(--color-background-base)",
         second: "var(--color-background-second)",
+        secondTransparent: "var(--color-background-second)/<alpha-value>",
         accent: "var(--color-buttons-base)",
         primaryBg: "var(--primaryBg)",
         primary: "var(--color-primary)",
