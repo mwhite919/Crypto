@@ -5,7 +5,7 @@ interface PortfolioState {
 }
 
 const initialState: PortfolioState = {
-  coins: [{ id: 1, text: "hello" }],
+  coins: [],
 };
 
 const portfolioSlice = createSlice({
