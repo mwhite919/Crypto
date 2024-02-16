@@ -58,7 +58,7 @@ export default function Navigation() {
 
   return (
     <>
-      <nav className="flex flex-col justify-center ">
+      <nav className="flex flex-col justify-center  ">
         <div className="flex items-center justify-center bg-accent ">
           <div className="mx-4 text-second">Coins:{marketCoins}</div>
           <div className="mx-4 text-second">
@@ -102,7 +102,7 @@ export default function Navigation() {
                 Home
               </Link>
               <Link
-                href="/Portfolio"
+                href="/portfolio"
                 className="m-5 drop-shadow-md text-accent"
               >
                 Portfolio
