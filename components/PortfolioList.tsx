@@ -17,11 +17,17 @@ function PortfolioList() {
         <div>
           {listCoins &&
             listCoins.map((c) => (
-              <li key={c.id}>
-                {c.coin?.name}
-                {c.id}
-                <button onClick={() => dispatch(removeCoin(c))}>Delete</button>
-              </li>
+              <div className="h-20 bg-second m-3" key={c.id}>
+                <div>Coin: {c.coin?.name}</div>
+                <div>Amount: {c.id}</div>
+                <div>Date: {c.date}</div>
+                <button
+                  className="bg-red-200"
+                  onClick={() => dispatch(removeCoin(c))}
+                >
+                  Delete
+                </button>
+              </div>
             ))}
         </div>
       </div>
