@@ -26,7 +26,9 @@ export const CoinForm = ({ currentCoins }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addCoin({ coin: coin, amount: amount, date: date }));
+    dispatch(
+      addCoin({ id: Math.random(), coin: coin, amount: amount, date: date })
+    );
   };
 
   const handleSearchChange = (e) => {

@@ -14,7 +14,7 @@ const portfolioSlice = createSlice({
   reducers: {
     addCoin: (state, action: any) => {
       const coin = {
-        id: nanoid,
+        id: action.payload.id,
         coin: action.payload.coin,
         amount: action.payload.amount,
         date: action.payload.date,
@@ -22,7 +22,7 @@ const portfolioSlice = createSlice({
       state.coins.push(coin);
     },
     removeCoin: (state, action: any) => {
-      state.coins.filter((c) => c.id !== action.payload);
+      state.coins = state.coins.filter((c) => c.id !== action.payload.id);
     },
   },
 });
