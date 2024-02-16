@@ -5,7 +5,7 @@ interface PortfolioState {
 }
 
 const initialState: PortfolioState = {
-  coins: [],
+  coins: [{ id: 1, text: "hello" }],
 };
 
 const portfolioSlice = createSlice({
@@ -15,7 +15,9 @@ const portfolioSlice = createSlice({
     addCoin: (state, action: any) => {
       const coin = {
         id: nanoid,
-        text: action.payload,
+        coin: action.payload.coin,
+        amount: action.payload.amount,
+        date: action.payload.date,
       };
       state.coins.push(coin);
     },

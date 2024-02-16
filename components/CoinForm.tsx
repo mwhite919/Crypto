@@ -21,13 +21,12 @@ export const CoinForm = ({ currentCoins }) => {
   const [date, setDate] = useState("");
   const [searchValue, setSearchValue] = useState("");
 
-  const coinIcon = coin?.icon;
-
+  console.log("coin", coin);
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addCoin(coin, amount, date));
+    dispatch(addCoin({ coin: coin, amount: amount, date: date }));
   };
 
   const handleSearchChange = (e) => {

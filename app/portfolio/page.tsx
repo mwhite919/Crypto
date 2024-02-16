@@ -2,12 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { useAppSelector } from "@/redux/hooks";
-
+import { addCoin, removeCoin } from "@/redux/portfolio/portfolioSlice";
+import { useDispatch } from "react-redux";
+import PortfolioList from "@/components/PortfolioList";
 import { CoinForm } from "@/components/CoinForm";
 import { useCrypto } from "../Providers/CryptoProvider";
 import { RootState } from "@/redux/store";
-import { addCoin, removeCoin } from "@/redux/portfolio/portfolioSlice";
-import { useDispatch } from "react-redux";
 
 export default function Page() {
   const { currentCoins, getCoins, currency } = useCrypto();
@@ -23,21 +23,9 @@ export default function Page() {
 
   return (
     <div className="w-full flex items-center justify-center flex-col">
-      <div>
-        <button
-          onClick={() => dispatch(addCoin({ id: Math.random(), value: "hi" }))}
-        >
-          add coin
-        </button>
-        {/* {coins.map((coin, index) => (
-          <li key={coin.id}>
-            {coin.value}
-            <button onClick={() => dispatch(removeCoin(coin.id))}>X</button>
-          </li>
-        ))} */}
-      </div>
       <CoinForm currentCoins={currentCoins} />
-      <div> PORTFOLIO TEXT</div>;
+      <div> PORTFOLIO TEXT</div>
+      <PortfolioList />
     </div>
   );
 }
