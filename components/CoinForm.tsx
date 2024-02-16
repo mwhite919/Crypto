@@ -45,8 +45,6 @@ export const CoinForm = ({ currentCoins }) => {
     if (e.key === "Enter") return handleSearch(searchValue);
   };
 
-  console.log(currentCoins, coin, amount, date);
-
   return (
     <div>
       <div className="flex justify-center items-center bg-accent  m-10 ">
