@@ -46,7 +46,7 @@ export function CopyIcon() {
       viewBox="0 0 24 24"
       strokeWidth={1.5}
       stroke="currentColor"
-      className="w-5 h-5"
+      className="w-5 h-5 hover:scale-125"
     >
       <path
         strokeLinecap="round"
@@ -73,5 +73,74 @@ export function ExchangeIcon() {
         d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"
       />
     </svg>
+  );
+}
+
+export function StackIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={1.5}
+      stroke="currentColor"
+      className="w-6 h-6"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M6.429 9.75 2.25 12l4.179 2.25m0-4.5 5.571 3 5.571-3m-11.142 0L2.25 7.5 12 2.25l9.75 5.25-4.179 2.25m0 0L21.75 12l-4.179 2.25m0 0 4.179 2.25L12 21.75 2.25 16.5l4.179-2.25m11.142 0-5.571 3-5.571-3"
+      />
+    </svg>
+  );
+}
+
+export function ArrowBullet() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={1.5}
+      stroke="currentColor"
+      className="w-4 h-4 drop-shadow-md"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="m8.25 4.5 7.5 7.5-7.5 7.5"
+      />
+    </svg>
+  );
+}
+
+export function XIcon() {
+  return (
+    <img
+      src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/x-social-media-black-icon.png"
+      className="h-4 w-4 m-2 hover:scale-125"
+      alt="X Social Media Black icon in SVG, PNG formats"
+    />
+  );
+}
+
+export function FacebookIcon() {
+  return (
+    <img
+      src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/facebook-app-round-icon.png"
+      className="h-4 w-4 m-2 hover:scale-125"
+      alt="Facebook App Round icon in SVG, PNG formats"
+    />
+  );
+}
+
+export function RedditIcon() {
+  return (
+    <img
+      src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/reddit-icon.png"
+      className="h-4 w-4 m-2 hover:scale-125"
+      alt="Reddit icon in SVG, PNG formats "
+      title="Reddit icon"
+    ></img>
   );
 }
