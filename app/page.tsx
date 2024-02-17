@@ -20,7 +20,7 @@ const Row = styled.div`
   padding: 3px;
   border-radius: 10px;
   position: sticky;
-  top: 5rem;
+  top: 25px;
 `;
 
 export default function Page() {
@@ -42,7 +42,7 @@ export default function Page() {
   };
 
   return (
-    <div className="bg-base flex justify-center items-center flex-col">
+    <div className="bg-base flex justify-center items-center flex-col pt-24">
       <div>
         <div>{isLoading && <h2>fetching data...</h2>}</div>
         <div>{error && <h2>page loading</h2>}</div>
@@ -95,7 +95,7 @@ export default function Page() {
           </div>
         )}
       </div>
-      <div>
+      <div className="sticky top-80">
         <Row className="bg-second flex shadow-md">
           <div className="w-3 m-3">#</div>
           <div className="w-8 max-h-8 ml-2"></div>

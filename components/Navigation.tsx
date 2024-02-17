@@ -58,7 +58,7 @@ export default function Navigation() {
 
   return (
     <>
-      <nav className="flex flex-col justify-center sticky z-50 ">
+      <nav className="flex flex-col justify-center fixed top-0 z-50 ">
         <div className="flex items-center justify-center bg-accent ">
           <div className="mx-4 text-second">Coins:{marketCoins}</div>
           <div className="mx-4 text-second">
