@@ -29,8 +29,6 @@ export const coinsApiProvider = createApi({
   }),
 });
 
-export const { useCoinList, useCoinDetail } = api;
-
 export default function CryptoProvider({ children }) {
   const [currentCoins, setCurrentCoins] = useState([]);
   const [currency, setCurrency] = useState("USD");

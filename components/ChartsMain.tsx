@@ -114,11 +114,11 @@ export const ChartsMain = () => {
             className={({ active, checked }) =>
               `${
                 active
-                  ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300"
+                  ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300 hover:scale-105"
                   : ""
               }
                       ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 m-1 shadow-md focus:outline-none`
+                        relative flex cursor-pointer rounded-lg px-5 py-4 m-1 shadow-md focus:outline-none hover:scale-105`
             }
             value="1"
           >
@@ -128,11 +128,11 @@ export const ChartsMain = () => {
             className={({ active, checked }) =>
               `${
                 active
-                  ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300"
+                  ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300 hover:scale-105"
                   : ""
               }
                       ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md m-1 focus:outline-none`
+                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md m-1 focus:outline-none hover:scale-105`
             }
             value="7"
           >
@@ -142,11 +142,11 @@ export const ChartsMain = () => {
             className={({ active, checked }) =>
               `${
                 active
-                  ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300"
+                  ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300 hover:scale-105"
                   : ""
               }
                       ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md m-1 focus:outline-none`
+                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md m-1 focus:outline-none hover:scale-105`
             }
             value="14"
           >
@@ -156,11 +156,11 @@ export const ChartsMain = () => {
             className={({ active, checked }) =>
               `${
                 active
-                  ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300"
+                  ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300 hover:scale-105"
                   : ""
               }
                       ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md m-1 focus:outline-none`
+                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md m-1 focus:outline-none hover:scale-105`
             }
             value="90"
           >
@@ -170,11 +170,11 @@ export const ChartsMain = () => {
             className={({ active, checked }) =>
               `${
                 active
-                  ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300"
+                  ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300 hover:scale-105"
                   : ""
               }
                       ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md m-1 focus:outline-none`
+                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md m-1 focus:outline-none hover:scale-105`
             }
             value="180"
           >
@@ -184,11 +184,11 @@ export const ChartsMain = () => {
             className={({ active, checked }) =>
               `${
                 active
-                  ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300"
+                  ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300 hover:scale-105"
                   : ""
               }
                       ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md m-1 focus:outline-none`
+                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md m-1 focus:outline-none hover:scale-105`
             }
             value="365"
           >
@@ -198,11 +198,11 @@ export const ChartsMain = () => {
             className={({ active, checked }) =>
               `${
                 active
-                  ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300"
+                  ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300 hover:scale-105"
                   : ""
               }
                       ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md m-1 focus:outline-none`
+                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md m-1 focus:outline-none hover:scale-105`
             }
             value="1825"
           >
