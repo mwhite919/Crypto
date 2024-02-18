@@ -58,7 +58,7 @@ export default function Navigation() {
 
   return (
     <>
-      <nav className="flex flex-col justify-center  ">
+      <nav className="flex flex-col justify-center fixed top-0 z-50 ">
         <div className="flex items-center justify-center bg-accent ">
           <div className="mx-4 text-second">Coins:{marketCoins}</div>
           <div className="mx-4 text-second">
@@ -98,12 +98,15 @@ export default function Navigation() {
               <div className="m-5 drop-shadow-md">
                 <img src="https://i.ibb.co/RBwgfPy/Logo.png" alt="logo"></img>
               </div>
-              <Link href="/" className="m-5 drop-shadow-md text-accent ">
+              <Link
+                href="/"
+                className="m-5 drop-shadow-md text-accent hover:scale-105"
+              >
                 Home
               </Link>
               <Link
                 href="/portfolio"
-                className="m-5 drop-shadow-md text-accent"
+                className="m-5 drop-shadow-md text-accent hover:scale-105"
               >
                 Portfolio
               </Link>

@@ -19,6 +19,8 @@ const Row = styled.div`
   margin: 10px;
   padding: 3px;
   border-radius: 10px;
+  position: sticky;
+  top: 25px;
 `;
 
 export default function Page() {
@@ -40,7 +42,7 @@ export default function Page() {
   };
 
   return (
-    <div className="bg-base flex justify-center items-center flex-col">
+    <div className="bg-base flex justify-center items-center flex-col pt-24">
       <div>
         <div>{isLoading && <h2>fetching data...</h2>}</div>
         <div>{error && <h2>page loading</h2>}</div>
@@ -55,11 +57,11 @@ export default function Page() {
             className={({ active, checked }) =>
               `${
                 active
-                  ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300"
+                  ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300 hover:scale-105"
                   : ""
               }
                       ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 w-36 m-1 justify-center shadow-md focus:outline-none`
+                        relative flex cursor-pointer rounded-lg px-5 py-4 w-36 m-1 justify-center shadow-md focus:outline-none hover:scale-105`
             }
             value={false}
           >
@@ -69,11 +71,11 @@ export default function Page() {
             className={({ active, checked }) =>
               `${
                 active
-                  ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300"
+                  ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300 hover:scale-105"
                   : ""
               }
                       ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 m-1 w-36 justify-center shadow-md focus:outline-none`
+                        relative flex cursor-pointer rounded-lg px-5 py-4 m-1 w-36 justify-center shadow-md focus:outline-none hover:scale-105`
             }
             value={true}
           >
@@ -93,8 +95,8 @@ export default function Page() {
           </div>
         )}
       </div>
-      <div>
-        <Row className="bg-second flex">
+      <div className="sticky top-80">
+        <Row className="bg-second flex shadow-md">
           <div className="w-3 m-3">#</div>
           <div className="w-8 max-h-8 ml-2"></div>
           <div className="w-40 ml-8 flex justify-start items-center">Name</div>

@@ -68,12 +68,12 @@ export default function CoinRow({ coin, index }) {
   };
 
   return (
-    <Row className=" bg-second">
+    <Row className="bg-second shadow-md">
       <div className="m-3">{index}</div>
       <div>
         <img src={coin.image} className="w-8 max-h-8 ml-2 " alt="coin icon" />
       </div>
-      <div className="w-40 cursor-pointer mx-10 flex justify-start items-center">
+      <div className="w-40 cursor-pointer mx-10 flex justify-start items-center hover:scale-105">
         <div onClick={() => handleRoute(coin.id)}>{coin.name}</div>
       </div>
       <div className="w-20  flex justify-start items-center">${coinPrice}</div>
