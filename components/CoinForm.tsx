@@ -64,6 +64,9 @@ export const CoinForm = ({ currentCoins, handleForm }) => {
     setAmount("");
     setDate("");
     setnumError(false);
+    setMissingAmount(false);
+    setMissingCoin(false);
+    setDateError(false);
   };
 
   const handleSearchChange = (e) => {
@@ -91,7 +94,7 @@ export const CoinForm = ({ currentCoins, handleForm }) => {
       setMissingAmount(true);
     }
     if (amount) {
-      setMissingAmount(false);
+      setMissingAmount(!amount);
     }
   };
 
@@ -130,10 +133,10 @@ export const CoinForm = ({ currentCoins, handleForm }) => {
   };
 
   return (
-    <div>
+    <div className="drop-shadow-xl">
       <div
         style={{ width: 700, height: 300 }}
-        className="flex justify-center items-center flex-col bg-accent rounded-lg m-10 shadow-lg p-10"
+        className="flex justify-center items-center flex-col bg-accent rounded-lg m-10  p-10"
       >
         <div className="flex items-center justify-between w-full">
           <div className="text-second">Select Coins</div>
@@ -177,8 +180,8 @@ export const CoinForm = ({ currentCoins, handleForm }) => {
                 onKeyDown={handleKeyPress}
                 placeholder={"Start typing to find your coin..."}
                 type="text"
-                className={`m-3 drop-shadow-md rounded-sm pl-3 w-72 shadow-md ${
-                  missingCoin && "border-2 border-rose-600"
+                className={`mx-3 drop-shadow-md rounded-sm pl-3 w-72 shadow-md ${
+                  missingCoin ? "border-2 mb-2 border-rose-600" : "my-3"
                 }`}
               />
               <div className="absolute">
@@ -226,8 +229,8 @@ export const CoinForm = ({ currentCoins, handleForm }) => {
                 inputMode="decimal"
                 pattern="[0-9]*[.,]?[0-9]+"
                 onBlur={handleBlur}
-                className={`m-3 drop-shadow-md rounded-sm pl-3 ${
-                  numError && "border-2 border-rose-600"
+                className={`mx-3 drop-shadow-md rounded-sm pl-3 ${
+                  numError ? "border-2 mb-2 border-rose-600" : "my-3"
                 }`}
               />
               {dateError && (
@@ -247,8 +250,8 @@ export const CoinForm = ({ currentCoins, handleForm }) => {
                 value={date}
                 onBlur={handleDateBlur}
                 max={new Date().toISOString().split("T")[0]}
-                className={`m-3 drop-shadow-md rounded-sm pl-3 ${
-                  dateError && "border-2 border-rose-600"
+                className={`mx-3 drop-shadow-md rounded-sm pl-3 ${
+                  dateError ? "border-2 mb-2 border-rose-600" : "my-3"
                 }`}
               />
             </form>
