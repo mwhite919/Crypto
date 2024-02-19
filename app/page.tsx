@@ -19,8 +19,6 @@ const Row = styled.div`
   margin: 10px;
   padding: 3px;
   border-radius: 10px;
-  position: sticky;
-  top: 25px;
 `;
 
 export default function Page() {
@@ -95,7 +93,7 @@ export default function Page() {
           </div>
         )}
       </div>
-      <div className="sticky top-80">
+      <div>
         <Row className="bg-second flex shadow-md">
           <div className="w-3 m-3">#</div>
           <div className="w-8 max-h-8 ml-2"></div>
