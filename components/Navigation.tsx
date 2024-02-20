@@ -123,7 +123,7 @@ export default function Navigation() {
               />
               <div className="absolute">
                 {searchValue &&
-                  currentCoins?.map((coin) => {
+                  currentCoins?.filter((coin) => {
                     const name = coin.name.toLowerCase();
                     const search = searchValue.toLowerCase();
                     if (name.startsWith(search))
@@ -147,7 +147,7 @@ export default function Navigation() {
                 className="m-5 drop-shadow-md rounded-sm "
               >
                 <option>here</option>
-                {CurrencyArray?.filter((currency) => {
+                {CurrencyArray?.map((currency) => {
                   return (
                     <option key={currency} value={currency}>
                       {currency}
