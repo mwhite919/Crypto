@@ -1,5 +1,5 @@
 "use client";
-import { useState, createContext, useContext } from "react";
+import { useState, createContext, useContext, useEffect } from "react";
 import axios from "axios";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query";
 
@@ -10,7 +10,31 @@ export function useCrypto() {
   return value;
 }
 
-//https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&order=${sortValue}&per_page=250&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&locale=en&x_cg_demo_api_key=CG-du5JzYuTcSZtNRw58BTw3e27
+const palettes = ["basic", "teal", "red", "blue"];
+const modes = ["light", "dark"];
+
+function useStickyState(
+  defaultValue: string | undefined,
+  key: string
+): [string | undefined, (v: string) => void] {
+  const [value, setValue] = useState<string | undefined>(defaultValue);
+
+  useEffect(() => {
+    const stickyValue = localStorage.getItem(key);
+    if (stickyValue !== null) {
+      setValue(stickyValue);
+    }
+  }, [key, setValue]);
+
+  return [
+    value,
+    (v) => {
+      localStorage.setItem(key, v);
+      setValue(v);
+    },
+  ];
+}
+
 export const coinsApiProvider = createApi({
   baseQuery: () => {},
   endpoints: (build) => ({
@@ -41,6 +65,8 @@ export default function CryptoProvider({ children }) {
   const [inputCoin1, setInputCoin1] = useState({});
   const [numberOfDays, setNumberOfDays] = useState("7");
   const top10Coins = Object.values(currentCoins).slice(0, 10);
+  const [palette, setPalette] = useStickyState(palettes[0], "theme-palette");
+  const [mode, setMode] = useStickyState(modes[0], "theme-mode");
 
   const getCoins = async () => {
     try {
@@ -99,6 +125,15 @@ export default function CryptoProvider({ children }) {
     setSortValue(e.target.value);
   }
 
+  function handlePalette(e: string) {
+    setPalette(e.target.value);
+    console.log(palette, "currenttheme");
+  }
+
+  function handleMode(e: string) {
+    setMode(e.target.value);
+  }
+
   const handleSelect = (coin) => {
     if (chartCoins.includes(coin)) {
       const removed = chartCoins.filter((e) => e !== coin);
@@ -134,6 +169,10 @@ export default function CryptoProvider({ children }) {
         handleTime,
         numberOfDays,
         handleNumberOfDays,
+        palette,
+        mode,
+        handlePalette,
+        handleMode,
       }}
     >
       {children}

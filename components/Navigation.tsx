@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import aveta from "aveta";
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
@@ -15,8 +15,20 @@ const DropdownRow = styled.div`
   z-index: 1;
 `;
 
+const palettes = ["basic", "teal", "neon", "pastel"];
+const modes = ["light", "dark"];
+
 export default function Navigation() {
-  const { getBarInfo, handleCurrency, barData, currentCoins } = useCrypto();
+  const {
+    getBarInfo,
+    handleCurrency,
+    barData,
+    currentCoins,
+    handlePalette,
+    handleMode,
+    palette,
+    mode,
+  } = useCrypto();
   const [searchValue, setSearchValue] = useState("");
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -58,7 +70,9 @@ export default function Navigation() {
 
   return (
     <>
-      <nav className="flex flex-col justify-center fixed top-0 z-50 ">
+      <nav
+        className={`flex flex-col justify-center fixed top-0 z-50 theme-${palette} theme-${mode}`}
+      >
         <div className="flex items-center justify-center bg-accent ">
           <div className="mx-4 text-second">Coins:{marketCoins}</div>
           <div className="mx-4 text-second">
@@ -151,6 +165,21 @@ export default function Navigation() {
                   return (
                     <option key={currency} value={currency}>
                       {currency}
+                    </option>
+                  );
+                })}
+              </select>
+
+              <select
+                onChange={(e) => handlePalette(e)}
+                name="palette"
+                className="m-5 drop-shadow-md rounded-sm "
+              >
+                <option>Theme</option>
+                {palettes?.map((theme) => {
+                  return (
+                    <option key={theme} value={theme}>
+                      {theme}
                     </option>
                   );
                 })}
