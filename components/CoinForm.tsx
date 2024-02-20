@@ -90,12 +90,7 @@ export const CoinForm = ({ currentCoins, handleForm }) => {
         setnumError(false);
       }
     }
-    if (!amount) {
-      setMissingAmount(true);
-    }
-    if (amount) {
-      setMissingAmount(!amount);
-    }
+    setMissingAmount(!amount);
   };
 
   const handleDateBlur = (e) => {
