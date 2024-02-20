@@ -42,7 +42,7 @@ export default function Page() {
   };
 
   return (
-    <div className="bg-base flex justify-center items-center flex-col pt-24">
+    <div className="bg-base flex justify-center items-center flex-col pt-24 ">
       <div>
         <div>{isLoading && <h2>fetching data...</h2>}</div>
         <div>{error && <h2>page loading</h2>}</div>

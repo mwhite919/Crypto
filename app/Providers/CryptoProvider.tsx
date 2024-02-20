@@ -99,6 +99,17 @@ export default function CryptoProvider({ children }) {
     setSortValue(e.target.value);
   }
 
+<<<<<<< Updated upstream
+=======
+  function handlePalette(e: string) {
+    setPalette(e.target.value);
+  }
+
+  function handleMode(e: string) {
+    setMode(e.target.value);
+  }
+
+>>>>>>> Stashed changes
   const handleSelect = (coin) => {
     if (chartCoins.includes(coin)) {
       const removed = chartCoins.filter((e) => e !== coin);
