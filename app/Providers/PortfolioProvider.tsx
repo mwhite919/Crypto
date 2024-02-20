@@ -14,20 +14,6 @@ export const PortFolioProvider = ({ children }) => {
   const [portCoins, setPortCoins] = useState([]);
   const [filterValue, setFilterValue] = useState("");
 
-  const addCoin = (name, amount, date) => {
-    const newCoins = [
-      ...portCoins,
-      {
-        name,
-        id: uid(),
-        amount,
-        purchasePrice,
-        date,
-      },
-    ];
-    setPortCoins(newCoins);
-  };
-
   const removeCoin = (coin) => {
     const newCoins = portCoins.filter((c) => c.id !== coin.id);
     setPortCoins(newPortCoins);
@@ -49,7 +35,7 @@ export const PortFolioProvider = ({ children }) => {
     <PortfolioContext.Provider
       value={{
         portCoins,
-        addCoin,
+
         removeCoin,
         getCoin,
         handleSort,

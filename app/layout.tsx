@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navigation from "../components/Navigation";
 import CryptoProvider from "./Providers/CryptoProvider";
+import StoreProvider from "./Providers/StoreProvider";
 import { PortFolioProvider } from "./Providers/PortfolioProvider";
 
 export const metadata: Metadata = {
@@ -17,12 +18,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <CryptoProvider>
-          <PortFolioProvider>
-            <Navigation />
-            {children}
-          </PortFolioProvider>
-        </CryptoProvider>
+        <StoreProvider>
+          <CryptoProvider>
+            <PortFolioProvider>
+              <Navigation />
+              {children}
+            </PortFolioProvider>
+          </CryptoProvider>
+        </StoreProvider>
       </body>
     </html>
   );
