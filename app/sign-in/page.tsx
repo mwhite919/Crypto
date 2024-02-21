@@ -1,27 +1,14 @@
 "use client";
-import { useState } from "react";
-import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
-import { auth } from "@/app/firebase/config";
-import { useRouter } from "next/navigation";
+import { useCrypto } from "../Providers/CryptoProvider";
 
 const SignIn = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
-  const router = useRouter();
-
-  const handleSignIn = async () => {
-    try {
-      const res = await signInWithEmailAndPassword(email, password);
-      console.log({ res });
-      sessionStorage.setItem("user", true);
-      setEmail("");
-      setPassword("");
-      router.push("/");
-    } catch (e) {
-      console.error(e);
-    }
-  };
+  const {
+    handleSignIn,
+    email,
+    password,
+    handlePassword,
+    handleEmail,
+  } = useCrypto();
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-base">
@@ -31,14 +18,14 @@ const SignIn = () => {
           type="email"
           placeholder="Email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => handleEmail(e)}
           className="w-full p-3 mb-4 bg-accent2 rounded outline-none text-primary placeholder-gray-500"
         />
         <input
           type="password"
           placeholder="Password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => handlePassword(e)}
           className="w-full p-3 mb-4 bg-accent2 rounded outline-none text-primary placeholder-gray-500"
         />
         <button

@@ -16,7 +16,15 @@ const DropdownRow = styled.div`
 `;
 
 export default function Navigation() {
-  const { getBarInfo, handleCurrency, barData, currentCoins } = useCrypto();
+  const {
+    getBarInfo,
+    handleCurrency,
+    barData,
+    currentCoins,
+    handleSignOut,
+    handleLoginError,
+    user,
+  } = useCrypto();
   const [searchValue, setSearchValue] = useState("");
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -114,6 +122,7 @@ export default function Navigation() {
 
             <div className="mr-5 flex flex-col">
               <div className="flex justify-end items-center ">
+                {user && <div>Signed in under {user?.email}</div>}
                 <Link
                   href="/sign-in"
                   className="drop-shadow-md text-accent mx-2 hover:scale-105"
@@ -125,6 +134,9 @@ export default function Navigation() {
                   className="drop-shadow-md text-accent mx-2 hover:scale-105"
                 >
                   Sign-up
+                </Link>
+                <Link href="/">
+                  <button onClick={handleSignOut}>Log out</button>
                 </Link>
               </div>
               <div className="flex justify-end items-center">

@@ -11,7 +11,7 @@ import { RootState } from "@/redux/store";
 
 export default function Page() {
   const [addFormOn, setAddFormOn] = useState(false);
-  const { currentCoins, getCoins, currency } = useCrypto();
+  const { currentCoins, getCoins, currency, user, userSession } = useCrypto();
   const portCoins = useAppSelector((state: RootState) => state.portfolio.coins);
   const dispatch = useDispatch();
 
@@ -22,6 +22,10 @@ export default function Page() {
   useEffect(() => {
     getCoins();
   }, [currency]);
+
+  if (!user && !userSession) {
+    router.push("/sign-up");
+  }
 
   return (
     <div className="w-full flex items-center justify-center flex-col">

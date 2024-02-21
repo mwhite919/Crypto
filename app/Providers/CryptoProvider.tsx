@@ -2,6 +2,11 @@
 import { useState, createContext, useContext } from "react";
 import axios from "axios";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { auth } from "@/app/firebase/config";
+import { signOut } from "firebase/auth";
+import { useRouter } from "next/navigation";
 
 export const CryptoContext = createContext();
 
@@ -40,6 +45,48 @@ export default function CryptoProvider({ children }) {
   const [inputCoin1, setInputCoin1] = useState({});
   const [numberOfDays, setNumberOfDays] = useState("7");
   const top10Coins = Object.values(currentCoins).slice(0, 10);
+  const [user] = useAuthState(auth);
+  const userSession = sessionStorage.getItem("user");
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loginError, setLoginError] = useState(false);
+  const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
+
+  console.log({ user });
+
+  const handleSignIn = async () => {
+    try {
+      setLoginError(false);
+      const res = await signInWithEmailAndPassword(email, password);
+      sessionStorage.setItem("user", true);
+      if (user) {
+        router.push("/portfolio");
+        setEmail("");
+        setPassword("");
+        return;
+      }
+      if ((!user && !userSession) || user === null) {
+        setLoginError(true);
+        router.push("/sign-up");
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleSignUp = async () => {
+    try {
+      setLoginError(false);
+      const res = await createUserWithEmailAndPassword(email, password);
+      console.log({ res });
+      sessionStorage.setItem("user", true);
+      setEmail("");
+      setPassword("");
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   const getCoins = async () => {
     try {
@@ -106,6 +153,14 @@ export default function CryptoProvider({ children }) {
     setMode(e.target.value);
   }
 
+  function handleEmail(e: string) {
+    setEmail(e.target.value);
+  }
+
+  function handlePassword(e: string) {
+    setPassword(e.target.value);
+  }
+
   const handleSelect = (coin) => {
     if (chartCoins.includes(coin)) {
       const removed = chartCoins.filter((e) => e !== coin);
@@ -120,6 +175,15 @@ export default function CryptoProvider({ children }) {
 
   function handleNumberOfDays(e: string) {
     setNumberOfDays(e.target.value);
+  }
+
+  function handleSignOut() {
+    signOut(auth);
+    sessionStorage.removeItem("user");
+  }
+
+  function handleLoginError() {
+    setLoginError(false);
   }
 
   return (
@@ -141,6 +205,16 @@ export default function CryptoProvider({ children }) {
         handleTime,
         numberOfDays,
         handleNumberOfDays,
+        handleSignOut,
+        handleSignIn,
+        email,
+        password,
+        handleEmail,
+        handlePassword,
+        loginError,
+        handleSignUp,
+        user,
+        userSession,
       }}
     >
       {children}
