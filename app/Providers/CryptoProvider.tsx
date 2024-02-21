@@ -10,7 +10,6 @@ export function useCrypto() {
   return value;
 }
 
-//https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&order=${sortValue}&per_page=250&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&locale=en&x_cg_demo_api_key=CG-du5JzYuTcSZtNRw58BTw3e27
 export const coinsApiProvider = createApi({
   baseQuery: () => {},
   endpoints: (build) => ({
@@ -99,8 +98,6 @@ export default function CryptoProvider({ children }) {
     setSortValue(e.target.value);
   }
 
-<<<<<<< Updated upstream
-=======
   function handlePalette(e: string) {
     setPalette(e.target.value);
   }
@@ -109,7 +106,6 @@ export default function CryptoProvider({ children }) {
     setMode(e.target.value);
   }
 
->>>>>>> Stashed changes
   const handleSelect = (coin) => {
     if (chartCoins.includes(coin)) {
       const removed = chartCoins.filter((e) => e !== coin);

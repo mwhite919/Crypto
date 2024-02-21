@@ -112,49 +112,65 @@ export default function Navigation() {
               </Link>
             </div>
 
-            <div className="mr-5">
-              <input
-                value={searchValue ?? ""}
-                onChange={handleChange}
-                onKeyDown={handleKeyPress}
-                placeholder="Search..."
-                type="text"
-                className="m-5 drop-shadow-md rounded-sm pl-3"
-              />
-              <div className="absolute">
-                {searchValue &&
-                  currentCoins?.map((coin) => {
-                    const name = coin.name.toLowerCase();
-                    const search = searchValue.toLowerCase();
-                    if (name.startsWith(search))
-                      return (
-                        <div key={coin.id} className="border-slate-300">
-                          <DropdownRow
-                            key={coin.id}
-                            className="bg-second"
-                            onClick={() => handleSearch(coin.id)}
-                          >
-                            {coin.name}
-                          </DropdownRow>
-                        </div>
-                      );
-                  })}
+            <div className="mr-5 flex flex-col">
+              <div className="flex justify-end items-center ">
+                <Link
+                  href="/sign-in"
+                  className="drop-shadow-md text-accent mx-2 hover:scale-105"
+                >
+                  Sign-in
+                </Link>
+                <Link
+                  href="/sign-up"
+                  className="drop-shadow-md text-accent mx-2 hover:scale-105"
+                >
+                  Sign-up
+                </Link>
               </div>
+              <div className="flex justify-end items-center">
+                <input
+                  value={searchValue ?? ""}
+                  onChange={handleChange}
+                  onKeyDown={handleKeyPress}
+                  placeholder="Search..."
+                  type="text"
+                  className="m-5 drop-shadow-md rounded-sm pl-3"
+                />
+                <div className="absolute">
+                  {searchValue &&
+                    currentCoins?.map((coin) => {
+                      const name = coin.name.toLowerCase();
+                      const search = searchValue.toLowerCase();
+                      if (name.startsWith(search))
+                        return (
+                          <div key={coin.id} className="border-slate-300">
+                            <DropdownRow
+                              key={coin.id}
+                              className="bg-second"
+                              onClick={() => handleSearch(coin.id)}
+                            >
+                              {coin.name}
+                            </DropdownRow>
+                          </div>
+                        );
+                    })}
+                </div>
 
-              <select
-                onChange={(e) => handleCurrency(e)}
-                name="currency"
-                className="m-5 drop-shadow-md rounded-sm "
-              >
-                <option>here</option>
-                {CurrencyArray?.map((currency) => {
-                  return (
-                    <option key={currency} value={currency}>
-                      {currency}
-                    </option>
-                  );
-                })}
-              </select>
+                <select
+                  onChange={(e) => handleCurrency(e)}
+                  name="currency"
+                  className="m-2 drop-shadow-md rounded-sm "
+                >
+                  <option>here</option>
+                  {CurrencyArray?.map((currency) => {
+                    return (
+                      <option key={currency} value={currency}>
+                        {currency}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
             </div>
           </div>
         </div>
