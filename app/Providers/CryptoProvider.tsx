@@ -10,7 +10,7 @@ export function useCrypto() {
   return value;
 }
 
-const palettes = ["basic", "teal", "red", "blue"];
+const palettes = ["basic", "teal", "neon", "pastel"];
 const modes = ["light", "dark"];
 
 function useStickyState(
@@ -65,8 +65,11 @@ export default function CryptoProvider({ children }) {
   const [inputCoin1, setInputCoin1] = useState({});
   const [numberOfDays, setNumberOfDays] = useState("7");
   const top10Coins = Object.values(currentCoins).slice(0, 10);
-  const [palette, setPalette] = useStickyState(palettes[0], "theme-palette");
-  const [mode, setMode] = useStickyState(modes[0], "theme-mode");
+  const [palette, setPalette] = useStickyState(
+    palettes[0],
+    "theme-palette" || "basic"
+  );
+  const [mode, setMode] = useStickyState(modes[0], "theme-mode" || "light");
 
   const getCoins = async () => {
     try {
@@ -127,7 +130,7 @@ export default function CryptoProvider({ children }) {
 
   function handlePalette(e: string) {
     setPalette(e.target.value);
-    console.log(palette, "currenttheme");
+    console.log(palette, e.target.value, "currenttheme");
   }
 
   function handleMode(e: string) {
