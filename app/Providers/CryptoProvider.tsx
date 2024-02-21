@@ -10,7 +10,7 @@ export function useCrypto() {
   return value;
 }
 
-const palettes = ["basic", "teal", "neon", "pastel"];
+const palettes = ["basic", "teal", "neon-pastel", "rose", "amber"];
 const modes = ["light", "dark"];
 
 function useStickyState(

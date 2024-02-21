@@ -15,7 +15,7 @@ const DropdownRow = styled.div`
   z-index: 1;
 `;
 
-const palettes = ["basic", "teal", "neon", "pastel"];
+const palettes = ["basic", "teal", "neon-pastel", "rose", "amber"];
 const modes = ["light", "dark"];
 
 export default function Navigation() {
@@ -184,11 +184,19 @@ export default function Navigation() {
                   );
                 })}
               </select>
-              <div>
-                <button value="dark" onClick={handleMode}>
+              <div className="h-5 ">
+                <button
+                  className="bg-accent m-2"
+                  value="dark"
+                  onClick={handleMode}
+                >
                   dark
                 </button>
-                <button value="light" onClick={handleMode}>
+                <button
+                  value="light"
+                  className="bg-accent m-2"
+                  onClick={handleMode}
+                >
                   light
                 </button>
               </div>

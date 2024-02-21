@@ -8,18 +8,18 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        base: "var(--baseC)",
+        base: "var(--base)",
         primary: "var(--accent2)",
-        second: "var(--secondC)",
-        accent: "var(--accentC)",
-        accent2: "var(--primaryC)",
+        second: "var(--second)",
+        accent: "var(--accent)",
+        accent2: "var(--primary)",
       },
       backgroundColor: {
-        base: "var(--baseC)",
-        primary: "var(--accent2C)",
-        second: "var(--secondC)",
-        accent: "var(--accentC)",
-        accent2: "var(--primaryC)",
+        base: "var(--base)",
+        primary: "var(--accent2)",
+        second: "var(--second)",
+        accent: "var(--accent)",
+        accent2: "var(--primary)",
       },
       textColor: {
         base: "var(--base)",
