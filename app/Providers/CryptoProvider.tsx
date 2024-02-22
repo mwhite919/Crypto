@@ -58,15 +58,12 @@ export default function CryptoProvider({ children }) {
       setLoginError(false);
       const res = await signInWithEmailAndPassword(email, password);
       sessionStorage.setItem("user", true);
-      console.log({ res });
-      console.log("first", user);
       if (res?.user.email) {
         router.push("/portfolio");
         setEmail("");
         setPassword("");
         return;
       }
-      console.log("second", user);
       if (!user) {
         setLoginError(true);
         router.push("/sign-up");
@@ -80,7 +77,6 @@ export default function CryptoProvider({ children }) {
     try {
       setLoginError(false);
       const res = await createUserWithEmailAndPassword(email, password);
-      console.log({ res });
       sessionStorage.setItem("user", true);
       setEmail("");
       setPassword("");
