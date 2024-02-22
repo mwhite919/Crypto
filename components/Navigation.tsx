@@ -121,7 +121,7 @@ export default function Navigation() {
             </div>
 
             <div className="mr-5 flex flex-col">
-              <div className="flex justify-end items-center ">
+              <div className="flex justify-end items-center mb-2 ">
                 {user && <div>Signed in under {user?.email}</div>}
                 <Link
                   href="/sign-in"
@@ -136,17 +136,22 @@ export default function Navigation() {
                   Sign-up
                 </Link>
                 <Link href="/">
-                  <button onClick={handleSignOut}>Log out</button>
+                  <button
+                    className="drop-shadow-md text-accent mx-2 hover:scale-105"
+                    onClick={handleSignOut}
+                  >
+                    Log out
+                  </button>
                 </Link>
               </div>
-              <div className="flex justify-end items-center">
+              <div className="flex justify-end items-center mb-2">
                 <input
                   value={searchValue ?? ""}
                   onChange={handleChange}
                   onKeyDown={handleKeyPress}
                   placeholder="Search..."
                   type="text"
-                  className="m-5 drop-shadow-md rounded-sm pl-3"
+                  className="mx-5 drop-shadow-md rounded-sm pl-3"
                 />
                 <div className="absolute">
                   {searchValue &&
@@ -171,7 +176,7 @@ export default function Navigation() {
                 <select
                   onChange={(e) => handleCurrency(e)}
                   name="currency"
-                  className="m-2 drop-shadow-md rounded-sm "
+                  className="mx-2 drop-shadow-md rounded-sm "
                 >
                   <option>here</option>
                   {CurrencyArray?.map((currency) => {
