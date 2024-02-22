@@ -135,14 +135,16 @@ export default function Navigation() {
                 >
                   Sign-up
                 </Link>
-                <Link href="/">
-                  <button
-                    className="drop-shadow-md text-accent mx-2 hover:scale-105"
-                    onClick={handleSignOut}
-                  >
-                    Log out
-                  </button>
-                </Link>
+                {user && (
+                  <Link href="/">
+                    <button
+                      className="drop-shadow-md text-accent mx-2 hover:scale-105"
+                      onClick={handleSignOut}
+                    >
+                      Log out
+                    </button>
+                  </Link>
+                )}
               </div>
               <div className="flex justify-end items-center mb-2">
                 <input

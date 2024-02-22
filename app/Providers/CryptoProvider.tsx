@@ -53,20 +53,21 @@ export default function CryptoProvider({ children }) {
   const [loginError, setLoginError] = useState(false);
   const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
 
-  console.log({ user });
-
   const handleSignIn = async () => {
     try {
       setLoginError(false);
       const res = await signInWithEmailAndPassword(email, password);
       sessionStorage.setItem("user", true);
-      if (user) {
+      console.log({ res });
+      console.log("first", user);
+      if (res?.user.email) {
         router.push("/portfolio");
         setEmail("");
         setPassword("");
         return;
       }
-      if ((!user && !userSession) || user === null) {
+      console.log("second", user);
+      if (!user) {
         setLoginError(true);
         router.push("/sign-up");
       }
