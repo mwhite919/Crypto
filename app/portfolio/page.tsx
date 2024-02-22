@@ -24,7 +24,7 @@ export default function Page() {
   }, [currency]);
 
   return (
-    <div className="w-full flex items-center justify-center flex-col">
+    <div className="w-full flex items-center justify-center flex-col mt-20">
       <div className="w-full flex justify-end my-8 mr-36">
         <button
           className="bg-accent p-4 rounded-lg"

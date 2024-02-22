@@ -19,12 +19,17 @@ const Row = styled.div`
   margin: 10px;
   padding: 3px;
   border-radius: 10px;
-  position: sticky;
-  top: 25px;
 `;
 
 export default function Page() {
-  const { getCoins, currentCoins, currency, currencySymbol } = useCrypto();
+  const {
+    getCoins,
+    currentCoins,
+    currency,
+    currencySymbol,
+    palette,
+    mode,
+  } = useCrypto();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [calculator, setCalculator] = useState(false);
@@ -42,7 +47,9 @@ export default function Page() {
   };
 
   return (
-    <div className="bg-base flex justify-center items-center flex-col pt-24">
+    <div
+      className={`bg-base flex justify-center items-center flex-col pt-24 theme-${palette} theme-${mode}`}
+    >
       <div>
         <div>{isLoading && <h2>fetching data...</h2>}</div>
         <div>{error && <h2>page loading</h2>}</div>
@@ -95,7 +102,7 @@ export default function Page() {
           </div>
         )}
       </div>
-      <div className="sticky top-80">
+      <div>
         <Row className="bg-second flex shadow-md">
           <div className="w-3 m-3">#</div>
           <div className="w-8 max-h-8 ml-2"></div>

@@ -1,10 +1,10 @@
 "use client";
 import Link from "next/link";
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect } from "react";
 import aveta from "aveta";
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
-import { useCrypto } from "../app/Providers/CryptoProvider";
+import { useCrypto } from "../Providers/CryptoProvider";
 import { CurrencyArray } from "./Currencies";
 
 const DropdownRow = styled.div`
@@ -15,20 +15,8 @@ const DropdownRow = styled.div`
   z-index: 1;
 `;
 
-const palettes = ["basic", "teal", "neon-pastel", "rose", "amber"];
-const modes = ["light", "dark"];
-
 export default function Navigation() {
-  const {
-    getBarInfo,
-    handleCurrency,
-    barData,
-    currentCoins,
-    handlePalette,
-    handleMode,
-    palette,
-    mode,
-  } = useCrypto();
+  const { getBarInfo, handleCurrency, barData, currentCoins } = useCrypto();
   const [searchValue, setSearchValue] = useState("");
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -70,9 +58,7 @@ export default function Navigation() {
 
   return (
     <>
-      <nav
-        className={`flex flex-col justify-center fixed top-0 z-50 theme-${palette} theme-${mode}`}
-      >
+      <nav className="flex flex-col justify-center fixed top-0 z-50 ">
         <div className="flex items-center justify-center bg-accent ">
           <div className="mx-4 text-second">Coins:{marketCoins}</div>
           <div className="mx-4 text-second">
@@ -126,79 +112,64 @@ export default function Navigation() {
               </Link>
             </div>
 
-            <div className="mr-5">
-              <input
-                value={searchValue ?? ""}
-                onChange={handleChange}
-                onKeyDown={handleKeyPress}
-                placeholder="Search..."
-                type="text"
-                className="m-5 drop-shadow-md rounded-sm pl-3"
-              />
-              <div className="absolute">
-                {searchValue &&
-                  currentCoins?.map((coin) => {
-                    const name = coin.name.toLowerCase();
-                    const search = searchValue.toLowerCase();
-                    if (name.startsWith(search))
-                      return (
-                        <div key={coin.id} className="border-slate-300">
-                          <DropdownRow
-                            key={coin.id}
-                            className="bg-second"
-                            onClick={() => handleSearch(coin.id)}
-                          >
-                            {coin.name}
-                          </DropdownRow>
-                        </div>
-                      );
-                  })}
+            <div className="mr-5 flex flex-col ">
+              <div className="flex justify-end items-center">
+                <Link
+                  href="/sign-up"
+                  className="m-5 drop-shadow-md text-accent hover:scale-105"
+                >
+                  Sign-up
+                </Link>
+                <Link
+                  href="/sign-in"
+                  className="m-5 drop-shadow-md text-accent hover:scale-105"
+                >
+                  Sign-in
+                </Link>
               </div>
+              <div className="flex justify-end items">
+                <input
+                  value={searchValue ?? ""}
+                  onChange={handleChange}
+                  onKeyDown={handleKeyPress}
+                  placeholder="Search..."
+                  type="text"
+                  className="m-5 drop-shadow-md rounded-sm pl-3"
+                />
+                <div className="absolute">
+                  {searchValue &&
+                    currentCoins?.map((coin) => {
+                      const name = coin.name.toLowerCase();
+                      const search = searchValue.toLowerCase();
+                      if (name.startsWith(search))
+                        return (
+                          <div key={coin.id} className="border-slate-300">
+                            <DropdownRow
+                              key={coin.id}
+                              className="bg-second"
+                              onClick={() => handleSearch(coin.id)}
+                            >
+                              {coin.name}
+                            </DropdownRow>
+                          </div>
+                        );
+                    })}
+                </div>
 
-              <select
-                onChange={(e) => handleCurrency(e)}
-                name="currency"
-                className="m-5 drop-shadow-md rounded-sm "
-              >
-                <option>here</option>
-                {CurrencyArray?.map((currency) => {
-                  return (
-                    <option key={currency} value={currency}>
-                      {currency}
-                    </option>
-                  );
-                })}
-              </select>
-
-              <select
-                onChange={(e) => handlePalette(e)}
-                name="palette"
-                className="m-5 drop-shadow-md rounded-sm "
-              >
-                <option>Theme</option>
-                {palettes?.map((theme) => {
-                  return (
-                    <option key={theme} value={theme}>
-                      {theme}
-                    </option>
-                  );
-                })}
-              </select>
-              <div className="h-5 ">
-                <button
-                  className="bg-accent m-2"
-                  value="dark"
-                  onClick={handleMode}
+                <select
+                  onChange={(e) => handleCurrency(e)}
+                  name="currency"
+                  className="m-5 drop-shadow-md rounded-sm "
                 >
-                  dark
-                </button>
-                <button
-                  value="light"
-                  className="bg-accent m-2"
-                  onClick={handleMode}
-                >
-                  light
-                </button>
+                  <option>here</option>
+                  {CurrencyArray?.map((currency) => {
+                    return (
+                      <option key={currency} value={currency}>
+                        {currency}
+                      </option>
+                    );
+                  })}
+                </select>
               </div>
             </div>
           </div>
