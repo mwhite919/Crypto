@@ -8,12 +8,14 @@ import PortfolioList from "@/components/PortfolioList";
 import { CoinForm } from "@/components/CoinForm";
 import { useCrypto } from "../Providers/CryptoProvider";
 import { RootState } from "@/redux/store";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   const [addFormOn, setAddFormOn] = useState(false);
   const { currentCoins, getCoins, currency, user, userSession } = useCrypto();
   const portCoins = useAppSelector((state: RootState) => state.portfolio.coins);
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const handleForm = () => {
     setAddFormOn(false);
@@ -23,7 +25,7 @@ export default function Page() {
     getCoins();
   }, [currency]);
 
-  if (!user && !userSession) {
+  if ((!user && !userSession) || user === null) {
     router.push("/sign-up");
   }
 

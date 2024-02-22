@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useCrypto } from "../Providers/CryptoProvider";
 
 const SignIn = () => {
@@ -13,7 +14,17 @@ const SignIn = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-base">
       <div className="bg-second p-10 rounded-lg shadow-xl w-96">
-        <h1 className="text-accent text-2xl mb-5">Sign In</h1>
+        <h1 className="text-accent text-2xl ">Sign In</h1>
+        <div className="text-primary my-2">
+          New here? Click{" "}
+          <Link
+            href="/sign-up"
+            className="cursor-pointer text-accent mb-2 hover:scale-105"
+          >
+            here
+          </Link>{" "}
+          to sign-up!
+        </div>
         <input
           type="email"
           placeholder="Email"
