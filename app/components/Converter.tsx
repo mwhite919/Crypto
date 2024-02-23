@@ -70,7 +70,7 @@ const Converter = ({ currentCoins }) => {
               <input
                 type="number"
                 value={variable1}
-                onChange={() => handleConversion(value)}
+                onChange={handleConversion}
                 id="v1"
                 className="my-2 rounded-md pl-2 text-right"
               />
@@ -95,7 +95,7 @@ const Converter = ({ currentCoins }) => {
         </div>
 
         {value1 &&
-          currentCoins?.map((coin) => {
+          currentCoins?.filter((coin) => {
             const name = coin.name.toLowerCase();
             const searchValue = value1.toLowerCase();
             if (name.startsWith(searchValue))

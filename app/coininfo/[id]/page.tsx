@@ -73,7 +73,7 @@ export default function Page({ params }: { params: { id: string } }) {
   return (
     <>
       <div className="flex items-center justify-center flex-col w-screen">
-        <div className="w-5/6 flex flex-col justify-center items-center m-6">
+        <div className="w-5/6 flex flex-col justify-center items-center m-6 mt-32">
           <div className="flex items-center justify-center w-5/6">
             <div className="flex flex-col items-center justify-center w-1/4 p-5 h-60 bg-second shadow-md shadow-accent m-3 rounded-lg ">
               <div>

@@ -181,7 +181,7 @@ export const CoinForm = ({ currentCoins, handleForm }) => {
               />
               <div className="absolute">
                 {searchValue &&
-                  currentCoins?.map((item) => {
+                  currentCoins?.filter((item) => {
                     const name = item.name.toLowerCase();
                     const search = searchValue.toLowerCase();
                     if (name.startsWith(search))

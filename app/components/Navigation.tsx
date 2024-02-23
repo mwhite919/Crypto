@@ -138,7 +138,7 @@ export default function Navigation() {
                 />
                 <div className="absolute">
                   {searchValue &&
-                    currentCoins?.map((coin) => {
+                    currentCoins?.filter((coin) => {
                       const name = coin.name.toLowerCase();
                       const search = searchValue.toLowerCase();
                       if (name.startsWith(search))
