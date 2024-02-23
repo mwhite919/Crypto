@@ -46,7 +46,7 @@ export default function CryptoProvider({ children }) {
   const [numberOfDays, setNumberOfDays] = useState("7");
   const top10Coins = Object.values(currentCoins).slice(0, 10);
   const [user] = useAuthState(auth);
-  const userSession = sessionStorage.getItem("user");
+  const userSession = localStorage.getItem("user");
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -176,7 +176,7 @@ export default function CryptoProvider({ children }) {
 
   function handleSignOut() {
     signOut(auth);
-    sessionStorage.removeItem("user");
+    localStorage.removeItem("user");
   }
 
   function handleLoginError() {

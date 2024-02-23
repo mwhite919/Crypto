@@ -1,13 +1,5 @@
 import { useCrypto } from "@/app/Providers/CryptoProvider";
-import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
+import { AreaChart, Area, XAxis, YAxis, Tooltip } from "recharts";
 import { scaleLog } from "d3-scale";
 
 const scale = scaleLog().base(Math.E);
