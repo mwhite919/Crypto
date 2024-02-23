@@ -31,7 +31,7 @@ export default function Page() {
 
   return (
     <div className="w-full flex items-center justify-center flex-col">
-      <div className="w-full flex justify-end my-8 mr-36">
+      <div className="w-full flex justify-end mt-32 mr-36">
         <button
           className="bg-accent p-4 rounded-lg"
           onClick={() => setAddFormOn(!addFormOn)}

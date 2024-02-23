@@ -57,7 +57,7 @@ export default function CryptoProvider({ children }) {
     try {
       setLoginError(false);
       const res = await signInWithEmailAndPassword(email, password);
-      sessionStorage.setItem("user", true);
+      localStorage.setItem("user", true);
       if (res?.user.email) {
         router.push("/portfolio");
         setEmail("");
