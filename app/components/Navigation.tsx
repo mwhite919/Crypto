@@ -113,7 +113,7 @@ export default function Navigation() {
             </div>
 
             <div className="mr-5 flex flex-col ">
-              <div className="flex justify-end items-center m-0">
+              <div className="flex justify-end items-center">
                 <Link
                   href="/sign-up"
                   className="m-5 drop-shadow-md text-accent hover:scale-105"
