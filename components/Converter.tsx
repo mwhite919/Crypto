@@ -27,8 +27,8 @@ const Converter = ({ currentCoins }) => {
     if (e.target.id === "v1") {
       setvariable2(conversion);
     }
-    if (e.target.id === "v1") {
-      setvariable2(conversion);
+    if (e.target.id === "v2") {
+      setvariable1(conversion);
     }
   };
 
@@ -51,7 +51,7 @@ const Converter = ({ currentCoins }) => {
   };
 
   return (
-    <ConverterBox className="my-10 rounded-lg w-96 flex justify-between items-center ">
+    <ConverterBox className="my-10 rounded-lg w-96 flex justify-between items-center">
       <div className="flex flex-col w-full">
         <div className="flex justify-center flex-col items-start border w-full bg-second h-full">
           <div className="flex justify-between items-end w-full px-5 ">
@@ -69,8 +69,8 @@ const Converter = ({ currentCoins }) => {
             <div>
               <input
                 type="number"
+                onChange={(e) => handleConversion(e)}
                 value={variable1}
-                onChange={() => handleConversion(value)}
                 id="v1"
                 className="my-2 rounded-md pl-2 text-right"
               />
@@ -128,8 +128,8 @@ const Converter = ({ currentCoins }) => {
           </div>
           <input
             type="number"
-            value={variable2}
             onChange={(e) => handleConversion(e)}
+            value={variable2}
             id="v2"
             className="my-2 w-44 rounded-md pl-2 text-right"
           />

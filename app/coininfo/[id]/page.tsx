@@ -73,8 +73,8 @@ export default function Page({ params }: { params: { id: string } }) {
 
   return (
     <>
-      <div className="flex items-center justify-center flex-col w-screen mt-36">
-        <div className="w-5/6 flex flex-col justify-center items-center m-6">
+      <div className="flex items-center justify-center flex-col w-screen ">
+        <div className="w-5/6 flex flex-col justify-center items-center mt-36 m-6">
           <div className="flex items-center justify-center w-5/6">
             <div className="flex flex-col items-center justify-center w-1/4 p-5 h-60 bg-second shadow-md shadow-accent m-3 rounded-lg ">
               <div>
@@ -228,32 +228,35 @@ export default function Page({ params }: { params: { id: string } }) {
               )}
 
               {blockChainwebPage && (
-                 <div className="h-6 bg-second m-3 p-5 flex items-center shadow-md shadow-accent">
-                 <button onClick={() => openInNewTab(`${blockChainwebPage}`)}>
-                   <NewTabLinkIcon />
-                 </button>
-                 {webPage}
-                 <CopyToClipboard
-                   text={blockChainwebPage}
-                   onCopy={() => setCopied(true)}
-                 >
-                   <CopyIcon />
-                 </CopyToClipboard>
-               </div>
+                <div className="h-6 bg-second m-3 p-5 flex items-center shadow-md shadow-accent">
+                  <button onClick={() => openInNewTab(`${blockChainwebPage}`)}>
+                    <NewTabLinkIcon />
+                  </button>
+                  {webPage}
+                  <CopyToClipboard
+                    text={blockChainwebPage}
+                    onCopy={() => setCopied(true)}
+                  >
+                    <CopyIcon />
+                  </CopyToClipboard>
+                </div>
               )}
 
               {officialForumwebPage && (
-                 <div className="h-6 bg-second m-3 p-5 flex items-center shadow-md shadow-accent">
-                 <button onClick={() => openInNewTab(`${officialForumwebPage}`)}>
-                   <NewTabLinkIcon />
-                 </button>
-                 {webPage}
-                 <CopyToClipboard
-                   text={officialForumwebPage}
-                   onCopy={() => setCopied(true)}
-                 >
-                   <CopyIcon />
-                 </CopyToClipboard>
+                <div className="h-6 bg-second m-3 p-5 flex items-center shadow-md shadow-accent">
+                  <button
+                    onClick={() => openInNewTab(`${officialForumwebPage}`)}
+                  >
+                    <NewTabLinkIcon />
+                  </button>
+                  {webPage}
+                  <CopyToClipboard
+                    text={officialForumwebPage}
+                    onCopy={() => setCopied(true)}
+                  >
+                    <CopyIcon />
+                  </CopyToClipboard>
+                </div>
               )}
             </div>
           </div>

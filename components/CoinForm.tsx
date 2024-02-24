@@ -122,8 +122,7 @@ export const CoinForm = ({ currentCoins, handleForm }) => {
   const handleKeyPress = (e: { key: any }) => {
     if (e.key === "Enter") {
       return;
-      handleSearch(searchValue);
-      setMissingCoin(false);
+      handleSubmit();
     }
   };
 
