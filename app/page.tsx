@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useGetAllCoins } from "./Providers/api/apiSlice";
 import { useCrypto } from "./Providers/CryptoProvider";
 import CoinRow from "../components/CoinRow";
 import ChartsMain from "../components/ChartsMain";
@@ -38,6 +39,9 @@ export default function Page() {
   useEffect(() => {
     getCoins();
   }, [currency]);
+
+  const { data } = useGetAllCoins();
+  console.log("here are the coins", data);
 
   const fetchMore = () => {
     if (currentCoins >= 250) {
