@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useGetAllCoinsQuery } from "./Providers/api/apiSlice";
 import { useCrypto } from "./Providers/CryptoProvider";
 import CoinRow from "../components/CoinRow";
 import ChartsMain from "../components/ChartsMain";
@@ -45,6 +46,9 @@ export default function Page() {
       return;
     }
   };
+
+  const { data } = useGetAllCoinsQuery();
+  console.log("usegetallcoinsdata", data);
 
   return (
     <div
