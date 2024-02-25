@@ -133,8 +133,9 @@ export default function CryptoProvider({ children }) {
     console.log(palette, e.target.value, "currenttheme");
   }
 
-  function handleMode(e: string) {
-    setMode(e.target.value);
+  function handleMode(value: string) {
+    setMode(value);
+    console.log("mode", mode, value, "value");
   }
 
   const handleSelect = (coin) => {
