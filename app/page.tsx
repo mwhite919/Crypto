@@ -31,8 +31,6 @@ export default function Page() {
     palette,
     mode,
   } = useCrypto();
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false);
   const [calculator, setCalculator] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
@@ -47,8 +45,12 @@ export default function Page() {
     }
   };
 
-  const { data } = useGetAllCoinsQuery();
-  console.log("usegetallcoinsdata", data);
+  const { data: allCoinsData, error, isError, isLoading } = useGetAllCoinsQuery(
+    {
+      currency: "usd",
+      sortValue: "volume_desc",
+    }
+  );
 
   return (
     <div
