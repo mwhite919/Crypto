@@ -12,11 +12,11 @@ const ConverterBox = styled.div`
   width: 1010px;
 `;
 
-const Converter = ({ currentCoins }) => {
+const Converter = ({ allCoinsData }) => {
   const [value1, setValue1] = useState("");
   const [value2, setValue2] = useState("");
-  const [coin1, setCoin1] = useState(currentCoins[0]);
-  const [coin2, setCoin2] = useState(currentCoins[1]);
+  const [coin1, setCoin1] = useState(allCoinsData[0]);
+  const [coin2, setCoin2] = useState(allCoinsData[1]);
   const [currencySymbol, setCurrencySymbol] = useState("$");
   const [variable1, setvariable1] = useState("1");
   const [variable2, setvariable2] = useState("");
@@ -95,7 +95,7 @@ const Converter = ({ currentCoins }) => {
         </div>
 
         {value1 &&
-          currentCoins?.map((coin) => {
+          allCoinsData?.filter((coin) => {
             const name = coin.name.toLowerCase();
             const searchValue = value1.toLowerCase();
             if (name.startsWith(searchValue))
@@ -152,7 +152,7 @@ const Converter = ({ currentCoins }) => {
           />
         </div>
         {value2 &&
-          currentCoins?.map((coin) => {
+          allCoinsData?.filter((coin) => {
             const name = coin.name.toLowerCase();
             const searchValue = value2.toLowerCase();
             if (name.startsWith(searchValue))

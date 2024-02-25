@@ -28,4 +28,5 @@ export const {
   useGetAllCoinsQuery,
   useGetSingleCoinQuery,
   useGetTopBarInfoQuery,
+  useGetChartInfoQuery,
 } = coinGeckoApi;

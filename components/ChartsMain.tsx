@@ -11,8 +11,6 @@ import { every_nth } from "./Every_nth";
 
 export const ChartsMain = () => {
   const [combined, setCombined] = useState([]);
-  const [error, setError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const {
     inputCoin1,

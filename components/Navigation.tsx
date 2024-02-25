@@ -1,6 +1,10 @@
 "use client";
 import Link from "next/link";
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect } from "react";
+import {
+  useGetAllCoinsQuery,
+  useGetTopBarInfoQuery,
+} from "@/app/Providers/api/apiSlice";
 import aveta from "aveta";
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
@@ -19,19 +23,23 @@ const palettes = ["basic", "teal", "neon-pastel", "rose", "amber"];
 const modes = ["light", "dark"];
 
 export default function Navigation() {
+  const { data: allCoinsData, error, isError, isLoading } = useGetAllCoinsQuery(
+    {
+      currency: "usd",
+      sortValue: "volume_desc",
+    }
+  );
+
+  const { data: barData } = useGetTopBarInfoQuery();
+
   const {
-    getBarInfo,
     handleCurrency,
-    barData,
-    currentCoins,
     handlePalette,
     handleMode,
     palette,
     mode,
   } = useCrypto();
   const [searchValue, setSearchValue] = useState("");
-  const [error, setError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const marketCoins = barData?.data?.active_cryptocurrencies;
   const totalVolume = Math.floor(barData?.data?.total_volume?.usd);
   const totalMarketCap = Math.floor(barData?.data?.total_market_cap.usd);
@@ -43,10 +51,6 @@ export default function Navigation() {
   );
 
   const router = useRouter();
-
-  useEffect(() => {
-    getBarInfo();
-  }, []);
 
   const handleChange = (e) => {
     const inputValue = e.target.value;
@@ -137,7 +141,7 @@ export default function Navigation() {
               />
               <div className="absolute">
                 {searchValue &&
-                  currentCoins?.filter((coin) => {
+                  allCoinsData?.filter((coin) => {
                     const name = coin.name.toLowerCase();
                     const search = searchValue.toLowerCase();
                     if (name.startsWith(search))

@@ -13,59 +13,43 @@ import {
   NewTabLinkIcon,
 } from "@/icons/Icons";
 import FormattedDate from "@/components/FormatDate";
+import { useGetSingleCoinQuery } from "@/app/Providers/api/apiSlice";
 
 export default function Page({ params }: { params: { id: string } }) {
-  const [coinInfo, setCoinInfo] = useState({});
-  const [error, setError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const { data: coinInfo, error, isError, isLoading } = useGetSingleCoinQuery(
+    params.id
+  );
+
   const [currency, setCurrency] = useState("usd");
   const [currencySymbol, setCurrencySymbol] = useState("$");
   const [copied, setCopied] = useState(false);
   const [showMore, setShowMore] = useState(false);
   const icon = coinInfo?.image?.small;
-  const name = coinInfo.name;
-  const abv = coinInfo.symbol?.toUpperCase();
+  const name = coinInfo?.name;
+  const abv = coinInfo?.symbol?.toUpperCase();
   const webPage = coinInfo?.links?.homepage[0];
   const blockChainwebPage = coinInfo?.links?.blockchain_site[0];
   const officialForumwebPage = coinInfo?.links?.official_forum_url[0];
   const facebookLink = coinInfo?.links?.facebook_username;
   const XScreenName = coinInfo?.links?.twitter_screen_name;
   const redditPage = coinInfo?.links?.subreddit_url;
-  const currentPrice = coinInfo.market_data?.current_price.usd?.toFixed(2);
-  const ath = coinInfo.market_data?.ath.usd;
-  const athChange = coinInfo.market_data?.ath_change_percentage?.usd;
-  const athDate = coinInfo.market_data?.ath_date?.usd;
-  const atl = coinInfo.market_data?.atl?.usd;
-  const atlChange = coinInfo.market_data?.atl_change_percentage?.usd;
-  const atlDate = coinInfo.market_data?.atl_date?.usd;
-  const marketCap = coinInfo.market_data?.market_cap.usd;
-  const fullyDiluted = coinInfo.market_data?.fully_diluted_valuation.usd;
-  const volume24h = coinInfo.market_data?.price_change_24h?.toFixed(4);
+  const currentPrice = coinInfo?.market_data?.current_price.usd?.toFixed(2);
+  const ath = coinInfo?.market_data?.ath.usd;
+  const athChange = coinInfo?.market_data?.ath_change_percentage?.usd;
+  const athDate = coinInfo?.market_data?.ath_date?.usd;
+  const atl = coinInfo?.market_data?.atl?.usd;
+  const atlChange = coinInfo?.market_data?.atl_change_percentage?.usd;
+  const atlDate = coinInfo?.market_data?.atl_date?.usd;
+  const marketCap = coinInfo?.market_data?.market_cap.usd;
+  const fullyDiluted = coinInfo?.market_data?.fully_diluted_valuation.usd;
+  const volume24h = coinInfo?.market_data?.price_change_24h?.toFixed(4);
   const volumeMarket = (volume24h / marketCap)?.toFixed(3);
-  const totalVolume = coinInfo.market_data?.total_volume.usd;
-  const totalSupply = coinInfo.market_data?.total_supply;
-  const maxSupply = coinInfo.market_data?.max_supply;
+  const totalVolume = coinInfo?.market_data?.total_volume.usd;
+  const totalSupply = coinInfo?.market_data?.total_supply;
+  const maxSupply = coinInfo?.market_data?.max_supply;
   const description = coinInfo?.description?.en;
 
   const markup = { __html: { description } };
-
-  const getCoinInfo = async () => {
-    try {
-      setIsLoading(true);
-      const { data } = await axios(
-        `https://api.coingecko.com/api/v3/coins/${params.id}?tickers=true&market_data=true&community_data=true&developer_data=true&sparkline=true`
-      );
-      setCoinInfo(data);
-      setIsLoading(false);
-    } catch (err) {
-      setError(true);
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getCoinInfo();
-  }, []);
 
   const openInNewTab = (url) => {
     window.open(url, "_blank", "noreferrer");
