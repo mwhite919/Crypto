@@ -154,78 +154,80 @@ export default function Navigation() {
                     </button>
                   </Link>
                 )}
-            <div className="mr-5">
-              <input
-                value={searchValue ?? ""}
-                onChange={handleChange}
-                onKeyDown={handleKeyPress}
-                placeholder="Search..."
-                type="text"
-                className="m-5 drop-shadow-md rounded-sm pl-3"
-              />
-              <div className="absolute">
-                {searchValue &&
-                  currentCoins?.filter((coin) => {
-                    const name = coin.name.toLowerCase();
-                    const search = searchValue.toLowerCase();
-                    if (name.startsWith(search))
+                <div className="flex justify-end items-center mb-2">
+                  <input
+                    value={searchValue ?? ""}
+                    onChange={handleChange}
+                    onKeyDown={handleKeyPress}
+                    placeholder="Search..."
+                    type="text"
+                    className="mx-5 drop-shadow-md rounded-sm pl-3"
+                  />
+                  <div className="absolute">
+                    {searchValue &&
+                      currentCoins
+                        ?.filter((coin) => {
+                          const name = coin.name.toLowerCase();
+                          const search = searchValue.toLowerCase();
+                          return name.startsWith(search);
+                        })
+                        .map((coin) => {
+                          <div key={coin.id} className="border-slate-300">
+                            <DropdownRow
+                              key={coin.id}
+                              className="bg-second"
+                              onClick={() => handleSearch(coin.id)}
+                            >
+                              {coin.name}
+                            </DropdownRow>
+                          </div>;
+                        })}
+                  </div>
+                  <select
+                    onChange={(e) => handleCurrency(e)}
+                    name="currency"
+                    className="m-5 drop-shadow-md rounded-sm "
+                  >
+                    <option>here</option>
+                    {CurrencyArray?.map((currency) => {
                       return (
-                        <div key={coin.id} className="border-slate-300">
-                          <DropdownRow
-                            key={coin.id}
-                            className="bg-second"
-                            onClick={() => handleSearch(coin.id)}
-                          >
-                            {coin.name}
-                          </DropdownRow>
-                        </div>
+                        <option key={currency} value={currency}>
+                          {currency}
+                        </option>
                       );
-                  })}                
-              </div>
-              <select
-                onChange={(e) => handleCurrency(e)}
-                name="currency"
-                className="m-5 drop-shadow-md rounded-sm "
-              >
-                <option>here</option>
-                {CurrencyArray?.map((currency) => {
-                  return (
-                    <option key={currency} value={currency}>
-                      {currency}
-                    </option>
-                  );
-                })}
-              </select>
-
-              <select
-                onChange={(e) => handlePalette(e)}
-                name="palette"
-                className="m-5 drop-shadow-md rounded-sm "
-              >
-                <option>Theme</option>
-                {palettes?.map((theme) => {
-                  return (
-                    <option key={theme} value={theme}>
-                      {theme}
-                    </option>
-                  );
-                })}
-              </select>
-              <div className="h-5 ">
-                <button
-                  className="bg-accent m-2"
-                  value="dark"
-                  onClick={handleMode}
-                >
-                  dark
-                </button>
-                <button
-                  value="light"
-                  className="bg-accent m-2"
-                  onClick={handleMode}
-                >
-                  light
-                </button>
+                    })}
+                  </select>
+                  <select
+                    onChange={(e) => handlePalette(e)}
+                    name="palette"
+                    className="m-5 drop-shadow-md rounded-sm "
+                  >
+                    <option>Theme</option>
+                    {palettes?.map((theme) => {
+                      return (
+                        <option key={theme} value={theme}>
+                          {theme}
+                        </option>
+                      );
+                    })}
+                  </select>
+                  <div className="h-5 ">
+                    <button
+                      className="bg-accent m-2"
+                      value="dark"
+                      onClick={handleMode}
+                    >
+                      dark
+                    </button>
+                    <button
+                      value="light"
+                      className="bg-accent m-2"
+                      onClick={handleMode}
+                    >
+                      light
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

@@ -95,16 +95,23 @@ const Converter = ({ currentCoins }) => {
         </div>
 
         {value1 &&
-          currentCoins?.map((coin) => {
-            const name = coin.name.toLowerCase();
-            const searchValue = value1.toLowerCase();
-            if (name.startsWith(searchValue))
-              return (
-                <DropdownRow key={coin.id} onClick={() => onSearch1(coin)}>
+          currentCoins
+            ?.filter((coin) => {
+              const name = coin.name.toLowerCase();
+              const search = value1.toLowerCase();
+              return name.startsWith(search);
+            })
+            .map((coin) => (
+              <div key={coin.id} className="border-slate-300">
+                <DropdownRow
+                  key={coin.id}
+                  className="bg-second"
+                  onClick={() => onSearch1(coin)}
+                >
                   {coin.name}
                 </DropdownRow>
-              );
-          })}
+              </div>
+            ))}
       </div>
 
       <div className="h-9 w-9 rounded-full border-solid border-slate-900">
@@ -162,6 +169,25 @@ const Converter = ({ currentCoins }) => {
                 </DropdownRow>
               );
           })}
+
+        {value2 &&
+          currentCoins
+            ?.filter((coin) => {
+              const name = coin.name.toLowerCase();
+              const search = value1.toLowerCase();
+              return name.startsWith(search);
+            })
+            .map((coin) => (
+              <div key={coin.id} className="border-slate-300">
+                <DropdownRow
+                  key={coin.id}
+                  className="bg-second"
+                  onClick={() => onSearch2(coin)}
+                >
+                  {coin.name}
+                </DropdownRow>
+              </div>
+            ))}
       </div>
     </ConverterBox>
   );

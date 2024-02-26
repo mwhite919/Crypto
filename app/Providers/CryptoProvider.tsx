@@ -116,7 +116,6 @@ export default function CryptoProvider({ children }) {
   );
   const [mode, setMode] = useStickyState(modes[0], "theme-mode" || "light");
 
-
   const getCoins = async () => {
     try {
       setIsLoading(true);
@@ -177,79 +176,80 @@ export default function CryptoProvider({ children }) {
   function handlePalette(e: string) {
     setPalette(e.target.value);
 
-  function handleMode(e: string) {
-    setMode(e.target.value);
-  }
-
-  function handleEmail(e: string) {
-    setEmail(e.target.value);
-  }
-
-  function handlePassword(e: string) {
-    setPassword(e.target.value);
-  }
-
-  const handleSelect = (coin) => {
-    if (chartCoins.includes(coin)) {
-      const removed = chartCoins.filter((e) => e !== coin);
-      if (chartCoins.length === 1) return;
-      setChartCoins(removed);
-      return;
+    function handleMode(e: string) {
+      setMode(e.target.value);
     }
-    if (chartCoins.length === 3) return;
-    getChartInfo(coin);
-    setChartCoins([...chartCoins, coin]);
-  };
 
-  function handleNumberOfDays(e: string) {
-    setNumberOfDays(e.target.value);
+    function handleEmail(e: string) {
+      setEmail(e.target.value);
+    }
+
+    function handlePassword(e: string) {
+      setPassword(e.target.value);
+    }
+
+    const handleSelect = (coin) => {
+      if (chartCoins.includes(coin)) {
+        const removed = chartCoins.filter((e) => e !== coin);
+        if (chartCoins.length === 1) return;
+        setChartCoins(removed);
+        return;
+      }
+      if (chartCoins.length === 3) return;
+      getChartInfo(coin);
+      setChartCoins([...chartCoins, coin]);
+    };
+
+    function handleNumberOfDays(e: string) {
+      setNumberOfDays(e.target.value);
+    }
+
+    function handleSignOut() {
+      signOut(auth);
+      localStorage.removeItem("user");
+    }
+
+    function handleLoginError() {
+      setLoginError(false);
+    }
+
+    return (
+      <CryptoContext.Provider
+        value={{
+          getCoins,
+          currentCoins,
+          currency,
+          handleCurrency,
+          currencySymbol,
+          getBarInfo,
+          barData,
+          handleSort,
+          inputCoin1,
+          handleSelect,
+          top10Coins,
+          chartCoins,
+          getChartInfo,
+          handleTime,
+          numberOfDays,
+          handleNumberOfDays,
+          handleSignOut,
+          handleSignIn,
+          email,
+          password,
+          handleEmail,
+          handlePassword,
+          loginError,
+          handleSignUp,
+          user,
+          userSession,
+          palette,
+          mode,
+          handlePalette,
+          handleMode,
+        }}
+      >
+        {children}
+      </CryptoContext.Provider>
+    );
   }
-
-  function handleSignOut() {
-    signOut(auth);
-    localStorage.removeItem("user");
-  }
-
-  function handleLoginError() {
-    setLoginError(false);
-  }
-
-  return (
-    <CryptoContext.Provider
-      value={{
-        getCoins,
-        currentCoins,
-        currency,
-        handleCurrency,
-        currencySymbol,
-        getBarInfo,
-        barData,
-        handleSort,
-        inputCoin1,
-        handleSelect,
-        top10Coins,
-        chartCoins,
-        getChartInfo,
-        handleTime,
-        numberOfDays,
-        handleNumberOfDays,
-        handleSignOut,
-        handleSignIn,
-        email,
-        password,
-        handleEmail,
-        handlePassword,
-        loginError,
-        handleSignUp,
-        user,
-        userSession,
-        palette,
-        mode,
-        handlePalette,
-        handleMode,
-      }}
-    >
-      {children}
-    </CryptoContext.Provider>
-  );
 }
