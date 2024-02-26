@@ -92,7 +92,7 @@ export const ChartsMain = () => {
       <div className="flex my-12">
         <div>
           {chartCoins.map((coin) => {
-            <h1>{coin.name}</h1>;
+            <h1 key={coin.name}>{coin.name}</h1>;
           })}
           <CoinLineChart combinedDataPrices={fixIntervalPrices} />
         </div>
