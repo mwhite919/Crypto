@@ -157,22 +157,23 @@ export default function Navigation() {
                 />
                 <div className="absolute">
                   {searchValue &&
-                    currentCoins?.map((coin) => {
-                      const name = coin.name.toLowerCase();
-                      const search = searchValue.toLowerCase();
-                      if (name.startsWith(search))
-                        return (
-                          <div key={coin.id} className="border-slate-300">
-                            <DropdownRow
-                              key={coin.id}
-                              className="bg-second"
-                              onClick={() => handleSearch(coin.id)}
-                            >
-                              {coin.name}
-                            </DropdownRow>
-                          </div>
-                        );
-                    })}
+                    currentCoins
+                      ?.filter((coin) => {
+                        const name = coin.name.toLowerCase();
+                        const search = searchValue.toLowerCase();
+                        return name.startsWith(search);
+                      })
+                      .map((coin) => (
+                        <div key={coin.id} className="border-slate-300">
+                          <DropdownRow
+                            key={coin.id}
+                            className="bg-second"
+                            onClick={() => handleSearch(coin.id)}
+                          >
+                            {coin.name}
+                          </DropdownRow>
+                        </div>
+                      ))}
                 </div>
 
                 <select
