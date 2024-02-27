@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { removeCoin } from "@/redux/portfolio/portfolioSlice";
 import styled from "styled-components";
@@ -17,6 +17,7 @@ const Row = styled.div`
 `;
 
 function PortfolioList({ listCoins }) {
+  const [purchasePrice, setPurchasePrice] = useState("");
   const dispatch = useDispatch();
 
   function percentage(x, y) {
@@ -31,6 +32,19 @@ function PortfolioList({ listCoins }) {
       return 100;
     }
   }
+
+  const getPurchasePrice = async (coinName, date) => {
+    try {
+      setIsLoading(true);
+      const { data } = await axios(
+        `https://api.coingecko.com/api/v3/coins/${coinName}/history?date=${date}&localization=false`
+      );
+      console.log("price", data);
+    } catch (err) {
+      setError(true);
+      setIsLoading(false);
+    }
+  };
 
   return (
     <>
@@ -53,8 +67,9 @@ function PortfolioList({ listCoins }) {
                   </div>
                   <div className="flex flex-col text-center">
                     <div className="flex justify-between items-center">
-                      <div>Market Price</div>
-                      <div>
+                      <div className="w-24"></div>
+                      <div className=" w-24">Market Price</div>
+                      <div className="w-24">
                         <button onClick={() => dispatch(removeCoin(c))}>
                           <TrashIcon />
                         </button>
@@ -112,8 +127,39 @@ function PortfolioList({ listCoins }) {
                         </div>
                       </div>
                     </div>
-                    second line
-                    <div className="p-3">Date: {c.date}</div>
+                    <div className="flex flex-col items-center justify-between ">
+                      <div className="w-24"></div>
+                      <div className="my-3 w-24">Your Coins</div>
+                      <div className="w-24"></div>
+                      <div className="flex items-center justify-between">
+                        <div className="flex-col">
+                          <div>Coin Amount:</div>
+                          <div className="text-accent text-lg font-semibold">
+                            {c.amount}
+                          </div>
+                        </div>
+                        <div className="flex-col">
+                          <div>Amount Value</div>
+                          <div className="text-accent text-lg font-semibold">
+                            {(c.amount * c.coin.current_price).toFixed(2)}
+                          </div>
+                        </div>
+                        <div className="flex-col">
+                          <div>Price Change Since Purchase</div>
+                          <div className="text-accent text-lg font-semibold">
+                            {(c.amount * c.coin.current_price).toFixed(2)}
+                          </div>
+                        </div>
+                        <div className="p-3">
+                          Purchase Price:
+                          {c.date.split("-").reverse().join("-")}
+                        </div>
+                        <div className="p-3">
+                          Date Purchased:
+                          {c.date.split("-").reverse().join("-")}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </Row>
