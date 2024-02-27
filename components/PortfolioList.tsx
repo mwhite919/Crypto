@@ -4,6 +4,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { removeCoin } from "@/redux/portfolio/portfolioSlice";
 import styled from "styled-components";
+import { EditIcon, TrashIcon } from "@/icons/Icons";
 
 const Row = styled.div`
   width: 900px;
@@ -50,7 +51,18 @@ function PortfolioList({ listCoins }) {
                       </div>
                     </div>
                   </div>
-                  <div className="flex flex-col">
+                  <div className="flex flex-col text-center">
+                    <div className="flex justify-between items-center">
+                      <div>Market Price</div>
+                      <div>
+                        <button onClick={() => dispatch(removeCoin(c))}>
+                          <TrashIcon />
+                        </button>
+                        <button>
+                          <EditIcon />
+                        </button>
+                      </div>
+                    </div>
                     <div className="flex border-b  border-accent2 h-1/2">
                       <div className="flex flex-col justify-center items-center p-3 text-xs">
                         <div>Current Price:</div>
@@ -64,9 +76,9 @@ function PortfolioList({ listCoins }) {
                           {c?.coin?.price_change_24h.toFixed(2)}
                         </div>
                       </div>
-                      <div className="flex flex-col justify-center items-center p-3">
-                        <div className="text-xs">Volume vs Market Cap:</div>
-                        <div className="flex items-center justify-center text-xs text-acc">
+                      <div className="flex flex-col justify-center items-center p-3 text-center ">
+                        <div className="text-xs ">Volume vs Market Cap:</div>
+                        <div className="flex items-center justify-center text-accent text-lg font-semibold ">
                           {percentage(
                             c?.coin?.total_volume,
                             c?.coin?.market_cap
@@ -87,15 +99,21 @@ function PortfolioList({ listCoins }) {
                           </div>
                         </div>
                       </div>
-                      <div className="p-3">Date: {c.date}</div>
-                      <button
-                        className="bg-red-200"
-                        onClick={() => dispatch(removeCoin(c))}
-                      >
-                        Delete
-                      </button>
+
+                      <div className="flex flex-col justify-center items-center p-3">
+                        <div className="text-xs text-center">
+                          Circulating Supply vs Total Supply:
+                        </div>
+                        <div className="flex items-center justify-center text-accent text-lg font-semibold">
+                          {percentage(
+                            c?.coin?.circulating_supply,
+                            c?.coin?.total_supply
+                          )}
+                        </div>
+                      </div>
                     </div>
                     second line
+                    <div className="p-3">Date: {c.date}</div>
                   </div>
                 </div>
               </Row>
