@@ -10,6 +10,7 @@ import styled from "styled-components";
 import { useRouter } from "next/navigation";
 import { useCrypto } from "../app/Providers/CryptoProvider";
 import { CurrencyArray } from "./Currencies";
+import { MoonIcon, SunIcon } from "@/icons/Icons";
 
 const DropdownRow = styled.div`
   cursor: pointer;
@@ -131,6 +132,7 @@ export default function Navigation() {
             </div>
 
             <div className="mr-5">
+
               <input
                 value={searchValue ?? ""}
                 onChange={handleChange}
@@ -174,35 +176,53 @@ export default function Navigation() {
                 })}
               </select>
 
-              <select
-                onChange={(e) => handlePalette(e)}
-                name="palette"
-                className="m-5 drop-shadow-md rounded-sm "
-              >
-                <option>Theme</option>
-                {palettes?.map((theme) => {
-                  return (
-                    <option key={theme} value={theme}>
-                      {theme}
-                    </option>
-                  );
-                })}
-              </select>
-              <div className="h-5 ">
-                <button
-                  className="bg-accent m-2"
-                  value="dark"
-                  onClick={handleMode}
+                <select
+                  onChange={(e) => handleCurrency(e)}
+                  name="currency"
+                  className="mr-5 my-5 drop-shadow-md rounded-sm "
                 >
-                  dark
-                </button>
-                <button
-                  value="light"
-                  className="bg-accent m-2"
-                  onClick={handleMode}
+                  <option>here</option>
+                  {CurrencyArray?.map((currency) => {
+                    return (
+                      <option key={currency} value={currency}>
+                        {currency}
+                      </option>
+                    );
+                  })}
+                </select>
+
+                <select
+                  onChange={(e) => handlePalette(e)}
+                  name="palette"
+                  className="mr-5 my-5  drop-shadow-md rounded-sm "
                 >
-                  light
-                </button>
+                  <option>Theme</option>
+                  {palettes?.map((theme) => {
+                    return (
+                      <option key={theme} value={theme}>
+                        {theme}
+                      </option>
+                    );
+                  })}
+                </select>
+
+                {mode === "light" ? (
+                  <button
+                    className="mr-5 my-5 border-accent"
+                    value="dark"
+                    onClick={() => handleMode("dark")}
+                  >
+                    <MoonIcon />
+                  </button>
+                ) : (
+                  <button
+                    className="mr-5 my-5 border-accent"
+                    value="light"
+                    onClick={() => handleMode("light")}
+                  >
+                    <SunIcon />
+                  </button>
+                )}
               </div>
             </div>
           </div>
