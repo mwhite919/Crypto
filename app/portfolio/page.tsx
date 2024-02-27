@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import { useAppSelector } from "@/redux/hooks";
 import { useDispatch } from "react-redux";
-import PortfolioList from "@/components/PortfolioList";
-import { CoinForm } from "@/components/CoinForm";
+import PortfolioList from "@/app/components/PortfolioList";
+import { CoinForm } from "@/app/components/CoinForm";
 import { useCrypto } from "../Providers/CryptoProvider";
 import { RootState } from "@/redux/store";
 
