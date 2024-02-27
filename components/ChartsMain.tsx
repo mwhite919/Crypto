@@ -11,8 +11,6 @@ import { convertUnixToDate } from "./UnixTimeConverter";
 
 export const ChartsMain = () => {
   const [combined, setCombined] = useState([]);
-  const [error, setError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const {
     inputCoin1,
@@ -25,17 +23,13 @@ export const ChartsMain = () => {
     handleNumberOfDays,
   } = useCrypto();
 
-  const graphDataPricesC1 = chartCoins[0]?.prices?.map((item) => {
-    return { time: item[0] / 1000, price: item[1] };
-  });
+  const mapGraphDataPrices = (item) => {
+    return { time: item[0], price: item[1] };
+  };
 
-  const graphDataPricesC2 = chartCoins[1]?.prices?.map((item) => {
-    return { price: item[1] };
-  });
-
-  const graphDataPricesC3 = chartCoins[2]?.prices?.map((item) => {
-    return { price: item[1] };
-  });
+  const graphDataPricesC1 = chartCoins?.prices?.map(mapGraphDataPrices);
+  const graphDataPricesC2 = chartCoins?.prices?.map(mapGraphDataPrices);
+  const graphDataPricesC3 = chartCoins?.prices?.map(mapGraphDataPrices);
 
   const combinedDataPrices = graphDataPricesC1?.map((item, index) => {
     if (chartCoins.length === 1) {
@@ -60,17 +54,12 @@ export const ChartsMain = () => {
 
   const fixIntervalPrices = every_nth(combinedDataPrices, 30);
 
-  const graphDataV1 = chartCoins?.total_volumes?.map((item) => {
+  const mapGraphData = (item) => {
     return { time: item[0], v: item[1] };
-  });
-
-  const graphDataV2 = chartCoins?.total_volumes?.map((item) => {
-    return { time: item[0], v: item[1] };
-  });
-
-  const graphDataV3 = chartCoins?.total_volumes?.map((item) => {
-    return { time: item[0], v: item[1] };
-  });
+  };
+  const graphDataV1 = chartCoins?.total_volumes?.map(mapGraphData);
+  const graphDataV2 = chartCoins?.total_volumes?.map(mapGraphData);
+  const graphDataV3 = chartCoins?.total_volumes?.map(mapGraphData);
 
   const combinedDataVolumes = graphDataV1?.map((item, index) => {
     return {

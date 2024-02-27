@@ -4,62 +4,68 @@
 
 @layer base {
   :root {
-    --color-background-base: rgb(226, 234, 252);
-    --color-background-second: rgb(237, 242, 251);
-    --color-buttons-base: rgb(110, 67, 238);
-    --color-primary: rgb(29, 211, 176);
-    --color-text-second: theme('colors.gray.900'));
+    --color-base: theme("colors.slate.50");
+    --color-inverse: theme("colors.indigo.900");
+    --color-primary: theme("colors.teal.400");
+    --color-second: theme("colors.slate.100");
+    --color-second-inverse: theme("colors.indigo.500");
+    --color-accent: theme("colors.indigo.500");
+    --color-accent2: theme("colors.cyan.400");
   }
 }
 
-
-.theme-green {
-  --color-background-base: red;
-  --color-background-second: blue;
-  --color-buttons-base: green;
-  --color-primary: rgb(29, 211, 176);
-  --color-text-second: theme('colors.gray.900'));
+.theme-teal {
+  --color-base: theme("colors.teal.50");
+  --color-inverse: theme("colors.teal.900");
+  --color-primary: theme("colors.teal.400");
+  --color-second: theme("colors.teal.100");
+  --color-second-inverse: theme("colors.teal.600");
+  --color-accent: theme("colors.teal.500");
+  --color-accent2: theme("colors.violet.400");
 }
 
-.theme-red {
-  --color-primary-50: theme('colors.red.50');
-  --color-primary-100: theme('colors.red.100');
-  --color-primary-200: theme('colors.red.200');
-  --color-primary-300: theme('colors.red.300');
-  --color-primary-400: theme('colors.red.400');
-  --color-primary-500: theme('colors.red.500');
-  --color-primary-600: theme('colors.red.600');
-  --color-primary-700: theme('colors.red.700');
-  --color-primary-800: theme('colors.red.800');
-  --color-primary-900: theme('colors.red.900');
+.theme-neon-pastel {
+  --color-base: theme("colors.emerald.50");
+  --color-inverse: theme("colors.slate.900");
+  --color-primary: theme("colors.rose.500");
+  --color-second: theme("colors.teal.100");
+  --color-second-inverse: theme("colors.lime.400");
+  --color-accent: theme("colors.yellow.200");
+  --color-accent2: theme("colors.blue.600");
 }
 
-.theme-blue {
-  --color-primary-50: theme('colors.blue.50');
-  --color-primary-100: theme('colors.blue.100');
-  --color-primary-200: theme('colors.blue.200');
-  --color-primary-300: theme('colors.blue.300');
-  --color-primary-400: theme('colors.blue.400');
-  --color-primary-500: theme('colors.blue.500');
-  --color-primary-600: theme('colors.blue.600');
-  --color-primary-700: theme('colors.blue.700');
-  --color-primary-800: theme('colors.blue.800');
-  --color-primary-900: theme('colors.blue.900');
+.theme-pink {
+  --color-base: theme("colors.rose.200");
+  --color-inverse: theme("colors.rose.900");
+  --color-primary: theme("colors.rose.500");
+  --color-second: theme("colors.rose.300");
+  --color-second-inverse: theme("colors.rose.400");
+  --color-accent: theme("colors.rose.500");
+  --color-accent2: theme("colors.rose.700");
 }
 
+.theme-amber {
+  --color-base: theme("colors.amber.200");
+  --color-inverse: theme("colors.amber.900");
+  --color-primary: theme("colors.amber.500");
+  --color-second: theme("colors.amber.100");
+  --color-second-inverse: theme("colors.amber.400");
+  --color-accent: theme("colors.amber.500");
+  --color-accent2: theme("colors.amber.600");
+}
 
 .theme-light {
-  --neutralBg: theme('colors.white');
-  --onNeutralBg: var(--color-neutral-900);
-  --primaryBg: var(--color-primary-100);
-  --onPrimaryBg: var(--color-primary-900);
-  --primary: var(--color-primary-500);
+  --base: var(--color-base);
+  --second: var(--color-second);
+  --accent: var(--color-accent);
+  --primary: var(--color-primary);
+  --accent2: var(--color-accent2);
 }
 
 .theme-dark {
-  --neutralBg: var(--color-neutral-900);
-  --onNeutralBg: theme('colors.white');
-  --primaryBg: var(--color-primary-900);
-  --onPrimaryBg: var(--color-primary-50);
-  --primary: var(--color-primary-400);
+  --base: var(--color-inverse);
+  --second: var(--color-second-inverse);
+  --accent: var(--color-accent2);
+  --primary: var(--color-accent);
+  --accent2: var(--color-accent);
 }

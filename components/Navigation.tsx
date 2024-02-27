@@ -1,11 +1,16 @@
 "use client";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import {
+  useGetAllCoinsQuery,
+  useGetTopBarInfoQuery,
+} from "@/app/Providers/api/apiSlice";
 import aveta from "aveta";
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
 import { useCrypto } from "../app/Providers/CryptoProvider";
 import { CurrencyArray } from "./Currencies";
+import { MoonIcon, SunIcon } from "@/icons/Icons";
 
 const DropdownRow = styled.div`
   cursor: pointer;
@@ -15,19 +20,32 @@ const DropdownRow = styled.div`
   z-index: 1;
 `;
 
+const palettes = ["basic", "teal", "neon-pastel", "rose", "amber"];
+const modes = ["light", "dark"];
+
 export default function Navigation() {
+  const { data: allCoinsData, error, isError, isLoading } = useGetAllCoinsQuery(
+    {
+      currency: "usd",
+      sortValue: "volume_desc",
+    }
+  );
+
+  const { data: barData } = useGetTopBarInfoQuery();
+
   const {
-    getBarInfo,
     handleCurrency,
     barData,
     currentCoins,
     handleSignOut,
     handleLoginError,
     user,
+    handlePalette,
+    handleMode,
+    palette,
+    mode,
   } = useCrypto();
   const [searchValue, setSearchValue] = useState("");
-  const [error, setError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const marketCoins = barData?.data?.active_cryptocurrencies;
   const totalVolume = Math.floor(barData?.data?.total_volume?.usd);
   const totalMarketCap = Math.floor(barData?.data?.total_market_cap.usd);
@@ -39,10 +57,6 @@ export default function Navigation() {
   );
 
   const router = useRouter();
-
-  useEffect(() => {
-    getBarInfo();
-  }, []);
 
   const handleChange = (e) => {
     const inputValue = e.target.value;
@@ -66,7 +80,9 @@ export default function Navigation() {
 
   return (
     <>
-      <nav className="flex flex-col justify-center fixed top-0 z-50 ">
+      <nav
+        className={`flex flex-col justify-center fixed top-0 z-50 theme-${palette} theme-${mode}`}
+      >
         <div className="flex items-center justify-center bg-accent ">
           <div className="mx-4 text-second">Coins:{marketCoins}</div>
           <div className="mx-4 text-second">
@@ -145,51 +161,82 @@ export default function Navigation() {
                     </button>
                   </Link>
                 )}
-              </div>
-              <div className="flex justify-end items-center mb-2">
-                <input
-                  value={searchValue ?? ""}
-                  onChange={handleChange}
-                  onKeyDown={handleKeyPress}
-                  placeholder="Search..."
-                  type="text"
-                  className="mx-5 drop-shadow-md rounded-sm pl-3"
-                />
-                <div className="absolute">
-                  {searchValue &&
-                    currentCoins
-                      ?.filter((coin) => {
-                        const name = coin.name.toLowerCase();
-                        const search = searchValue.toLowerCase();
-                        return name.startsWith(search);
-                      })
-                      .map((coin) => (
-                        <div key={coin.id} className="border-slate-300">
-                          <DropdownRow
-                            key={coin.id}
-                            className="bg-second"
-                            onClick={() => handleSearch(coin.id)}
-                          >
-                            {coin.name}
-                          </DropdownRow>
-                        </div>
-                      ))}
-                </div>
-
+                <div className="flex justify-end items-center mb-2">
+                  <input
+                    value={searchValue ?? ""}
+                    onChange={handleChange}
+                    onKeyDown={handleKeyPress}
+                    placeholder="Search..."
+                    type="text"
+                    className="mx-5 drop-shadow-md rounded-sm pl-3"
+                  />
+                  <div className="absolute">
+                    {searchValue &&
+                      allCoinsData
+                        ?.filter((coin) => {
+                          const name = coin.name.toLowerCase();
+                          const search = searchValue.toLowerCase();
+                          return name.startsWith(search);
+                        })
+                        .map((coin) => {
+                          <div key={coin.id} className="border-slate-300">
+                            <DropdownRow
+                              key={coin.id}
+                              className="bg-second"
+                              onClick={() => handleSearch(coin.id)}
+                            >
+                              {coin.name}
+                            </DropdownRow>
+                          </div>;
+                        })}
+                  </div>
+                  <select
+                    onChange={(e) => handleCurrency(e)}
+                    name="currency"
+                    className="m-5 drop-shadow-md rounded-sm "
+                  >
+                    <option>here</option>
+                    {CurrencyArray?.map((currency) => {
+                      return (
+                        <option key={currency} value={currency}>
+                          {currency}
+                        </option>
+                      );
+                    })}
+                  </select>
+           
                 <select
-                  onChange={(e) => handleCurrency(e)}
-                  name="currency"
-                  className="mx-2 drop-shadow-md rounded-sm "
+                  onChange={(e) => handlePalette(e)}
+                  name="palette"
+                  className="mr-5 my-5  drop-shadow-md rounded-sm "
                 >
-                  <option>here</option>
-                  {CurrencyArray?.map((currency) => {
+                  <option>Theme</option>
+                  {palettes?.map((theme) => {
                     return (
-                      <option key={currency} value={currency}>
-                        {currency}
+                      <option key={theme} value={theme}>
+                        {theme}
                       </option>
                     );
                   })}
                 </select>
+
+                {mode === "light" ? (
+                  <button
+                    className="mr-5 my-5 border-accent"
+                    value="dark"
+                    onClick={() => handleMode("dark")}
+                  >
+                    <MoonIcon />
+                  </button>
+                ) : (
+                  <button
+                    className="mr-5 my-5 border-accent"
+                    value="light"
+                    onClick={() => handleMode("light")}
+                  >
+                    <SunIcon />
+                  </button>
+                )}
               </div>
             </div>
           </div>
