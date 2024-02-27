@@ -19,6 +19,8 @@ const Row = styled.div`
 function PortfolioList({ listCoins }) {
   const dispatch = useDispatch();
 
+  const [currency, setCurrency] = useState("usd");
+
   function percentage(x, y) {
     return (x / y).toFixed(2);
   }
@@ -32,6 +34,8 @@ function PortfolioList({ listCoins }) {
     }
   }
 
+  console.log("ist", listCoins);
+
   return (
     <>
       <div>
@@ -39,7 +43,7 @@ function PortfolioList({ listCoins }) {
           {listCoins ? (
             listCoins.map((c) => (
               <Row className="h-64 bg-second m-3 z-0" key={c.id}>
-                <div className="flex justify-between">
+                <div className="flex justify-between w-full">
                   <div className="h-48 w-48 flex items-center justify-center ">
                     <div className="">
                       <div className=" -inset-5">
@@ -51,7 +55,7 @@ function PortfolioList({ listCoins }) {
                       </div>
                     </div>
                   </div>
-                  <div className="flex flex-col text-center">
+                  <div className="flex flex-col text-center w-full">
                     <div className="flex justify-between items-center">
                       <div className="w-24"></div>
                       <div className=" w-24">Market Price</div>
@@ -64,7 +68,7 @@ function PortfolioList({ listCoins }) {
                         </button>
                       </div>
                     </div>
-                    <div className="flex border-b  border-accent2 h-1/2">
+                    <div className="flex w-full border-b  border-accent2 h-1/2">
                       <div className="flex flex-col justify-center items-center p-3 text-xs">
                         <div>Current Price:</div>
                         <div className="text-accent text-lg font-semibold">
@@ -113,36 +117,54 @@ function PortfolioList({ listCoins }) {
                         </div>
                       </div>
                     </div>
-                    <div className="flex flex-col items-center justify-between ">
+                    <div className="flex flex-col items-center justify-between w-full">
                       <div className="w-24"></div>
                       <div className="my-3 w-24">Your Coins</div>
                       <div className="w-24"></div>
                       <div className="flex items-center justify-between">
                         <div className="flex-col">
-                          <div>Coin Amount:</div>
+                          <div className="text-xs text-center">
+                            Coin Amount:
+                          </div>
                           <div className="text-accent text-lg font-semibold">
                             {c.amount}
                           </div>
                         </div>
                         <div className="flex-col">
-                          <div>Amount Value</div>
+                          <div className="text-xs text-center">
+                            Amount Value
+                          </div>
                           <div className="text-accent text-lg font-semibold">
                             {(c.amount * c.coin.current_price).toFixed(2)}
                           </div>
                         </div>
                         <div className="flex-col">
-                          <div>Price Change Since Purchase</div>
+                          <div className="text-xs text-center">
+                            Price Change Since Purchase
+                          </div>
                           <div className="text-accent text-lg font-semibold">
-                            {(c.amount * c.coin.current_price).toFixed(2)}
+                            {(
+                              (c.purchasePrice.usd / c.coin.current_price) *
+                              100
+                            ).toFixed(2)}
+                            %
                           </div>
                         </div>
                         <div className="p-3">
-                          Purchase Price:
-                          {c.date.split("-").reverse().join("-")}
+                          <div className="text-xs text-center">
+                            Purchase Price:
+                          </div>
+                          <div className="text-accent text-lg font-semibold">
+                            {c.purchasePrice.usd.toFixed(2)}
+                          </div>
                         </div>
                         <div className="p-3">
-                          Date Purchased:
-                          {c.date.split("-").reverse().join("-")}
+                          <div className="text-xs text-center">
+                            Date Purchased:
+                          </div>
+                          <div className="text-accent text-lg font-semibold">
+                            {c.date.split("-").reverse().join("-")}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -151,7 +173,9 @@ function PortfolioList({ listCoins }) {
               </Row>
             ))
           ) : (
-            <div>You haven't added any coins to your portfolio yet!</div>
+            <div className="text-2xl text-accent">
+              You haven't added any coins to your portfolio yet!
+            </div>
           )}
         </div>
       </div>

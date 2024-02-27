@@ -25,7 +25,6 @@ export const CoinForm = ({ currentCoins, handleForm }) => {
   const [dateError, setDateError] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [numError, setnumError] = useState(false);
-  const [currency, setCurrency] = useState("usd");
   const [purchasePrice, setPurchasePrice] = useState("");
   const [purchasePriceError, setPurchasePriceError] = useState(false);
 
@@ -33,7 +32,7 @@ export const CoinForm = ({ currentCoins, handleForm }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    getPurchasePrice("bitcoin", "05-04-2022");
+
     if (!date || !amount || !coin) {
       if (!date) setDateError(true);
     }
@@ -83,17 +82,18 @@ export const CoinForm = ({ currentCoins, handleForm }) => {
   const getPurchasePrice = async (coinName: string, date: string) => {
     try {
       const { data } = await axios(
-        `https://api.coingecko.com/api/v3/coins/${coinName}/history?date=${date}&localization=false`
+        `https://api.coingecko.com/api/v3/coins/${coinName.toLowerCase()}/history?date=${date}&localization=false&x_cg_demo_api_key=CG-du5JzYuTcSZtNRw58BTw3e27`
       );
-      console.log("PRICE", data.market_data.current_price);
+      setPurchasePrice(data.market_data.current_price);
     } catch (err) {
       setPurchasePriceError(true);
     }
   };
 
-  // useEffect(() => {
-  //   getPurchasePrice("bitcoin", "05-04-2022");
-  // }, []);
+  if (coin && date) {
+    getPurchasePrice(coin.name, date.split("-").reverse().join("-"));
+    console.log("pp", purchasePrice);
+  }
 
   const handleSearchChange = (e) => {
     const newValueIsValid = !e.target.validity.patternMismatch;

@@ -19,8 +19,6 @@ export default function Page() {
     setAddFormOn(!addFormOn);
   };
 
-  console.log("list", listCoins);
-
   useEffect(() => {
     getCoins();
   }, [currency]);
