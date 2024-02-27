@@ -4,12 +4,11 @@ import { useState } from "react";
 import { useAppSelector } from "@/redux/hooks";
 import { addCoin, removeCoin } from "@/redux/portfolio/portfolioSlice";
 import { useDispatch } from "react-redux";
-import PortfolioList from "@/components/PortfolioList";
-import { CoinForm } from "@/components/CoinForm";
+import PortfolioList from "@/app/components/PortfolioList";
+import { CoinForm } from "@/app/components/CoinForm";
 import { RootState } from "@/redux/store";
 import { useRouter } from "next/navigation";
 import { useGetAllCoinsQuery } from "../Providers/api/apiSlice";
-
 
 export default function Page() {
   const { data: allCoinsData, error, isError, isLoading } = useGetAllCoinsQuery(
@@ -29,7 +28,6 @@ export default function Page() {
     setAddFormOn(false);
   };
 
-
   useEffect(() => {
     getCoins();
   }, [currency]);
@@ -37,7 +35,6 @@ export default function Page() {
   if ((!user && !userSession) || user === null) {
     router.push("/sign-up");
   }
-
 
   return (
     <div className="w-full flex items-center justify-center flex-col">

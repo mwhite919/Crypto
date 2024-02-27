@@ -1,7 +1,6 @@
 "use client";
 import { useState, createContext, useContext, useEffect } from "react";
 import axios from "axios";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "@/app/firebase/config";
@@ -50,7 +49,6 @@ export default function CryptoProvider({ children }) {
   const [chartCoins, setChartCoins] = useState([]);
   const [inputCoin1, setInputCoin1] = useState({});
   const [numberOfDays, setNumberOfDays] = useState("7");
-  const top10Coins = Object.values(currentCoins).slice(0, 10);
   const [user] = useAuthState(auth);
   const userSession = localStorage.getItem("user");
   const router = useRouter();
@@ -90,7 +88,6 @@ export default function CryptoProvider({ children }) {
       console.error(e);
     }
   };
-
 
   const [palette, setPalette] = useStickyState(
     palettes[0],
@@ -137,80 +134,75 @@ export default function CryptoProvider({ children }) {
     setMode(value);
   }
 
-      
-    function handleMode(e: string) {
-      setMode(e.target.value);
-    }
-
-    function handleEmail(e: string) {
-      setEmail(e.target.value);
-    }
-
-    function handlePassword(e: string) {
-      setPassword(e.target.value);
-    }
-
-    const handleSelect = (coin) => {
-      if (chartCoins.includes(coin)) {
-        const removed = chartCoins.filter((e) => e !== coin);
-        if (chartCoins.length === 1) return;
-        setChartCoins(removed);
-        return;
-      }
-      if (chartCoins.length === 3) return;
-      getChartInfo(coin);
-      setChartCoins([...chartCoins, coin]);
-    };
-
-    function handleNumberOfDays(e: string) {
-      setNumberOfDays(e.target.value);
-    }
-
-    function handleSignOut() {
-      signOut(auth);
-      localStorage.removeItem("user");
-    }
-
-    function handleLoginError() {
-      setLoginError(false);
-    }
-
-    return (
-      <CryptoContext.Provider
-        value={{
-          getCoins,
-          currentCoins,
-          currency,
-          handleCurrency,
-          currencySymbol,
-          getBarInfo,
-          barData,
-          handleSort,
-          inputCoin1,
-          handleSelect,
-          top10Coins,
-          chartCoins,
-          getChartInfo,
-          handleTime,
-          numberOfDays,
-          handleNumberOfDays,
-          handleSignOut,
-          handleSignIn,
-          email,
-          password,
-          handleEmail,
-          handlePassword,
-          loginError,
-          handleSignUp,
-          user,
-          userSession,
-          palette,
-          mode,
-          handlePalette,
-          handleMode,
-        }}
-      >
-        {children}
-      </CryptoContext.Provider>
-    );
+  function handleMode(e: string) {
+    setMode(e.target.value);
   }
+
+  function handleEmail(e: string) {
+    setEmail(e.target.value);
+  }
+
+  function handlePassword(e: string) {
+    setPassword(e.target.value);
+  }
+
+  const handleSelect = (coin) => {
+    if (chartCoins.includes(coin)) {
+      const removed = chartCoins.filter((e) => e !== coin);
+      if (chartCoins.length === 1) return;
+      setChartCoins(removed);
+      return;
+    }
+    if (chartCoins.length === 3) return;
+    getChartInfo(coin);
+    setChartCoins([...chartCoins, coin]);
+  };
+
+  function handleNumberOfDays(e: string) {
+    setNumberOfDays(e.target.value);
+  }
+
+  function handleSignOut() {
+    signOut(auth);
+    localStorage.removeItem("user");
+  }
+
+  function handleLoginError() {
+    setLoginError(false);
+  }
+
+  return (
+    <CryptoContext.Provider
+      value={{
+        currency,
+        handleCurrency,
+        currencySymbol,
+        barData,
+        handleSort,
+        inputCoin1,
+        handleSelect,
+        chartCoins,
+        getChartInfo,
+        handleTime,
+        numberOfDays,
+        handleNumberOfDays,
+        handleSignOut,
+        handleSignIn,
+        email,
+        password,
+        handleEmail,
+        handlePassword,
+        loginError,
+        handleSignUp,
+        user,
+        userSession,
+        palette,
+        mode,
+        handlePalette,
+        handleMode,
+      }}
+    >
+      {children}
+    </CryptoContext.Provider>
+  );
+}

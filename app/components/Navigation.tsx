@@ -1,11 +1,16 @@
 "use client";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import {
+  useGetAllCoinsQuery,
+  useGetTopBarInfoQuery,
+} from "@/app/Providers/api/apiSlice";
 import aveta from "aveta";
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
 import { useCrypto } from "../Providers/CryptoProvider";
 import { CurrencyArray } from "./Currencies";
+import { MoonIcon, SunIcon } from "@/app/icons/Icons";
 
 const DropdownRow = styled.div`
   cursor: pointer;
@@ -15,11 +20,29 @@ const DropdownRow = styled.div`
   z-index: 1;
 `;
 
+const palettes = ["basic", "teal", "neon-pastel", "rose", "amber"];
+const modes = ["light", "dark"];
+
 export default function Navigation() {
-  const { getBarInfo, handleCurrency, barData, currentCoins } = useCrypto();
+  const { data: allCoinsData, error, isError, isLoading } = useGetAllCoinsQuery(
+    {
+      currency: "usd",
+      sortValue: "volume_desc",
+    }
+  );
+
+  const { data: barData } = useGetTopBarInfoQuery();
+
+  const {
+    handleCurrency,
+    handleSignOut,
+    user,
+    handlePalette,
+    handleMode,
+    palette,
+    mode,
+  } = useCrypto();
   const [searchValue, setSearchValue] = useState("");
-  const [error, setError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const marketCoins = barData?.data?.active_cryptocurrencies;
   const totalVolume = Math.floor(barData?.data?.total_volume?.usd);
   const totalMarketCap = Math.floor(barData?.data?.total_market_cap.usd);
@@ -31,10 +54,6 @@ export default function Navigation() {
   );
 
   const router = useRouter();
-
-  useEffect(() => {
-    getBarInfo();
-  }, []);
 
   const handleChange = (e) => {
     const inputValue = e.target.value;
@@ -58,7 +77,9 @@ export default function Navigation() {
 
   return (
     <>
-      <nav className="flex flex-col justify-center fixed  z-50 ">
+      <nav
+        className={`flex flex-col justify-center fixed top-0 z-50 theme-${palette} theme-${mode}`}
+      >
         <div className="flex items-center justify-center bg-accent ">
           <div className="mx-4 text-second">Coins:{marketCoins}</div>
           <div className="mx-4 text-second">
@@ -112,37 +133,49 @@ export default function Navigation() {
               </Link>
             </div>
 
-            <div className="mr-5 flex flex-col ">
-              <div className="flex justify-end items-center">
-                <Link
-                  href="/sign-up"
-                  className="m-5 drop-shadow-md text-accent hover:scale-105"
-                >
-                  Sign-up
-                </Link>
+            <div className="mr-5 flex flex-col">
+              <div className="flex justify-end items-center mb-2 ">
+                {user && <div>Signed in under {user?.email}</div>}
                 <Link
                   href="/sign-in"
-                  className="m-5 drop-shadow-md text-accent hover:scale-105"
+                  className="drop-shadow-md text-accent mx-2 hover:scale-105"
                 >
                   Sign-in
                 </Link>
-              </div>
-              <div className="flex justify-end items-center">
-                <input
-                  value={searchValue ?? ""}
-                  onChange={handleChange}
-                  onKeyDown={handleKeyPress}
-                  placeholder="Search..."
-                  type="text"
-                  className="m-5 drop-shadow-md rounded-sm pl-3"
-                />
-                <div className="absolute">
-                  {searchValue &&
-                    currentCoins?.filter((coin) => {
-                      const name = coin.name.toLowerCase();
-                      const search = searchValue.toLowerCase();
-                      if (name.startsWith(search))
-                        return (
+                <Link
+                  href="/sign-up"
+                  className="drop-shadow-md text-accent mx-2 hover:scale-105"
+                >
+                  Sign-up
+                </Link>
+                {user && (
+                  <Link href="/">
+                    <button
+                      className="drop-shadow-md text-accent mx-2 hover:scale-105"
+                      onClick={handleSignOut}
+                    >
+                      Log out
+                    </button>
+                  </Link>
+                )}
+                <div className="flex justify-end items-center mb-2">
+                  <input
+                    value={searchValue ?? ""}
+                    onChange={handleChange}
+                    onKeyDown={handleKeyPress}
+                    placeholder="Search..."
+                    type="text"
+                    className="mx-5 drop-shadow-md rounded-sm pl-3"
+                  />
+                  <div className="absolute">
+                    {searchValue &&
+                      allCoinsData
+                        ?.filter((coin) => {
+                          const name = coin.name.toLowerCase();
+                          const search = searchValue.toLowerCase();
+                          return name.startsWith(search);
+                        })
+                        .map((coin) => {
                           <div key={coin.id} className="border-slate-300">
                             <DropdownRow
                               key={coin.id}
@@ -151,25 +184,57 @@ export default function Navigation() {
                             >
                               {coin.name}
                             </DropdownRow>
-                          </div>
-                        );
+                          </div>;
+                        })}
+                  </div>
+                  <select
+                    onChange={(e) => handleCurrency(e)}
+                    name="currency"
+                    className="m-5 drop-shadow-md rounded-sm "
+                  >
+                    <option>here</option>
+                    {CurrencyArray?.map((currency) => {
+                      return (
+                        <option key={currency} value={currency}>
+                          {currency}
+                        </option>
+                      );
                     })}
-                </div>
+                  </select>
 
-                <select
-                  onChange={(e) => handleCurrency(e)}
-                  name="currency"
-                  className="m-5 drop-shadow-md rounded-sm "
-                >
-                  <option>here</option>
-                  {CurrencyArray?.map((currency) => {
-                    return (
-                      <option key={currency} value={currency}>
-                        {currency}
-                      </option>
-                    );
-                  })}
-                </select>
+                  <select
+                    onChange={(e) => handlePalette(e)}
+                    name="palette"
+                    className="mr-5 my-5  drop-shadow-md rounded-sm "
+                  >
+                    <option>Theme</option>
+                    {palettes?.map((theme) => {
+                      return (
+                        <option key={theme} value={theme}>
+                          {theme}
+                        </option>
+                      );
+                    })}
+                  </select>
+
+                  {mode === "light" ? (
+                    <button
+                      className="mr-5 my-5 border-accent"
+                      value="dark"
+                      onClick={() => handleMode("dark")}
+                    >
+                      <MoonIcon />
+                    </button>
+                  ) : (
+                    <button
+                      className="mr-5 my-5 border-accent"
+                      value="light"
+                      onClick={() => handleMode("light")}
+                    >
+                      <SunIcon />
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           </div>
