@@ -42,11 +42,12 @@ export const CoinForm = ({ currentCoins, handleForm }) => {
       dispatch(
         addCoin({ id: Math.random(), coin: coin, amount: amount, date: date })
       );
+      console.log("here");
+      handleForm();
       setSearchValue("");
       setCoin({});
       setAmount("");
       setDate("");
-      handleForm();
     }
   };
 
@@ -122,8 +123,7 @@ export const CoinForm = ({ currentCoins, handleForm }) => {
   const handleKeyPress = (e: { key: any }) => {
     if (e.key === "Enter") {
       return;
-      handleSearch(searchValue);
-      setMissingCoin(false);
+      handleSubmit();
     }
   };
 
@@ -148,8 +148,8 @@ export const CoinForm = ({ currentCoins, handleForm }) => {
           <div className="h-48 w-1/2 flex items-center justify-center p-10 ">
             {coin.name && (
               <div className="relative ">
-                <div class="absolute -inset-5">
-                  <div class="w-full h-full max-w-sm mx-auto lg:mx-0 opacity-30 blur-lg bg-gradient-to-r from-second to-primary"></div>
+                <div className="absolute -inset-5">
+                  <div className="w-full h-full max-w-sm mx-auto lg:mx-0 opacity-30 blur-lg bg-gradient-to-r from-second to-primary"></div>
                 </div>
                 <div className="flex items-center justify-center relative p-8 text-lg font-bold text-second bg-accent font-pj rounded-xl ">
                   <img src={coin.image} className="h-16" />

@@ -66,6 +66,6 @@
   --base: var(--color-inverse);
   --second: var(--color-second-inverse);
   --accent: var(--color-accent2);
-  --primary: var(--color-accent);
+  --primary: var(--color-primary);
   --accent2: var(--color-accent);
 }

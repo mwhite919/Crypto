@@ -1,11 +1,14 @@
 import { createSlice, nanoid } from "@reduxjs/toolkit";
+import { Coin } from "@/app/sharedinterfaces";
 
 interface PortfolioState {
   value: any;
+  coins: Coin[];
 }
 
 const initialState: PortfolioState = {
   coins: [],
+  value: "",
 };
 
 const portfolioSlice = createSlice({
