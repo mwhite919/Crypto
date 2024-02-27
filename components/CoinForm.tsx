@@ -15,7 +15,7 @@ const DropdownRow = styled.div`
   z-index: 1;
 `;
 
-export const CoinForm = ({ currentCoins, handleForm }) => {
+export const CoinForm = ({ allCoinsData, handleForm }) => {
   const [coin, setCoin] = useState({});
   const [missingCoin, setMissingCoin] = useState(false);
   const [amount, setAmount] = useState("");
@@ -122,8 +122,7 @@ export const CoinForm = ({ currentCoins, handleForm }) => {
   const handleKeyPress = (e: { key: any }) => {
     if (e.key === "Enter") {
       return;
-      handleSearch(searchValue);
-      setMissingCoin(false);
+      handleSubmit();
     }
   };
 
@@ -181,7 +180,7 @@ export const CoinForm = ({ currentCoins, handleForm }) => {
               />
               <div className="absolute">
                 {searchValue &&
-                  currentCoins?.map((item) => {
+                  allCoinsData?.map((item) => {
                     const name = item.name.toLowerCase();
                     const search = searchValue.toLowerCase();
                     if (name.startsWith(search))

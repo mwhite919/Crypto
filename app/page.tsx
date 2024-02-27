@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useGetAllCoinsQuery } from "./Providers/api/apiSlice";
 import { useCrypto } from "./Providers/CryptoProvider";
 import CoinRow from "../components/CoinRow";
 import ChartsMain from "../components/ChartsMain";
@@ -22,33 +23,19 @@ const Row = styled.div`
 `;
 
 export default function Page() {
-  const {
-    getCoins,
-    currentCoins,
-    currency,
-    currencySymbol,
-    palette,
-    mode,
-  } = useCrypto();
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const { currency, currencySymbol, palette, mode } = useCrypto();
   const [calculator, setCalculator] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
 
-  useEffect(() => {
-    getCoins();
-  }, [currency]);
-
-  const fetchMore = () => {
-    if (currentCoins >= 250) {
-      setHasMore(false);
-      return;
+  const { data: allCoinsData, error, isError, isLoading } = useGetAllCoinsQuery(
+    {
+      currency: "usd",
+      sortValue: "volume_desc",
     }
-  };
+  );
 
   return (
     <div
-      className={`bg-base flex justify-center items-center flex-col pt-24 theme-${palette} theme-${mode}`}
+      className={`bg-base flex justify-center items-center flex-col pt-24 theme-${palette} theme-${mode} top-36`}
     >
       <div>
         <div>{isLoading && <h2>fetching data...</h2>}</div>
@@ -91,11 +78,11 @@ export default function Page() {
         </RadioGroup>
       </div>
       <div>
-        <CoinSwiper currentCoins={currentCoins} currency={currency} />
+        <CoinSwiper />
       </div>
       <div>
         {calculator ? (
-          <Converter currentCoins={currentCoins} />
+          <Converter allCoinsData={allCoinsData} />
         ) : (
           <div>
             <ChartsMain />
@@ -120,24 +107,13 @@ export default function Page() {
           <div className="ml-4">Last 7d</div>
         </Row>
       </div>
-
-      <InfiniteScroll
-        dataLength={currentCoins.length}
-        next={fetchMore}
-        hasMore={hasMore}
-        loader={<h4>Loading...</h4>}
-        endMessage={
-          <p style={{ textAlign: "center" }}>
-            <b>No more coins to see here!</b>
-          </p>
-        }
-      >
-        {currentCoins?.map((coin, index, currency) => (
+      <div>
+        {allCoinsData?.map((coin, index, currency) => (
           <div key={coin.id}>
             <CoinRow coin={coin} index={index + 1} currency={currency} />
           </div>
         ))}
-      </InfiniteScroll>
+      </div>
     </div>
   );
 }

@@ -35,26 +35,7 @@ function useStickyState(
   ];
 }
 
-export const coinsApiProvider = createApi({
-  baseQuery: () => {},
-  endpoints: (build) => ({
-    coinsList: build.query({
-      async queryFn() {
-        await simulateLoading();
-        return { data: coinListData };
-      },
-    }),
-    coinDetail: build.query({
-      async queryFn() {
-        await simulateLoading();
-        return { data: coinDetailData };
-      },
-    }),
-  }),
-});
-
 export default function CryptoProvider({ children }) {
-  const [currentCoins, setCurrentCoins] = useState([]);
   const [currency, setCurrency] = useState("USD");
   const [currencySymbol, setCurrencySymbol] = useState("$");
   const [barData, setBarData] = useState(null);
@@ -64,38 +45,12 @@ export default function CryptoProvider({ children }) {
   const [chartCoins, setChartCoins] = useState([]);
   const [inputCoin1, setInputCoin1] = useState({});
   const [numberOfDays, setNumberOfDays] = useState("7");
-  const top10Coins = Object.values(currentCoins).slice(0, 10);
+
   const [palette, setPalette] = useStickyState(
     palettes[0],
     "theme-palette" || "basic"
   );
   const [mode, setMode] = useStickyState(modes[0], "theme-mode" || "light");
-
-  const getCoins = async () => {
-    try {
-      setIsLoading(true);
-      const { data } = await axios(
-        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&order=${sortValue}&per_page=250&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&locale=en&x_cg_demo_api_key=CG-du5JzYuTcSZtNRw58BTw3e27`
-      );
-      setCurrentCoins(data);
-      setIsLoading(false);
-    } catch (err) {
-      setError(true);
-      setIsLoading(false);
-    }
-  };
-
-  const getBarInfo = async () => {
-    try {
-      setIsLoading(true);
-      const { data } = await axios(`https://api.coingecko.com/api/v3/global`);
-      setBarData(data);
-      setIsLoading(false);
-    } catch (err) {
-      setError(true);
-      setIsLoading(false);
-    }
-  };
 
   const getChartInfo = async (input) => {
     try {
@@ -130,7 +85,6 @@ export default function CryptoProvider({ children }) {
 
   function handlePalette(e: string) {
     setPalette(e.target.value);
-    console.log(palette, e.target.value, "currenttheme");
   }
 
   function handleMode(value: string) {
@@ -156,17 +110,12 @@ export default function CryptoProvider({ children }) {
   return (
     <CryptoContext.Provider
       value={{
-        getCoins,
-        currentCoins,
         currency,
         handleCurrency,
         currencySymbol,
-        getBarInfo,
-        barData,
         handleSort,
         inputCoin1,
         handleSelect,
-        top10Coins,
         chartCoins,
         getChartInfo,
         handleTime,
