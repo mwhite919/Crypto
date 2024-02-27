@@ -1,11 +1,16 @@
 "use client";
 import Link from "next/link";
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect } from "react";
+import {
+  useGetAllCoinsQuery,
+  useGetTopBarInfoQuery,
+} from "@/app/Providers/api/apiSlice";
 import aveta from "aveta";
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
 import { useCrypto } from "../app/Providers/CryptoProvider";
 import { CurrencyArray } from "./Currencies";
+import { MoonIcon, SunIcon } from "@/icons/Icons";
 
 const DropdownRow = styled.div`
   cursor: pointer;
@@ -19,8 +24,16 @@ const palettes = ["basic", "teal", "neon-pastel", "rose", "amber"];
 const modes = ["light", "dark"];
 
 export default function Navigation() {
+  const { data: allCoinsData, error, isError, isLoading } = useGetAllCoinsQuery(
+    {
+      currency: "usd",
+      sortValue: "volume_desc",
+    }
+  );
+
+  const { data: barData } = useGetTopBarInfoQuery();
+
   const {
-    getBarInfo,
     handleCurrency,
     barData,
     currentCoins,
@@ -33,8 +46,6 @@ export default function Navigation() {
     mode,
   } = useCrypto();
   const [searchValue, setSearchValue] = useState("");
-  const [error, setError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const marketCoins = barData?.data?.active_cryptocurrencies;
   const totalVolume = Math.floor(barData?.data?.total_volume?.usd);
   const totalMarketCap = Math.floor(barData?.data?.total_market_cap.usd);
@@ -46,10 +57,6 @@ export default function Navigation() {
   );
 
   const router = useRouter();
-
-  useEffect(() => {
-    getBarInfo();
-  }, []);
 
   const handleChange = (e) => {
     const inputValue = e.target.value;
@@ -165,7 +172,7 @@ export default function Navigation() {
                   />
                   <div className="absolute">
                     {searchValue &&
-                      currentCoins
+                      allCoinsData
                         ?.filter((coin) => {
                           const name = coin.name.toLowerCase();
                           const search = searchValue.toLowerCase();
@@ -197,37 +204,39 @@ export default function Navigation() {
                       );
                     })}
                   </select>
-                  <select
-                    onChange={(e) => handlePalette(e)}
-                    name="palette"
-                    className="m-5 drop-shadow-md rounded-sm "
+           
+                <select
+                  onChange={(e) => handlePalette(e)}
+                  name="palette"
+                  className="mr-5 my-5  drop-shadow-md rounded-sm "
+                >
+                  <option>Theme</option>
+                  {palettes?.map((theme) => {
+                    return (
+                      <option key={theme} value={theme}>
+                        {theme}
+                      </option>
+                    );
+                  })}
+                </select>
+
+                {mode === "light" ? (
+                  <button
+                    className="mr-5 my-5 border-accent"
+                    value="dark"
+                    onClick={() => handleMode("dark")}
                   >
-                    <option>Theme</option>
-                    {palettes?.map((theme) => {
-                      return (
-                        <option key={theme} value={theme}>
-                          {theme}
-                        </option>
-                      );
-                    })}
-                  </select>
-                  <div className="h-5 ">
-                    <button
-                      className="bg-accent m-2"
-                      value="dark"
-                      onClick={handleMode}
-                    >
-                      dark
-                    </button>
-                    <button
-                      value="light"
-                      className="bg-accent m-2"
-                      onClick={handleMode}
-                    >
-                      light
-                    </button>
-                  </div>
-                </div>
+                    <MoonIcon />
+                  </button>
+                ) : (
+                  <button
+                    className="mr-5 my-5 border-accent"
+                    value="light"
+                    onClick={() => handleMode("light")}
+                  >
+                    <SunIcon />
+                  </button>
+                )}
               </div>
             </div>
           </div>

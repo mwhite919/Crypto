@@ -1,16 +1,24 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useAppSelector } from "@/redux/hooks";
 import { addCoin, removeCoin } from "@/redux/portfolio/portfolioSlice";
 import { useDispatch } from "react-redux";
 import PortfolioList from "@/components/PortfolioList";
 import { CoinForm } from "@/components/CoinForm";
-import { useCrypto } from "../Providers/CryptoProvider";
 import { RootState } from "@/redux/store";
 import { useRouter } from "next/navigation";
+import { useGetAllCoinsQuery } from "../Providers/api/apiSlice";
+
 
 export default function Page() {
+  const { data: allCoinsData, error, isError, isLoading } = useGetAllCoinsQuery(
+    {
+      currency: "usd",
+      sortValue: "volume_desc",
+    }
+  );
+
   const [addFormOn, setAddFormOn] = useState(false);
   const { currentCoins, getCoins, currency, user, userSession } = useCrypto();
   const portCoins = useAppSelector((state: RootState) => state.portfolio.coins);
@@ -21,6 +29,7 @@ export default function Page() {
     setAddFormOn(false);
   };
 
+
   useEffect(() => {
     getCoins();
   }, [currency]);
@@ -28,6 +37,7 @@ export default function Page() {
   if ((!user && !userSession) || user === null) {
     router.push("/sign-up");
   }
+
 
   return (
     <div className="w-full flex items-center justify-center flex-col">
@@ -42,7 +52,7 @@ export default function Page() {
       <div>
         {addFormOn && (
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-            <CoinForm currentCoins={currentCoins} handleForm={handleForm} />
+            <CoinForm allCoinsData={allCoinsData} handleForm={handleForm} />
           </div>
         )}
       </div>
