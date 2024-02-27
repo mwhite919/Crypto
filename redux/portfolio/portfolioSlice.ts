@@ -20,6 +20,7 @@ const portfolioSlice = createSlice({
         id: action.payload.id,
         coin: action.payload.coin,
         amount: action.payload.amount,
+        purchasePrice: action.payload.purchasePrice,
         date: action.payload.date,
       };
       state.coins.push(coin);

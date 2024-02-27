@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { addCoin } from "@/redux/portfolio/portfolioSlice";
 import { useCrypto } from "@/app/Providers/CryptoProvider";
 import styled from "styled-components";
 import { CloseIcon, ResetIcon } from "@/icons/Icons";
+import axios from "axios";
 
 const DropdownRow = styled.div`
   cursor: pointer;
@@ -24,11 +25,15 @@ export const CoinForm = ({ currentCoins, handleForm }) => {
   const [dateError, setDateError] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [numError, setnumError] = useState(false);
+  const [currency, setCurrency] = useState("usd");
+  const [purchasePrice, setPurchasePrice] = useState("");
+  const [purchasePriceError, setPurchasePriceError] = useState(false);
 
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    getPurchasePrice("bitcoin", "05-04-2022");
     if (!date || !amount || !coin) {
       if (!date) setDateError(true);
     }
@@ -40,9 +45,14 @@ export const CoinForm = ({ currentCoins, handleForm }) => {
     }
     if (coin && amount && date) {
       dispatch(
-        addCoin({ id: Math.random(), coin: coin, amount: amount, date: date })
+        addCoin({
+          id: Math.random(),
+          coin: coin,
+          amount: amount,
+          purchasePrice: purchasePrice,
+          date: date,
+        })
       );
-      console.log("here");
       handleForm();
       setSearchValue("");
       setCoin({});
@@ -69,6 +79,21 @@ export const CoinForm = ({ currentCoins, handleForm }) => {
     setMissingCoin(false);
     setDateError(false);
   };
+
+  const getPurchasePrice = async (coinName: string, date: string) => {
+    try {
+      const { data } = await axios(
+        `https://api.coingecko.com/api/v3/coins/${coinName}/history?date=${date}&localization=false`
+      );
+      console.log("PRICE", data.market_data.current_price);
+    } catch (err) {
+      setPurchasePriceError(true);
+    }
+  };
+
+  // useEffect(() => {
+  //   getPurchasePrice("bitcoin", "05-04-2022");
+  // }, []);
 
   const handleSearchChange = (e) => {
     const newValueIsValid = !e.target.validity.patternMismatch;

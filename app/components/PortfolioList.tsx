@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { removeCoin } from "@/redux/portfolio/portfolioSlice";
 import styled from "styled-components";
@@ -17,7 +17,6 @@ const Row = styled.div`
 `;
 
 function PortfolioList({ listCoins }) {
-  const [purchasePrice, setPurchasePrice] = useState("");
   const dispatch = useDispatch();
 
   function percentage(x, y) {
@@ -33,19 +32,6 @@ function PortfolioList({ listCoins }) {
     }
   }
 
-  const getPurchasePrice = async (coinName, date) => {
-    try {
-      setIsLoading(true);
-      const { data } = await axios(
-        `https://api.coingecko.com/api/v3/coins/${coinName}/history?date=${date}&localization=false`
-      );
-      console.log("price", data);
-    } catch (err) {
-      setError(true);
-      setIsLoading(false);
-    }
-  };
-
   return (
     <>
       <div>
@@ -56,8 +42,8 @@ function PortfolioList({ listCoins }) {
                 <div className="flex justify-between">
                   <div className="h-48 w-48 flex items-center justify-center ">
                     <div className="">
-                      <div class=" -inset-5">
-                        <div class="w-full h-full max-w-sm mx-auto lg:mx-0 opacity-30 blur-lg bg-gradient-to-r from-second to-primary"></div>
+                      <div className=" -inset-5">
+                        <div className="w-full h-full max-w-sm mx-auto lg:mx-0 opacity-30 blur-lg bg-gradient-to-r from-second to-primary"></div>
                       </div>
                       <div className="flex items-center justify-center flex-col  p-8 text-lg font-bold text-second bg-accent2 font-pj rounded-xl ">
                         <img src={c.coin.image} className="h-16" />
