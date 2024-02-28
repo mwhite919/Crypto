@@ -1,9 +1,9 @@
 import React from "react";
-import ArrowDown, { ArrowUp } from "../icons/Icons";
 import { formatNumber } from "@/app/formatNumber";
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
 import { AreaChart, Area, XAxis, YAxis, Tooltip, Legend } from "recharts";
+import ArrowDown, { ArrowUp } from "../icons/Icons";
 
 const Row = styled.div`
   width: 1010px;

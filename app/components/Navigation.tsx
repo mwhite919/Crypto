@@ -10,7 +10,7 @@ import styled from "styled-components";
 import { useRouter } from "next/navigation";
 import { useCrypto } from "../Providers/CryptoProvider";
 import { CurrencyArray } from "./Currencies";
-import { MoonIcon, SunIcon } from "@/app/icons/Icons";
+import { MoonIcon, SunIcon } from "../icons/Icons";
 
 const DropdownRow = styled.div`
   cursor: pointer;

@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { useCrypto } from "@/app/Providers/CryptoProvider";
 import { useGetAllCoinsQuery } from "@/app/Providers/api/apiSlice";
 import ArrowDown, { ArrowUp } from "@/app/icons/Icons";
@@ -32,34 +31,38 @@ export const CoinSwiper = () => {
 
   return (
     <div>
-      <Slider {...settings}>
-        {top10Coins.map((coin) => (
-          <div key={coin.id}>
-            <div
-              className="bg-second flex items-center justify-start text-xs ml-2 my-2 h-20 p-3 drop-shadow-md rounded-md hover:scale-105"
-              onClick={() => handleSelect(coin)}
-            >
-              <div>
-                <img className="w-9 m-4" src={coin.image} />
-              </div>
-              <div className="flex flex-col">
-                <div>
-                  {coin.name}({coin.symbol.toUpperCase()})
+      {top10Coins && (
+        <div>
+          <Slider {...settings}>
+            {top10Coins?.map((coin) => (
+              <div key={coin.id}>
+                <div
+                  className="bg-second flex items-center justify-start text-xs ml-2 my-2 h-20 p-3 drop-shadow-md rounded-md hover:scale-105"
+                  onClick={() => handleSelect(coin)}
+                >
+                  <div>
+                    <img className="w-9 m-4" src={coin.image} />
+                  </div>
+                  <div className="flex flex-col">
+                    <div>
+                      {coin.name}({coin.symbol.toUpperCase()})
+                    </div>
+                    <div>{coin.current_price}</div>
+                    <div className="flex items-center">
+                      {coin?.price_change_percentage_1h_in_currency > 0 ? (
+                        <ArrowUp className="h-3" />
+                      ) : (
+                        <ArrowDown className="h-3" />
+                      )}
+                      {coin?.price_change_percentage_1h_in_currency.toFixed(2)}%
+                    </div>
+                  </div>
                 </div>
-                <div>{coin.current_price}</div>
-                <div className="flex items-center">
-                  {coin?.price_change_percentage_1h_in_currency > 0 ? (
-                    <ArrowUp className="h-3" />
-                  ) : (
-                    <ArrowDown className="h-3" />
-                  )}
-                  {coin?.price_change_percentage_1h_in_currency.toFixed(2)}%
-                </div>
               </div>
-            </div>
-          </div>
-        ))}
-      </Slider>
+            ))}
+          </Slider>
+        </div>
+      )}
     </div>
   );
 };
