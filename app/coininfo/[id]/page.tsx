@@ -11,7 +11,7 @@ import {
   XIcon,
   RedditIcon,
   NewTabLinkIcon,
-} from "@/app/icons/Icons";
+} from "@/icons/Icons";
 import FormattedDate from "@/components/FormatDate";
 
 export default function Page({ params }: { params: { id: string } }) {
@@ -255,7 +255,7 @@ export default function Page({ params }: { params: { id: string } }) {
                    <CopyIcon />
                  </CopyToClipboard>
               )}
-            </div></div>
+            </div>
           </div>
         </div>
       </div>

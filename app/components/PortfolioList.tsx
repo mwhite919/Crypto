@@ -38,7 +38,6 @@ function PortfolioList({ listCoins }) {
     const percentageChange = ((c - p) / p) * 100;
     return `${percentageChange.toFixed(2)}%`;
   }
-  console.log("ist", listCoins);
 
   return (
     <>

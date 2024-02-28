@@ -130,7 +130,6 @@ export default function CryptoProvider({ children }) {
 
   function handlePalette(e: string) {
     setPalette(e.target.value);
-    console.log(palette, e.target.value, "currenttheme");
   }
 
   function handleMode(e: string) {
