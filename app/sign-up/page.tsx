@@ -12,10 +12,19 @@ const SignUp = () => {
     auth
   );
 
-  const { loginError, handleSignUp, handlePassword, handleEmail } = useCrypto();
+  const {
+    loginError,
+    handleSignUp,
+    handlePassword,
+    handleEmail,
+    mode,
+    palette,
+  } = useCrypto();
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-base">
+    <div
+      className={`min-h-screen flex items-center justify-center bg-base theme-${palette} theme-${mode} top-36`}
+    >
       <div className="bg-second p-10 rounded-lg shadow-xl w-96">
         <h1 className="text-accent text-2xl">Sign up for a free account!</h1>
         <div className="text-primary my-2">
