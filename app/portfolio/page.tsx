@@ -5,10 +5,7 @@ import { useAppSelector } from "@/redux/hooks";
 import { useDispatch } from "react-redux";
 import PortfolioList from "@/app/components/PortfolioList";
 import { CoinForm } from "@/app/components/CoinForm";
-<<<<<<< HEAD
-=======
 import { useCrypto } from "../Providers/CryptoProvider";
->>>>>>> da9b3dfa2f5a4ea5fdcd27e075f8800dd69d6800
 import { RootState } from "@/redux/store";
 import { useGetAllCoinsQuery } from "../Providers/api/apiSlice";
 
@@ -21,7 +18,7 @@ export default function Page() {
   );
 
   const [addFormOn, setAddFormOn] = useState(false);
-  const { currency, user, userSession,  palette, mode} = useCrypto();
+  const { currency, user, userSession, palette, mode } = useCrypto();
   const portCoins = useAppSelector((state: RootState) => state.portfolio.coins);
   const dispatch = useDispatch();
 
