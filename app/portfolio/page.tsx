@@ -8,6 +8,7 @@ import { CoinForm } from "@/app/components/CoinForm";
 import { useCrypto } from "../Providers/CryptoProvider";
 import { RootState } from "@/redux/store";
 import { useGetAllCoinsQuery } from "../Providers/api/apiSlice";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   const { data: allCoinsData, error, isError, isLoading } = useGetAllCoinsQuery(
@@ -25,6 +26,8 @@ export default function Page() {
   const handleForm = () => {
     setAddFormOn(!addFormOn);
   };
+
+  const router = useRouter();
 
   if ((!user && !userSession) || user === null) {
     router.push("/sign-up");
@@ -50,7 +53,7 @@ export default function Page() {
         )}
       </div>
       <div> Your Assets:</div>
-      <PortfolioList listCoins={listCoins} />
+      <PortfolioList />
     </div>
   );
 }

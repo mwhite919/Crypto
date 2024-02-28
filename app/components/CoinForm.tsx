@@ -152,6 +152,7 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
   };
 
   return (
+    <>
       <div className="drop-shadow-xl">
         <div
           style={{ width: 700, height: 300 }}
@@ -172,8 +173,8 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
             <div className="h-48 w-1/2 flex items-center justify-center p-10 ">
               {coin.name && (
                 <div className="relative ">
-                  <div class="absolute -inset-5">
-                    <div class="w-full h-full max-w-sm mx-auto lg:mx-0 opacity-30 blur-lg bg-gradient-to-r from-second to-primary"></div>
+                  <div className="absolute -inset-5">
+                    <div className="w-full h-full max-w-sm mx-auto lg:mx-0 opacity-30 blur-lg bg-gradient-to-r from-second to-primary"></div>
                   </div>
                   <div className="flex items-center justify-center relative p-8 text-lg font-bold text-second bg-accent font-pj rounded-xl ">
                     <img src={coin.image} className="h-16" />
@@ -205,7 +206,7 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
                 />
                 <div className="absolute">
                   {searchValue &&
-                    currentCoins
+                    allCoinsData
                       .filter((item) => {
                         const name = item.name.toLowerCase();
                         const search = searchValue.toLowerCase();
