@@ -255,7 +255,7 @@ export default function Page({ params }: { params: { id: string } }) {
                    <CopyIcon />
                  </CopyToClipboard>
               )}
-            </div>
+            </div></div>
           </div>
         </div>
       </div>

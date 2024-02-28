@@ -36,7 +36,7 @@ function PortfolioList({ listCoins }) {
 
   function findPercentPriceChange(p, c) {
     const percentageChange = ((c - p) / p) * 100;
-    return percentageChange.toFixed(2);
+    return `${percentageChange.toFixed(2)}%`;
   }
   console.log("ist", listCoins);
 
@@ -72,7 +72,7 @@ function PortfolioList({ listCoins }) {
                         </button>
                       </div>
                     </div>
-                    <div className="flex w-full border-b  border-accent2 h-1/2">
+                    <div className="flex w-full justify-evenly items-center border-b  border-accent2 h-1/2">
                       <div className="flex flex-col justify-center items-center p-3 text-xs">
                         <div>Current Price:</div>
                         <div className="text-accent text-lg font-semibold">
@@ -88,9 +88,11 @@ function PortfolioList({ listCoins }) {
                       <div className="flex flex-col justify-center items-center p-3 text-center ">
                         <div className="text-xs ">Volume vs Market Cap:</div>
                         <div className="flex items-center justify-center text-accent text-lg font-semibold ">
-                          {percentage(
-                            c?.coin?.total_volume,
-                            c?.coin?.market_cap
+                          {limiter(
+                            percentage(
+                              c?.coin?.total_volume,
+                              c?.coin?.market_cap
+                            )
                           )}
                           %
                           <div className="h-2 w-16 bg-base">
@@ -114,9 +116,14 @@ function PortfolioList({ listCoins }) {
                           Circulating Supply vs Total Supply:
                         </div>
                         <div className="flex items-center justify-center text-accent text-lg font-semibold">
-                          {percentage(
-                            c?.coin?.circulating_supply,
-                            c?.coin?.total_supply
+                          {c?.coin?.circulating_supply &&
+                          c?.coin?.total_supply ? (
+                            percentage(
+                              c?.coin?.circulating_supply,
+                              c?.coin?.total_supply
+                            )
+                          ) : (
+                            <p>No Info</p>
                           )}
                         </div>
                       </div>
@@ -125,7 +132,7 @@ function PortfolioList({ listCoins }) {
                       <div className="w-24"></div>
                       <div className="my-3 w-24">Your Coins</div>
                       <div className="w-24"></div>
-                      <div className="flex items-center justify-between">
+                      <div className="flex w-full justify-evenly items-center">
                         <div className="flex-col">
                           <div className="text-xs text-center">
                             Coin Amount:
@@ -150,8 +157,14 @@ function PortfolioList({ listCoins }) {
                             {findPercentPriceChange(
                               c.purchasePrice.usd,
                               c.coin.current_price
+                            ) !== NaN ? (
+                              findPercentPriceChange(
+                                c.purchasePrice.usd,
+                                c.coin.current_price
+                              )
+                            ) : (
+                              <p>Did not save</p>
                             )}
-                            %
                           </div>
                         </div>
                         <div className="p-3">
