@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useCrypto } from "@/app/Providers/CryptoProvider";
-import ArrowDown, { ArrowUp } from "@/icons/Icons";
+import ArrowDown, { ArrowUp } from "@/app/icons/Icons";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { removeCoin } from "@/redux/portfolio/portfolioSlice";
 import styled from "styled-components";
-import { EditIcon, TrashIcon } from "@/icons/Icons";
+import { EditIcon, TrashIcon } from "@/app/icons/Icons";
 
 const Row = styled.div`
   width: 900px;
@@ -34,6 +34,10 @@ function PortfolioList({ listCoins }) {
     }
   }
 
+  function findPercentPriceChange(p, c) {
+    const percentageChange = ((c - p) / p) * 100;
+    return percentageChange.toFixed(2);
+  }
   console.log("ist", listCoins);
 
   return (
@@ -143,10 +147,10 @@ function PortfolioList({ listCoins }) {
                             Price Change Since Purchase
                           </div>
                           <div className="text-accent text-lg font-semibold">
-                            {(
-                              (c.purchasePrice.usd / c.coin.current_price) *
-                              100
-                            ).toFixed(2)}
+                            {findPercentPriceChange(
+                              c.purchasePrice.usd,
+                              c.coin.current_price
+                            )}
                             %
                           </div>
                         </div>
@@ -155,7 +159,7 @@ function PortfolioList({ listCoins }) {
                             Purchase Price:
                           </div>
                           <div className="text-accent text-lg font-semibold">
-                            {c.purchasePrice.usd.toFixed(2)}
+                            {c?.purchasePrice?.usd?.toFixed(2)}
                           </div>
                         </div>
                         <div className="p-3">

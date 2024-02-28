@@ -5,8 +5,9 @@ import { useDispatch } from "react-redux";
 import { addCoin } from "@/redux/portfolio/portfolioSlice";
 import { useCrypto } from "@/app/Providers/CryptoProvider";
 import styled from "styled-components";
-import { CloseIcon, ResetIcon } from "@/icons/Icons";
+import { CloseIcon, ResetIcon } from "@/app/icons/Icons";
 import axios from "axios";
+import constructWithOptions from "styled-components/dist/constructors/constructWithOptions";
 
 const DropdownRow = styled.div`
   cursor: pointer;
@@ -91,8 +92,7 @@ export const CoinForm = ({ currentCoins, handleForm }) => {
   };
 
   if (coin && date) {
-    getPurchasePrice(coin.name, date.split("-").reverse().join("-"));
-    console.log("pp", purchasePrice);
+    getPurchasePrice(coin.id, date.split("-").reverse().join("-"));
   }
 
   const handleSearchChange = (e) => {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import { ExchangeIcon } from "@/icons/Icons";
+import { ExchangeIcon } from "@/app/icons/Icons";
 
 const DropdownRow = styled.div`
   cursor: pointer;
