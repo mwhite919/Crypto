@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Navigation from "../components/Navigation";
+import Navigation from "./components/Navigation";
 import CryptoProvider from "./Providers/CryptoProvider";
 import StoreProvider from "./Providers/StoreProvider";
 import { PortFolioProvider } from "./Providers/PortfolioProvider";
