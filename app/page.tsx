@@ -3,12 +3,12 @@
 import { useState, useEffect } from "react";
 import { useGetAllCoinsQuery } from "./Providers/api/apiSlice";
 import { useCrypto } from "./Providers/CryptoProvider";
-import CoinRow from "../components/CoinRow";
-import ChartsMain from "../components/ChartsMain";
-import Converter from "../components/Converter";
+import CoinRow from "./components/CoinRow";
+import ChartsMain from "./components/ChartsMain";
+import Converter from "./components/Converter";
 import styled from "styled-components";
 import { RadioGroup } from "@headlessui/react";
-import { CoinSwiper } from "@/components/CoinSwiper";
+import { CoinSwiper } from "@/app/components/CoinSwiper";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 const Row = styled.div`

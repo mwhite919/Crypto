@@ -1,6 +1,6 @@
 import { useCrypto } from "@/app/Providers/CryptoProvider";
 import { useGetAllCoinsQuery } from "@/app/Providers/api/apiSlice";
-import ArrowDown, { ArrowUp } from "@/icons/Icons";
+import ArrowDown, { ArrowUp } from "@/app/icons/Icons";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
