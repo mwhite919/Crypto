@@ -1,11 +1,14 @@
 import { createSlice, nanoid } from "@reduxjs/toolkit";
+import { Coin } from "@/app/sharedinterfaces";
 
 interface PortfolioState {
   value: any;
+  coins: Coin[];
 }
 
 const initialState: PortfolioState = {
   coins: [],
+  value: "",
 };
 
 const portfolioSlice = createSlice({
@@ -17,6 +20,7 @@ const portfolioSlice = createSlice({
         id: action.payload.id,
         coin: action.payload.coin,
         amount: action.payload.amount,
+        purchasePrice: action.payload.purchasePrice,
         date: action.payload.date,
       };
       state.coins.push(coin);

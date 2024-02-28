@@ -5,9 +5,9 @@ import { useState, useEffect } from "react";
 import { useCrypto } from "@/app/Providers/CryptoProvider";
 import { CoinLineChart } from "./CoinLineChart";
 import { CoinBarChart } from "./CoinBarChart";
-import { RadioGroup } from "@headlessui/react";
-import { convertUnixToDate } from "./UnixTimeConverter";
 import { every_nth } from "./Every_nth";
+import ChartsIntervalButtons from "./ChartsIntervalButtons";
+import { convertUnixToDate } from "./UnixTimeConverter";
 
 export const ChartsMain = () => {
   const [combined, setCombined] = useState([]);
@@ -23,17 +23,13 @@ export const ChartsMain = () => {
     handleNumberOfDays,
   } = useCrypto();
 
-  const graphDataPricesC1 = chartCoins[0]?.prices?.map((item) => {
-    return { time: item[0] / 1000, price: item[1] };
-  });
+  const mapGraphDataPrices = (item) => {
+    return { time: item[0], price: item[1] };
+  };
 
-  const graphDataPricesC2 = chartCoins[1]?.prices?.map((item) => {
-    return { price: item[1] };
-  });
-
-  const graphDataPricesC3 = chartCoins[2]?.prices?.map((item) => {
-    return { price: item[1] };
-  });
+  const graphDataPricesC1 = chartCoins?.prices?.map(mapGraphDataPrices);
+  const graphDataPricesC2 = chartCoins?.prices?.map(mapGraphDataPrices);
+  const graphDataPricesC3 = chartCoins?.prices?.map(mapGraphDataPrices);
 
   const combinedDataPrices = graphDataPricesC1?.map((item, index) => {
     if (chartCoins.length === 1) {
@@ -57,18 +53,13 @@ export const ChartsMain = () => {
   });
 
   const fixIntervalPrices = every_nth(combinedDataPrices, 30);
-
-  const graphDataV1 = chartCoins?.total_volumes?.map((item) => {
+  const mapGraphData = (item) => {
     return { time: item[0], v: item[1] };
-  });
+  };
+  const graphDataV1 = chartCoins?.total_volumes?.map(mapGraphData);
+  const graphDataV2 = chartCoins?.total_volumes?.map(mapGraphData);
+  const graphDataV3 = chartCoins?.total_volumes?.map(mapGraphData);
 
-  const graphDataV2 = chartCoins?.total_volumes?.map((item) => {
-    return { time: item[0], v: item[1] };
-  });
-
-  const graphDataV3 = chartCoins?.total_volumes?.map((item) => {
-    return { time: item[0], v: item[1] };
-  });
 
   const combinedDataVolumes = graphDataV1?.map((item, index) => {
     return {
@@ -90,123 +81,17 @@ export const ChartsMain = () => {
       <div className="flex my-12">
         <div>
           {chartCoins.map((coin) => {
-            <h1>{coin.name}</h1>;
+            <h1 key={coin.name}>{coin.name}</h1>;
           })}
-
-          <CoinLineChart
-            combinedDataPrices={fixIntervalPrices}
-            interval="preserveStartEnd"
-          />
+          <CoinLineChart combinedDataPrices={fixIntervalPrices} />
         </div>
         <div>
           <CoinBarChart graphData={fixIntervalVol} />
         </div>
-      </div>
-      <div>
-        <RadioGroup
-          className="flex items-center justify-center my-5"
-          value={numberOfDays}
-          onChange={handleNumberOfDays}
-        >
-          <RadioGroup.Option
-            className={({ active, checked }) =>
-              `${
-                active
-                  ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300 hover:scale-105"
-                  : ""
-              }
-                      ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 m-1 shadow-md focus:outline-none hover:scale-105`
-            }
-            value="1"
-          >
-            {({ checked }) => <span>1D</span>}
-          </RadioGroup.Option>
-          <RadioGroup.Option
-            className={({ active, checked }) =>
-              `${
-                active
-                  ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300 hover:scale-105"
-                  : ""
-              }
-                      ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md m-1 focus:outline-none hover:scale-105`
-            }
-            value="7"
-          >
-            {({ checked }) => <span>7D</span>}
-          </RadioGroup.Option>
-          <RadioGroup.Option
-            className={({ active, checked }) =>
-              `${
-                active
-                  ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300 hover:scale-105"
-                  : ""
-              }
-                      ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md m-1 focus:outline-none hover:scale-105`
-            }
-            value="14"
-          >
-            {({ checked }) => <span>14D</span>}
-          </RadioGroup.Option>
-          <RadioGroup.Option
-            className={({ active, checked }) =>
-              `${
-                active
-                  ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300 hover:scale-105"
-                  : ""
-              }
-                      ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md m-1 focus:outline-none hover:scale-105`
-            }
-            value="90"
-          >
-            {({ checked }) => <span>3M</span>}
-          </RadioGroup.Option>
-          <RadioGroup.Option
-            className={({ active, checked }) =>
-              `${
-                active
-                  ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300 hover:scale-105"
-                  : ""
-              }
-                      ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md m-1 focus:outline-none hover:scale-105`
-            }
-            value="180"
-          >
-            {({ checked }) => <span>6M</span>}
-          </RadioGroup.Option>
-          <RadioGroup.Option
-            className={({ active, checked }) =>
-              `${
-                active
-                  ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300 hover:scale-105"
-                  : ""
-              }
-                      ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md m-1 focus:outline-none hover:scale-105`
-            }
-            value="365"
-          >
-            {({ checked }) => <span>1Y</span>}
-          </RadioGroup.Option>
-          <RadioGroup.Option
-            className={({ active, checked }) =>
-              `${
-                active
-                  ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300 hover:scale-105"
-                  : ""
-              }
-                      ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md m-1 focus:outline-none hover:scale-105`
-            }
-            value="1825"
-          >
-            {({ checked }) => <span>5Y</span>}
-          </RadioGroup.Option>
-        </RadioGroup>
+        <div>
+          <ChartsIntervalButtons />
+        </div>
+
       </div>
     </>
   );

@@ -11,7 +11,7 @@ import {
   XIcon,
   RedditIcon,
   NewTabLinkIcon,
-} from "@/icons/Icons";
+} from "@/app/icons/Icons";
 import FormattedDate from "@/components/FormatDate";
 import { useGetSingleCoinQuery } from "@/app/Providers/api/apiSlice";
 
