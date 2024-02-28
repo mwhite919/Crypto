@@ -53,13 +53,13 @@ export const ChartsMain = () => {
   });
 
   const fixIntervalPrices = every_nth(combinedDataPrices, 30);
-
   const mapGraphData = (item) => {
     return { time: item[0], v: item[1] };
   };
   const graphDataV1 = chartCoins?.total_volumes?.map(mapGraphData);
   const graphDataV2 = chartCoins?.total_volumes?.map(mapGraphData);
   const graphDataV3 = chartCoins?.total_volumes?.map(mapGraphData);
+
 
   const combinedDataVolumes = graphDataV1?.map((item, index) => {
     return {
@@ -91,6 +91,7 @@ export const ChartsMain = () => {
         <div>
           <ChartsIntervalButtons />
         </div>
+
       </div>
     </>
   );

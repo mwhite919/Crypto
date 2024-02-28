@@ -132,7 +132,6 @@ export default function Navigation() {
                 Portfolio
               </Link>
             </div>
-
             <div className="mr-5 flex flex-col">
               <div className="flex justify-end items-center mb-2 ">
                 {user && <div>Signed in under {user?.email}</div>}

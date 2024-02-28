@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { addCoin } from "@/redux/portfolio/portfolioSlice";
-import { useCrypto } from "../Providers/CryptoProvider";
+import { useCrypto } from "@/app/Providers/CryptoProvider";
 import styled from "styled-components";
 import { CloseIcon, ResetIcon } from "@/app/icons/Icons";
+import axios from "axios";
+import constructWithOptions from "styled-components/dist/constructors/constructWithOptions";
 
 const DropdownRow = styled.div`
   cursor: pointer;
@@ -24,6 +26,8 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
   const [dateError, setDateError] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [numError, setnumError] = useState(false);
+  const [purchasePrice, setPurchasePrice] = useState("");
+  const [purchasePriceError, setPurchasePriceError] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -40,13 +44,19 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
     }
     if (coin && amount && date) {
       dispatch(
-        addCoin({ id: Math.random(), coin: coin, amount: amount, date: date })
+        addCoin({
+          id: Math.random(),
+          coin: coin,
+          amount: amount,
+          purchasePrice: purchasePrice,
+          date: date,
+        })
       );
+      handleForm();
       setSearchValue("");
       setCoin({});
       setAmount("");
       setDate("");
-      handleForm();
     }
   };
 
@@ -68,6 +78,21 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
     setMissingCoin(false);
     setDateError(false);
   };
+
+  const getPurchasePrice = async (coinName: string, date: string) => {
+    try {
+      const { data } = await axios(
+        `https://api.coingecko.com/api/v3/coins/${coinName.toLowerCase()}/history?date=${date}&localization=false&x_cg_demo_api_key=CG-du5JzYuTcSZtNRw58BTw3e27`
+      );
+      setPurchasePrice(data.market_data.current_price);
+    } catch (err) {
+      setPurchasePriceError(true);
+    }
+  };
+
+  if (coin && date) {
+    getPurchasePrice(coin.id, date.split("-").reverse().join("-"));
+  }
 
   const handleSearchChange = (e) => {
     const newValueIsValid = !e.target.validity.patternMismatch;
@@ -127,7 +152,6 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
   };
 
   return (
-    <>
       <div className="drop-shadow-xl">
         <div
           style={{ width: 700, height: 300 }}

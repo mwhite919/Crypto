@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { useAppSelector } from "@/redux/hooks";
-import { addCoin, removeCoin } from "@/redux/portfolio/portfolioSlice";
 import { useDispatch } from "react-redux";
 import PortfolioList from "@/app/components/PortfolioList";
 import { CoinForm } from "@/app/components/CoinForm";
+import { useCrypto } from "../Providers/CryptoProvider";
 import { RootState } from "@/redux/store";
 import { useRouter } from "next/navigation";
 import { useGetAllCoinsQuery } from "../Providers/api/apiSlice";
@@ -19,26 +19,24 @@ export default function Page() {
   );
 
   const [addFormOn, setAddFormOn] = useState(false);
-  const { currentCoins, getCoins, currency, user, userSession } = useCrypto();
+  const { currency, user, userSession,  palette, mode} = useCrypto();
   const portCoins = useAppSelector((state: RootState) => state.portfolio.coins);
   const dispatch = useDispatch();
   const router = useRouter();
 
   const handleForm = () => {
-    setAddFormOn(false);
+    setAddFormOn(!addFormOn);
   };
-
-  useEffect(() => {
-    getCoins();
-  }, [currency]);
 
   if ((!user && !userSession) || user === null) {
     router.push("/sign-up");
   }
 
   return (
-    <div className="w-full flex items-center justify-center flex-col">
-      <div className="w-full flex justify-end mt-32 mr-36">
+    <div
+      className={`w-screen h-screen bg-base theme-${palette} theme-${mode} flex items-center justify-start flex-col  `}
+    >
+      <div className="w-full flex justify-end my-8 mr-36 mt-36">
         <button
           className="bg-accent p-4 rounded-lg"
           onClick={() => setAddFormOn(!addFormOn)}
@@ -54,7 +52,7 @@ export default function Page() {
         )}
       </div>
       <div> Your Assets:</div>
-      <PortfolioList />
+      <PortfolioList listCoins={listCoins} />
     </div>
   );
 }

@@ -95,7 +95,7 @@ const Converter = ({ allCoinsData }) => {
         </div>
 
         {value1 &&
-          currentCoins
+          allCoinsData
             ?.filter((coin) => {
               const name = coin.name.toLowerCase();
               const search = value1.toLowerCase();
@@ -169,7 +169,6 @@ const Converter = ({ allCoinsData }) => {
                 </DropdownRow>
               );
           })}
-
         {value2 &&
           currentCoins
             ?.filter((coin) => {
