@@ -16,7 +16,8 @@ const Row = styled.div`
   border-radius: 10px;
 `;
 
-function PortfolioList({ listCoins }) {
+function PortfolioList() {
+  const listCoins = useSelector((state) => state.portfolio.coins);
   const dispatch = useDispatch();
 
   const [currency, setCurrency] = useState("usd");
@@ -189,6 +190,7 @@ function PortfolioList({ listCoins }) {
               </Row>
             ))
           ) : (
+
             <div className="text-2xl text-accent">
               You haven't added any coins to your portfolio yet!
             </div>

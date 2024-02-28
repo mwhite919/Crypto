@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useCrypto } from "@/app/Providers/CryptoProvider";
+import { useGetAllCoinsQuery } from "@/app/Providers/api/apiSlice";
 import ArrowDown, { ArrowUp } from "@/app/icons/Icons";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -7,7 +8,19 @@ import "slick-carousel/slick/slick-theme.css";
 import "./coin-swiper.css";
 
 export const CoinSwiper = () => {
-  const { handleSelect, top10Coins } = useCrypto();
+  const { handleSelect } = useCrypto();
+
+  const { data: allCoinsData, error, isError, isLoading } = useGetAllCoinsQuery(
+    {
+      currency: "usd",
+      sortValue: "volume_desc",
+    }
+  );
+
+  let top10Coins = [];
+  if (allCoinsData !== null && typeof allCoinsData === "object") {
+    top10Coins = Object.values(allCoinsData)?.slice(0, 10);
+  }
 
   const settings = {
     dots: true,

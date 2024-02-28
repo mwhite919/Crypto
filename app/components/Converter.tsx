@@ -12,11 +12,11 @@ const ConverterBox = styled.div`
   width: 1010px;
 `;
 
-const Converter = ({ currentCoins }) => {
+const Converter = ({ allCoinsData }) => {
   const [value1, setValue1] = useState("");
   const [value2, setValue2] = useState("");
-  const [coin1, setCoin1] = useState(currentCoins[0]);
-  const [coin2, setCoin2] = useState(currentCoins[1]);
+  const [coin1, setCoin1] = useState(allCoinsData[0]);
+  const [coin2, setCoin2] = useState(allCoinsData[1]);
   const [currencySymbol, setCurrencySymbol] = useState("$");
   const [variable1, setvariable1] = useState("1");
   const [variable2, setvariable2] = useState("");
@@ -27,8 +27,8 @@ const Converter = ({ currentCoins }) => {
     if (e.target.id === "v1") {
       setvariable2(conversion);
     }
-    if (e.target.id === "v1") {
-      setvariable2(conversion);
+    if (e.target.id === "v2") {
+      setvariable1(conversion);
     }
   };
 
@@ -51,7 +51,7 @@ const Converter = ({ currentCoins }) => {
   };
 
   return (
-    <ConverterBox className="my-10 rounded-lg w-96 flex justify-between items-center ">
+    <ConverterBox className="my-10 rounded-lg w-96 flex justify-between items-center">
       <div className="flex flex-col w-full">
         <div className="flex justify-center flex-col items-start border w-full bg-second h-full">
           <div className="flex justify-between items-end w-full px-5 ">
@@ -69,8 +69,8 @@ const Converter = ({ currentCoins }) => {
             <div>
               <input
                 type="number"
+                onChange={(e) => handleConversion(e)}
                 value={variable1}
-                onChange={() => handleConversion(value)}
                 id="v1"
                 className="my-2 rounded-md pl-2 text-right"
               />
@@ -95,16 +95,23 @@ const Converter = ({ currentCoins }) => {
         </div>
 
         {value1 &&
-          currentCoins?.map((coin) => {
-            const name = coin.name.toLowerCase();
-            const searchValue = value1.toLowerCase();
-            if (name.startsWith(searchValue))
-              return (
-                <DropdownRow key={coin.id} onClick={() => onSearch1(coin)}>
+          allCoinsData
+            ?.filter((coin) => {
+              const name = coin.name.toLowerCase();
+              const search = value1.toLowerCase();
+              return name.startsWith(search);
+            })
+            .map((coin) => (
+              <div key={coin.id} className="border-slate-300">
+                <DropdownRow
+                  key={coin.id}
+                  className="bg-second"
+                  onClick={() => onSearch1(coin)}
+                >
                   {coin.name}
                 </DropdownRow>
-              );
-          })}
+              </div>
+            ))}
       </div>
 
       <div className="h-9 w-9 rounded-full border-solid border-slate-900">
@@ -128,8 +135,8 @@ const Converter = ({ currentCoins }) => {
           </div>
           <input
             type="number"
-            value={variable2}
             onChange={(e) => handleConversion(e)}
+            value={variable2}
             id="v2"
             className="my-2 w-44 rounded-md pl-2 text-right"
           />
@@ -152,7 +159,7 @@ const Converter = ({ currentCoins }) => {
           />
         </div>
         {value2 &&
-          currentCoins?.map((coin) => {
+          allCoinsData?.filter((coin) => {
             const name = coin.name.toLowerCase();
             const searchValue = value2.toLowerCase();
             if (name.startsWith(searchValue))
@@ -162,6 +169,24 @@ const Converter = ({ currentCoins }) => {
                 </DropdownRow>
               );
           })}
+        {value2 &&
+          currentCoins
+            ?.filter((coin) => {
+              const name = coin.name.toLowerCase();
+              const search = value1.toLowerCase();
+              return name.startsWith(search);
+            })
+            .map((coin) => (
+              <div key={coin.id} className="border-slate-300">
+                <DropdownRow
+                  key={coin.id}
+                  className="bg-second"
+                  onClick={() => onSearch2(coin)}
+                >
+                  {coin.name}
+                </DropdownRow>
+              </div>
+            ))}
       </div>
     </ConverterBox>
   );
