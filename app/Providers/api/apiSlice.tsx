@@ -19,7 +19,7 @@ export const coinGeckoApi = createApi({
     }),
     getChartInfo: builder.query({
       query: ({ inputId, currency, numberOfDays }) =>
-        `/${inputId}/market_chart?vs_currency=${currency}&days=${numberOfDays}&x_cg_demo_api_key=CG-du5JzYuTcSZtNRw58BTw3e27`,
+        `/coins/${inputId}/market_chart?vs_currency=${currency}&days=${numberOfDays}precision=2`,
     }),
   }),
 });

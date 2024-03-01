@@ -8,15 +8,31 @@ import { CoinBarChart } from "./CoinBarChart";
 import { every_nth } from "./Every_nth";
 import ChartsIntervalButtons from "./ChartsIntervalButtons";
 import { convertUnixToDate } from "./UnixTimeConverter";
+import { useDispatch, useSelector } from "react-redux";
+import { useGetChartInfoQuery } from "../Providers/api/apiSlice";
 
 export const ChartsMain = () => {
-  const [combined, setCombined] = useState([]);
+  // const coinsForChart = useSelector((state) => chartCoins.coins);
+  const dispatch = useDispatch();
+  const {
+    data: chartCoinsData,
+    error,
+    isError,
+    isLoading,
+  } = useGetChartInfoQuery({
+    inputId: "bitcoin",
+    currency: "usd",
+    numberOfDays: "76",
+  });
+
+  console.log("dataforcoins", chartCoinsData);
+  // console.log("chartcoins", coinsForChart);
+  return;
 
   const {
     inputCoin1,
     inputCoins,
     currency,
-    chartCoins,
     getChartInfo,
     handleTime,
     numberOfDays,
@@ -60,7 +76,6 @@ export const ChartsMain = () => {
   const graphDataV2 = chartCoins?.total_volumes?.map(mapGraphData);
   const graphDataV3 = chartCoins?.total_volumes?.map(mapGraphData);
 
-
   const combinedDataVolumes = graphDataV1?.map((item, index) => {
     return {
       time: item.time,
@@ -91,7 +106,6 @@ export const ChartsMain = () => {
         <div>
           <ChartsIntervalButtons />
         </div>
-
       </div>
     </>
   );
