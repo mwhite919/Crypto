@@ -57,7 +57,7 @@ const Converter = ({ allCoinsData }) => {
     <ConverterBox className="my-10 rounded-lg w-96 flex justify-between items-center">
       <div className="flex flex-col w-full">
         <div className="flex justify-center flex-col items-start border w-full bg-second h-full">
-          <div className="flex justify-between items-end w-full px-5 ">
+          <div className="flex justify-between items-end w-full py-3 px-5 ">
             <div>
               <h2 className="text-sm">You sell:</h2>
               {coin1 && (
@@ -118,7 +118,7 @@ const Converter = ({ allCoinsData }) => {
       </div>
 
       <div className="flex justify-center flex-col items-start border w-full bg-second h-full">
-        <div className="flex justify-between items-end w-full px-5">
+        <div className="flex justify-between items-end w-full  py-3 px-5">
           <div className="flex flex-col">
             <div className="w-7/12">
               <h2 className="text-sm">You buy:</h2>
@@ -133,7 +133,6 @@ const Converter = ({ allCoinsData }) => {
             </div>
           </div>
           <input
-            type="number"
             onChange={(value) => handleConversionRtL(value)}
             value={variable2}
             id="v2"
