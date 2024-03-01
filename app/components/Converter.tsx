@@ -18,18 +18,21 @@ const Converter = ({ allCoinsData }) => {
   const [coin1, setCoin1] = useState(allCoinsData[0]);
   const [coin2, setCoin2] = useState(allCoinsData[1]);
   const [currencySymbol, setCurrencySymbol] = useState("$");
-  const [variable1, setvariable1] = useState("1");
-  const [variable2, setvariable2] = useState("");
+  const [variable1, setvariable1] = useState("0");
+  const [variable2, setvariable2] = useState("0");
 
-  const handleConversion = (e) => {
-    const conversion =
-      (e.target.value * coin1.current_price) / coin2.current_price;
-    if (e.target.id === "v1") {
-      setvariable2(conversion);
-    }
-    if (e.target.id === "v2") {
-      setvariable1(conversion);
-    }
+  const handleConversionLtR = (e) => {
+    const result = e.target.value.replace(/\D/g, "");
+    const conversion = (result * coin1.current_price) / coin2.current_price;
+    setvariable1(result);
+    setvariable2(conversion);
+  };
+
+  const handleConversionRtL = (e) => {
+    const result = e.target.value.replace(/\D/g, "");
+    const conversion = (result * coin2.current_price) / coin1.current_price;
+    setvariable2(result);
+    setvariable1(conversion);
   };
 
   const onChange1 = (e) => {
@@ -68,11 +71,9 @@ const Converter = ({ allCoinsData }) => {
             </div>
             <div>
               <input
-                type="number"
-                onChange={(e) => handleConversion(e)}
                 value={variable1}
-                id="v1"
-                className="my-2 rounded-md pl-2 text-right"
+                onChange={(value) => handleConversionLtR(value)}
+                className="my-2 rounded-md pl-2 text-right bg-second"
               />
             </div>
           </div>
@@ -85,36 +86,34 @@ const Converter = ({ allCoinsData }) => {
               </div>
             )}
             <input
-              className="border-black my-4 rounded-md  bg-second"
-              type="text"
+              className="border-black my-4 rounded-md bg-second relative inline-block bg-slate-100"
               value={value1}
               onChange={onChange1}
               placeholder="Search Coins..."
             />
+            <div className="absolute max-h-44 overflow-auto">
+              {value1 &&
+                allCoinsData
+                  ?.filter((coin) => {
+                    const name = coin.name.toLowerCase();
+                    const search = value1.toLowerCase();
+                    return name.startsWith(search);
+                  })
+                  .map((coin) => (
+                    <DropdownRow
+                      key={coin.id}
+                      className="bg-slate-100 border-slate-300 block"
+                      onClick={() => onSearch1(coin)}
+                    >
+                      {coin.name}
+                    </DropdownRow>
+                  ))}
+            </div>
           </div>
         </div>
-
-        {value1 &&
-          allCoinsData
-            ?.filter((coin) => {
-              const name = coin.name.toLowerCase();
-              const search = value1.toLowerCase();
-              return name.startsWith(search);
-            })
-            .map((coin) => (
-              <div key={coin.id} className="border-slate-300">
-                <DropdownRow
-                  key={coin.id}
-                  className="bg-second"
-                  onClick={() => onSearch1(coin)}
-                >
-                  {coin.name}
-                </DropdownRow>
-              </div>
-            ))}
       </div>
 
-      <div className="h-9 w-9 rounded-full border-solid border-slate-900">
+      <div className="p-5 rounded-full border-solid bg-accent abolute">
         <ExchangeIcon />
       </div>
 
@@ -135,58 +134,47 @@ const Converter = ({ allCoinsData }) => {
           </div>
           <input
             type="number"
-            onChange={(e) => handleConversion(e)}
+            onChange={(value) => handleConversionRtL(value)}
             value={variable2}
             id="v2"
-            className="my-2 w-44 rounded-md pl-2 text-right"
+            className="my-2 w-44 rounded-md pl-2 text-right bg-second"
           />
         </div>
 
         <div className="mx-auto m-3 bg-accent h-px w-11/12"></div>
-        <div>
+        <div className="pl-5">
           {coin2 && (
-            <div className="text-sm pl-5">
+            <div className="text-sm">
               1{coin2.symbol.toUpperCase()}={currencySymbol}
               {coin2.current_price}
             </div>
           )}
           <input
-            className="border-black my-4 rounded-md pl-5 bg-second"
+            className="border-black my-4 rounded-md relative inline-blockm bg-slate-100"
             type="text"
             value={value2}
             onChange={onChange2}
             placeholder="Search Coins..."
           />
+          <div className="absolute max-h-44 overflow-auto">
+            {value2 &&
+              allCoinsData
+                ?.filter((coin) => {
+                  const name = coin.name.toLowerCase();
+                  const search = value2.toLowerCase();
+                  return name.startsWith(search);
+                })
+                .map((coin) => (
+                  <DropdownRow
+                    key={coin.id}
+                    className="bg-slate-100 border-slate-300 block"
+                    onClick={() => onSearch2(coin)}
+                  >
+                    {coin.name}
+                  </DropdownRow>
+                ))}
+          </div>
         </div>
-        {value2 &&
-          allCoinsData?.filter((coin) => {
-            const name = coin.name.toLowerCase();
-            const searchValue = value2.toLowerCase();
-            if (name.startsWith(searchValue))
-              return (
-                <DropdownRow onClick={() => onSearch2(coin)}>
-                  {coin.name}
-                </DropdownRow>
-              );
-          })}
-        {value2 &&
-          currentCoins
-            ?.filter((coin) => {
-              const name = coin.name.toLowerCase();
-              const search = value1.toLowerCase();
-              return name.startsWith(search);
-            })
-            .map((coin) => (
-              <div key={coin.id} className="border-slate-300">
-                <DropdownRow
-                  key={coin.id}
-                  className="bg-second"
-                  onClick={() => onSearch2(coin)}
-                >
-                  {coin.name}
-                </DropdownRow>
-              </div>
-            ))}
       </div>
     </ConverterBox>
   );
