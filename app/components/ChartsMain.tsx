@@ -10,98 +10,61 @@ import ChartsIntervalButtons from "./ChartsIntervalButtons";
 import { convertUnixToDate } from "./UnixTimeConverter";
 import { useDispatch, useSelector } from "react-redux";
 import { useGetChartInfoQuery } from "../Providers/api/apiSlice";
+import { useAppSelector, useAppDispatch } from "@/redux/hooks";
+import { priceChart } from "@/redux/chartCoins/chartCoins";
 
 export const ChartsMain = () => {
-  // const coinsForChart = useSelector((state) => chartCoins.coins);
-  const dispatch = useDispatch();
-  const {
-    data: chartCoinsData,
-    error,
-    isError,
-    isLoading,
-  } = useGetChartInfoQuery({
-    inputId: "bitcoin",
-    currency: "usd",
-    numberOfDays: "76",
-  });
-
-  console.log("dataforcoins", chartCoinsData);
-  // console.log("chartcoins", coinsForChart);
-  return;
-
   const {
     inputCoin1,
     inputCoins,
     currency,
-    getChartInfo,
     handleTime,
     numberOfDays,
     handleNumberOfDays,
   } = useCrypto();
 
+  const [combined, setCombined] = useState([]);
+  const { chartCoins } = useAppSelector(
+    (state) => state.priceChartSliceReducer
+  );
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(priceChart({ currency: "usd", coinId: "bitcoin", days: "7" }));
+  }, []);
+
+  useEffect(() => {
+    console.log("dataforcoins", chartCoins);
+  }, [chartCoins]);
+
   const mapGraphDataPrices = (item) => {
     return { time: item[0], price: item[1] };
   };
 
-  const graphDataPricesC1 = chartCoins?.prices?.map(mapGraphDataPrices);
-  const graphDataPricesC2 = chartCoins?.prices?.map(mapGraphDataPrices);
-  const graphDataPricesC3 = chartCoins?.prices?.map(mapGraphDataPrices);
+  const graphDataPrices = chartCoins?.prices?.map(mapGraphDataPrices);
 
-  const combinedDataPrices = graphDataPricesC1?.map((item, index) => {
-    if (chartCoins.length === 1) {
-      return graphDataPricesC1;
-    }
-    if (chartCoins.length === 2) {
-      return {
-        time: item.time,
-        price1: item.price,
-        price2: graphDataPricesC2[index]?.price,
-      };
-    }
-    if (chartCoins.length === 3) {
-      return {
-        time: item.time,
-        price1: item.price,
-        price2: graphDataPricesC2[index]?.price,
-        price3: graphDataPricesC3[index]?.price,
-      };
-    }
-  });
+  const fixIntervalPrices = every_nth(graphDataPrices, 30);
 
-  const fixIntervalPrices = every_nth(combinedDataPrices, 30);
+  console.log(graphDataPrices);
+
   const mapGraphData = (item) => {
     return { time: item[0], v: item[1] };
   };
-  const graphDataV1 = chartCoins?.total_volumes?.map(mapGraphData);
-  const graphDataV2 = chartCoins?.total_volumes?.map(mapGraphData);
-  const graphDataV3 = chartCoins?.total_volumes?.map(mapGraphData);
+  const graphDataV = chartCoins?.total_volumes?.map(mapGraphData);
 
-  const combinedDataVolumes = graphDataV1?.map((item, index) => {
-    return {
-      time: item.time,
-      v1: item.v,
-      v2: graphDataV2[index]?.v,
-      v3: graphDataV3[index]?.v,
-    };
-  });
-
-  const fixIntervalVol = every_nth(combinedDataVolumes, 10);
-
-  useEffect(() => {
-    getChartInfo(inputCoin1);
-  }, [chartCoins, inputCoin1, combinedDataPrices]);
+  const fixIntervalVol = every_nth(graphDataV, 10);
 
   return (
     <>
-      <div className="flex my-12">
-        <div>
-          {chartCoins.map((coin) => {
-            <h1 key={coin.name}>{coin.name}</h1>;
-          })}
-          <CoinLineChart combinedDataPrices={fixIntervalPrices} />
-        </div>
-        <div>
-          <CoinBarChart graphData={fixIntervalVol} />
+      <div className="flex  flex-col my-12">
+        <div className="flex">
+          <div>
+            <CoinLineChart graphDataPrices={graphDataPrices} />
+          </div>
+          <div>
+            <CoinBarChart graphData={fixIntervalVol} />
+          </div>
         </div>
         <div>
           <ChartsIntervalButtons />

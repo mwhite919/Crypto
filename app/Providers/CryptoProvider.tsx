@@ -95,25 +95,6 @@ export default function CryptoProvider({ children }) {
   );
   const [mode, setMode] = useStickyState(modes[0], "theme-mode" || "light");
 
-  const getChartInfo = async (input) => {
-    try {
-      setIsLoading(true);
-      const { data } = await axios(
-        `https://api.coingecko.com/api/v3/coins/${input.id}/market_chart?vs_currency=${currency}&days=${numberOfDays}&x_cg_demo_api_key=CG-du5JzYuTcSZtNRw58BTw3e27`
-      );
-      const selectedCoin = {
-        name: input.name,
-        prices: data.prices,
-        volume: data.total_volumes,
-      };
-      setChartCoins([...chartCoins, selectedCoin]);
-    } catch (err) {
-      console.log("charterror", err);
-      setError(true);
-      setIsLoading(false);
-    }
-  };
-
   function handleTime(value: string) {
     setNumberOfDays(value);
   }
@@ -150,7 +131,6 @@ export default function CryptoProvider({ children }) {
       return;
     }
     if (chartCoins.length === 3) return;
-    getChartInfo(coin);
     setChartCoins([...chartCoins, coin]);
   };
 
@@ -178,7 +158,6 @@ export default function CryptoProvider({ children }) {
         inputCoin1,
         handleSelect,
         chartCoins,
-        getChartInfo,
         handleTime,
         numberOfDays,
         handleNumberOfDays,
