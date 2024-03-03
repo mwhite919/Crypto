@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { removeCoin } from "@/redux/portfolio/portfolioSlice";
 import styled from "styled-components";
 import { EditIcon, TrashIcon } from "@/app/icons/Icons";
+import CharacterCounter from "./characterCounter";
 
 const Row = styled.div`
   width: 900px;
@@ -19,6 +20,7 @@ const Row = styled.div`
 function PortfolioList() {
   const listCoins = useSelector((state) => state.portfolio.coins);
   const dispatch = useDispatch();
+  let ref = React.useRef();
 
   const [currency, setCurrency] = useState("usd");
 
@@ -46,7 +48,7 @@ function PortfolioList() {
         <div>
           {listCoins ? (
             listCoins.map((c) => (
-              <Row className="h-64 bg-second m-3 z-0" key={c.id}>
+              <Row className="h-64 bg-second m-3 z-0 p-3" key={c.id}>
                 <div className="flex justify-between w-full">
                   <div className="h-48 w-48 flex items-center justify-center ">
                     <div className="">
@@ -55,7 +57,9 @@ function PortfolioList() {
                       </div>
                       <div className="flex items-center justify-center flex-col  p-8 text-lg font-bold text-second bg-accent2 font-pj rounded-xl ">
                         <img src={c.coin.image} className="h-16" />
-                        <div>{c.coin.name}</div>
+                        <div className={CharacterCounter(c.coin.name.length)}>
+                          {c.coin.name}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -190,7 +194,6 @@ function PortfolioList() {
               </Row>
             ))
           ) : (
-
             <div className="text-2xl text-accent">
               You haven't added any coins to your portfolio yet!
             </div>
