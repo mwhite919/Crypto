@@ -7,7 +7,7 @@ function CharacterCounter(length: string) {
   if (length > 9 && length < 18) {
     return "text-center";
   }
-  if (length > 17) {
+  if (length >= 18) {
     return "text-center text-sm";
   }
 }
