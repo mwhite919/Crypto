@@ -2,13 +2,13 @@ import React from "react";
 
 function CharacterCounter(length: string) {
   if (length < 9) {
-    return "text-lg text-center";
+    return "text-center text-lg ";
   }
   if (length > 9 && length < 18) {
-    return "text-md text-center";
+    return "text-center";
   }
-  if (length >= 19) {
-    return "text-sm text-center";
+  if (length > 17) {
+    return "text-center text-sm";
   }
 }
 
