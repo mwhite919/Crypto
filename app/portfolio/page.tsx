@@ -52,7 +52,7 @@ export default function Page() {
           </div>
         )}
       </div>
-      <div> Your Assets:</div>
+      <div className="font-medium text-3xl text-accent"> Your Assets:</div>
       <PortfolioList />
     </div>
   );

@@ -14,7 +14,7 @@
   }
 }
 
-.theme-teal {
+.theme-Teal {
   --color-base: theme("colors.teal.50");
   --color-inverse: theme("colors.teal.900");
   --color-primary: theme("colors.teal.400");
@@ -24,7 +24,7 @@
   --color-accent2: theme("colors.violet.400");
 }
 
-.theme-neon-pastel {
+.theme-Neon-Pastel {
   --color-base: theme("colors.emerald.50");
   --color-inverse: theme("colors.slate.900");
   --color-primary: theme("colors.rose.500");
@@ -34,7 +34,7 @@
   --color-accent2: theme("colors.blue.600");
 }
 
-.theme-pink {
+.theme-Rose {
   --color-base: theme("colors.rose.200");
   --color-inverse: theme("colors.rose.900");
   --color-primary: theme("colors.rose.500");
@@ -44,7 +44,7 @@
   --color-accent2: theme("colors.rose.700");
 }
 
-.theme-amber {
+.theme-Amber {
   --color-base: theme("colors.amber.200");
   --color-inverse: theme("colors.amber.900");
   --color-primary: theme("colors.amber.500");
