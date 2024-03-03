@@ -2,13 +2,13 @@ import { RadioGroup } from "@headlessui/react";
 import { useCrypto } from "@/app/Providers/CryptoProvider";
 
 export default function ChartsIntervalButtons() {
-  const { numberOfDays, handleNumberOfDays } = useCrypto();
+  // const { numberOfDays, handleNumberOfDays } = useCrypto();
   return (
     <div>
       <RadioGroup
         className="flex items-center justify-center my-5"
-        value={numberOfDays}
-        onChange={handleNumberOfDays}
+        // value={numberOfDays}
+        // onChange={ handleNumberOfDays()}
       >
         <RadioGroup.Option
           className={({ active, checked }) =>

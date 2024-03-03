@@ -191,11 +191,13 @@ export default function Navigation() {
                     name="currency"
                     className="m-5 drop-shadow-md rounded-sm "
                   >
-                    <option>here</option>
                     {CurrencyArray?.map((currency) => {
                       return (
-                        <option key={currency} value={currency}>
-                          {currency}
+                        <option
+                          key={currency.currency}
+                          value={[currency.currency, currency.symbol]}
+                        >
+                          {currency.currency}
                         </option>
                       );
                     })}

@@ -99,8 +99,9 @@ export default function CryptoProvider({ children }) {
     setNumberOfDays(value);
   }
 
-  function handleCurrency(e: string) {
+  function handleCurrency(e) {
     setCurrency(e.target.value);
+    console.log(currency);
   }
 
   function handleSort(e: string) {
@@ -123,20 +124,20 @@ export default function CryptoProvider({ children }) {
     setPassword(e.target.value);
   }
 
-  const handleSelect = (coin) => {
-    if (chartCoins.includes(coin)) {
-      const removed = chartCoins.filter((e) => e !== coin);
-      if (chartCoins.length === 1) return;
-      setChartCoins(removed);
-      return;
-    }
-    if (chartCoins.length === 3) return;
-    setChartCoins([...chartCoins, coin]);
-  };
+  // const handleSelect = (coin) => {
+  //   if (chartCoins.includes(coin)) {
+  //     const removed = chartCoins.filter((e) => e !== coin);
+  //     if (chartCoins.length === 1) return;
+  //     setChartCoins(removed);
+  //     return;
+  //   }
+  //   if (chartCoins.length === 3) return;
+  //   setChartCoins([...chartCoins, coin]);
+  // };
 
-  function handleNumberOfDays(e: string) {
-    setNumberOfDays(e.target.value);
-  }
+  // function handleNumberOfDays(e) {
+  //   setNumberOfDays(e.target.value);
+  // }
 
   function handleSignOut() {
     signOut(auth);
@@ -156,11 +157,11 @@ export default function CryptoProvider({ children }) {
         barData,
         handleSort,
         inputCoin1,
-        handleSelect,
+        // handleSelect,
         chartCoins,
         handleTime,
-        numberOfDays,
-        handleNumberOfDays,
+        // numberOfDays,
+        // handleNumberOfDays,
         handleSignOut,
         handleSignIn,
         email,
