@@ -130,7 +130,7 @@ export default function CryptoProvider({ children }) {
     setPalette(e.target.value);
   }
 
-  function handleMode(value) {
+  function handleMode(value: string) {
     setMode(value);
   }
 
