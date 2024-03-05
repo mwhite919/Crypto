@@ -1,6 +1,23 @@
-import { createSlice, nanoid } from "@reduxjs/toolkit";
-import { Coin } from "@/app/sharedinterfaces";
-import { useGetChartInfoQuery } from "@/app/Providers/api/apiSlice";
+"use client";
+
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+
+export const priceChart = createAsyncThunk(
+  "priceChart",
+  async (
+    {
+      coinId,
+      currency,
+      days,
+    }: { currency: string; coinId: string; days: string },
+    thunkAPI
+  ) => {
+    const url = `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${days}`;
+    const response = await fetch(url);
+    const json = await response.json();
+    return json;
+  }
+);
 
 interface ChartCoinsState {
   value: any;
