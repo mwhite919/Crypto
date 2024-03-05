@@ -21,12 +21,12 @@ export const CoinBarChart = ({ graphData }) => {
         bottom: 5,
       }}
     >
-      <XAxis scale="log" domain={["auto", "auto"]} dataKey="time" />
+      <XAxis domain={["auto", "auto"]} dataKey="time" />
       <YAxis scale="log" domain={["auto", "auto"]} hide />
       <Tooltip />
 
       <Bar
-        dataKey="v1"
+        dataKey="yData"
         fill="#8884d8"
         activeBar={<Rectangle fill="pink" stroke="blue" />}
       />

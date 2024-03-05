@@ -1,6 +1,7 @@
 "use client";
 
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { mapGraphData } from "@/app/components/MapGraphData";
 
 interface ChartCoinsState {
   value: any;
@@ -31,8 +32,8 @@ const chartCoinsSlice = createSlice({
           id: action.payload.id,
           coinName: action.payload.coinName,
           time: action.payload.time,
-          prices: action.payload.prices,
-          volume: action.payload.volume,
+          prices: action.payload.prices.map(mapGraphData),
+          volume: action.payload.volume.map(mapGraphData),
         };
         state.chartCoins.push(chartCoin);
       }

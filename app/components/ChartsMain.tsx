@@ -55,34 +55,27 @@ export const ChartsMain = () => {
   //   handleNumberOfDays,
   // } = useCrypto();
 
-  // const mapGraphDataPrices = (item) => {
-  //   return { time: item[0], price: item[1] };
-  // };
-
-  // const graphDataPricesC1 = chartCoins[0]?.prices?.map(mapGraphDataPrices);
-  // const graphDataPricesC2 = chartCoins?.prices?.map(mapGraphDataPrices);
-  // const graphDataPricesC3 = chartCoins?.prices?.map(mapGraphDataPrices);
-
-  // const combinedDataPrices = graphDataPricesC1?.map((item, index) => {
-  //   if (chartCoins.length === 1) {
-  //     return graphDataPricesC1;
+  // const combinedDataPrices = combinedChartCoins?.map((item, index) => {
+  //   if (combinedChartCoins.length === 1) {
+  //     return combinedChartCoins[index].prices;
   //   }
-  //   if (chartCoins.length === 2) {
+  //   if (combinedChartCoins.length === 2) {
   //     return {
-  //       time: item.time,
-  //       price1: item.price,
-  //       price2: graphDataPricesC2[index]?.price,
+  //       time: item.prices.time,
+  //       price1: item.prices.yData,
+  //       price2: combinedChartCoins[index]?.prices.yData,
   //     };
+  //     // }
+  // if (chartCoins.length === 3) {
+  //   return {
+  //     time: item.time,
+  //     price1: item.price,
+  //     price2: graphDataPricesC2[index]?.price,
+  //     price3: graphDataPricesC3[index]?.price,
+  //   };
+  //     // }
   //   }
-  //   if (chartCoins.length === 3) {
-  //     return {
-  //       time: item.time,
-  //       price1: item.price,
-  //       price2: graphDataPricesC2[index]?.price,
-  //       price3: graphDataPricesC3[index]?.price,
-  //     };
-  //   }
-  // // });
+  // });
 
   // const fixIntervalPrices = every_nth(combinedChartCoins, 30);
   // const mapGraphData = (item) => {
@@ -102,29 +95,26 @@ export const ChartsMain = () => {
   // });
 
   // const fixIntervalVol = every_nth(combinedChartCoins, 10);
-
-  //   <div>
-  //   {/* {chartCoins.map((coin) => {
-  //   <h1 key={coin.name}>{coin.name}</h1>;
-  // })} */}
-  //   <CoinLineChart combinedDataPrices={graphDataPricesC1} />
-  // </div>
-  // <div>
-  //   <CoinBarChart graphData={fixIntervalVol} />
-  // </div>
-
+  //
+  //{" "}
   return (
     <>
       <div className="flex flex-col my-12">
-        <div>
-          {combinedChartCoins.map((c) => {
-            <div>{c.name}</div>;
-          })}
-        </div>
+        <div></div>
+        <div></div>
         <div>
           <CoinSwiper handleClick={handleClick} />
         </div>
-        <div className="flex"></div>
+        <div>
+          These coins:{" "}
+          {combinedChartCoins.map((c) => {
+            return <div>{c.coinName}</div>;
+          })}
+        </div>
+        <div className="flex">
+          <CoinLineChart combinedDataPrices={combinedChartCoins[0]?.prices} />
+          <CoinBarChart graphData={combinedChartCoins[0]?.volume} />
+        </div>
         <div>
           <ChartsIntervalButtons />
         </div>
