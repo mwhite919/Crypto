@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import portfolioReducer from "./portfolio/portfolioSlice";
+import chartCoinsReducer from "./charts/chartsSlice";
 import { coinGeckoApi } from "@/app/Providers/api/apiSlice";
 
 export const makeStore = () => {
@@ -7,6 +8,7 @@ export const makeStore = () => {
     reducer: {
       [coinGeckoApi.reducerPath]: coinGeckoApi.reducer,
       portfolio: portfolioReducer,
+      chartCoins: chartCoinsReducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(coinGeckoApi.middleware),

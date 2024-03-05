@@ -1,13 +1,17 @@
 import { useCrypto } from "@/app/Providers/CryptoProvider";
+import { useEffect, useState } from "react";
 import { useGetAllCoinsQuery } from "@/app/Providers/api/apiSlice";
 import ArrowDown, { ArrowUp } from "@/app/icons/Icons";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./coin-swiper.css";
+import { addChartCoin, removeChartCoin } from "@/redux/charts/chartsSlice";
+import { useDispatch } from "react-redux";
 
-export const CoinSwiper = () => {
+export const CoinSwiper = ({ handleClick }) => {
   const { handleSelect } = useCrypto();
+  const dispatch = useDispatch();
 
   const { data: allCoinsData, error, isError, isLoading } = useGetAllCoinsQuery(
     {
@@ -38,7 +42,7 @@ export const CoinSwiper = () => {
               <div key={coin.id}>
                 <div
                   className="bg-second flex items-center justify-start text-xs ml-2 my-2 h-20 p-3 drop-shadow-md rounded-md hover:scale-105"
-                  onClick={() => handleSelect(coin)}
+                  onClick={() => handleClick(coin.id)}
                 >
                   <div>
                     <img className="w-9 m-4" src={coin.image} />
