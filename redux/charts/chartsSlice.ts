@@ -24,6 +24,9 @@ const chartCoinsSlice = createSlice({
           (c) => c.id !== action.payload.id
         );
       } else {
+        if (state.chartCoins.length >= 3) {
+          return state;
+        }
         const chartCoin = {
           id: action.payload.id,
           coinName: action.payload.coinName,

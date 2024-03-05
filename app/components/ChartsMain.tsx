@@ -19,7 +19,7 @@ export const ChartsMain = () => {
   const [currency, setCurrency] = useState("usd");
   const [coinInput, setCoinInput] = useState("bitcoin");
   const [numberOfDays, setNumberOfDays] = useState("7");
-  const [error, setError] = useState(false);
+
   const combinedChartCoins = useSelector(
     (state) => state.chartCoins.chartCoins
   );
@@ -27,53 +27,37 @@ export const ChartsMain = () => {
 
   const dispatch = useAppDispatch();
 
-  // const { data: chartCoinsData, isLoading } = useGetChartInfoQuery({
-  //   inputId: coinInput,
-  //   currency: currency,
-  //   numberOfDays: numberOfDays,
-  // });
-
-  useEffect(() => {
-    console.log(
-      "redux chart",
-      combinedChartCoins,
-      "chartCoins",
-      chartCoins,
-      "coininput",
-      coinInput
-    );
-  }, [coinInput]);
-
-  //I need the dispatch to run and THEN the addChartCoin to run with that information. how to run an async function
-
-  const handleClick = async (coin) => {
-    setCoinInput(coin.id);
-    await dispatch(
-      priceChart({ currency, coinId: coinInput, days: numberOfDays })
-    );
+  const handleClick = (coin) => {
     dispatch(
-      addChartCoin({
-        id: coinInput,
+      priceChart({
+        currency,
+        coinId: coin.id,
         coinName: coin.name,
-        time: "2",
-        prices: chartCoins.prices,
-        volume: chartCoins.total_volumes,
+        days: numberOfDays,
       })
     );
   };
 
-  const {
-    inputCoin1,
-    inputCoins,
-    // chartCoins,
-    // getChartInfo,
-    handleTime,
-    handleNumberOfDays,
-  } = useCrypto();
+  console.log(
+    "redux chart",
+    combinedChartCoins,
+    "chartCoins",
+    chartCoins,
+    "coininput",
+    coinInput
+  );
+  // const {
+  //   inputCoin1,
+  //   inputCoins,
+  //   // chartCoins,
+  //   // getChartInfo,
+  //   handleTime,
+  //   handleNumberOfDays,
+  // } = useCrypto();
 
-  const mapGraphDataPrices = (item) => {
-    return { time: item[0], price: item[1] };
-  };
+  // const mapGraphDataPrices = (item) => {
+  //   return { time: item[0], price: item[1] };
+  // };
 
   // const graphDataPricesC1 = chartCoins[0]?.prices?.map(mapGraphDataPrices);
   // const graphDataPricesC2 = chartCoins?.prices?.map(mapGraphDataPrices);
@@ -132,6 +116,11 @@ export const ChartsMain = () => {
   return (
     <>
       <div className="flex flex-col my-12">
+        <div>
+          {combinedChartCoins.map((c) => {
+            <div>{c.name}</div>;
+          })}
+        </div>
         <div>
           <CoinSwiper handleClick={handleClick} />
         </div>

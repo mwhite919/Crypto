@@ -1,20 +1,31 @@
 "use client";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { addChartCoin } from "@/redux/charts/chartsSlice";
 
 export const priceChart = createAsyncThunk(
   "priceChart",
   async (
     {
-      currency,
       coinId,
+      coinName,
+      currency,
       days,
-    }: { currency: string; coinId: string; days: string },
+    }: { coinId: string; coinName: string; currency: string; days: string },
     thunkAPI
   ) => {
     const url = `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${days}`;
     const response = await fetch(url);
     const json = await response.json();
-    return json;
+    console.log("json", json);
+    thunkAPI.dispatch(
+      addChartCoin({
+        id: coinId,
+        coinName: coinName,
+        time: days,
+        prices: json.prices,
+        volume: json.total_volumes,
+      })
+    );
   }
 );
 
