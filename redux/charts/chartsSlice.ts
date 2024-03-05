@@ -10,7 +10,6 @@ interface ChartCoinsState {
 
 const initialState: ChartCoinsState = {
   chartCoins: [],
-  status: "complete",
   prices: [],
   volume: [],
 };

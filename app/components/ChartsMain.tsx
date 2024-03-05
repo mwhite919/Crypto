@@ -14,6 +14,7 @@ import { CoinSwiper } from "./CoinSwiper";
 import { addChartCoin } from "@/redux/charts/chartsSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { priceChart } from "@/redux/charts/priceSlice";
+import { time } from "console";
 
 export const ChartsMain = () => {
   const [currency, setCurrency] = useState("usd");
@@ -55,17 +56,24 @@ export const ChartsMain = () => {
   //   handleNumberOfDays,
   // } = useCrypto();
 
-  // const combinedDataPrices = combinedChartCoins?.map((item, index) => {
-  //   if (combinedChartCoins.length === 1) {
-  //     return combinedChartCoins[index].prices;
-  //   }
-  //   if (combinedChartCoins.length === 2) {
-  //     return {
-  //       time: item.prices.time,
-  //       price1: item.prices.yData,
-  //       price2: combinedChartCoins[index]?.prices.yData,
-  //     };
-  //     // }
+  const combinedDataPrices = combinedChartCoins[0]?.prices?.map(
+    (item, index) => {
+      if (combinedChartCoins.length === 1) {
+        return {
+          time: item.time,
+          price1: item.yData,
+        };
+      }
+
+      if (combinedChartCoins.length === 2) {
+        return {
+          time: item.time,
+          price1: item.yData,
+          price2: combinedChartCoins[1]?.prices[index].yData,
+        };
+      }
+    }
+  ); // }
   // if (chartCoins.length === 3) {
   //   return {
   //     time: item.time,
@@ -75,7 +83,8 @@ export const ChartsMain = () => {
   //   };
   //     // }
   //   }
-  // });
+
+  console.log("combinedDataPrices", combinedDataPrices);
 
   // const fixIntervalPrices = every_nth(combinedChartCoins, 30);
   // const mapGraphData = (item) => {
@@ -112,7 +121,7 @@ export const ChartsMain = () => {
           })}
         </div>
         <div className="flex">
-          <CoinLineChart combinedDataPrices={combinedChartCoins[0]?.prices} />
+          <CoinLineChart combinedDataPrices={combinedDataPrices} />
           <CoinBarChart graphData={combinedChartCoins[0]?.volume} />
         </div>
         <div>
