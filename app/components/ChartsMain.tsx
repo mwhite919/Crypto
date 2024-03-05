@@ -12,8 +12,8 @@ import { useGetChartInfoQuery } from "../Providers/api/apiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { CoinSwiper } from "./CoinSwiper";
 import { addChartCoin } from "@/redux/charts/chartsSlice";
-import { useAppDispatch } from "@/redux/hooks";
-import { chartDataAsync } from "@/redux/charts/chartsSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { priceChart } from "@/redux/charts/priceSlice";
 
 export const ChartsMain = () => {
   const [currency, setCurrency] = useState("usd");
@@ -23,30 +23,43 @@ export const ChartsMain = () => {
   const combinedChartCoins = useSelector(
     (state) => state.chartCoins.chartCoins
   );
+  const { chartCoins } = useAppSelector((state) => state.priceChart);
 
   const dispatch = useAppDispatch();
 
-  const { data: chartCoinsData, isLoading } = useGetChartInfoQuery({
-    inputId: coinInput,
-    currency: currency,
-    numberOfDays: numberOfDays,
-  });
+  // const { data: chartCoinsData, isLoading } = useGetChartInfoQuery({
+  //   inputId: coinInput,
+  //   currency: currency,
+  //   numberOfDays: numberOfDays,
+  // });
 
   useEffect(() => {
+    console.log(
+      "redux chart",
+      combinedChartCoins,
+      "chartCoins",
+      chartCoins,
+      "coininput",
+      coinInput
+    );
+  }, [coinInput]);
+
+  //I need the dispatch to run and THEN the addChartCoin to run with that information. how to run an async function
+
+  const handleClick = async (coin) => {
+    setCoinInput(coin.id);
+    await dispatch(
+      priceChart({ currency, coinId: coinInput, days: numberOfDays })
+    );
     dispatch(
       addChartCoin({
         id: coinInput,
-        coinName: chartCoinsData.prices,
+        coinName: coin.name,
         time: "2",
-        prices: "",
-        volume: "3",
+        prices: chartCoins.prices,
+        volume: chartCoins.total_volumes,
       })
     );
-  }, [coinInput, currency, numberOfDays]);
-  console.log("redux chart", combinedChartCoins);
-
-  const handleClick = (coin) => {
-    setCoinInput(coin.id);
   };
 
   const {
