@@ -11,8 +11,9 @@ import { convertUnixToDate } from "./UnixTimeConverter";
 import { useGetChartInfoQuery } from "../Providers/api/apiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { CoinSwiper } from "./CoinSwiper";
-import { addChartCoin, priceChart } from "@/redux/charts/chartsSlice";
+import { addChartCoin } from "@/redux/charts/chartsSlice";
 import { useAppDispatch } from "@/redux/hooks";
+import { chartDataAsync } from "@/redux/charts/chartsSlice";
 
 export const ChartsMain = () => {
   const [currency, setCurrency] = useState("usd");
@@ -25,43 +26,29 @@ export const ChartsMain = () => {
 
   const dispatch = useAppDispatch();
 
-  console.log("redux chart", combinedChartCoins);
-
   const { data: chartCoinsData, isLoading } = useGetChartInfoQuery({
     inputId: coinInput,
     currency: currency,
     numberOfDays: numberOfDays,
   });
 
-  const handleCoinData = async (coin) => {
-    try {
-      setCoinInput(coin.id);
-      const dataForGraph = await dispatch(
-        priceChart({
-          currency: currency,
-          coinId: coin.id,
-          days: numberOfDays,
-        })
-      );
-      console.log("dfg", dataForGraph);
-    } catch (err) {
-      console.log("charterror", err);
-      setError(true);
-    }
-  };
-
-  const handleClick = (coin) => {
-    handleCoinData(coin);
+  useEffect(() => {
     dispatch(
       addChartCoin({
-        id: coin.id,
-        coinName: coin.name,
+        id: coinInput,
+        coinName: chartCoinsData.prices,
         time: "2",
-        prices: chartCoinsData,
+        prices: "",
         volume: "3",
       })
     );
+  }, [coinInput, currency, numberOfDays]);
+  console.log("redux chart", combinedChartCoins);
+
+  const handleClick = (coin) => {
+    setCoinInput(coin.id);
   };
+
   const {
     inputCoin1,
     inputCoins,

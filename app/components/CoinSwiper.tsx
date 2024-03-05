@@ -42,7 +42,7 @@ export const CoinSwiper = ({ handleClick }) => {
               <div key={coin.id}>
                 <div
                   className="bg-second flex items-center justify-start text-xs ml-2 my-2 h-20 p-3 drop-shadow-md rounded-md hover:scale-105"
-                  onClick={() => handleClick(coin.id)}
+                  onClick={() => handleClick(coin)}
                 >
                   <div>
                     <img className="w-9 m-4" src={coin.image} />

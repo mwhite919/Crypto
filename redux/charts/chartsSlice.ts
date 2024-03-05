@@ -2,15 +2,15 @@
 
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-export const priceChart = createAsyncThunk(
-  "priceChart",
+export const chartDataAsync = createAsyncThunk(
+  "fetchChartData",
   async (
     {
       coinId,
       currency,
       days,
     }: { currency: string; coinId: string; days: string },
-    thunkAPI
+    _thunkAPI
   ) => {
     const url = `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${days}`;
     const response = await fetch(url);
@@ -21,12 +21,14 @@ export const priceChart = createAsyncThunk(
 
 interface ChartCoinsState {
   value: any;
-  chartCoins: chartCoins[];
+  chartCoins: chartCoin[];
 }
 
 const initialState: ChartCoinsState = {
   chartCoins: [],
-  value: "",
+  status: "complete",
+  prices: [],
+  volume: [],
 };
 
 const chartCoinsSlice = createSlice({
@@ -49,14 +51,19 @@ const chartCoinsSlice = createSlice({
         state.chartCoins.push(chartCoin);
       }
     },
-    removeChartCoin: (state, action: any) => {
-      state.chartCoins = state.chartCoins.filter(
-        (c) => c.id !== action.payload.id
-      );
-    },
   },
+  extraReducers: (builder) =>
+    builder
+      .addCase(chartDataAsync.pending, (state) => {
+        state.chartCoins.status = "loading";
+      })
+      .addCase(chartDataAsync.fulfilled, (state, action) => {
+        state.chartCoins.status = "complete";
+        state.chartCoins.prices = action.payload.prices;
+        state.chartCoins.volume = action.payload.total_volume;
+      }),
 });
 
-export const { addChartCoin, removeChartCoin } = chartCoinsSlice.actions;
+export const { addChartCoin } = chartCoinsSlice.actions;
 
 export default chartCoinsSlice.reducer;
