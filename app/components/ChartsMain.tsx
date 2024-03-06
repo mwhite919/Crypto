@@ -122,7 +122,7 @@ export const ChartsMain = () => {
         <div>
           These coins:{" "}
           {combinedChartCoins.map((c) => {
-            return <div>{c.coinName}</div>;
+            return <div key={c.coinName}>{c.coinName}</div>;
           })}
         </div>
         <div className="flex">

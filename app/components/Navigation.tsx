@@ -39,21 +39,20 @@ export default function Navigation() {
 
   const { data: barData } = useGetTopBarInfoQuery();
 
-  // const [searchSelect, setSearchSelect] = useState({ cursor: 0, result: [] });
+  const [searchSelect, setSearchSelect] = useState({ cursor: 0, result: [] });
 
-  // function handleKeyDown(e) {
-  //   const { cursor, result } = searchSelect;
-  //   if (e.keyCode === 38 && cursor > 0) {
-  //     setSearchSelect((prevState) => ({
-  //       cursor: prevState.cursor - 1,
-  //     }));
-  //   } else if (e.keyCode === 40 && cursor < result.length - 1) {
-  //     setSearchSelect((prevState) => ({
-  //       cursor: prevState.cursor + 1,
-  //     }));
-  //   }
-  //   console.log(searchSelect);
-  // }
+  function handleKeyDown(e) {
+    const { cursor, result } = searchSelect;
+    if (e.keyCode === 38 && cursor > 0) {
+      setSearchSelect((prevState) => ({
+        cursor: prevState.cursor - 1,
+      }));
+    } else if (e.keyCode === 40 && cursor < result.length - 1) {
+      setSearchSelect((prevState) => ({
+        cursor: prevState.cursor + 1,
+      }));
+    }
+  }
 
   const {
     handleCurrency,
