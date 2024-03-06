@@ -94,15 +94,15 @@ export const ChartsMain = () => {
         return {
           time: convertUnixToDate(item.time),
           volume1: item.yData,
-          volume2: combinedChartCoins[1]?.volume[index].yData,
+          volume2: combinedChartCoins[1]?.volume[index]?.yData,
         };
       }
       if (combinedChartCoins.length === 3) {
         return {
           time: convertUnixToDate(item.time),
           volume1: item.yData,
-          volume2: combinedChartCoins[1]?.volume[index].yData,
-          volume3: combinedChartCoins[2]?.volume[index].yData,
+          volume2: combinedChartCoins[1]?.volume[index]?.yData,
+          volume3: combinedChartCoins[2]?.volume[index]?.yData,
         };
       }
     }
