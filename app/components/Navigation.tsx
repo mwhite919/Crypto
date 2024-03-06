@@ -11,6 +11,9 @@ import { useRouter } from "next/navigation";
 import { useCrypto } from "../Providers/CryptoProvider";
 import { CurrencyArray } from "./Currencies";
 import { MoonIcon, SunIcon } from "../icons/Icons";
+import { changeCurr } from "@/redux/currency/currencySlice";
+import { useAppDispatch } from "@/redux/hooks";
+import { useAppSelector } from "@/redux/hooks";
 
 const DropdownRow = styled.div`
   cursor: pointer;
@@ -30,32 +33,18 @@ const palettes = [
 const modes = ["light", "dark"];
 
 export default function Navigation() {
+  const currency = useAppSelector((state) => state.currency);
   const { data: allCoinsData, error, isError, isLoading } = useGetAllCoinsQuery(
     {
-      currency: "usd",
+      currency: `${currency.currency}`,
       sortValue: "volume_desc",
     }
   );
 
   const { data: barData } = useGetTopBarInfoQuery();
-
-  const [searchSelect, setSearchSelect] = useState({ cursor: 0, result: [] });
-
-  function handleKeyDown(e) {
-    const { cursor, result } = searchSelect;
-    if (e.keyCode === 38 && cursor > 0) {
-      setSearchSelect((prevState) => ({
-        cursor: prevState.cursor - 1,
-      }));
-    } else if (e.keyCode === 40 && cursor < result.length - 1) {
-      setSearchSelect((prevState) => ({
-        cursor: prevState.cursor + 1,
-      }));
-    }
-  }
+  const dispatch = useAppDispatch();
 
   const {
-    handleCurrency,
     handleSignOut,
     user,
     handlePalette,
@@ -94,6 +83,19 @@ export default function Navigation() {
 
   const handleKeyPress = (e: { key: any }) => {
     if (e.key === "Enter") return handleSearch(searchValue);
+  };
+
+  const handleCurrency = (e) => {
+    const value = e.target.value;
+    const newCurrency = CurrencyArray.find((c) => c.currency === value);
+    console.log(newCurrency);
+    dispatch(
+      changeCurr({
+        currency: newCurrency.currency,
+        symbol: newCurrency.symbol,
+        name: newCurrency.name,
+      })
+    );
   };
 
   return (
@@ -214,20 +216,19 @@ export default function Navigation() {
                       })}
                 </div>
                 <select
-                  onChange={(e) => handleCurrency(e)}
                   name="currency"
-                  className="mx-5 drop-shadow-xl rounded-lg "
+                  className="mx-5 drop-shadow-xl rounded-lg p-0.5"
+                  onChange={handleCurrency}
                 >
-                  <option>here</option>
-                  {CurrencyArray?.map((currency) => {
+                  {CurrencyArray?.map((c) => {
                     return (
-                      <option key={currency} value={currency}>
-                        {currency}
+                      <option key={c.currency} value={c.currency}>
+                        {c.currency}
+                        {"  "} {c.name}
                       </option>
                     );
                   })}
                 </select>
-
                 <select
                   onChange={(e) => handlePalette(e)}
                   name="palette"

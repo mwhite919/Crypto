@@ -16,15 +16,13 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { priceChart } from "@/redux/charts/priceSlice";
 
 export const ChartsMain = () => {
-  const [currency, setCurrency] = useState("usd");
+  const currency = useAppSelector((state) => state.currency);
   const [coinInput, setCoinInput] = useState("bitcoin");
   const [numberOfDays, setNumberOfDays] = useState("7");
 
   const combinedChartCoins = useSelector(
     (state) => state.chartCoins.chartCoins
   );
-
-  const { chartCoins } = useAppSelector((state) => state.priceChart);
 
   const dispatch = useAppDispatch();
 
@@ -49,7 +47,6 @@ export const ChartsMain = () => {
         days: numberOfDays,
       })
     );
-    console.log("afterUseEffect", combinedChartCoins);
   }, [numberOfDays]);
 
   const { handleTime, handleNumberOfDays } = useCrypto();

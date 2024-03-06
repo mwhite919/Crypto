@@ -1,5 +1,3 @@
-import React from "react";
-
 function CharacterCounter(length: string) {
   if (length < 9) {
     return "text-center text-lg ";

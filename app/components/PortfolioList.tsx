@@ -6,6 +6,7 @@ import { removeCoin } from "@/redux/portfolio/portfolioSlice";
 import styled from "styled-components";
 import { EditIcon, TrashIcon } from "@/app/icons/Icons";
 import CharacterCounter from "./CharacterCounter";
+import { useAppSelector } from "@/redux/hooks";
 
 const Row = styled.div`
   width: 900px;
@@ -19,10 +20,9 @@ const Row = styled.div`
 
 function PortfolioList() {
   const listCoins = useSelector((state) => state.portfolio.coins);
+  const currency = useAppSelector((state) => state.currency);
   const dispatch = useDispatch();
   const ref = React.useRef();
-
-  const [currency, setCurrency] = useState("usd");
 
   function percentage(x, y) {
     return (x / y).toFixed(2);
@@ -80,12 +80,14 @@ function PortfolioList() {
                       <div className="flex flex-col justify-center items-center p-3 text-xs">
                         <div>Current Price:</div>
                         <div className="text-accent text-lg font-semibold">
+                          {currency.symbol}
                           {c?.coin?.current_price.toFixed(2)}
                         </div>
                       </div>
                       <div className="flex flex-col justify-center items-center p-3 ">
                         <div className="text-xs">Price Change 24h:</div>
                         <div className="text-accent text-lg font-semibold">
+                          {currency.symbol}
                           {c?.coin?.price_change_24h.toFixed(2)}
                         </div>
                       </div>
@@ -150,6 +152,7 @@ function PortfolioList() {
                             Amount Value
                           </div>
                           <div className="text-accent text-lg font-semibold">
+                            {currency.symbol}{" "}
                             {(c.amount * c.coin.current_price).toFixed(2)}
                           </div>
                         </div>
@@ -159,11 +162,11 @@ function PortfolioList() {
                           </div>
                           <div className="text-accent text-lg font-semibold">
                             {findPercentPriceChange(
-                              c.purchasePrice.usd,
+                              c.purchasePrice.currency.currency,
                               c.coin.current_price
                             ) !== NaN ? (
                               findPercentPriceChange(
-                                c.purchasePrice.usd,
+                                c.purchasePrice.currency.currency,
                                 c.coin.current_price
                               )
                             ) : (
@@ -176,7 +179,8 @@ function PortfolioList() {
                             Purchase Price:
                           </div>
                           <div className="text-accent text-lg font-semibold">
-                            {c?.purchasePrice?.usd?.toFixed(2)}
+                            {currency.symbol}{" "}
+                            {c?.purchasePrice?.currency.currency?.toFixed(2)}
                           </div>
                         </div>
                         <div className="p-3">

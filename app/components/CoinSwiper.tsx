@@ -6,20 +6,19 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./coin-swiper.css";
-import { addChartCoin, removeChartCoin } from "@/redux/charts/chartsSlice";
-import { useDispatch } from "react-redux";
+import { useAppSelector } from "@/redux/hooks";
 
 export const CoinSwiper = ({ handleClick, combinedChartCoins }) => {
-  const dispatch = useDispatch();
+  const currency = useAppSelector((state) => state.currency);
 
   const { data: allCoinsData, error, isError, isLoading } = useGetAllCoinsQuery(
     {
-      currency: "usd",
+      currency: `${currency.currency}`,
       sortValue: "volume_desc",
     }
   );
 
-  let top10Coins = [];
+  let top10Coins: any[] = [];
   if (allCoinsData !== null && typeof allCoinsData === "object") {
     top10Coins = Object.values(allCoinsData)?.slice(0, 10);
   }
@@ -56,7 +55,10 @@ export const CoinSwiper = ({ handleClick, combinedChartCoins }) => {
                       <div>
                         {coin.name}({coin.symbol.toUpperCase()})
                       </div>
-                      <div>{coin.current_price}</div>
+                      <div>
+                        {currency.symbol}
+                        {coin.current_price}
+                      </div>
                       <div className="flex items-center">
                         {coin?.price_change_percentage_1h_in_currency > 0 ? (
                           <ArrowUp className="h-3" />
