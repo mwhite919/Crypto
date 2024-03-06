@@ -20,7 +20,7 @@ const Row = styled.div`
 function PortfolioList() {
   const listCoins = useSelector((state) => state.portfolio.coins);
   const dispatch = useDispatch();
-  let ref = React.useRef();
+  const ref = React.useRef();
 
   const [currency, setCurrency] = useState("usd");
 
