@@ -26,21 +26,21 @@ export const CoinBarChart = ({ graphData }) => {
       <Tooltip />
 
       <Bar
-        dataKey="yData"
+        dataKey="volume1"
         fill="#8884d8"
         activeBar={<Rectangle fill="pink" stroke="blue" />}
       />
 
       <Bar
-        dataKey="v2"
+        dataKey="volume2"
         fill="green"
-        activeBar={<Rectangle fill="pink" stroke="blue" />}
+        activeBar={<Rectangle fill="blue" stroke="blue" />}
       />
 
       <Bar
-        dataKey="v3"
+        dataKey="volume3"
         fill="blue"
-        activeBar={<Rectangle fill="pink" stroke="blue" />}
+        activeBar={<Rectangle fill="cyan" stroke="blue" />}
       />
     </BarChart>
   );

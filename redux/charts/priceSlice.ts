@@ -13,10 +13,9 @@ export const priceChart = createAsyncThunk(
     }: { coinId: string; coinName: string; currency: string; days: string },
     thunkAPI
   ) => {
-    const url = `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${days}`;
+    const url = `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${days}&x_cg_demo_api_key=CG-du5JzYuTcSZtNRw58BTw3e27`;
     const response = await fetch(url);
     const json = await response.json();
-    console.log("json", json);
     thunkAPI.dispatch(
       addChartCoin({
         id: coinId,

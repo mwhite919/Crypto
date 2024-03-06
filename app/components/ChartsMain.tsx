@@ -72,19 +72,43 @@ export const ChartsMain = () => {
           price2: combinedChartCoins[1]?.prices[index].yData,
         };
       }
+      if (combinedChartCoins.length === 3) {
+        return {
+          time: item.time,
+          price1: item.yData,
+          price2: combinedChartCoins[1]?.prices[index].yData,
+          price3: combinedChartCoins[2]?.prices[index].yData,
+        };
+      }
     }
-  ); // }
-  // if (chartCoins.length === 3) {
-  //   return {
-  //     time: item.time,
-  //     price1: item.price,
-  //     price2: graphDataPricesC2[index]?.price,
-  //     price3: graphDataPricesC3[index]?.price,
-  //   };
-  //     // }
-  //   }
+  );
 
-  console.log("combinedDataPrices", combinedDataPrices);
+  const combinedDataVolume = combinedChartCoins[0]?.volume?.map(
+    (item, index) => {
+      if (combinedChartCoins.length === 1) {
+        return {
+          time: item.time,
+          volume1: item.yData,
+        };
+      }
+
+      if (combinedChartCoins.length === 2) {
+        return {
+          time: item.time,
+          volume1: item.yData,
+          volume2: combinedChartCoins[1]?.volume[index].yData,
+        };
+      }
+      if (combinedChartCoins.length === 3) {
+        return {
+          time: item.time,
+          volume1: item.yData,
+          volume2: combinedChartCoins[1]?.volume[index].yData,
+          volume3: combinedChartCoins[2]?.volume[index].yData,
+        };
+      }
+    }
+  );
 
   // const fixIntervalPrices = every_nth(combinedChartCoins, 30);
   // const mapGraphData = (item) => {
@@ -122,7 +146,7 @@ export const ChartsMain = () => {
         </div>
         <div className="flex">
           <CoinLineChart combinedDataPrices={combinedDataPrices} />
-          <CoinBarChart graphData={combinedChartCoins[0]?.volume} />
+          <CoinBarChart graphData={combinedDataVolume} />
         </div>
         <div>
           <ChartsIntervalButtons />
