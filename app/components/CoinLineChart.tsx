@@ -7,6 +7,7 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  Label,
 } from "recharts";
 import { scaleLog } from "d3-scale";
 
@@ -16,7 +17,7 @@ export const CoinLineChart = ({ combinedDataPrices }) => {
   const { currency, currencySymbol } = useCrypto();
 
   return (
-    <div className="h-96">
+    <div>
       <AreaChart
         width={430}
         height={250}
@@ -40,6 +41,11 @@ export const CoinLineChart = ({ combinedDataPrices }) => {
         </defs>
         <XAxis dataKey="time" />
         <YAxis scale="log" domain={["auto", "auto"]} hide />
+        <Label
+          value="Pages of my website"
+          offset={0}
+          position="insideTopLeft"
+        />
         <Tooltip />
         <Area
           type="monotone"

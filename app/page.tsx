@@ -77,9 +77,7 @@ export default function Page() {
           </RadioGroup.Option>
         </RadioGroup>
       </div>
-      <div>
-        <CoinSwiper />
-      </div>
+
       <div>
         {calculator ? (
           <Converter allCoinsData={allCoinsData} />
