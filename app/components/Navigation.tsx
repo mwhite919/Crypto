@@ -20,7 +20,13 @@ const DropdownRow = styled.div`
   z-index: 1;
 `;
 
-const palettes = ["basic", "teal", "neon-pastel", "rose", "amber"];
+const palettes = [
+  { theme: "Basic", class: "bg-slate-200 text-indigo-900 font-medium" },
+  { theme: "Teal", class: "bg-teal-100 text-teal-900 font-medium" },
+  { theme: "Neon-Pastel", class: "bg-yellow-100 text-green-900 font-medium" },
+  { theme: "Amber", class: "bg-amber-50 text-amber-900 font-medium" },
+  { theme: "Rose", class: "bg-rose-50 text-rose-900 font-medium" },
+];
 const modes = ["light", "dark"];
 
 export default function Navigation() {
@@ -148,9 +154,14 @@ export default function Navigation() {
                 Portfolio
               </Link>
             </div>
-            <div className="mr-5 flex flex-col">
-              <div className="flex justify-end items-center mb-2 ">
-                {user && <div>Signed in under {user?.email}</div>}
+            <div className="flex flex-col content-evenly">
+              <div className="flex justify-end items-center my-1 mr-5">
+                {user && (
+                  <div className="text-accent italic">
+                    Currently signed in under{" "}
+                    <span className="text-accent2">{user?.email}</span>
+                  </div>
+                )}
                 <Link
                   href="/sign-in"
                   className="drop-shadow-md text-accent mx-2 hover:scale-105"
@@ -173,83 +184,86 @@ export default function Navigation() {
                     </button>
                   </Link>
                 )}
-                <div className="flex justify-end items-center mb-2">
-                  <input
-                    value={searchValue ?? ""}
-                    onChange={handleChange}
-                    onKeyDown={handleKeyPress}
-                    placeholder="Search..."
-                    type="text"
-                    className="mx-5 drop-shadow-md rounded-sm pl-3"
-                  />
-                  <div className="absolute">
-                    {searchValue &&
-                      allCoinsData
-                        ?.filter((coin) => {
-                          const name = coin.name.toLowerCase();
-                          const search = searchValue.toLowerCase();
-                          return name.startsWith(search);
-                        })
-                        .map((coin) => {
-                          <div key={coin.id} className="border-slate-300">
-                            <DropdownRow
-                              key={coin.id}
-                              className="bg-second"
-                              onClick={() => handleSearch(coin.id)}
-                            >
-                              {coin.name}
-                            </DropdownRow>
-                          </div>;
-                        })}
-                  </div>
-                  <select
-                    onChange={(e) => handleCurrency(e)}
-                    name="currency"
-                    className="m-5 drop-shadow-md rounded-sm "
-                  >
-                    <option>here</option>
-                    {CurrencyArray?.map((currency) => {
-                      return (
-                        <option key={currency} value={currency}>
-                          {currency}
-                        </option>
-                      );
-                    })}
-                  </select>
-
-                  <select
-                    onChange={(e) => handlePalette(e)}
-                    name="palette"
-                    className="mr-5 my-5 drop-shadow-md rounded-sm "
-                  >
-                    <option>Theme</option>
-                    {palettes?.map((theme) => {
-                      return (
-                        <option key={theme} value={theme}>
-                          {theme}
-                        </option>
-                      );
-                    })}
-                  </select>
-
-                  {mode === "light" ? (
-                    <button
-                      className="mr-5 my-5 border-accent"
-                      value="dark"
-                      onClick={() => handleMode("dark")}
-                    >
-                      <MoonIcon />
-                    </button>
-                  ) : (
-                    <button
-                      className="mr-5 my-5 border-accent"
-                      value="light"
-                      onClick={() => handleMode("light")}
-                    >
-                      <SunIcon />
-                    </button>
-                  )}
+              </div>
+              <div className="flex justify-end items-center my-1">
+                <input
+                  value={searchValue ?? ""}
+                  onChange={handleChange}
+                  onKeyDown={handleKeyPress}
+                  placeholder="Search..."
+                  type="text"
+                  className="ml-5 drop-shadow-xl rounded-lg pl-3"
+                />
+                <div className="absolute">
+                  {searchValue &&
+                    allCoinsData
+                      ?.filter((coin) => {
+                        const name = coin.name.toLowerCase();
+                        const search = searchValue.toLowerCase();
+                        return name.startsWith(search);
+                      })
+                      .map((coin) => {
+                        <div key={coin.id} className="border-slate-300">
+                          <DropdownRow
+                            key={coin.id}
+                            className="bg-second"
+                            onClick={() => handleSearch(coin.id)}
+                          >
+                            {coin.name}
+                          </DropdownRow>
+                        </div>;
+                      })}
                 </div>
+                <select
+                  onChange={(e) => handleCurrency(e)}
+                  name="currency"
+                  className="mx-5 drop-shadow-xl rounded-lg "
+                >
+                  <option>here</option>
+                  {CurrencyArray?.map((currency) => {
+                    return (
+                      <option key={currency} value={currency}>
+                        {currency}
+                      </option>
+                    );
+                  })}
+                </select>
+
+                <select
+                  onChange={(e) => handlePalette(e)}
+                  name="palette"
+                  className="mr-5 drop-shadow-xl rounded-lg"
+                >
+                  {palettes?.map((theme) => {
+                    return (
+                      <option
+                        className={theme.class}
+                        key={theme.theme}
+                        value={theme.theme}
+                      >
+                        {theme.theme}
+                      </option>
+                    );
+                  })}
+                </select>
+
+                {mode === "light" ? (
+                  <button
+                    className="mr-5 my-5 border-accent"
+                    value="dark"
+                    onClick={() => handleMode("dark")}
+                  >
+                    <MoonIcon />
+                  </button>
+                ) : (
+                  <button
+                    className="mr-5 border-accent"
+                    value="light"
+                    onClick={() => handleMode("light")}
+                  >
+                    <SunIcon />
+                  </button>
+                )}
               </div>
             </div>
           </div>

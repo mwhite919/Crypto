@@ -14,7 +14,9 @@ const SignIn = () => {
   } = useCrypto();
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-base theme-${palette} theme-${mode} top-36">
+    <div
+      className={`min-h-screen flex items-center justify-center bg-base theme-${palette} theme-${mode} top-36`}
+    >
       <div className="bg-second p-10 rounded-lg shadow-xl w-96">
         <h1 className="text-accent text-2xl ">Sign In</h1>
         <div className="text-primary my-2">
