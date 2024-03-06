@@ -35,7 +35,7 @@ export default function Page() {
 
   return (
     <div
-      className={`w-screen h-screen bg-base theme-${palette} theme-${mode} flex items-center justify-start flex-col  `}
+      className={`w-window h-dvh bg-base theme-${palette} theme-${mode} flex items-center justify-start flex-col  `}
     >
       <div className="w-full flex justify-end my-8 mr-36 mt-36">
         <button
@@ -52,7 +52,7 @@ export default function Page() {
           </div>
         )}
       </div>
-      <div> Your Assets:</div>
+      <div className="font-medium text-3xl text-accent"> Your Assets:</div>
       <PortfolioList />
     </div>
   );
