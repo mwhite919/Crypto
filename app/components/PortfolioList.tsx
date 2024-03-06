@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { removeCoin } from "@/redux/portfolio/portfolioSlice";
 import styled from "styled-components";
 import { EditIcon, TrashIcon } from "@/app/icons/Icons";
-import CharacterCounter from "./characterCounter";
+import CharacterCounter from "./CharacterCounter";
 
 const Row = styled.div`
   width: 900px;
