@@ -29,14 +29,6 @@ export const priceChart = createAsyncThunk(
 );
 
 const initialState = {
-  //   days: "180",
-  //   volume: [],
-  //   // coinInfo: [],
-  //   // labelsTwo: [],
-  //   // labels: [],
-  //   prices: [],
-  // loading: false,
-  // error: ''
   chartCoins: [],
 };
 
@@ -61,13 +53,6 @@ const priceChartSlice = createSlice({
         state.error = "";
       })
       .addCase(priceChart.fulfilled, (state, action) => {
-        // state.loading = false;
-        // state.coinInfo = action.payload;
-        // const { prices, total_volume } = action.payload;
-        // state.volume = prices.map((arr: [number, number]) => arr[0]);
-        // state.prices = prices.map((arr: [number, number]) => arr[1]);
-        // // state.labelsTwo = market_caps.map((arr: [number, number]) => arr[0]);
-        // // state.market_caps = market_caps.map((arr: [number, number]) => arr[1]);
         state.chartCoins = action.payload;
       })
       .addCase(priceChart.rejected, (state, action) => {
