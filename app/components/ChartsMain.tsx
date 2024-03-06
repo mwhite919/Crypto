@@ -39,6 +39,19 @@ export const ChartsMain = () => {
     );
   };
 
+  useEffect(() => {
+    console.log("useeffect");
+    dispatch(
+      priceChart({
+        currency,
+        coinId: "bitcoin",
+        coinName: "Bitcoin",
+        days: numberOfDays,
+      })
+    );
+    console.log("afterUseEffect", combinedChartCoins);
+  }, [numberOfDays]);
+
   const { handleTime, handleNumberOfDays } = useCrypto();
 
   const combinedDataPrices = combinedChartCoins[0]?.prices?.map(
@@ -54,15 +67,15 @@ export const ChartsMain = () => {
         return {
           time: convertUnixToDate(item.time),
           price1: item.yData,
-          price2: combinedChartCoins[1]?.prices[index].yData,
+          price2: combinedChartCoins[1]?.prices[index]?.yData,
         };
       }
       if (combinedChartCoins.length === 3) {
         return {
           time: convertUnixToDate(item.time),
           price1: item.yData,
-          price2: combinedChartCoins[1]?.prices[index].yData,
-          price3: combinedChartCoins[2]?.prices[index].yData,
+          price2: combinedChartCoins[1]?.prices[index]?.yData,
+          price3: combinedChartCoins[2]?.prices[index]?.yData,
         };
       }
     }
