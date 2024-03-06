@@ -8,7 +8,6 @@ import styled from "styled-components";
 import { CloseIcon, ResetIcon } from "@/app/icons/Icons";
 import axios from "axios";
 import constructWithOptions from "styled-components/dist/constructors/constructWithOptions";
-import CharacterCounter from "./characterCounter";
 
 const DropdownRow = styled.div`
   cursor: pointer;
@@ -179,9 +178,7 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
                   </div>
                   <div className="flex items-center justify-center relative p-8 text-lg font-bold text-second bg-accent font-pj rounded-xl ">
                     <img src={coin.image} className="h-16" />
-                    <span className={CharacterCounter(coin.name.length)}>
-                      {coin.name}
-                    </span>
+                    {coin.name}
                   </div>
                 </div>
               )}
