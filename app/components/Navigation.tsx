@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import {
   useGetAllCoinsQuery,
   useGetTopBarInfoQuery,
@@ -16,8 +16,6 @@ const DropdownRow = styled.div`
   cursor: pointer;
   text-align: start;
   margin: 2px, 0;
-  position: relative;
-  z-index: 1;
 `;
 
 const palettes = [
@@ -39,21 +37,6 @@ export default function Navigation() {
 
   const { data: barData } = useGetTopBarInfoQuery();
 
-  const [searchSelect, setSearchSelect] = useState({ cursor: 0, result: [] });
-
-  function handleKeyDown(e) {
-    const { cursor, result } = searchSelect;
-    if (e.keyCode === 38 && cursor > 0) {
-      setSearchSelect((prevState) => ({
-        cursor: prevState.cursor - 1,
-      }));
-    } else if (e.keyCode === 40 && cursor < result.length - 1) {
-      setSearchSelect((prevState) => ({
-        cursor: prevState.cursor + 1,
-      }));
-    }
-  }
-
   const {
     handleCurrency,
     handleSignOut,
@@ -64,6 +47,8 @@ export default function Navigation() {
     mode,
   } = useCrypto();
   const [searchValue, setSearchValue] = useState("");
+  const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [showResults, setShowResults] = useState(false);
   const marketCoins = barData?.data?.active_cryptocurrencies;
   const totalVolume = Math.floor(barData?.data?.total_volume?.usd);
   const totalMarketCap = Math.floor(barData?.data?.total_market_cap.usd);
@@ -73,11 +58,12 @@ export default function Navigation() {
   const marketCapPercentageETH = barData?.data?.market_cap_percentage?.eth.toFixed(
     2
   );
-
+  const resultContainer = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
   const handleChange = (e) => {
     const inputValue = e.target.value;
+    setShowResults(true);
     setSearchValue(inputValue);
   };
 
@@ -87,13 +73,28 @@ export default function Navigation() {
       const fixString = coinId.replace(/\W+/g, "-");
       return router.push(`/coininfo/${fixString}`);
     }
-    if (!searchValue) {
-      return router.push("/");
-    }
+    if (!searchValue) return resetSearchComplete();
   };
 
+  const resetSearchComplete = useCallback(() => {
+    setSelectedIndex(-1);
+    setShowResults(false);
+  }, []);
+
+  useEffect(() => {
+    if (!resultContainer.current) return;
+    resultContainer.current.scrollIntoView({
+      block: "center",
+    });
+  }, [selectedIndex]);
+
   const handleKeyPress = (e: { key: any }) => {
+    const { key } = e;
+    let nextIndexCount = 0;
+    if (key === "ArrowDown") nextIndexCount = selectedIndex + 1;
+    if (key === "ArrowUp") nextIndexCount = selectedIndex - 1;
     if (e.key === "Enter") return handleSearch(searchValue);
+    setSelectedIndex(nextIndexCount);
   };
 
   return (
@@ -185,33 +186,44 @@ export default function Navigation() {
                 )}
               </div>
               <div className="flex justify-end items-center my-1">
-                <input
-                  value={searchValue ?? ""}
-                  onChange={handleChange}
-                  onKeyDown={handleKeyPress}
-                  placeholder="Search..."
-                  type="text"
-                  className="ml-5 drop-shadow-xl rounded-lg pl-3"
-                />
-                <div className="absolute">
-                  {searchValue &&
-                    allCoinsData
-                      ?.filter((coin) => {
-                        const name = coin.name.toLowerCase();
-                        const search = searchValue.toLowerCase();
-                        return name.startsWith(search);
-                      })
-                      .map((coin) => {
-                        <div key={coin.id} className="border-slate-300">
+                <div>
+                  <input
+                    value={searchValue ?? ""}
+                    onChange={handleChange}
+                    onKeyDown={handleKeyPress}
+                    placeholder="Search..."
+                    type="text"
+                    className="ml-5 drop-shadow-xl rounded-lg pl-3 relative w-44 inline-block focus: border-slate-200"
+                  />
+                  <div className="ml-5 absolute max-h-44 overflow-y-auto w-44">
+                    {showResults &&
+                      allCoinsData
+                        ?.filter((coin) => {
+                          const name = coin.name.toLowerCase();
+                          const search = searchValue.toLowerCase();
+                          return name.startsWith(search);
+                        })
+                        .map((coin, index) => (
                           <DropdownRow
                             key={coin.id}
-                            className="bg-second"
-                            onClick={() => handleSearch(coin.id)}
+                            ref={
+                              index === selectedIndex ? resultContainer : null
+                            }
+                            className={`
+                            cursor-pointer
+                            hover:bg-slate-200
+                             ${
+                               selectedIndex === index
+                                 ? "active bg-slate-200"
+                                 : "bg-white"
+                             }`}
+                            onMouseDown={() => handleSearch(coin)}
+                            onBlur={resetSearchComplete}
                           >
                             {coin.name}
                           </DropdownRow>
-                        </div>;
-                      })}
+                        ))}
+                  </div>
                 </div>
                 <select
                   onChange={(e) => handleCurrency(e)}
