@@ -37,8 +37,8 @@ function PortfolioList() {
     }
   }
 
-  function findPercentPriceChange(p: number, c: number) {
-    const percentageChange = ((c - p) / p) * 100;
+  function findPercentPriceChange(purchasedP: number, currentP: number) {
+    const percentageChange = ((currentP - purchasedP) / purchasedP) * 100;
     return `${percentageChange.toFixed(2)}%`;
   }
 

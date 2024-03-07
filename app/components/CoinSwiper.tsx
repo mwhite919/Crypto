@@ -13,7 +13,7 @@ export const CoinSwiper = ({ handleClick, combinedChartCoins }) => {
 
   const { data: allCoinsData, error, isError, isLoading } = useGetAllCoinsQuery(
     {
-      currency: `${currency.currency}`,
+      currency: currency.currency,
       sortValue: "volume_desc",
     }
   );
