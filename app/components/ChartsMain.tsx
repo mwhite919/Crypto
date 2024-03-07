@@ -38,10 +38,9 @@ export const ChartsMain = () => {
   };
 
   useEffect(() => {
-    console.log("useeffect");
     dispatch(
       priceChart({
-        currency,
+        currency: `${currency.currency}`,
         coinId: "bitcoin",
         coinName: "Bitcoin",
         days: numberOfDays,

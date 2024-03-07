@@ -54,8 +54,12 @@ export default function Navigation() {
   } = useCrypto();
   const [searchValue, setSearchValue] = useState("");
   const marketCoins = barData?.data?.active_cryptocurrencies;
-  const totalVolume = Math.floor(barData?.data?.total_volume?.usd);
-  const totalMarketCap = Math.floor(barData?.data?.total_market_cap.usd);
+  const totalVolume = Math.floor(
+    barData?.data?.total_volume[currency.currency]
+  );
+  const totalMarketCap = Math.floor(
+    barData?.data?.total_market_cap[currency.currency]
+  );
   const marketCapPercentageBTC = barData?.data?.market_cap_percentage?.btc.toFixed(
     2
   );
@@ -88,7 +92,6 @@ export default function Navigation() {
   const handleCurrency = (e) => {
     const value = e.target.value;
     const newCurrency = CurrencyArray.find((c) => c.currency === value);
-    console.log(newCurrency);
     dispatch(
       changeCurr({
         currency: newCurrency.currency,

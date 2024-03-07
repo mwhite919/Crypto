@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { removeCoin } from "@/redux/portfolio/portfolioSlice";
 import styled from "styled-components";
 import { EditIcon, TrashIcon } from "@/app/icons/Icons";
-import CharacterCounter from "./CharacterCounter";
+import CharacterCounter from "./characterCounter";
 import { useAppSelector } from "@/redux/hooks";
 
 const Row = styled.div`
@@ -37,7 +37,7 @@ function PortfolioList() {
     }
   }
 
-  function findPercentPriceChange(p, c) {
+  function findPercentPriceChange(p: number, c: number) {
     const percentageChange = ((c - p) / p) * 100;
     return `${percentageChange.toFixed(2)}%`;
   }
@@ -162,11 +162,11 @@ function PortfolioList() {
                           </div>
                           <div className="text-accent text-lg font-semibold">
                             {findPercentPriceChange(
-                              c.purchasePrice.currency.currency,
+                              parseInt(c.purchasePrice[currency.currency]),
                               c.coin.current_price
-                            ) !== NaN ? (
+                            ) ? (
                               findPercentPriceChange(
-                                c.purchasePrice.currency.currency,
+                                c.purchasePrice[currency.currency],
                                 c.coin.current_price
                               )
                             ) : (
@@ -180,7 +180,9 @@ function PortfolioList() {
                           </div>
                           <div className="text-accent text-lg font-semibold">
                             {currency.symbol}{" "}
-                            {c?.purchasePrice?.currency.currency?.toFixed(2)}
+                            {c?.purchasePrice[
+                              currency.currency.toLowerCase()
+                            ].toFixed(2)}
                           </div>
                         </div>
                         <div className="p-3">

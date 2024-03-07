@@ -3,7 +3,7 @@ import { Coin } from "@/app/sharedinterfaces";
 
 interface PortfolioState {
   value: any;
-  coins: Coin[];
+  coins: any;
 }
 
 const initialState: PortfolioState = {
