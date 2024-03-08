@@ -40,7 +40,6 @@ export const ChartsMain = () => {
   };
 
   useEffect(() => {
-    console.log("useeffect");
     dispatch(
       priceChart({
         currency,
@@ -49,7 +48,6 @@ export const ChartsMain = () => {
         days: numberOfDays,
       })
     );
-    console.log("afterUseEffect", combinedChartCoins);
   }, [numberOfDays]);
 
   const { handleTime, handleNumberOfDays } = useCrypto();
