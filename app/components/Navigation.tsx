@@ -12,17 +12,24 @@ import { CurrencyArray } from "./Currencies";
 import { MoonIcon, SunIcon } from "../icons/Icons";
 import { DropDownRow } from "../utils/DropDownRow";
 import Palettes from "../utils/Palettes";
+import { changeCurr } from "@/redux/currency/currencySlice";
+import { useAppDispatch } from "@/redux/hooks";
+import { useAppSelector } from "@/redux/hooks";
+
 
 export default function Navigation() {
-  const { data: allCoinsData, or, isError, isLoading } = useGetAllCoinsQuery({
-    currency: "usd",
-    sortValue: "volume_desc",
-  });
+  const currency = useAppSelector((state) => state.currency);
+  const { data: allCoinsData, error, isError, isLoading } = useGetAllCoinsQuery(
+    {
+      currency: `${currency.currency}`,
+      sortValue: "volume_desc",
+    }
+  );
 
   const { data: barData } = useGetTopBarInfoQuery();
+  const dispatch = useAppDispatch();
 
   const {
-    handleCurrency,
     handleSignOut,
     user,
     handlePalette,
@@ -34,8 +41,12 @@ export default function Navigation() {
   const [focusedIndex, setFocusedIndex] = useState(-1);
   const [showResults, setShowResults] = useState(false);
   const marketCoins = barData?.data?.active_cryptocurrencies;
-  const totalVolume = Math.floor(barData?.data?.total_volume?.usd);
-  const totalMarketCap = Math.floor(barData?.data?.total_market_cap.usd);
+  const totalVolume = Math.floor(
+    barData?.data?.total_volume[currency.currency]
+  );
+  const totalMarketCap = Math.floor(
+    barData?.data?.total_market_cap[currency.currency]
+  );
   const marketCapPercentageBTC = barData?.data?.market_cap_percentage?.btc.toFixed(
     2
   );
@@ -108,6 +119,18 @@ export default function Navigation() {
     if (!selectedItem) return resetSearchComplete();
     handleSearch(selectedItem.key);
     resetSearchComplete();
+  };
+
+  const handleCurrency = (e) => {
+    const value = e.target.value;
+    const newCurrency = CurrencyArray.find((c) => c.currency === value);
+    dispatch(
+      changeCurr({
+        currency: newCurrency.currency,
+        symbol: newCurrency.symbol,
+        name: newCurrency.name,
+      })
+    );
   };
 
   return (
@@ -214,20 +237,19 @@ export default function Navigation() {
                   </div>
                 </div>
                 <select
-                  onChange={(e) => handleCurrency(e)}
                   name="currency"
-                  className="mx-5 drop-shadow-xl rounded-lg "
+                  className="mx-5 drop-shadow-xl rounded-lg p-0.5"
+                  onChange={handleCurrency}
                 >
-                  <option>here</option>
-                  {CurrencyArray?.map((currency) => {
+                  {CurrencyArray?.map((c) => {
                     return (
-                      <option key={currency} value={currency}>
-                        {currency}
+                      <option key={c.currency} value={c.currency}>
+                        {c.currency}
+                        {"  "} {c.name}
                       </option>
                     );
                   })}
                 </select>
-
                 <select
                   onChange={(e) => handlePalette(e)}
                   name="palette"

@@ -3,6 +3,7 @@ import portfolioReducer from "./portfolio/portfolioSlice";
 import chartCoinsReducer from "./charts/chartsSlice";
 import { coinGeckoApi } from "@/app/Providers/api/apiSlice";
 import priceChartSliceReducer from "./charts/priceSlice";
+import currencySliceReducer from "./currency/currencySlice";
 
 export const makeStore = () => {
   return configureStore({
@@ -11,6 +12,7 @@ export const makeStore = () => {
       portfolio: portfolioReducer,
       chartCoins: chartCoinsReducer,
       priceChart: priceChartSliceReducer,
+      currency: currencySliceReducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(coinGeckoApi.middleware),

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { ExchangeIcon } from "../icons/Icons";
+import { useAppSelector } from "@/redux/hooks";
 
 const DropdownRow = styled.div`
   cursor: pointer;
@@ -13,11 +14,11 @@ const ConverterBox = styled.div`
 `;
 
 const Converter = ({ allCoinsData }) => {
+  const currency = useAppSelector((state) => state.currency);
   const [value1, setValue1] = useState("");
   const [value2, setValue2] = useState("");
   const [coin1, setCoin1] = useState(allCoinsData[0]);
   const [coin2, setCoin2] = useState(allCoinsData[1]);
-  const [currencySymbol, setCurrencySymbol] = useState("$");
   const [variable1, setvariable1] = useState("0");
   const [variable2, setvariable2] = useState("0");
 
@@ -81,7 +82,7 @@ const Converter = ({ allCoinsData }) => {
           <div className="pl-5">
             {coin1 && (
               <div className="text-sm">
-                1{coin1.symbol.toUpperCase()}={currencySymbol}
+                1{coin1.symbol.toUpperCase()}={currency.symbol}
                 {coin1.current_price}
               </div>
             )}
@@ -144,7 +145,7 @@ const Converter = ({ allCoinsData }) => {
         <div className="pl-5">
           {coin2 && (
             <div className="text-sm">
-              1{coin2.symbol.toUpperCase()}={currencySymbol}
+              1{coin2.symbol.toUpperCase()}={currency.symbol}
               {coin2.current_price}
             </div>
           )}

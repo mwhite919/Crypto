@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useGetAllCoinsQuery } from "./Providers/api/apiSlice";
 import { useCrypto } from "./Providers/CryptoProvider";
+import { useAppSelector } from "@/redux/hooks";
 import CoinRow from "./components/CoinRow";
 import ChartsMain from "./components/ChartsMain";
 import Converter from "./components/Converter";
@@ -23,12 +24,13 @@ const Row = styled.div`
 `;
 
 export default function Page() {
-  const { currency, currencySymbol, palette, mode } = useCrypto();
+  const currency = useAppSelector((state) => state.currency);
+  const { palette, mode } = useCrypto();
   const [calculator, setCalculator] = useState(false);
 
   const { data: allCoinsData, error, isError, isLoading } = useGetAllCoinsQuery(
     {
-      currency: "usd",
+      currency: `${currency.currency}`,
       sortValue: "volume_desc",
     }
   );
@@ -106,9 +108,9 @@ export default function Page() {
         </Row>
       </div>
       <div>
-        {allCoinsData?.map((coin, index, currency) => (
+        {allCoinsData?.map((coin, index) => (
           <div key={coin.id}>
-            <CoinRow coin={coin} index={index + 1} currency={currency} />
+            <CoinRow coin={coin} index={index + 1} />
           </div>
         ))}
       </div>
