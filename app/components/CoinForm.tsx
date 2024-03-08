@@ -139,13 +139,6 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
     }
   };
 
-  // const handleKeyPress = (e: { key: any }) => {
-  //   if (e.key === "Enter") {
-  //     return;
-  //     handleSubmit();
-  //   }
-  // };
-
   const resetSearchComplete = useCallback(() => {
     setFocusedIndex(-1);
     setShowResults(false);
