@@ -47,7 +47,7 @@ export default function Navigation() {
     mode,
   } = useCrypto();
   const [searchValue, setSearchValue] = useState("");
-  const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [focusedIndex, setFocusedIndex] = useState(-1);
   const [showResults, setShowResults] = useState(false);
   const marketCoins = barData?.data?.active_cryptocurrencies;
   const totalVolume = Math.floor(barData?.data?.total_volume?.usd);
@@ -69,15 +69,15 @@ export default function Navigation() {
 
   const handleSearch = (coinId) => {
     if (searchValue) {
-      setSearchValue("");
       const fixString = coinId.replace(/\W+/g, "-");
+      setSearchValue("");
       return router.push(`/coininfo/${fixString}`);
     }
     if (!searchValue) return resetSearchComplete();
   };
 
   const resetSearchComplete = useCallback(() => {
-    setSelectedIndex(-1);
+    setFocusedIndex(-1);
     setShowResults(false);
   }, []);
 
@@ -86,15 +86,45 @@ export default function Navigation() {
     resultContainer.current.scrollIntoView({
       block: "center",
     });
-  }, [selectedIndex]);
+  }, [focusedIndex]);
 
   const handleKeyPress = (e: { key: any }) => {
     const { key } = e;
     let nextIndexCount = 0;
-    if (key === "ArrowDown") nextIndexCount = selectedIndex + 1;
-    if (key === "ArrowUp") nextIndexCount = selectedIndex - 1;
-    if (e.key === "Enter") return handleSearch(searchValue);
-    setSelectedIndex(nextIndexCount);
+    if (key === "ArrowDown") nextIndexCount = focusedIndex + 1;
+    if (key === "ArrowUp") nextIndexCount = focusedIndex - 1;
+    if (e.key === "Enter") return handleSelection(focusedIndex);
+    setFocusedIndex(nextIndexCount);
+  };
+
+  const filteredCoinsArray = allCoinsData?.filter((coin) => {
+    const name = coin.name.toLowerCase();
+    const search = searchValue.toLowerCase();
+    return name.startsWith(search);
+  });
+
+  const mappedCoinsArray = filteredCoinsArray?.map((coin, index) => (
+    <DropdownRow
+      key={coin.id}
+      ref={index === focusedIndex ? resultContainer : null}
+      className={`
+    cursor-pointer
+    hover:bg-slate-200
+     ${focusedIndex === index ? "active bg-slate-200" : "bg-white"}`}
+      onMouseDown={() => handleSelection(index)}
+      onBlur={resetSearchComplete}
+    >
+      {coin.name}
+    </DropdownRow>
+  ));
+
+  const handleSelection = (selectedIndex: number) => {
+    const selectedItem = mappedCoinsArray[selectedIndex];
+    console.log(selectedItem, searchValue, focusedIndex);
+    setSearchValue(selectedItem.key);
+    if (!selectedItem) return resetSearchComplete();
+    handleSearch(selectedItem.key);
+    resetSearchComplete();
   };
 
   return (
@@ -196,33 +226,7 @@ export default function Navigation() {
                     className="ml-5 drop-shadow-xl rounded-lg pl-3 relative w-44 inline-block focus: border-slate-200"
                   />
                   <div className="ml-5 absolute max-h-44 overflow-y-auto w-44">
-                    {showResults &&
-                      allCoinsData
-                        ?.filter((coin) => {
-                          const name = coin.name.toLowerCase();
-                          const search = searchValue.toLowerCase();
-                          return name.startsWith(search);
-                        })
-                        .map((coin, index) => (
-                          <DropdownRow
-                            key={coin.id}
-                            ref={
-                              index === selectedIndex ? resultContainer : null
-                            }
-                            className={`
-                            cursor-pointer
-                            hover:bg-slate-200
-                             ${
-                               selectedIndex === index
-                                 ? "active bg-slate-200"
-                                 : "bg-white"
-                             }`}
-                            onMouseDown={() => handleSearch(coin)}
-                            onBlur={resetSearchComplete}
-                          >
-                            {coin.name}
-                          </DropdownRow>
-                        ))}
+                    {showResults && mappedCoinsArray}
                   </div>
                 </div>
                 <select

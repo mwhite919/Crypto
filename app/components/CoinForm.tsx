@@ -197,35 +197,38 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
                     Please choose a coin.
                   </p>
                 )}
-                <input
-                  value={searchValue ? searchValue : coin.name || ""}
-                  onChange={handleSearchChange}
-                  onKeyDown={handleKeyPress}
-                  placeholder={"Start typing to find your coin..."}
-                  type="text"
-                  className={`mx-3 drop-shadow-md rounded-sm pl-3 w-72 shadow-md ${
-                    missingCoin ? "border-2 mb-2 border-rose-600" : "my-3"
-                  }`}
-                />
-                <div className="absolute">
-                  {searchValue &&
-                    allCoinsData
-                      .filter((item) => {
-                        const name = item.name.toLowerCase();
-                        const search = searchValue.toLowerCase();
-                        return name.startsWith(search);
-                      })
-                      .map((item) => (
-                        <div key={item.id} className="border-slate-300">
-                          <DropdownRow
-                            key={item.id}
-                            className="bg-second"
-                            onClick={() => handleSearch(item)}
-                          >
-                            {item.name}
-                          </DropdownRow>
-                        </div>
-                      ))}
+
+                <div>
+                  <input
+                    value={searchValue ? searchValue : coin.name || ""}
+                    onChange={handleSearchChange}
+                    onKeyDown={handleKeyPress}
+                    placeholder={"Start typing to find your coin..."}
+                    type="text"
+                    className={`mx-3 drop-shadow-md rounded-sm pl-3 w-72 shadow-md ${
+                      missingCoin ? "border-2 mb-2 border-rose-600" : "my-3"
+                    }`}
+                  />
+                  <div className="absolute">
+                    {searchValue &&
+                      allCoinsData
+                        .filter((item) => {
+                          const name = item.name.toLowerCase();
+                          const search = searchValue.toLowerCase();
+                          return name.startsWith(search);
+                        })
+                        .map((item) => (
+                          <div key={item.id} className="border-slate-300">
+                            <DropdownRow
+                              key={item.id}
+                              className="bg-second"
+                              onClick={() => handleSearch(item)}
+                            >
+                              {item.name}
+                            </DropdownRow>
+                          </div>
+                        ))}
+                  </div>
                 </div>
                 {numError && (
                   <p
