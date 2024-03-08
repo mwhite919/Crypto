@@ -27,17 +27,14 @@ const chartCoinsSlice = createSlice({
           prices: action.payload.prices.map(mapGraphData),
           volume: action.payload.volume.map(mapGraphData),
         };
-        console.log("round1");
         state.chartCoins.push(chartCoin);
         return;
       }
-
       if (state.chartCoins.find((c) => c.id === action.payload.id)) {
         if (state.chartCoins.length === 1) return;
         state.chartCoins = state.chartCoins.filter(
           (c) => c.id !== action.payload.id
         );
-        console.log("round2");
       } else {
         if (state.chartCoins.length >= 3) {
           return state;
@@ -50,9 +47,6 @@ const chartCoinsSlice = createSlice({
           volume: action.payload.volume.map(mapGraphData),
         };
         state.chartCoins.push(chartCoin);
-        {
-          console.log("round3");
-        }
       }
     },
   },

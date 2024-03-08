@@ -14,6 +14,7 @@ import { CoinSwiper } from "./CoinSwiper";
 import { addChartCoin } from "@/redux/charts/chartsSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { priceChart } from "@/redux/charts/priceSlice";
+import { timeInterval } from "@/redux/charts/timeIntervalSlice";
 
 export const ChartsMain = () => {
   const [currency, setCurrency] = useState("usd");
@@ -40,7 +41,6 @@ export const ChartsMain = () => {
   };
 
   useEffect(() => {
-    console.log("useeffect");
     dispatch(
       priceChart({
         currency,
@@ -49,8 +49,19 @@ export const ChartsMain = () => {
         days: numberOfDays,
       })
     );
-    console.log("afterUseEffect", combinedChartCoins);
   }, [numberOfDays]);
+
+  useEffect(() => {
+    dispatch(
+      timeInterval({
+        chartCoins: combinedChartCoins,
+        currency: "usd",
+        coinId: "bitcoin",
+        coinName: "Bitcoin",
+        days: "10",
+      })
+    );
+  }, [combinedChartCoins]);
 
   const { handleTime, handleNumberOfDays } = useCrypto();
 
