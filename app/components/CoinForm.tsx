@@ -1,22 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { addCoin } from "@/redux/portfolio/portfolioSlice";
-import { useCrypto } from "@/app/Providers/CryptoProvider";
-import styled from "styled-components";
 import { CloseIcon, ResetIcon } from "@/app/icons/Icons";
 import axios from "axios";
-import constructWithOptions from "styled-components/dist/constructors/constructWithOptions";
 import CharacterCounter from "./characterCounter";
-
-const DropdownRow = styled.div`
-  cursor: pointer;
-  text-align: start;
-  margin: 2px, 0;
-  position: relative;
-  z-index: 1;
-`;
+import { DropDownRow } from "../utils/DropDownRow";
 
 export const CoinForm = ({ allCoinsData, handleForm }) => {
   const [coin, setCoin] = useState({});
@@ -29,7 +19,9 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
   const [numError, setnumError] = useState(false);
   const [purchasePrice, setPurchasePrice] = useState("");
   const [purchasePriceError, setPurchasePriceError] = useState(false);
-
+  const [focusedIndex, setFocusedIndex] = useState(-1);
+  const [showResults, setShowResults] = useState(false);
+  const resultContainer = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
@@ -104,6 +96,7 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
     }
     const inputValue = e.target.value;
     setSearchValue(inputValue);
+    setShowResults(true);
   };
 
   const handleBlur = (e) => {
@@ -117,6 +110,7 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
       }
     }
     setMissingAmount(!amount);
+    setShowResults(false);
   };
 
   const handleDateBlur = (e) => {
@@ -136,7 +130,7 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
 
   const handleSearch = (searchedCoin) => {
     if (searchValue) {
-      setSearchValue("");
+      setSearchValue(searchedCoin.name);
       setCoin(searchedCoin);
       setMissingCoin(false);
     }
@@ -145,11 +139,56 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
     }
   };
 
+  const resetSearchComplete = useCallback(() => {
+    setFocusedIndex(-1);
+    setShowResults(false);
+  }, []);
+
+  useEffect(() => {
+    if (!resultContainer.current) return;
+    resultContainer.current.scrollIntoView({
+      block: "center",
+    });
+  }, [focusedIndex]);
+
   const handleKeyPress = (e: { key: any }) => {
-    if (e.key === "Enter") {
-      return;
-      handleSubmit();
-    }
+    const { key } = e;
+    let nextIndexCount = 0;
+    if (key === "ArrowDown") nextIndexCount = focusedIndex + 1;
+    if (key === "ArrowUp") nextIndexCount = focusedIndex - 1;
+    if (e.key === "Enter") return handleSelection(focusedIndex);
+    setFocusedIndex(nextIndexCount);
+  };
+
+  const filteredCoinsArray = allCoinsData?.filter((coin) => {
+    const name = coin.name.toLowerCase();
+    const search = searchValue.toLowerCase();
+    const coins = name.startsWith(search);
+    return coins;
+  });
+
+  const mappedCoinsArray = filteredCoinsArray?.map((coin, index) => (
+    <DropDownRow
+      key={coin.id}
+      ref={index === focusedIndex ? resultContainer : null}
+      className={`
+    cursor-pointer
+    hover:bg-slate-200
+     ${focusedIndex === index ? "active bg-slate-200" : "bg-white"}`}
+      onMouseDown={() => handleSelection(index)}
+      onBlur={resetSearchComplete}
+    >
+      {coin.name}
+    </DropDownRow>
+  ));
+
+  const handleSelection = (selectedIndex: number) => {
+    const selectedItem = filteredCoinsArray[selectedIndex];
+    setCoin(selectedItem);
+    setSearchValue(selectedItem.name);
+    if (!selectedItem) return resetSearchComplete();
+    handleSearch(selectedItem);
+    resetSearchComplete();
   };
 
   return (
@@ -172,7 +211,7 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
           </div>
           <div className=" w-full flex justify-center items-center ">
             <div className="h-48 w-1/2 flex items-center justify-center p-10 ">
-              {coin.name && (
+              {coin?.name && (
                 <div className="relative ">
                   <div className="absolute -inset-5">
                     <div className="w-full h-full max-w-sm mx-auto lg:mx-0 opacity-30 blur-lg bg-gradient-to-r from-second to-primary"></div>
@@ -197,35 +236,21 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
                     Please choose a coin.
                   </p>
                 )}
-                <input
-                  value={searchValue ? searchValue : coin.name || ""}
-                  onChange={handleSearchChange}
-                  onKeyDown={handleKeyPress}
-                  placeholder={"Start typing to find your coin..."}
-                  type="text"
-                  className={`mx-3 drop-shadow-md rounded-sm pl-3 w-72 shadow-md ${
-                    missingCoin ? "border-2 mb-2 border-rose-600" : "my-3"
-                  }`}
-                />
-                <div className="absolute">
-                  {searchValue &&
-                    allCoinsData
-                      .filter((item) => {
-                        const name = item.name.toLowerCase();
-                        const search = searchValue.toLowerCase();
-                        return name.startsWith(search);
-                      })
-                      .map((item) => (
-                        <div key={item.id} className="border-slate-300">
-                          <DropdownRow
-                            key={item.id}
-                            className="bg-second"
-                            onClick={() => handleSearch(item)}
-                          >
-                            {item.name}
-                          </DropdownRow>
-                        </div>
-                      ))}
+
+                <div>
+                  <input
+                    value={searchValue ? searchValue : ""}
+                    onChange={handleSearchChange}
+                    onKeyDown={handleKeyPress}
+                    onBlur={resetSearchComplete}
+                    placeholder={"Start typing to find your coin..."}
+                    type="text"
+                    className={`mx-3 drop-shadow-md rounded-sm pl-3 w-72 shadow-md relative inline-block focus: border-slate-200
+                    ${missingCoin ? "border-2 mb-2 border-rose-600" : "my-3"}`}
+                  />
+                  <div className="mx-3 absolute max-h-44 overflow-y-auto w-72">
+                    {showResults && mappedCoinsArray}
+                  </div>
                 </div>
                 {numError && (
                   <p

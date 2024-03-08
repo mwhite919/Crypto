@@ -87,7 +87,7 @@ const Converter = ({ allCoinsData }) => {
               </div>
             )}
             <input
-              className="border-black my-4 rounded-md bg-second relative inline-block bg-slate-100"
+              className="border-black my-4 rounded-md relative inline-block bg-slate-100"
               value={value1}
               onChange={onChange1}
               placeholder="Search Coins..."

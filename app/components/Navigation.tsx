@@ -1,36 +1,21 @@
 "use client";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import {
   useGetAllCoinsQuery,
   useGetTopBarInfoQuery,
 } from "@/app/Providers/api/apiSlice";
 import aveta from "aveta";
-import styled from "styled-components";
 import { useRouter } from "next/navigation";
 import { useCrypto } from "../Providers/CryptoProvider";
 import { CurrencyArray } from "./Currencies";
 import { MoonIcon, SunIcon } from "../icons/Icons";
+import { DropDownRow } from "../utils/DropDownRow";
+import Palettes from "../utils/Palettes";
 import { changeCurr } from "@/redux/currency/currencySlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { useAppSelector } from "@/redux/hooks";
 
-const DropdownRow = styled.div`
-  cursor: pointer;
-  text-align: start;
-  margin: 2px, 0;
-  position: relative;
-  z-index: 1;
-`;
-
-const palettes = [
-  { theme: "Basic", class: "bg-slate-200 text-indigo-900 font-medium" },
-  { theme: "Teal", class: "bg-teal-100 text-teal-900 font-medium" },
-  { theme: "Neon-Pastel", class: "bg-yellow-100 text-green-900 font-medium" },
-  { theme: "Amber", class: "bg-amber-50 text-amber-900 font-medium" },
-  { theme: "Rose", class: "bg-rose-50 text-rose-900 font-medium" },
-];
-const modes = ["light", "dark"];
 
 export default function Navigation() {
   const currency = useAppSelector((state) => state.currency);
@@ -53,6 +38,8 @@ export default function Navigation() {
     mode,
   } = useCrypto();
   const [searchValue, setSearchValue] = useState("");
+  const [focusedIndex, setFocusedIndex] = useState(-1);
+  const [showResults, setShowResults] = useState(false);
   const marketCoins = barData?.data?.active_cryptocurrencies;
   const totalVolume = Math.floor(
     barData?.data?.total_volume[currency.currency]
@@ -66,27 +53,72 @@ export default function Navigation() {
   const marketCapPercentageETH = barData?.data?.market_cap_percentage?.eth.toFixed(
     2
   );
-
+  const resultContainer = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
   const handleChange = (e) => {
     const inputValue = e.target.value;
+    setShowResults(true);
     setSearchValue(inputValue);
   };
 
   const handleSearch = (coinId) => {
     if (searchValue) {
-      setSearchValue("");
       const fixString = coinId.replace(/\W+/g, "-");
+      setSearchValue("");
       return router.push(`/coininfo/${fixString}`);
     }
-    if (!searchValue) {
-      return router.push("/");
-    }
+    if (!searchValue) return resetSearchComplete();
   };
 
+  const resetSearchComplete = useCallback(() => {
+    setFocusedIndex(-1);
+    setShowResults(false);
+  }, []);
+
+  useEffect(() => {
+    if (!resultContainer.current) return;
+    resultContainer.current.scrollIntoView({
+      block: "center",
+    });
+  }, [focusedIndex]);
+
   const handleKeyPress = (e: { key: any }) => {
-    if (e.key === "Enter") return handleSearch(searchValue);
+    const { key } = e;
+    let nextIndexCount = 0;
+    if (key === "ArrowDown") nextIndexCount = focusedIndex + 1;
+    if (key === "ArrowUp") nextIndexCount = focusedIndex - 1;
+    if (e.key === "Enter") return handleSelection(focusedIndex);
+    setFocusedIndex(nextIndexCount);
+  };
+
+  const filteredCoinsArray = allCoinsData?.filter((coin) => {
+    const name = coin.name.toLowerCase();
+    const search = searchValue.toLowerCase();
+    return name.startsWith(search);
+  });
+
+  const mappedCoinsArray = filteredCoinsArray?.map((coin, index) => (
+    <DropDownRow
+      key={coin.id}
+      ref={index === focusedIndex ? resultContainer : null}
+      className={`
+    cursor-pointer
+    hover:bg-slate-200
+     ${focusedIndex === index ? "active bg-slate-200" : "bg-white"}`}
+      onMouseDown={() => handleSelection(index)}
+      onBlur={resetSearchComplete}
+    >
+      {coin.name}
+    </DropDownRow>
+  ));
+
+  const handleSelection = (selectedIndex: number) => {
+    const selectedItem = filteredCoinsArray[selectedIndex];
+    setSearchValue(selectedItem.id);
+    if (!selectedItem) return resetSearchComplete();
+    handleSearch(selectedItem.key);
+    resetSearchComplete();
   };
 
   const handleCurrency = (e) => {
@@ -190,33 +222,19 @@ export default function Navigation() {
                 )}
               </div>
               <div className="flex justify-end items-center my-1">
-                <input
-                  value={searchValue ?? ""}
-                  onChange={handleChange}
-                  onKeyDown={handleKeyPress}
-                  placeholder="Search..."
-                  type="text"
-                  className="ml-5 drop-shadow-xl rounded-lg pl-3"
-                />
-                <div className="absolute">
-                  {searchValue &&
-                    allCoinsData
-                      ?.filter((coin) => {
-                        const name = coin.name.toLowerCase();
-                        const search = searchValue.toLowerCase();
-                        return name.startsWith(search);
-                      })
-                      .map((coin) => {
-                        <div key={coin.id} className="border-slate-300">
-                          <DropdownRow
-                            key={coin.id}
-                            className="bg-second"
-                            onClick={() => handleSearch(coin.id)}
-                          >
-                            {coin.name}
-                          </DropdownRow>
-                        </div>;
-                      })}
+                <div>
+                  <input
+                    value={searchValue ?? ""}
+                    onBlur={resetSearchComplete}
+                    onChange={handleChange}
+                    onKeyDown={handleKeyPress}
+                    placeholder="Search..."
+                    type="text"
+                    className="ml-5 drop-shadow-xl rounded-lg pl-3 relative w-44 inline-block focus: border-slate-200"
+                  />
+                  <div className="ml-5 absolute max-h-44 overflow-y-auto w-44">
+                    {showResults && mappedCoinsArray}
+                  </div>
                 </div>
                 <select
                   name="currency"
@@ -237,7 +255,7 @@ export default function Navigation() {
                   name="palette"
                   className="mr-5 drop-shadow-xl rounded-lg"
                 >
-                  {palettes?.map((theme) => {
+                  {Palettes?.map((theme) => {
                     return (
                       <option
                         className={theme.class}

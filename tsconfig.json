@@ -21,6 +21,15 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/Providers/CryptoProvider.tsx", "app/Providers/CryptoProvider.tsx", "app/Providers/CryptoProvider.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "app/Providers/CryptoProvider.tsx",
+    "app/Providers/CryptoProvider.tsx",
+    "app/Providers/CryptoProvider.tsx",
+    "app/utils/DropDownRow.js"
+  ],
   "exclude": ["node_modules"]
 }
