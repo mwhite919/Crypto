@@ -188,13 +188,11 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
       {coin.name}
     </DropDownRow>
   ));
-  console.log("all", allCoinsData, "filtered", filteredCoinsArray, showResults);
 
   const handleSelection = (selectedIndex: number) => {
     const selectedItem = filteredCoinsArray[selectedIndex];
     setCoin(selectedItem);
     setSearchValue(selectedItem.name);
-    console.log("selectedItem", selectedItem);
     if (!selectedItem) return resetSearchComplete();
     handleSearch(selectedItem);
     resetSearchComplete();
