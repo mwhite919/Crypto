@@ -6,34 +6,18 @@ import {
   useGetTopBarInfoQuery,
 } from "@/app/Providers/api/apiSlice";
 import aveta from "aveta";
-import styled from "styled-components";
 import { useRouter } from "next/navigation";
 import { useCrypto } from "../Providers/CryptoProvider";
 import { CurrencyArray } from "./Currencies";
 import { MoonIcon, SunIcon } from "../icons/Icons";
-
-const DropdownRow = styled.div`
-  cursor: pointer;
-  text-align: start;
-  margin: 2px, 0;
-`;
-
-const palettes = [
-  { theme: "Basic", class: "bg-slate-200 text-indigo-900 font-medium" },
-  { theme: "Teal", class: "bg-teal-100 text-teal-900 font-medium" },
-  { theme: "Neon-Pastel", class: "bg-yellow-100 text-green-900 font-medium" },
-  { theme: "Amber", class: "bg-amber-50 text-amber-900 font-medium" },
-  { theme: "Rose", class: "bg-rose-50 text-rose-900 font-medium" },
-];
-const modes = ["light", "dark"];
+import { DropDownRow } from "../utils/DropDownRow";
+import Palettes from "../utils/Palettes";
 
 export default function Navigation() {
-  const { data: allCoinsData, error, isError, isLoading } = useGetAllCoinsQuery(
-    {
-      currency: "usd",
-      sortValue: "volume_desc",
-    }
-  );
+  const { data: allCoinsData, or, isError, isLoading } = useGetAllCoinsQuery({
+    currency: "usd",
+    sortValue: "volume_desc",
+  });
 
   const { data: barData } = useGetTopBarInfoQuery();
 
@@ -104,7 +88,7 @@ export default function Navigation() {
   });
 
   const mappedCoinsArray = filteredCoinsArray?.map((coin, index) => (
-    <DropdownRow
+    <DropDownRow
       key={coin.id}
       ref={index === focusedIndex ? resultContainer : null}
       className={`
@@ -115,13 +99,12 @@ export default function Navigation() {
       onBlur={resetSearchComplete}
     >
       {coin.name}
-    </DropdownRow>
+    </DropDownRow>
   ));
 
   const handleSelection = (selectedIndex: number) => {
-    const selectedItem = mappedCoinsArray[selectedIndex];
-    console.log(selectedItem, searchValue, focusedIndex);
-    setSearchValue(selectedItem.key);
+    const selectedItem = filteredCoinsArray[selectedIndex];
+    setSearchValue(selectedItem.id);
     if (!selectedItem) return resetSearchComplete();
     handleSearch(selectedItem.key);
     resetSearchComplete();
@@ -219,6 +202,7 @@ export default function Navigation() {
                 <div>
                   <input
                     value={searchValue ?? ""}
+                    onBlur={resetSearchComplete}
                     onChange={handleChange}
                     onKeyDown={handleKeyPress}
                     placeholder="Search..."
@@ -249,7 +233,7 @@ export default function Navigation() {
                   name="palette"
                   className="mr-5 drop-shadow-xl rounded-lg"
                 >
-                  {palettes?.map((theme) => {
+                  {Palettes?.map((theme) => {
                     return (
                       <option
                         className={theme.class}
