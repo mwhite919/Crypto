@@ -37,7 +37,7 @@ export const CoinSwiper = ({ handleClick, combinedChartCoins }) => {
         <div>
           <Slider {...settings}>
             {top10Coins?.map((coin) => (
-              <div key={coin.id}>
+              <div key={coin?.id}>
                 <div>
                   <div
                     className={`bg-second flex items-center justify-start text-xs ml-2 my-2 h-20 p-3 drop-shadow-md rounded-md 
@@ -49,15 +49,15 @@ export const CoinSwiper = ({ handleClick, combinedChartCoins }) => {
                     onClick={() => handleClick(coin)}
                   >
                     <div>
-                      <img className="w-9 m-4" src={coin.image} />
+                      <img className="w-9 m-4" src={coin?.image} />
                     </div>
                     <div className="flex flex-col">
                       <div>
-                        {coin.name}({coin.symbol.toUpperCase()})
+                        {coin?.name}({coin?.symbol.toUpperCase()})
                       </div>
                       <div>
                         {currency.symbol}
-                        {coin.current_price}
+                        {coin?.current_price}
                       </div>
                       <div className="flex items-center">
                         {coin?.price_change_percentage_1h_in_currency > 0 ? (

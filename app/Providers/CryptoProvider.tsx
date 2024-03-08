@@ -42,12 +42,9 @@ function useStickyState(
 }
 
 export default function CryptoProvider({ children }) {
-  const [currency, setCurrency] = useState("USD");
-  const [currencySymbol, setCurrencySymbol] = useState("$");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [sortValue, setSortValue] = useState("volume_desc");
-  const [numberOfDays, setNumberOfDays] = useState("7");
   const [user] = useAuthState(auth);
   const userSession = localStorage.getItem("user");
   const router = useRouter();
@@ -94,14 +91,6 @@ export default function CryptoProvider({ children }) {
   );
   const [mode, setMode] = useStickyState(modes[0], "theme-mode" || "light");
 
-  function handleTime(value: string) {
-    setNumberOfDays(value);
-  }
-
-  function handleCurrency(e: string) {
-    setCurrency(e.target.value);
-  }
-
   function handleSort(e: string) {
     setSortValue(e.target.value);
   }
@@ -122,10 +111,6 @@ export default function CryptoProvider({ children }) {
     setPassword(e.target.value);
   }
 
-  function handleNumberOfDays(e: string) {
-    setNumberOfDays(e.target.value);
-  }
-
   function handleSignOut() {
     signOut(auth);
     localStorage.removeItem("user");
@@ -138,13 +123,7 @@ export default function CryptoProvider({ children }) {
   return (
     <CryptoContext.Provider
       value={{
-        currency,
-        handleCurrency,
-        currencySymbol,
         handleSort,
-        handleTime,
-        numberOfDays,
-        handleNumberOfDays,
         handleSignOut,
         handleSignIn,
         email,

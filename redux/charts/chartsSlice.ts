@@ -51,9 +51,23 @@ const chartCoinsSlice = createSlice({
         }
       }
     },
+    updateAllCoins: (state, action: any) => {
+      const newArray = state.chartCoins.map((chartCoin, index) => {
+        chartCoin.id = chartCoin.id;
+        chartCoin.coinName = chartCoin.coinName;
+        chartCoin[index].prices = action.payload[index].prices.map(
+          mapGraphData
+        );
+        chartCoin[index].volume = action.payload[index].total_volume.map(
+          mapGraphData
+        );
+      });
+      state.chartCoins = newArray;
+      console.log(newArray);
+    },
   },
 });
 
-export const { addChartCoin } = chartCoinsSlice.actions;
+export const { addChartCoin, updateAllCoins } = chartCoinsSlice.actions;
 
 export default chartCoinsSlice.reducer;

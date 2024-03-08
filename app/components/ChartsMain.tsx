@@ -8,19 +8,16 @@ import { CoinBarChart } from "./CoinBarChart";
 import { every_nth } from "./Every_nth";
 import ChartsIntervalButtons from "./ChartsIntervalButtons";
 import { convertUnixToDate } from "./UnixTimeConverter";
-import { useGetChartInfoQuery } from "../Providers/api/apiSlice";
-import { useDispatch, useSelector } from "react-redux";
 import { CoinSwiper } from "./CoinSwiper";
-import { addChartCoin } from "@/redux/charts/chartsSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { priceChart } from "@/redux/charts/priceSlice";
+import { timeInterval } from "@/redux/charts/timeSlice";
 
 export const ChartsMain = () => {
   const currency = useAppSelector((state) => state.currency);
-  const [coinInput, setCoinInput] = useState("bitcoin");
   const [numberOfDays, setNumberOfDays] = useState("7");
 
-  const combinedChartCoins = useSelector(
+  const combinedChartCoins = useAppSelector(
     (state) => state.chartCoins.chartCoins
   );
 
@@ -29,7 +26,7 @@ export const ChartsMain = () => {
   const handleClick = (coin) => {
     dispatch(
       priceChart({
-        currency,
+        currency: currency.currency,
         coinId: coin.id,
         coinName: coin.name,
         days: numberOfDays,
@@ -48,7 +45,21 @@ export const ChartsMain = () => {
     );
   }, [numberOfDays]);
 
-  const { handleTime, handleNumberOfDays } = useCrypto();
+  useEffect(() => {
+    dispatch(
+      timeInterval({
+        chartCoins: combinedChartCoins,
+        currency: currency.currency,
+        coinId: "bitcoin",
+        coinName: "Bitcoin",
+        days: numberOfDays,
+      })
+    );
+  }, [numberOfDays]);
+
+  function handleNumberOfDays(value) {
+    setNumberOfDays(value);
+  }
 
   const combinedDataPrices = combinedChartCoins[0]?.prices?.map(
     (item, index) => {
@@ -117,8 +128,8 @@ export const ChartsMain = () => {
         </div>
         <div>
           These coins:{" "}
-          {combinedChartCoins.map((c) => {
-            return <div key={c.coinName}>{c.coinName}</div>;
+          {combinedChartCoins?.map((c) => {
+            return <div key={c?.coinName}>{c?.coinName}</div>;
           })}
         </div>
         <div className="flex">
@@ -126,7 +137,10 @@ export const ChartsMain = () => {
           <CoinBarChart graphData={combinedDataVolume} />
         </div>
         <div>
-          <ChartsIntervalButtons />
+          <ChartsIntervalButtons
+            handleNumberOfDays={handleNumberOfDays}
+            numberOfDays={numberOfDays}
+          />
         </div>
       </div>
     </>

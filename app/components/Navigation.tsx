@@ -11,11 +11,10 @@ import { useCrypto } from "../Providers/CryptoProvider";
 import { CurrencyArray } from "./Currencies";
 import { MoonIcon, SunIcon } from "../icons/Icons";
 import { DropDownRow } from "../utils/DropDownRow";
-import Palettes from "../utils/Palettes";
+import { Palettes } from "../utils/Palettes";
 import { changeCurr } from "@/redux/currency/currencySlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { useAppSelector } from "@/redux/hooks";
-
 
 export default function Navigation() {
   const currency = useAppSelector((state) => state.currency);
