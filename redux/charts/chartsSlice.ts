@@ -10,8 +10,6 @@ interface ChartCoinsState {
 
 const initialState: ChartCoinsState = {
   chartCoins: [],
-  prices: [],
-  volume: [],
 };
 
 const chartCoinsSlice = createSlice({
@@ -52,18 +50,15 @@ const chartCoinsSlice = createSlice({
       }
     },
     updateAllCoins: (state, action: any) => {
-      const newArray = state.chartCoins.map((chartCoin, index) => {
+      state.chartCoins.map((chartCoin, index) => {
         chartCoin.id = chartCoin.id;
         chartCoin.coinName = chartCoin.coinName;
-        chartCoin[index].prices = action.payload[index].prices.map(
-          mapGraphData
-        );
-        chartCoin[index].volume = action.payload[index].total_volume.map(
+        chartCoin.time = chartCoin.time;
+        chartCoin.prices = action.payload[index].data.prices.map(mapGraphData);
+        chartCoin.volume = action.payload[index].data.total_volumes.map(
           mapGraphData
         );
       });
-      state.chartCoins = newArray;
-      console.log(newArray);
     },
   },
 });
