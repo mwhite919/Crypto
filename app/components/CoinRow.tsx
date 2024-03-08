@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useRouter } from "next/navigation";
 import { AreaChart, Area, XAxis, YAxis, Tooltip, Legend } from "recharts";
 import ArrowDown, { ArrowUp } from "../icons/Icons";
+import { useAppSelector } from "@/redux/hooks";
 
 const Row = styled.div`
   width: 1010px;
@@ -16,6 +17,8 @@ const Row = styled.div`
 `;
 
 export default function CoinRow({ coin, index }) {
+  const currency = useAppSelector((state) => state.currency);
+
   const oneHourPercent = coin?.price_change_percentage_1h_in_currency?.toFixed(
     2
   );
@@ -76,7 +79,10 @@ export default function CoinRow({ coin, index }) {
       <div className="w-40 cursor-pointer mx-10 flex justify-start items-center hover:scale-105">
         <div onClick={() => handleRoute(coin.id)}>{coin.name}</div>
       </div>
-      <div className="w-20  flex justify-start items-center">${coinPrice}</div>
+      <div className="w-20  flex justify-start items-center">
+        {currency.symbol}
+        {coinPrice}
+      </div>
       <div className="w-20  ml-5 flex justify-start items-center">
         {oneHourPercent < 0 ? <ArrowDown /> : <ArrowUp />}
         {oneHourPercent}%

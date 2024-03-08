@@ -1,4 +1,3 @@
-import { useCrypto } from "@/app/Providers/CryptoProvider";
 import {
   AreaChart,
   Area,
@@ -9,13 +8,8 @@ import {
   ResponsiveContainer,
   Label,
 } from "recharts";
-import { scaleLog } from "d3-scale";
-
-const scale = scaleLog().base(Math.E);
 
 export const CoinLineChart = ({ combinedDataPrices }) => {
-  const { currency, currencySymbol } = useCrypto();
-
   return (
     <div>
       <AreaChart
