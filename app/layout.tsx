@@ -20,10 +20,8 @@ export default function RootLayout({
       <body>
         <StoreProvider>
           <CryptoProvider>
-            {/* <PortFolioProvider> */}
             <Navigation />
             {children}
-            {/* </PortFolioProvider> */}
           </CryptoProvider>
         </StoreProvider>
       </body>
