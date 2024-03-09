@@ -121,7 +121,7 @@ export const ChartsMain = () => {
             return <div key={c.coinName}>{c.coinName}</div>;
           })}
         </div>
-        <div className="flex">
+        <div className="flex items-center justify-center">
           <CoinLineChart combinedDataPrices={combinedDataPrices} />
           <CoinBarChart graphData={combinedDataVolume} />
         </div>
