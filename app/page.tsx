@@ -27,10 +27,11 @@ export default function Page() {
   const currency = useAppSelector((state) => state.currency);
   const { palette, mode } = useCrypto();
   const [converter, setConverter] = useState(false);
-  const [sortValue, setSortValue] = useState("price_desc");
+  const [sortValue, setSortValue] = useState("market_cap_desc");
   const [sortByVolume, setSortByVolume] = useState(true);
   const [sortByMarketCap, setSortByMarketCap] = useState(false);
   const [sortById, setSortById] = useState(false);
+  const [sortByPrice, setSortByPrice] = useState(false);
 
   const { data: allCoinsData, error, isError, isLoading } = useGetAllCoinsQuery(
     {
@@ -40,13 +41,39 @@ export default function Page() {
   );
 
   const handleSort = (value) => {
+    setSortValue(value);
     if (value === "volume") {
       setSortByVolume(!sortByVolume);
+      if (sortByVolume) {
+        setSortValue("volume_desc");
+      } else {
+        setSortValue("volume_asc");
+      }
     }
-    if (value === "market") {
+    if (value === "marketcap") {
       setSortByMarketCap(!sortByMarketCap);
+      if (sortByMarketCap) {
+        setSortValue("market_cap_desc");
+      } else {
+        setSortValue("market_cap_asc");
+      }
     }
-    setSortValue(value);
+    if (value === "id") {
+      setSortById(!sortById);
+      if (sortById) {
+        setSortValue("id_desc");
+      } else {
+        setSortValue("id_asc");
+      }
+    }
+    if (value === "price") {
+      setSortByPrice(!sortByPrice);
+      if (sortByPrice) {
+        setSortValue("price_desc");
+      } else {
+        setSortValue("price_asc");
+      }
+    }
   };
 
   return (
@@ -107,14 +134,52 @@ export default function Page() {
         <Row className="bg-second flex shadow-md">
           <div className="w-3 m-3">#</div>
           <div className="w-8 max-h-8 ml-2"></div>
-          <div className="w-40 ml-8 flex justify-start items-center">Name</div>
-          <div className="w-20">Price</div>
+          <div
+            onClick={() => handleSort("id")}
+            className={`cursor-pointer w-40 ml-8 flex justify-start items-center ${
+              sortValue === "id_asc" || sortValue === "id_desc"
+                ? "font-semibold"
+                : ""
+            } hover:scale-105`}
+          >
+            Name
+          </div>
+          <div
+            onClick={() => handleSort("price")}
+            className={`cursor-pointer w-20  ${
+              sortValue === "price_asc" || sortValue === "price_desc"
+                ? "font-semibold"
+                : ""
+            } hover:scale-105`}
+          >
+            Price
+          </div>
           <div className="w-20 ml-5">1h%</div>
           <div className="w-20 ml-5">24hr%</div>
           <div className="w-20 ml-5">7d%</div>
           <div className="w-32 ml-5">
-            <span onClick={() => handleSort()}>24h Volume/</span> <br></br>
-            Market Cap
+            <span
+              className={`cursor-pointer  ${
+                sortValue === "volume_asc" || sortValue === "volume_desc"
+                  ? "font-semibold"
+                  : ""
+              } hover:scale-105`}
+              onClick={() => handleSort("volume")}
+            >
+              24h Volume/
+            </span>{" "}
+            <br></br>
+            <span
+              className={`cursor-pointer  ${
+                sortValue === "market_cap_asc" ||
+                sortValue === "market_cap_desc"
+                  ? "font-semibold"
+                  : ""
+              } hover:scale-105`}
+              onClick={() => handleSort("marketcap")}
+            >
+              Market Cap
+            </span>
           </div>
           <div className="w-32 ml-5">
             Circulating/<br></br> Total Supply
