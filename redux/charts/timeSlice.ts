@@ -1,7 +1,6 @@
 "use client";
 
-import { useAppSelector } from "../hooks";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import { updateAllCoins } from "./chartsSlice";
 
 export const timeInterval = createAsyncThunk(
@@ -32,42 +31,3 @@ export const timeInterval = createAsyncThunk(
     });
   }
 );
-
-const initialState = {
-  chartCoins: [],
-  currency: "usd",
-  numberOfDays: 7,
-};
-
-// const timeIntervalSlice = createSlice({
-//   name: "timeInterval",
-//   initialState,
-//   reducers: {
-//     changeTimeInterval: (state, action) => {
-//     chartCoins.
-//     },
-//     setPrices: (state, action) => {
-//       state.prices = action.payload;
-//     },
-//     setVolume: (state, action) => {
-//       state.total_volume = action.payload;
-//     },
-//   },
-//   extraReducers: (builder) => {
-//     builder
-//       .addCase(priceChart.pending, (state, action) => {
-//         state.loading = true;
-//         state.error = "";
-//       })
-//       .addCase(priceChart.fulfilled, (state, action) => {
-//         state.chartCoins = action.payload;
-//       })
-//       .addCase(priceChart.rejected, (state, action) => {
-//         state.loading = false;
-//         state.error = action.error.message ?? "An unkown error occurrfetchData";
-//       });
-//   },
-// // });
-
-// // export const { setDays, setVolume, setPrices } = priceChartSlice.actions;
-// export default timeIntervalSlice.reducer;

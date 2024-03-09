@@ -8,17 +8,15 @@ import {
 import { auth } from "@/app/firebase/config";
 import { signOut } from "firebase/auth";
 import { useRouter } from "next/navigation";
+import { Palettes } from "../utils/Palettes";
 
 export const CryptoContext = createContext();
-
 export function useCrypto() {
   const value = useContext(CryptoContext);
   return value;
 }
 
-const palettes = ["basic", "teal", "neon-pastel", "rose", "amber"];
 const modes = ["light", "dark"];
-
 function useStickyState(
   defaultValue: string | undefined,
   key: string
@@ -86,7 +84,7 @@ export default function CryptoProvider({ children }) {
   };
 
   const [palette, setPalette] = useStickyState(
-    palettes[0],
+    Palettes[0],
     "theme-palette" || "basic"
   );
   const [mode, setMode] = useStickyState(modes[0], "theme-mode" || "light");

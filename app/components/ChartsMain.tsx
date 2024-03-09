@@ -2,10 +2,8 @@
 
 import React from "react";
 import { useState, useEffect } from "react";
-import { useCrypto } from "@/app/Providers/CryptoProvider";
 import { CoinLineChart } from "./CoinLineChart";
 import { CoinBarChart } from "./CoinBarChart";
-import { every_nth } from "./Every_nth";
 import ChartsIntervalButtons from "./ChartsIntervalButtons";
 import { convertUnixToDate } from "./UnixTimeConverter";
 import { CoinSwiper } from "./CoinSwiper";
@@ -43,19 +41,17 @@ export const ChartsMain = () => {
         days: numberOfDays,
       })
     );
-  }, [numberOfDays]);
+  }, []);
 
   useEffect(() => {
     dispatch(
       timeInterval({
         chartCoins: combinedChartCoins,
         currency: currency.currency,
-        coinId: "bitcoin",
-        coinName: "Bitcoin",
         days: numberOfDays,
       })
     );
-  }, [numberOfDays]);
+  }, [numberOfDays, currency]);
 
   function handleNumberOfDays(value) {
     setNumberOfDays(value);

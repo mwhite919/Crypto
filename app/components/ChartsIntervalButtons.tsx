@@ -1,6 +1,4 @@
 import { RadioGroup } from "@headlessui/react";
-import { useCrypto } from "@/app/Providers/CryptoProvider";
-
 export default function ChartsIntervalButtons({
   handleNumberOfDays,
   numberOfDays,
@@ -24,6 +22,7 @@ export default function ChartsIntervalButtons({
       >
         {times.map((time) => (
           <RadioGroup.Option
+            key={time.value}
             className={({ active, checked }) =>
               `${
                 active
