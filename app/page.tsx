@@ -26,14 +26,28 @@ const Row = styled.div`
 export default function Page() {
   const currency = useAppSelector((state) => state.currency);
   const { palette, mode } = useCrypto();
-  const [calculator, setCalculator] = useState(false);
+  const [converter, setConverter] = useState(false);
+  const [sortValue, setSortValue] = useState("price_desc");
+  const [sortByVolume, setSortByVolume] = useState(true);
+  const [sortByMarketCap, setSortByMarketCap] = useState(false);
+  const [sortById, setSortById] = useState(false);
 
   const { data: allCoinsData, error, isError, isLoading } = useGetAllCoinsQuery(
     {
-      currency: `${currency.currency}`,
-      sortValue: "volume_desc",
+      currency: currency.currency,
+      sortValue: sortValue,
     }
   );
+
+  const handleSort = (value) => {
+    if (value === "volume") {
+      setSortByVolume(!sortByVolume);
+    }
+    if (value === "market") {
+      setSortByMarketCap(!sortByMarketCap);
+    }
+    setSortValue(value);
+  };
 
   return (
     <div
@@ -46,8 +60,8 @@ export default function Page() {
       <div>
         <RadioGroup
           className="flex items-center justify-center m-5 text-base "
-          value={calculator}
-          onChange={setCalculator}
+          value={converter}
+          onChange={setConverter}
         >
           <RadioGroup.Option
             className={({ active, checked }) =>
@@ -81,7 +95,7 @@ export default function Page() {
       </div>
 
       <div>
-        {calculator ? (
+        {converter ? (
           <Converter allCoinsData={allCoinsData} />
         ) : (
           <div>
@@ -99,7 +113,8 @@ export default function Page() {
           <div className="w-20 ml-5">24hr%</div>
           <div className="w-20 ml-5">7d%</div>
           <div className="w-32 ml-5">
-            24h Volume/<br></br>Market Cap
+            <span onClick={() => handleSort()}>24h Volume/</span> <br></br>
+            Market Cap
           </div>
           <div className="w-32 ml-5">
             Circulating/<br></br> Total Supply
