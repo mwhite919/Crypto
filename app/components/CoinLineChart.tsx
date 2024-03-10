@@ -8,8 +8,26 @@ import {
   ResponsiveContainer,
   Label,
 } from "recharts";
+import { useCrypto } from "../Providers/CryptoProvider";
+
+const lineGraphStyling = {
+  Basic: {
+    strokeColor: "blue",
+    stopColor1: "green",
+    stopColor2: "red",
+  },
+  Teal: {
+    strokeColor: "eal",
+    stopColor1: "orange",
+    stopColor2: "yellow",
+  },
+};
 
 export const CoinLineChart = ({ combinedDataPrices, combinedChartCoins }) => {
+  const { palette, mode } = useCrypto();
+
+  const colorsGroup = lineGraphStyling[palette];
+  console.log(colorsGroup, colorsGroup?.stopColor2);
   return (
     <div className="bg-second text-xs p-2 m-1">
       <AreaChart
@@ -21,8 +39,16 @@ export const CoinLineChart = ({ combinedDataPrices, combinedChartCoins }) => {
       >
         <defs>
           <linearGradient id="color1" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#7105f5" stopOpacity={0.8} />
-            <stop offset="95%" stopColor="#6c31e0" stopOpacity={0} />
+            <stop
+              offset="5%"
+              stopColor={colorsGroup?.stopColor1}
+              stopOpacity={0.8}
+            />
+            <stop
+              offset="95%"
+              stopColor={colorsGroup?.stopColor2}
+              stopOpacity={0}
+            />
           </linearGradient>
           <linearGradient id="color2" x1="0" y1="0" x2="0" y2="1">
             <stop offset="5%" stopColor="#7517F8" stopOpacity={0.8} />
@@ -35,18 +61,14 @@ export const CoinLineChart = ({ combinedDataPrices, combinedChartCoins }) => {
         </defs>
         <XAxis dataKey="time" />
         <YAxis scale="log" domain={["auto", "auto"]} hide />
-        <Label
-          value="Pages of my website"
-          offset={0}
-          position="insideTopLeft"
-        />
+
         <Legend verticalAlign="top" align="left" height={36} />
         <Tooltip />
         <Area
           name={combinedChartCoins[0]?.coinName}
           type="monotone"
           dataKey="price1"
-          stroke="#82ca9d"
+          stroke={colorsGroup?.strokeColor}
           fillOpacity={1}
           fill="url(#color1)"
         />
