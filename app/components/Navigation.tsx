@@ -9,13 +9,18 @@ import aveta from "aveta";
 import { useRouter } from "next/navigation";
 import { useCrypto } from "../Providers/CryptoProvider";
 import { CurrencyArray } from "./Currencies";
-import { MoonIcon, SunIcon } from "../icons/Icons";
+import {
+  CoinStackIcon,
+  HomeIcon,
+  MoonIcon,
+  StackIcon,
+  SunIcon,
+} from "../icons/Icons";
 import { DropDownRow } from "../utils/DropDownRow";
-import Palettes from "../utils/Palettes";
+import { Palettes } from "../utils/Palettes";
 import { changeCurr } from "@/redux/currency/currencySlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { useAppSelector } from "@/redux/hooks";
-
 
 export default function Navigation() {
   const currency = useAppSelector((state) => state.currency);
@@ -42,7 +47,7 @@ export default function Navigation() {
   const [showResults, setShowResults] = useState(false);
   const marketCoins = barData?.data?.active_cryptocurrencies;
   const totalVolume = Math.floor(
-    barData?.data?.total_volume[currency.currency]
+    parseInt(barData?.data?.total_volume[currency.currency])
   );
   const totalMarketCap = Math.floor(
     barData?.data?.total_market_cap[currency.currency]
@@ -138,8 +143,11 @@ export default function Navigation() {
       <nav
         className={`flex flex-col justify-center fixed top-0 z-50 theme-${palette} theme-${mode}`}
       >
-        <div className="flex items-center justify-center bg-accent ">
-          <div className="mx-4 text-second">Coins:{marketCoins}</div>
+        <div className="flex items-center justify-center p-px text-xs bg-navColor">
+          <div className=" flex items-center mx-4 text-second">
+            <CoinStackIcon />
+            Coins:{marketCoins}
+          </div>
           <div className="mx-4 text-second">
             {totalVolume && aveta(totalVolume)}
           </div>
@@ -148,6 +156,10 @@ export default function Navigation() {
           </div>
 
           <div className="mx-4 text-second flex items-center justify-center">
+            <img
+              src="https://i.ibb.co/VpjD7V6/Bitcoin-svg.png"
+              className="h-4 w-4"
+            />{" "}
             <div>BTC {marketCapPercentageBTC}%</div>
             <div className="h-2 w-20 bg-base">
               <div
@@ -159,6 +171,10 @@ export default function Navigation() {
 
           <div>
             <div className="mx-4 text-second flex items-center justify-center">
+              <img
+                src="https://i.ibb.co/3Spb2vB/Ethereum-icon-purple-svg.png"
+                className="h-4 w-4"
+              />{" "}
               <div>ETH {marketCapPercentageETH}%</div>
               <div>
                 <div className="min-h-2 w-20 bg-base">
@@ -171,23 +187,31 @@ export default function Navigation() {
             </div>
           </div>
         </div>
-        <div className="bg-second">
+        <div className="bg-second text-sm">
           <div className="flex justify-between items-center w-screen  ">
             <div className="flex justify-between items-center min-w-fit ml-5">
-              <div className="m-5 drop-shadow-md">
-                <img src="https://i.ibb.co/RBwgfPy/Logo.png" alt="logo"></img>
+              <div className="mx-2 drop-shadow-md">
+                <Link
+                  href="/"
+                  className="flex items-center mx-2 drop-shadow-md text-accent hover:scale-105"
+                >
+                  {" "}
+                  <img src="https://i.ibb.co/RBwgfPy/Logo.png" alt="logo"></img>
+                </Link>
               </div>
               <Link
                 href="/"
-                className="m-5 drop-shadow-md text-accent hover:scale-105"
+                className="flex items-center mx-2 drop-shadow-md text-accent hover:scale-105"
               >
-                Home
+                <HomeIcon />
+                <p className="ml-2">Home</p>
               </Link>
               <Link
                 href="/portfolio"
-                className="m-5 drop-shadow-md text-accent hover:scale-105"
+                className="flex items-center mx-2 drop-shadow-md text-accent hover:scale-105"
               >
-                Portfolio
+                <StackIcon />
+                <p className="ml-2">Portfolio</p>
               </Link>
             </div>
             <div className="flex flex-col content-evenly">
@@ -221,7 +245,7 @@ export default function Navigation() {
                   </Link>
                 )}
               </div>
-              <div className="flex justify-end items-center my-1">
+              <div className="flex justify-end items-center mb-2 ">
                 <div>
                   <input
                     value={searchValue ?? ""}
@@ -270,7 +294,7 @@ export default function Navigation() {
 
                 {mode === "light" ? (
                   <button
-                    className="mr-5 my-5 border-accent"
+                    className="mr-2  border-accent"
                     value="dark"
                     onClick={() => handleMode("dark")}
                   >

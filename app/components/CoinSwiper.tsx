@@ -5,7 +5,7 @@ import ArrowDown, { ArrowUp } from "@/app/icons/Icons";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import "./coin-swiper.css";
+import "@/app/utils/coin-swiper.css";
 import { useAppSelector } from "@/redux/hooks";
 
 export const CoinSwiper = ({ handleClick, combinedChartCoins }) => {
@@ -40,35 +40,39 @@ export const CoinSwiper = ({ handleClick, combinedChartCoins }) => {
               <div key={coin.id}>
                 <div>
                   <div
-                    className={`bg-second flex items-center justify-start text-xs ml-2 my-2 h-20 p-3 drop-shadow-md rounded-md 
+                    className={`flex items-center justify-start text-xs ml-2 my-2 h-16 p-3 drop-shadow-md rounded-md cursor-pointer
                     ${
                       combinedChartCoins?.find((c) => c.id === coin.id)
-                        ? "border-2 border-accent hover:scale-105"
-                        : "hover:scale-105"
+                        ? "border-2 border-accentLight bg-accent text-second hover:scale-105"
+                        : "bg-second hover:scale-105"
                     }`}
                     onClick={() => handleClick(coin)}
                   >
                     <div>
-                      <img className="w-9 m-4" src={coin.image} />
+                      <img className="w-7 m-2" src={coin.image} />
                     </div>
-                    <div className="flex flex-col">
-                      <div>
-                        {coin.name}({coin.symbol.toUpperCase()})
+                    <div className="flex flex-col justify-center items-even h-full text-sm">
+                      <div className="font-semibold mb-0.5 ">
+                        {coin.name.substring(0, 11)}
+                        {"  "}({coin.symbol.toUpperCase()})
                       </div>
-                      <div>
-                        {currency.symbol}
-                        {coin.current_price}
-                      </div>
-                      <div className="flex items-center">
-                        {coin?.price_change_percentage_1h_in_currency > 0 ? (
-                          <ArrowUp className="h-3" />
-                        ) : (
-                          <ArrowDown className="h-3" />
-                        )}
-                        {coin?.price_change_percentage_1h_in_currency.toFixed(
-                          2
-                        )}
-                        %
+                      <div className="flex">
+                        {" "}
+                        <div>
+                          {currency.symbol}
+                          {coin.current_price.toFixed(2)}
+                        </div>
+                        <div className="flex items-center ml-1">
+                          {coin?.price_change_percentage_1h_in_currency > 0 ? (
+                            <ArrowUp className="h-3" />
+                          ) : (
+                            <ArrowDown className="h-3" />
+                          )}
+                          {coin?.price_change_percentage_1h_in_currency.toFixed(
+                            2
+                          )}
+                          %
+                        </div>
                       </div>
                     </div>
                   </div>

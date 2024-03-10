@@ -105,31 +105,31 @@ export const ChartsMain = () => {
   );
 
   return (
-    <>
-      <div className="flex flex-col my-12">
-        <div></div>
-        <div></div>
-        <div>
-          <CoinSwiper
-            handleClick={handleClick}
-            combinedChartCoins={combinedChartCoins}
-          />
-        </div>
-        <div>
-          These coins:{" "}
-          {combinedChartCoins.map((c) => {
-            return <div key={c.coinName}>{c.coinName}</div>;
-          })}
-        </div>
-        <div className="flex">
-          <CoinLineChart combinedDataPrices={combinedDataPrices} />
-          <CoinBarChart graphData={combinedDataVolume} />
-        </div>
-        <div>
-          <ChartsIntervalButtons />
-        </div>
+    <div className="flex flex-col justify-center items-center my-3">
+      <div></div>
+      <div className="text-xs flex items-center justify-center w-full mt-2">
+        Select the currency to view statistics
       </div>
-    </>
+      <div>
+        <CoinSwiper
+          handleClick={handleClick}
+          combinedChartCoins={combinedChartCoins}
+        />
+      </div>
+      <div>
+        These coins:{" "}
+        {combinedChartCoins.map((c) => {
+          return <div key={c.coinName}>{c.coinName}</div>;
+        })}
+      </div>
+      <div className="flex">
+        <CoinLineChart combinedDataPrices={combinedDataPrices} />
+        <CoinBarChart graphData={combinedDataVolume} />
+      </div>
+      <div>
+        <ChartsIntervalButtons />
+      </div>
+    </div>
   );
 };
 

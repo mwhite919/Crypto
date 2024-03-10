@@ -45,7 +45,7 @@ export default function Page() {
       </div>
       <div>
         <RadioGroup
-          className="flex items-center justify-center m-5 text-base "
+          className="flex items-center justify-center mx-5 text-sm "
           value={calculator}
           onChange={setCalculator}
         >
@@ -56,8 +56,12 @@ export default function Page() {
                   ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300 hover:scale-105"
                   : ""
               }
-                      ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 w-36 m-1 justify-center shadow-md focus:outline-none hover:scale-105`
+                      ${
+                        checked
+                          ? "bg-accent text-white"
+                          : "bg-white text-accent"
+                      }
+                        relative flex cursor-pointer rounded-lg px-3 py-2 w-36 m-1 justify-center shadow-md focus:outline-none hover:scale-105`
             }
             value={false}
           >
@@ -70,8 +74,12 @@ export default function Page() {
                   ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300 hover:scale-105"
                   : ""
               }
-                      ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 m-1 w-36 justify-center shadow-md focus:outline-none hover:scale-105`
+                      ${
+                        checked
+                          ? "bg-accent text-white"
+                          : "bg-white text-accent"
+                      }
+                        relative flex cursor-pointer rounded-lg px-3 py-2 m-1 w-36 justify-center shadow-md focus:outline-none hover:scale-105`
             }
             value={true}
           >
@@ -79,7 +87,6 @@ export default function Page() {
           </RadioGroup.Option>
         </RadioGroup>
       </div>
-
       <div>
         {calculator ? (
           <Converter allCoinsData={allCoinsData} />
@@ -107,6 +114,7 @@ export default function Page() {
           <div className="ml-4">Last 7d</div>
         </Row>
       </div>
+
       <div>
         {allCoinsData?.map((coin, index) => (
           <div key={coin.id}>

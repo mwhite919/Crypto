@@ -11,14 +11,15 @@ import {
 export const CoinBarChart = ({ graphData }) => {
   return (
     <BarChart
+      className="bg-second text-xs p-2 m-1"
       width={430}
       height={250}
       data={graphData}
       margin={{
-        top: 5,
+        top: 10,
         right: 30,
-        left: 20,
-        bottom: 5,
+        left: 30,
+        bottom: 10,
       }}
     >
       <XAxis domain={["auto", "auto"]} dataKey="time" />

@@ -11,12 +11,12 @@ import {
 
 export const CoinLineChart = ({ combinedDataPrices }) => {
   return (
-    <div>
+    <div className="bg-second text-xs p-2 m-1">
       <AreaChart
         width={430}
         height={250}
         data={combinedDataPrices}
-        margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+        margin={{ top: 10, right: 30, left: 30, bottom: 10 }}
         syncMethod={"value"}
       >
         <defs>
