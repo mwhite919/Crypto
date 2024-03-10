@@ -30,19 +30,6 @@
   --color-nav: theme("colors.teal.900");
 }
 
-.theme-Neon-Pastel {
-  --color-base: theme("colors.emerald.50");
-  --color-inverse: theme("colors.slate.900");
-  --color-primary: theme("colors.rose.500");
-  --color-second: theme("colors.teal.100");
-  --color-second-inverse: theme("colors.lime.400");
-  --color-accent: theme("colors.yellow.200");
-  --color-accentShadow: theme("colors.teal.200");
-  --color-accentLight: theme("colors.teal.800");
-  --color-accent2: theme("colors.blue.600");
-  --color-nav: theme("colors.teal.900");
-}
-
 .theme-Rose {
   --color-base: theme("colors.rose.200");
   --color-inverse: theme("colors.rose.900");
