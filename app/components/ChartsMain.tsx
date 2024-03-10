@@ -48,6 +48,7 @@ export const ChartsMain = () => {
     );
   }, [numberOfDays]);
 
+  console.log(combinedChartCoins);
   const { handleTime, handleNumberOfDays } = useCrypto();
 
   const combinedDataPrices = combinedChartCoins[0]?.prices?.map(
@@ -106,9 +107,8 @@ export const ChartsMain = () => {
 
   return (
     <div className="flex flex-col justify-center items-center my-3">
-      <div></div>
       <div className="text-xs flex items-center justify-center w-full mt-2">
-        Select the currency to view statistics
+        Select currency to view statistics
       </div>
       <div>
         <CoinSwiper
@@ -116,15 +116,15 @@ export const ChartsMain = () => {
           combinedChartCoins={combinedChartCoins}
         />
       </div>
-      <div>
-        These coins:{" "}
-        {combinedChartCoins.map((c) => {
-          return <div key={c.coinName}>{c.coinName}</div>;
-        })}
-      </div>
-      <div className="flex">
-        <CoinLineChart combinedDataPrices={combinedDataPrices} />
-        <CoinBarChart graphData={combinedDataVolume} />
+      <div className="flex mt-4">
+        <CoinLineChart
+          combinedDataPrices={combinedDataPrices}
+          combinedChartCoins={combinedChartCoins}
+        />
+        <CoinBarChart
+          graphData={combinedDataVolume}
+          combinedChartCoins={combinedChartCoins}
+        />
       </div>
       <div>
         <ChartsIntervalButtons />

@@ -9,7 +9,7 @@ import {
   Label,
 } from "recharts";
 
-export const CoinLineChart = ({ combinedDataPrices }) => {
+export const CoinLineChart = ({ combinedDataPrices, combinedChartCoins }) => {
   return (
     <div className="bg-second text-xs p-2 m-1">
       <AreaChart
@@ -40,28 +40,36 @@ export const CoinLineChart = ({ combinedDataPrices }) => {
           offset={0}
           position="insideTopLeft"
         />
+        <Legend verticalAlign="top" align="left" height={36} />
         <Tooltip />
         <Area
+          name={combinedChartCoins[0]?.coinName}
           type="monotone"
           dataKey="price1"
           stroke="#82ca9d"
           fillOpacity={1}
           fill="url(#color1)"
         />
-        <Area
-          type="monotone"
-          dataKey="price2"
-          stroke="#82ca9d"
-          fillOpacity={1}
-          fill="url(#color2)"
-        />
-        <Area
-          type="monotone"
-          dataKey="price3"
-          stroke="#82ca9d"
-          fillOpacity={1}
-          fill="url(#color3)"
-        />
+        {combinedChartCoins[1]?.coinName && (
+          <Area
+            name={combinedChartCoins[1]?.coinName}
+            type="monotone"
+            dataKey="price2"
+            stroke="#82ca9d"
+            fillOpacity={1}
+            fill="url(#color2)"
+          />
+        )}
+        {combinedChartCoins[2]?.coinName && (
+          <Area
+            name={combinedChartCoins[2]?.coinName}
+            type="monotone"
+            dataKey="price3"
+            stroke="#82ca9d"
+            fillOpacity={1}
+            fill="url(#color3)"
+          />
+        )}
       </AreaChart>
     </div>
   );

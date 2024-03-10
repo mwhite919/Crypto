@@ -40,7 +40,7 @@ export const CoinSwiper = ({ handleClick, combinedChartCoins }) => {
               <div key={coin.id}>
                 <div>
                   <div
-                    className={`flex items-center justify-start text-xs ml-2 my-2 h-16 p-3 drop-shadow-md rounded-md cursor-pointer
+                    className={`flex items-center justify-start text-xs ml-2 mb-2 h-16 p-3 drop-shadow-md rounded-md cursor-pointer
                     ${
                       combinedChartCoins?.find((c) => c.id === coin.id)
                         ? "border-2 border-accentLight bg-accent text-second hover:scale-105"
@@ -51,10 +51,11 @@ export const CoinSwiper = ({ handleClick, combinedChartCoins }) => {
                     <div>
                       <img className="w-7 m-2" src={coin.image} />
                     </div>
-                    <div className="flex flex-col justify-center items-even h-full text-sm">
-                      <div className="font-semibold mb-0.5 ">
-                        {coin.name.substring(0, 11)}
-                        {"  "}({coin.symbol.toUpperCase()})
+                    <div className="flex flex-col justify-center items-even h-full ">
+                      <div className="font-semibold mb-0.5 text-sm">
+                        {coin.name.length > 11
+                          ? coin.name.substring(0, 16).concat("...")
+                          : coin.name + "  " + `(${coin.symbol.toUpperCase()})`}
                       </div>
                       <div className="flex">
                         {" "}

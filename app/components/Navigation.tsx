@@ -215,34 +215,36 @@ export default function Navigation() {
               </Link>
             </div>
             <div className="flex flex-col content-evenly">
-              <div className="flex justify-end items-center my-1 mr-5">
-                {user && (
-                  <div className="text-accent italic">
-                    Currently signed in under{" "}
-                    <span className="text-accent2">{user?.email}</span>
+              <div>
+                {user ? (
+                  <div className="flex justify-end items-center my-1 mr-5">
+                    <div className="text-accent italic">
+                      User: <span className="text-accent2">{user?.email}</span>
+                    </div>
+                    <Link href="/">
+                      <button
+                        className="drop-shadow-md text-accent mx-2 hover:scale-105"
+                        onClick={handleSignOut}
+                      >
+                        Log out
+                      </button>
+                    </Link>
                   </div>
-                )}
-                <Link
-                  href="/sign-in"
-                  className="drop-shadow-md text-accent mx-2 hover:scale-105"
-                >
-                  Sign-in
-                </Link>
-                <Link
-                  href="/sign-up"
-                  className="drop-shadow-md text-accent mx-2 hover:scale-105"
-                >
-                  Sign-up
-                </Link>
-                {user && (
-                  <Link href="/">
-                    <button
+                ) : (
+                  <div className="flex justify-end items-center my-1 mr-5">
+                    <Link
+                      href="/sign-in"
                       className="drop-shadow-md text-accent mx-2 hover:scale-105"
-                      onClick={handleSignOut}
                     >
-                      Log out
-                    </button>
-                  </Link>
+                      Sign-in
+                    </Link>
+                    <Link
+                      href="/sign-up"
+                      className="drop-shadow-md text-accent mx-2 hover:scale-105"
+                    >
+                      Sign-up
+                    </Link>
+                  </div>
                 )}
               </div>
               <div className="flex justify-end items-center mb-2 ">
@@ -294,7 +296,7 @@ export default function Navigation() {
 
                 {mode === "light" ? (
                   <button
-                    className="mr-2  border-accent"
+                    className="mr-5  border-accent"
                     value="dark"
                     onClick={() => handleMode("dark")}
                   >

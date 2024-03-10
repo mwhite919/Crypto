@@ -18,8 +18,6 @@ const Row = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin: 10px;
-  padding: 3px;
   border-radius: 10px;
 `;
 
@@ -97,18 +95,51 @@ export default function Page() {
         )}
       </div>
       <div>
-        <Row className="bg-second flex shadow-md">
-          <div className="w-3 m-3">#</div>
-          <div className="w-8 max-h-8 ml-2"></div>
-          <div className="w-40 ml-8 flex justify-start items-center">Name</div>
-          <div className="w-20">Price</div>
-          <div className="w-20 ml-5">1h%</div>
-          <div className="w-20 ml-5">24hr%</div>
-          <div className="w-20 ml-5">7d%</div>
-          <div className="w-32 ml-5">
+        <Row className="bg-second flex shadow-md text-sm">
+          <div
+            className="flex items-center justify-center"
+            style={{ width: 80 }}
+          >
+            #
+          </div>
+          <div style={{ width: 100 }}></div>
+          <div
+            className="flex justify-start items-center"
+            style={{ width: 250 }}
+          >
+            Name
+          </div>
+          <div
+            className="flex justify-start items-center"
+            style={{ width: 250 }}
+          >
+            Price
+          </div>
+          <div
+            className="flex justify-start items-center"
+            style={{ width: 150 }}
+          >
+            1h%
+          </div>
+          <div
+            className="flex justify-start items-center"
+            style={{ width: 150 }}
+          >
+            24hr%
+          </div>
+          <div
+            className="flex justify-start items-center"
+            style={{ width: 150 }}
+          >
+            7d%
+          </div>
+          <div
+            className="flex justify-start items-center"
+            style={{ width: 250 }}
+          >
             24h Volume/<br></br>Market Cap
           </div>
-          <div className="w-32 ml-5">
+          <div style={{ width: 250 }}>
             Circulating/<br></br> Total Supply
           </div>
           <div className="ml-4">Last 7d</div>
