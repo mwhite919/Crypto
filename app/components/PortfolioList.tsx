@@ -30,11 +30,17 @@ function PortfolioList() {
   const dispatch = useDispatch();
   const ref = React.useRef();
 
-  useEffect(() => {
-    onSnapshot(collection(db, "portfoliocoins"), (snapshot) => {
-      console.log(snapshot.docs);
-    });
-  });
+  const [coins, setCoins] = useState([]);
+
+  useEffect(
+    () =>
+      onSnapshot(collection(db, "portfoliocoins"), (snapshot) => {
+        setCoins(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      }),
+    []
+  );
+
+  console.log(coins);
 
   function percentage(x, y) {
     return (x / y).toFixed(2);
@@ -57,6 +63,15 @@ function PortfolioList() {
   return (
     <>
       <div>
+        <ul>
+          {" "}
+          {coins.map((coin) => (
+            <li key={coin.id}>
+              {coin.name},{coin.amount}
+            </li>
+          ))}
+        </ul>
+
         {/* <div>
           {listCoins ? (
             listCoins.map((c) => (
