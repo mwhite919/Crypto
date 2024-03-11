@@ -1,5 +1,5 @@
 import React from "react";
-import { formatNumber } from "@/app/formatNumber";
+import { formatNumber, priceFormatNumber } from "@/app/utils/formatNumber";
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
 import { AreaChart, Area, XAxis, YAxis, Tooltip } from "recharts";
@@ -115,7 +115,6 @@ export default function CoinRow({ coin, index }) {
           {arrowUpOrDown(sevenDayPercent)}
           {sevenDayPercent}%
         </div>
-
         <div style={{ width: 300 }}>
           <div className="flex justify-between">
             <div className="flex items-center">
@@ -153,7 +152,6 @@ export default function CoinRow({ coin, index }) {
             ></div>
           </div>
         </div>
-
         <div style={{ width: 250 }}>
           <AreaChart
             width={130}

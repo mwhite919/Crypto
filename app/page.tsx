@@ -24,14 +24,55 @@ const Row = styled.div`
 export default function Page() {
   const currency = useAppSelector((state) => state.currency);
   const { palette, mode } = useCrypto();
-  const [calculator, setCalculator] = useState(false);
+  const [converter, setConverter] = useState(false);
+  const [sortValue, setSortValue] = useState("market_cap_desc");
+  const [sortByVolume, setSortByVolume] = useState(true);
+  const [sortByMarketCap, setSortByMarketCap] = useState(false);
+  const [sortById, setSortById] = useState(false);
+  const [sortByPrice, setSortByPrice] = useState(false);
 
   const { data: allCoinsData, error, isError, isLoading } = useGetAllCoinsQuery(
     {
-      currency: `${currency.currency}`,
-      sortValue: "volume_desc",
+      currency: currency.currency,
+      sortValue: sortValue,
     }
   );
+
+  const handleSort = (value) => {
+    setSortValue(value);
+    if (value === "volume") {
+      setSortByVolume(!sortByVolume);
+      if (sortByVolume) {
+        setSortValue("volume_desc");
+      } else {
+        setSortValue("volume_asc");
+      }
+    }
+    if (value === "marketcap") {
+      setSortByMarketCap(!sortByMarketCap);
+      if (sortByMarketCap) {
+        setSortValue("market_cap_desc");
+      } else {
+        setSortValue("market_cap_asc");
+      }
+    }
+    if (value === "id") {
+      setSortById(!sortById);
+      if (sortById) {
+        setSortValue("id_desc");
+      } else {
+        setSortValue("id_asc");
+      }
+    }
+    if (value === "price") {
+      setSortByPrice(!sortByPrice);
+      if (sortByPrice) {
+        setSortValue("price_desc");
+      } else {
+        setSortValue("price_asc");
+      }
+    }
+  };
 
   return (
     <div
@@ -86,7 +127,7 @@ export default function Page() {
         </RadioGroup>
       </div>
       <div>
-        {calculator ? (
+        {converter ? (
           <Converter allCoinsData={allCoinsData} />
         ) : (
           <div>
@@ -95,6 +136,7 @@ export default function Page() {
         )}
       </div>
       <div>
+
         <Row className="bg-second flex shadow-md text-sm">
           <div
             className="flex items-center justify-center"

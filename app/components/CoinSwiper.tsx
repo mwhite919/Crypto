@@ -1,5 +1,3 @@
-import { useCrypto } from "@/app/Providers/CryptoProvider";
-import { useEffect, useState } from "react";
 import { useGetAllCoinsQuery } from "@/app/Providers/api/apiSlice";
 import ArrowDown, { ArrowUp } from "@/app/icons/Icons";
 import Slider from "react-slick";

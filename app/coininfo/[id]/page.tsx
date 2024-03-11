@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import {
   CopyIcon,
@@ -12,7 +11,7 @@ import {
   RedditIcon,
   NewTabLinkIcon,
 } from "@/app/icons/Icons";
-import FormattedDate from "@/components/FormatDate";
+
 import { useGetSingleCoinQuery } from "@/app/Providers/api/apiSlice";
 
 export default function Page({ params }: { params: { id: string } }) {
