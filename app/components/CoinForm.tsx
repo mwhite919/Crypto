@@ -113,7 +113,7 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
     setShowResults(false);
   };
 
-  const handleDateBlur = (e) => {
+  const handleDateBlur = () => {
     if (date) {
       setDateError(false);
     }
