@@ -1,5 +1,5 @@
 import React from "react";
-import { formatNumber } from "@/app/formatNumber";
+import { formatNumber } from "@/app/utils/formatNumber";
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
 import { AreaChart, Area, XAxis, YAxis, Tooltip, Legend } from "recharts";

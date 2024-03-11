@@ -1,5 +1,3 @@
-import { useCrypto } from "@/app/Providers/CryptoProvider";
-import { useEffect, useState } from "react";
 import { useGetAllCoinsQuery } from "@/app/Providers/api/apiSlice";
 import ArrowDown, { ArrowUp } from "@/app/icons/Icons";
 import Slider from "react-slick";
@@ -49,15 +47,15 @@ export const CoinSwiper = ({ handleClick, combinedChartCoins }) => {
                     onClick={() => handleClick(coin)}
                   >
                     <div>
-                      <img className="w-9 m-4" src={coin.image} />
+                      <img className="w-9 m-4" src={coin?.image} />
                     </div>
                     <div className="flex flex-col">
                       <div>
-                        {coin.name}({coin.symbol.toUpperCase()})
+                        {coin?.name}({coin?.symbol.toUpperCase()})
                       </div>
                       <div>
                         {currency.symbol}
-                        {coin.current_price}
+                        {coin?.current_price}
                       </div>
                       <div className="flex items-center">
                         {coin?.price_change_percentage_1h_in_currency > 0 ? (

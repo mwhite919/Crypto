@@ -9,7 +9,7 @@ interface CurrencyState {
 }
 
 const initialState = {
-  currency: "USD",
+  currency: "usd",
   symbol: "$",
   name: "United States Dollar",
 };
