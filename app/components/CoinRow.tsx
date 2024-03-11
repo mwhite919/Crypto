@@ -2,7 +2,7 @@ import React from "react";
 import { formatNumber } from "@/app/formatNumber";
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
-import { AreaChart, Area, XAxis, YAxis, Tooltip, Legend } from "recharts";
+import { AreaChart, Area, XAxis, YAxis, Tooltip } from "recharts";
 import ArrowDown, { ArrowUp } from "../icons/Icons";
 import { useAppSelector } from "@/redux/hooks";
 
@@ -34,6 +34,9 @@ export default function CoinRow({ coin, index }) {
   const circulating = coin?.circulating_supply;
   const totalSupply = Math.floor(coin.total_supply);
   const router = useRouter();
+  const circulatingTotalSupply = (circulating / totalSupply).toFixed(2) * 30;
+  const coinPrice = coin?.current_price?.toFixed(2);
+  const dataSet = coin?.price;
 
   function limiter(x) {
     if (x < 1) {
@@ -43,27 +46,32 @@ export default function CoinRow({ coin, index }) {
       return 100;
     }
   }
-  const circulatingTotalSupply = (circulating / totalSupply).toFixed(2) * 30; // need to make a function to prevent over 100%
 
-  const coinPrice = coin?.current_price?.toFixed(2);
-  const dataSet = coin?.price;
+  function greenOrRed(x: number, rounded: boolean) {
+    if (x > 0) {
+      if (rounded) {
+        return "h-2 w-2 rounded-full bg-green-500";
+      } else {
+        return "h-2 w-30 bg-green-500";
+      }
+    }
+    if (x < 0) {
+      if (rounded) {
+        return "h-2 w-2 rounded-full bg-red-500";
+      } else {
+        return "h-2 w-30 bg-red-500";
+      }
+    }
+  }
+
+  function arrowUpOrDown(x: number) {
+    if (x < 0) return <ArrowDown />;
+    if (x > 0) return <ArrowUp />;
+  }
 
   const graphData = coin?.sparkline_in_7d?.price.map((item) => {
     return { x: index, price: item };
   });
-
-  const data = {
-    label: "",
-    datasets: [
-      {
-        labels: "sales",
-        data: dataSet,
-        backgroundColor: "white",
-        borderColor: "black",
-        pointBorderColor: "pink",
-      },
-    ],
-  };
 
   const handleRoute = (coinId) => {
     const fixString = coinId.replace(/\W+/g, "-");
@@ -93,31 +101,25 @@ export default function CoinRow({ coin, index }) {
           {coinPrice}
         </div>
         <div className="flex justify-start items-center" style={{ width: 150 }}>
-          {oneHourPercent < 0 ? <ArrowDown /> : <ArrowUp />}
+          {arrowUpOrDown(oneHourPercent)}
           {oneHourPercent}%
         </div>
         <div className="flex justify-start items-center" style={{ width: 150 }}>
-          {oneDayPercent < 0 ? <ArrowDown /> : <ArrowUp />}
+          {arrowUpOrDown(oneDayPercent)}
           {oneDayPercent}%
         </div>
         <div
           className=" flex justify-start items-center"
           style={{ width: 150 }}
         >
-          {sevenDayPercent < 0 ? <ArrowDown /> : <ArrowUp />}
+          {arrowUpOrDown(sevenDayPercent)}
           {sevenDayPercent}%
         </div>
 
         <div style={{ width: 300 }}>
           <div className="flex justify-between">
             <div className="flex items-center">
-              <div
-                className={
-                  oneDayPercent > 0
-                    ? "h-2 w-2 rounded-full bg-green-500"
-                    : "h-2 w-2 rounded-full bg-red-500"
-                }
-              ></div>
+              <div className={greenOrRed(oneDayPercent, true)}></div>
               <div className="text-xs">{formatNumber(volume)}</div>
             </div>
             <div className="flex items-center">
@@ -127,11 +129,7 @@ export default function CoinRow({ coin, index }) {
           </div>
           <div className="h-2 w-32 bg-gray-500">
             <div
-              className={
-                oneDayPercent > 0
-                  ? "h-2 w-30 bg-green-500"
-                  : "h-2 w-30 bg-red-500"
-              }
+              className={greenOrRed(oneDayPercent, false)}
               style={{ width: limiter(volumeMarketCap) }}
             ></div>
           </div>
@@ -140,13 +138,7 @@ export default function CoinRow({ coin, index }) {
         <div style={{ width: 300 }}>
           <div className="flex justify-between items-center">
             <div className="flex items-center">
-              <div
-                className={
-                  oneDayPercent > 0
-                    ? "h-2 w-2 rounded-full bg-green-500"
-                    : "h-2 w-2 rounded-full bg-red-500"
-                }
-              ></div>
+              <div className={greenOrRed(oneDayPercent, true)}></div>
               <div className="text-xs">{formatNumber(circulating)}</div>
             </div>
             <div className="flex items-center">
@@ -156,11 +148,7 @@ export default function CoinRow({ coin, index }) {
           </div>
           <div className="h-2 w-32 bg-gray-500">
             <div
-              className={
-                oneDayPercent > 0
-                  ? "h-2 w-30 bg-green-500"
-                  : "h-2 w-30 bg-red-500"
-              }
+              className={greenOrRed(oneDayPercent, false)}
               style={{ width: limiter(circulatingTotalSupply) }}
             ></div>
           </div>
@@ -181,7 +169,7 @@ export default function CoinRow({ coin, index }) {
             </defs>
             <XAxis hide domain={["auto", "auto"]} />
             <YAxis scale="log" domain={["auto", "auto"]} hide />
-
+            <Tooltip />
             <Area
               type="monotone"
               dataKey="price"
