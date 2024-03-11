@@ -13,10 +13,10 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-// const appCheck = initializeAppCheck(app, {
-//   provider: new ReCaptchaV3Provider(process.env.RECAPTCHA),
-//   isTokenAutoRefreshEnabled: true,
-// });
+const appCheck = initializeAppCheck(app, {
+  provider: new ReCaptchaV3Provider(process.env.RECAPTCHA),
+  isTokenAutoRefreshEnabled: true,
+});
 const auth = getAuth(app);
 
 export { app, auth };
