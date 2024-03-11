@@ -1,5 +1,5 @@
 import React from "react";
-import { formatNumber } from "@/app/utils/formatNumber";
+import { formatNumber, priceFormatNumber } from "@/app/utils/formatNumber";
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
 import { AreaChart, Area, XAxis, YAxis, Tooltip, Legend } from "recharts";
@@ -81,7 +81,7 @@ export default function CoinRow({ coin, index }) {
       </div>
       <div className="w-20  flex justify-start items-center">
         {currency.symbol}
-        {coinPrice}
+        {priceFormatNumber(coinPrice)}
       </div>
       <div className="w-20  ml-5 flex justify-start items-center">
         {oneHourPercent < 0 ? <ArrowDown /> : <ArrowUp />}
