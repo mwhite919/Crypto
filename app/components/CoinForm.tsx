@@ -7,6 +7,8 @@ import { CloseIcon, ResetIcon } from "@/app/icons/Icons";
 import axios from "axios";
 import CharacterCounter from "./characterCounter";
 import { DropDownRow } from "../utils/DropDownRow";
+import db from "../firebase/config";
+import { setDoc, addDoc, collection } from "firebase/firestore";
 
 export const CoinForm = ({ allCoinsData, handleForm }) => {
   const [coin, setCoin] = useState({});
@@ -24,7 +26,19 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
   const resultContainer = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
 
-  const handleSubmit = (e) => {
+  // const handleSubmit2 = async () => {
+  //   const collectionRef = collection(db, "portfoliocoins");
+  //   const payload = {
+  //     id: Math.random(),
+  //     coin: coin,
+  //     amount: amount,
+  //     purchasePrice: purchasePrice,
+  //     date: date,
+  //   };
+  //   await addDoc(collectionRef, payload);
+  // };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!date || !amount || !coin) {
       if (!date) setDateError(true);
@@ -36,15 +50,24 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
       setMissingCoin(true);
     }
     if (coin && amount && date) {
-      dispatch(
-        addCoin({
-          id: Math.random(),
-          coin: coin,
-          amount: amount,
-          purchasePrice: purchasePrice,
-          date: date,
-        })
-      );
+      // dispatch(
+      //   addCoin({
+      //     id: Math.random(),
+      //     coin: coin,
+      //     amount: amount,
+      //     purchasePrice: purchasePrice,
+      //     date: date,
+      //   })
+      // );
+      const collectionRef = collection(db, "portfoliocoins");
+      const payload = {
+        id: Math.random(),
+        coin: coin,
+        amount: amount,
+        purchasePrice: purchasePrice,
+        date: date,
+      };
+      await addDoc(collectionRef, payload);
       handleForm();
       setSearchValue("");
       setCoin({});
@@ -72,16 +95,16 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
     setDateError(false);
   };
 
-  // const getPurchasePrice = async (coinName: string, date: string) => {
-  //   try {
-  //     const { data } = await axios(
-  //       `https://api.coingecko.com/api/v3/coins/${coinName.toLowerCase()}/history?date=${date}&localization=false&x_cg_demo_api_key=CG-du5JzYuTcSZtNRw58BTw3e27`
-  //     );
-  //     setPurchasePrice(data.market_data.current_price);
-  //   } catch (err) {
-  //     setPurchasePriceError(true);
-  //   }
-  // };
+  const getPurchasePrice = async (coinName: string, date: string) => {
+    try {
+      const { data } = await axios(
+        `https://api.coingecko.com/api/v3/coins/${coinName.toLowerCase()}/history?date=${date}&localization=false&x_cg_demo_api_key=CG-du5JzYuTcSZtNRw58BTw3e27`
+      );
+      setPurchasePrice(data.market_data.current_price);
+    } catch (err) {
+      setPurchasePriceError(true);
+    }
+  };
 
   if (coin && date) {
     getPurchasePrice(coin.id, date.split("-").reverse().join("-"));

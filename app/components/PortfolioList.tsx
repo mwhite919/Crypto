@@ -72,7 +72,7 @@ function PortfolioList() {
           ))}
         </ul>
 
-        {/* <div>
+        <div>
           {listCoins ? (
             listCoins.map((c) => (
               <Row className="h-64 bg-second m-3 z-0 p-3" key={c.id}>
@@ -231,7 +231,7 @@ function PortfolioList() {
               You haven't added any coins to your portfolio yet!
             </div>
           )}
-        </div> */}
+        </div>
       </div>
     </>
   );
