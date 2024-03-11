@@ -35,7 +35,7 @@ export const CoinSwiper = ({ handleClick, combinedChartCoins }) => {
         <div>
           <Slider {...settings}>
             {top10Coins?.map((coin) => (
-              <div key={coin?.id}>
+              <div key={coin.id}>
                 <div>
                   <div
                     className={`bg-second flex items-center justify-start text-xs ml-2 my-2 h-20 p-3 drop-shadow-md rounded-md 

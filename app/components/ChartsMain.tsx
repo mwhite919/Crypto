@@ -124,8 +124,8 @@ export const ChartsMain = () => {
         </div>
         <div>
           These coins:{" "}
-          {combinedChartCoins?.map((c) => {
-            return <div key={c?.coinName}>{c?.coinName}</div>;
+          {combinedChartCoins.map((c) => {
+            return <div key={c.coinName}>{c.coinName}</div>;
           })}
         </div>
         <div className="flex">
