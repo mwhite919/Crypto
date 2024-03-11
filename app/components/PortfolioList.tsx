@@ -7,6 +7,8 @@ import styled from "styled-components";
 import { EditIcon, TrashIcon } from "@/app/icons/Icons";
 import CharacterCounter from "./characterCounter";
 import { useAppSelector } from "@/redux/hooks";
+import db from "../firebase/config";
+import { onSnapshot, collection } from "firebase/firestore";
 
 const Row = styled.div`
   width: 900px;
@@ -18,11 +20,21 @@ const Row = styled.div`
   border-radius: 10px;
 `;
 
+const ListItem = (coin) => {
+  return <div>{coin}</div>;
+};
+
 function PortfolioList() {
   const listCoins = useSelector((state) => state.portfolio.coins);
   const currency = useAppSelector((state) => state.currency);
   const dispatch = useDispatch();
   const ref = React.useRef();
+
+  useEffect(() => {
+    onSnapshot(collection(db, "portfoliocoins"), (snapshot) => {
+      console.log(snapshot.docs);
+    });
+  });
 
   function percentage(x, y) {
     return (x / y).toFixed(2);
@@ -45,7 +57,7 @@ function PortfolioList() {
   return (
     <>
       <div>
-        <div>
+        {/* <div>
           {listCoins ? (
             listCoins.map((c) => (
               <Row className="h-64 bg-second m-3 z-0 p-3" key={c.id}>
@@ -204,7 +216,7 @@ function PortfolioList() {
               You haven't added any coins to your portfolio yet!
             </div>
           )}
-        </div>
+        </div> */}
       </div>
     </>
   );

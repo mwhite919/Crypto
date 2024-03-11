@@ -72,16 +72,16 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
     setDateError(false);
   };
 
-  const getPurchasePrice = async (coinName: string, date: string) => {
-    try {
-      const { data } = await axios(
-        `https://api.coingecko.com/api/v3/coins/${coinName.toLowerCase()}/history?date=${date}&localization=false&x_cg_demo_api_key=CG-du5JzYuTcSZtNRw58BTw3e27`
-      );
-      setPurchasePrice(data.market_data.current_price);
-    } catch (err) {
-      setPurchasePriceError(true);
-    }
-  };
+  // const getPurchasePrice = async (coinName: string, date: string) => {
+  //   try {
+  //     const { data } = await axios(
+  //       `https://api.coingecko.com/api/v3/coins/${coinName.toLowerCase()}/history?date=${date}&localization=false&x_cg_demo_api_key=CG-du5JzYuTcSZtNRw58BTw3e27`
+  //     );
+  //     setPurchasePrice(data.market_data.current_price);
+  //   } catch (err) {
+  //     setPurchasePriceError(true);
+  //   }
+  // };
 
   if (coin && date) {
     getPurchasePrice(coin.id, date.split("-").reverse().join("-"));
@@ -217,9 +217,9 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
                     <div className="w-full h-full max-w-sm mx-auto lg:mx-0 opacity-30 blur-lg bg-gradient-to-r from-second to-primary"></div>
                   </div>
                   <div className="flex items-center justify-center relative p-8 text-lg font-bold text-second bg-accent font-pj rounded-xl ">
-                    <img src={coin.image} className="h-16" />
-                    <span className={CharacterCounter(coin.name.length)}>
-                      {coin.name}
+                    <img src={coin?.image} className="h-16" />
+                    <span className={CharacterCounter(coin?.name.length)}>
+                      {coin?.name}
                     </span>
                   </div>
                 </div>
