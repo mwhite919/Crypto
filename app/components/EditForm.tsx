@@ -1,32 +1,39 @@
 "use client";
 
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useDispatch } from "react-redux";
-import { addCoin } from "@/redux/portfolio/portfolioSlice";
 import { CloseIcon, ResetIcon } from "@/app/icons/Icons";
 import axios from "axios";
 import CharacterCounter from "./characterCounter";
-import { DropDownRow } from "../utils/DropDownRow";
 import db from "../firebase/config";
-import { setDoc, addDoc, collection } from "firebase/firestore";
+import { setDoc, addDoc, collection, doc } from "firebase/firestore";
 
-export const CoinForm = ({ allCoinsData, handleForm }) => {
-  const [coin, setCoin] = useState({});
+export const EditForm = ({ coinToEdit, handleEditForm }) => {
+  const [coin, setCoin] = useState(coinToEdit);
   const [missingCoin, setMissingCoin] = useState(false);
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState(coinToEdit.amount);
   const [missingAmount, setMissingAmount] = useState(false);
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(coinToEdit.date);
   const [dateError, setDateError] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [numError, setnumError] = useState(false);
-  const [purchasePrice, setPurchasePrice] = useState("");
+  const [purchasePrice, setPurchasePrice] = useState(coinToEdit.purchasePrice);
   const [purchasePriceError, setPurchasePriceError] = useState(false);
-  const [focusedIndex, setFocusedIndex] = useState(-1);
-  const [showResults, setShowResults] = useState(false);
-  const resultContainer = useRef<HTMLDivElement>(null);
-  const dispatch = useDispatch();
 
-  const handleSubmit = async (e) => {
+  console.log("coinToEdit", coinToEdit, "coin", coin);
+
+  const handleEdit = async (id) => {
+    const docRef = doc(db, "portfoliocoins", id);
+    const payload = {
+      id: Math.random(),
+      coin: coin,
+      amount: amount,
+      purchasePrice: purchasePrice,
+      date: date,
+    };
+  };
+
+  const saveEdit = async (e, id) => {
     e.preventDefault();
     if (!date || !amount || !coin) {
       if (!date) setDateError(true);
@@ -38,7 +45,7 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
       setMissingCoin(true);
     }
     if (coin && amount && date) {
-      const collectionRef = collection(db, "portfoliocoins");
+      const docRef = doc(db, "portfoliocoins", id);
       const payload = {
         id: Math.random(),
         coin: coin,
@@ -46,9 +53,8 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
         purchasePrice: purchasePrice,
         date: date,
       };
-      const docRef = await addDoc(collectionRef, payload);
-      handleForm();
-      setSearchValue("");
+      await setDoc(docRef, payload);
+      handleEditForm();
       setCoin({});
       setAmount("");
       setDate("");
@@ -56,18 +62,16 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
   };
 
   const closeForm = () => {
-    handleForm();
-    setSearchValue("");
-    setCoin({});
-    setAmount("");
-    setDate("");
+    handleEditForm();
+    setCoin(coinToEdit);
+    setAmount(coinToEdit.amount);
+    setDate(coinToEdit.date);
   };
 
   const resetForm = () => {
-    setSearchValue("");
-    setCoin({});
-    setAmount("");
-    setDate("");
+    setCoin(coinToEdit);
+    setAmount(coinToEdit.amount);
+    setDate(coinToEdit.date);
     setnumError(false);
     setMissingAmount(false);
     setMissingCoin(false);
@@ -89,18 +93,6 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
     getPurchasePrice(coin.id, date.split("-").reverse().join("-"));
   }
 
-  const handleSearchChange = (e) => {
-    const newValueIsValid = !e.target.validity.patternMismatch;
-    if (numError) {
-      if (newValueIsValid) {
-        setnumError(false);
-      }
-    }
-    const inputValue = e.target.value;
-    setSearchValue(inputValue);
-    setShowResults(true);
-  };
-
   const handleBlur = (e) => {
     if (e.target.validity.patternMismatch) {
       setnumError(true);
@@ -112,7 +104,6 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
       }
     }
     setMissingAmount(!amount);
-    setShowResults(false);
   };
 
   const handleDateBlur = (e) => {
@@ -128,69 +119,6 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
 
   const handleAmountChange = (e) => {
     setAmount(e.target.value);
-  };
-
-  const handleSearch = (searchedCoin) => {
-    if (searchValue) {
-      setSearchValue(searchedCoin.name);
-      setCoin(searchedCoin);
-      setMissingCoin(false);
-    }
-    if (!searchValue) {
-      return;
-    }
-  };
-
-  const resetSearchComplete = useCallback(() => {
-    setFocusedIndex(-1);
-    setShowResults(false);
-  }, []);
-
-  useEffect(() => {
-    if (!resultContainer.current) return;
-    resultContainer.current.scrollIntoView({
-      block: "center",
-    });
-  }, [focusedIndex]);
-
-  const handleKeyPress = (e: { key: any }) => {
-    const { key } = e;
-    let nextIndexCount = 0;
-    if (key === "ArrowDown") nextIndexCount = focusedIndex + 1;
-    if (key === "ArrowUp") nextIndexCount = focusedIndex - 1;
-    if (e.key === "Enter") return handleSelection(focusedIndex);
-    setFocusedIndex(nextIndexCount);
-  };
-
-  const filteredCoinsArray = allCoinsData?.filter((coin) => {
-    const name = coin.name.toLowerCase();
-    const search = searchValue.toLowerCase();
-    const coins = name.startsWith(search);
-    return coins;
-  });
-
-  const mappedCoinsArray = filteredCoinsArray?.map((coin, index) => (
-    <DropDownRow
-      key={coin.id}
-      ref={index === focusedIndex ? resultContainer : null}
-      className={`
-    cursor-pointer
-    hover:bg-slate-200
-     ${focusedIndex === index ? "active bg-slate-200" : "bg-white"}`}
-      onMouseDown={() => handleSelection(index)}
-      onBlur={resetSearchComplete}
-    >
-      {coin.name}
-    </DropDownRow>
-  ));
-
-  const handleSelection = (selectedIndex: number) => {
-    const selectedItem = filteredCoinsArray[selectedIndex];
-    setCoin(selectedItem);
-    setSearchValue(selectedItem.name);
-    if (!selectedItem) return resetSearchComplete();
-    handleSearch(selectedItem);
-    resetSearchComplete();
   };
 
   return (
@@ -213,46 +141,22 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
           </div>
           <div className=" w-full flex justify-center items-center ">
             <div className="h-48 w-1/2 flex items-center justify-center p-10 ">
-              {coin?.name && (
-                <div className="relative ">
-                  <div className="absolute -inset-5">
-                    <div className="w-full h-full max-w-sm mx-auto lg:mx-0 opacity-30 blur-lg bg-gradient-to-r from-second to-primary"></div>
-                  </div>
-                  <div className="flex items-center justify-center relative p-8 text-lg font-bold text-second bg-accent font-pj rounded-xl ">
-                    <img src={coin?.image} className="h-16" />
-                    <span className={CharacterCounter(coin?.name.length)}>
-                      {coin?.name}
-                    </span>
-                  </div>
+              <div className="relative ">
+                <div className="absolute -inset-5">
+                  <div className="w-full h-full max-w-sm mx-auto lg:mx-0 opacity-30 blur-lg bg-gradient-to-r from-second to-primary"></div>
                 </div>
-              )}
+                <div className="flex items-center justify-center relative p-8 text-lg font-bold text-second bg-accent font-pj rounded-xl ">
+                  <img src={coin.coin.image} className="h-16" />
+                  <span className={CharacterCounter(coin?.coin?.name?.length)}>
+                    {coin.coin.name}
+                  </span>
+                </div>
+              </div>
             </div>
             <div className="flex flex-col justify-start h-48 w-1/2 items-start ">
               <form>
-                {missingCoin && (
-                  <p
-                    role="alert"
-                    className="text-xs"
-                    style={{ color: "rgb(200, 0, 0)" }}
-                  >
-                    Please choose a coin.
-                  </p>
-                )}
-
                 <div>
-                  <input
-                    value={searchValue ? searchValue : ""}
-                    onChange={handleSearchChange}
-                    onKeyDown={handleKeyPress}
-                    onBlur={resetSearchComplete}
-                    placeholder={"Start typing to find your coin..."}
-                    type="text"
-                    className={`mx-3 drop-shadow-md rounded-sm pl-3 w-72 shadow-md relative inline-block focus: border-slate-200
-                    ${missingCoin ? "border-2 mb-2 border-rose-600" : "my-3"}`}
-                  />
-                  <div className="mx-3 absolute max-h-44 overflow-y-auto w-72">
-                    {showResults && mappedCoinsArray}
-                  </div>
+                  <h2>{coin.name}</h2>
                 </div>
                 {numError && (
                   <p
@@ -319,14 +223,14 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
                     numError || dateError || missingAmount || missingCoin
                   }
                   type="submit"
-                  onClick={handleSubmit}
+                  onClick={(e) => saveEdit(e, coinToEdit.id)}
                   className={` m-3 py-2 bg-second rounded-md w-36 ${
                     numError || dateError || missingAmount || missingCoin
                       ? "opacity-70"
                       : ""
                   }`}
                 >
-                  Save
+                  Save & Close
                 </button>
               </div>
             </div>
