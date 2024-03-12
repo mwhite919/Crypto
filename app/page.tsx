@@ -18,8 +18,6 @@ const Row = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin: 10px;
-  padding: 3px;
   border-radius: 10px;
 `;
 
@@ -86,9 +84,9 @@ export default function Page() {
       </div>
       <div>
         <RadioGroup
-          className="flex items-center justify-center m-5 text-base "
-          value={converter}
-          onChange={setConverter}
+          className="flex items-center justify-center mx-5 text-sm "
+          value={calculator}
+          onChange={setCalculator}
         >
           <RadioGroup.Option
             className={({ active, checked }) =>
@@ -97,8 +95,12 @@ export default function Page() {
                   ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300 hover:scale-105"
                   : ""
               }
-                      ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 w-36 m-1 justify-center shadow-md focus:outline-none hover:scale-105`
+                      ${
+                        checked
+                          ? "bg-accent text-white"
+                          : "bg-white text-accent"
+                      }
+                        relative flex cursor-pointer rounded-lg px-3 py-2 w-36 m-1 justify-center shadow-md focus:outline-none hover:scale-105`
             }
             value={false}
           >
@@ -111,8 +113,12 @@ export default function Page() {
                   ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300 hover:scale-105"
                   : ""
               }
-                      ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 m-1 w-36 justify-center shadow-md focus:outline-none hover:scale-105`
+                      ${
+                        checked
+                          ? "bg-accent text-white"
+                          : "bg-white text-accent"
+                      }
+                        relative flex cursor-pointer rounded-lg px-3 py-2 m-1 w-36 justify-center shadow-md focus:outline-none hover:scale-105`
             }
             value={true}
           >
@@ -120,7 +126,6 @@ export default function Page() {
           </RadioGroup.Option>
         </RadioGroup>
       </div>
-
       <div>
         {converter ? (
           <Converter allCoinsData={allCoinsData} />
@@ -131,62 +136,58 @@ export default function Page() {
         )}
       </div>
       <div>
-        <Row className="bg-second flex shadow-md">
-          <div className="w-3 m-3">#</div>
-          <div className="w-8 max-h-8 ml-2"></div>
+
+        <Row className="bg-second flex shadow-md text-sm">
           <div
-            onClick={() => handleSort("id")}
-            className={`cursor-pointer w-40 ml-8 flex justify-start items-center ${
-              sortValue === "id_asc" || sortValue === "id_desc"
-                ? "font-semibold"
-                : ""
-            } hover:scale-105`}
+            className="flex items-center justify-center"
+            style={{ width: 80 }}
+          >
+            #
+          </div>
+          <div style={{ width: 100 }}></div>
+          <div
+            className="flex justify-start items-center"
+            style={{ width: 250 }}
           >
             Name
           </div>
           <div
-            onClick={() => handleSort("price")}
-            className={`cursor-pointer w-20  ${
-              sortValue === "price_asc" || sortValue === "price_desc"
-                ? "font-semibold"
-                : ""
-            } hover:scale-105`}
+            className="flex justify-start items-center"
+            style={{ width: 250 }}
           >
             Price
           </div>
-          <div className="w-20 ml-5">1h%</div>
-          <div className="w-20 ml-5">24hr%</div>
-          <div className="w-20 ml-5">7d%</div>
-          <div className="w-32 ml-5">
-            <span
-              className={`cursor-pointer  ${
-                sortValue === "volume_asc" || sortValue === "volume_desc"
-                  ? "font-semibold"
-                  : ""
-              } hover:scale-105`}
-              onClick={() => handleSort("volume")}
-            >
-              24h Volume/
-            </span>{" "}
-            <br></br>
-            <span
-              className={`cursor-pointer  ${
-                sortValue === "market_cap_asc" ||
-                sortValue === "market_cap_desc"
-                  ? "font-semibold"
-                  : ""
-              } hover:scale-105`}
-              onClick={() => handleSort("marketcap")}
-            >
-              Market Cap
-            </span>
+          <div
+            className="flex justify-start items-center"
+            style={{ width: 150 }}
+          >
+            1h%
           </div>
-          <div className="w-32 ml-5">
+          <div
+            className="flex justify-start items-center"
+            style={{ width: 150 }}
+          >
+            24hr%
+          </div>
+          <div
+            className="flex justify-start items-center"
+            style={{ width: 150 }}
+          >
+            7d%
+          </div>
+          <div
+            className="flex justify-start items-center"
+            style={{ width: 250 }}
+          >
+            24h Volume/<br></br>Market Cap
+          </div>
+          <div style={{ width: 250 }}>
             Circulating/<br></br> Total Supply
           </div>
           <div className="ml-4">Last 7d</div>
         </Row>
       </div>
+
       <div>
         {allCoinsData?.map((coin, index) => (
           <div key={coin.id}>

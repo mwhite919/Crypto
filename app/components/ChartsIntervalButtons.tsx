@@ -30,8 +30,8 @@ export default function ChartsIntervalButtons({
                   : ""
               }
                       ${checked ? "bg-accent text-white" : "bg-white"}
-                        relative flex cursor-pointer rounded-lg px-5 py-4 m-1 shadow-md focus:outline-none hover:scale-105`
-            }
+                           relative flex cursor-pointer rounded-lg px-3 py-2 m-1 shadow-md focus:outline-none hover:scale-105`
+                  }
             value={time.value}
           >
             {({ checked }) => <span>{time.name}</span>}
