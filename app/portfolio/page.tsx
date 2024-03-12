@@ -1,30 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import { useAppSelector } from "@/redux/hooks";
-import { useDispatch } from "react-redux";
 import PortfolioList from "@/app/components/PortfolioList";
 import { CoinForm } from "@/app/components/CoinForm";
 import { useCrypto } from "../Providers/CryptoProvider";
-import { RootState } from "@/redux/store";
 import { useGetAllCoinsQuery } from "../Providers/api/apiSlice";
 import { useRouter } from "next/navigation";
 import { EditForm } from "../components/EditForm";
 
 export default function Page() {
-  const { data: allCoinsData, error, isError, isLoading } = useGetAllCoinsQuery(
-    {
-      currency: "usd",
-      sortValue: "volume_desc",
-    }
-  );
+  const { data: allCoinsData } = useGetAllCoinsQuery({
+    currency: "usd",
+    sortValue: "volume_desc",
+  });
 
   const [addFormOn, setAddFormOn] = useState(false);
   const [editFormOn, setEditFormOn] = useState(false);
   const [coinToEdit, setCoinToEdit] = useState({});
-  const { currency, user, userSession, palette, mode } = useCrypto();
-  const portCoins = useAppSelector((state: RootState) => state.portfolio.coins);
-  const dispatch = useDispatch();
+  const { user, userSession, palette, mode } = useCrypto();
 
   const handleForm = () => {
     setAddFormOn(!addFormOn);
@@ -38,7 +31,6 @@ export default function Page() {
   }
 
   function handleEditForm(coin) {
-    console.log(coin);
     setCoinToEdit(coin);
     setEditFormOn(!editFormOn);
     setAddFormOn(false);

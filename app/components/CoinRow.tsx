@@ -43,27 +43,13 @@ export default function CoinRow({ coin, index }) {
       return 100;
     }
   }
-  const circulatingTotalSupply = (circulating / totalSupply).toFixed(2) * 30; // need to make a function to prevent over 100%
+  const circulatingTotalSupply = (circulating / totalSupply).toFixed(2) * 30;
 
   const coinPrice = coin?.current_price?.toFixed(2);
-  const dataSet = coin?.price;
 
   const graphData = coin?.sparkline_in_7d?.price.map((item) => {
     return { x: index, price: item };
   });
-
-  const data = {
-    label: "",
-    datasets: [
-      {
-        labels: "sales",
-        data: dataSet,
-        backgroundColor: "white",
-        borderColor: "black",
-        pointBorderColor: "pink",
-      },
-    ],
-  };
 
   const handleRoute = (coinId) => {
     const fixString = coinId.replace(/\W+/g, "-");

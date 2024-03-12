@@ -1,14 +1,12 @@
 "use client";
 
 import { useEffect, useState, useRef, useCallback } from "react";
-import { useDispatch } from "react-redux";
-import { addCoin } from "@/redux/portfolio/portfolioSlice";
 import { CloseIcon, ResetIcon } from "@/app/icons/Icons";
 import axios from "axios";
 import CharacterCounter from "./characterCounter";
 import { DropDownRow } from "../utils/DropDownRow";
 import db from "../firebase/config";
-import { setDoc, addDoc, collection } from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 
 export const CoinForm = ({ allCoinsData, handleForm }) => {
   const [coin, setCoin] = useState({});
@@ -24,7 +22,6 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
   const [focusedIndex, setFocusedIndex] = useState(-1);
   const [showResults, setShowResults] = useState(false);
   const resultContainer = useRef<HTMLDivElement>(null);
-  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -239,7 +236,7 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
                   </p>
                 )}
 
-                <div>
+                <div className="relative z-10 ">
                   <input
                     value={searchValue ? searchValue : ""}
                     onChange={handleSearchChange}

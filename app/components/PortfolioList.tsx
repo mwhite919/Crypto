@@ -1,15 +1,19 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { removeCoin } from "@/redux/portfolio/portfolioSlice";
 import styled from "styled-components";
 import { EditIcon, TrashIcon } from "@/app/icons/Icons";
 import CharacterCounter from "./characterCounter";
 import { useAppSelector } from "@/redux/hooks";
 import db from "../firebase/config";
-import { onSnapshot, collection, doc } from "firebase/firestore";
-import { EditForm } from "./EditForm";
+import {
+  onSnapshot,
+  collection,
+  doc,
+  deleteDoc,
+  query,
+  orderBy,
+} from "firebase/firestore";
 
 const Row = styled.div`
   width: 900px;
@@ -22,11 +26,7 @@ const Row = styled.div`
 `;
 
 function PortfolioList({ handleEditForm }) {
-  const listCoins = useSelector((state) => state.portfolio.coins);
   const currency = useAppSelector((state) => state.currency);
-  const dispatch = useDispatch();
-  const ref = React.useRef();
-
   const [coins, setCoins] = useState([]);
 
   useEffect(
@@ -36,6 +36,11 @@ function PortfolioList({ handleEditForm }) {
       }),
     []
   );
+
+  const handleDelete = async (id) => {
+    const docRef = doc(db, "portfoliocoins", id);
+    await deleteDoc(docRef);
+  };
 
   function percentage(x, y) {
     return (x / y).toFixed(2);
@@ -84,7 +89,7 @@ function PortfolioList({ handleEditForm }) {
                         <div className="w-24"></div>
                         <div className=" w-24">Market Price</div>
                         <div className="w-24">
-                          <button onClick={() => dispatch(removeCoin(c))}>
+                          <button onClick={() => handleDelete(c.id)}>
                             <TrashIcon />
                           </button>
                           <button onClick={() => handleEditForm(c)}>
@@ -145,7 +150,7 @@ function PortfolioList({ handleEditForm }) {
                                 c?.coin?.total_supply
                               )
                             ) : (
-                              <p>No Info</p>
+                              <p>N/A</p>
                             )}
                           </div>
                         </div>
