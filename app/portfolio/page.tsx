@@ -9,6 +9,7 @@ import { useCrypto } from "../Providers/CryptoProvider";
 import { RootState } from "@/redux/store";
 import { useGetAllCoinsQuery } from "../Providers/api/apiSlice";
 import { useRouter } from "next/navigation";
+import { EditForm } from "../components/EditForm";
 
 export default function Page() {
   const { data: allCoinsData, error, isError, isLoading } = useGetAllCoinsQuery(
@@ -19,18 +20,28 @@ export default function Page() {
   );
 
   const [addFormOn, setAddFormOn] = useState(false);
+  const [editFormOn, setEditFormOn] = useState(false);
+  const [coinToEdit, setCoinToEdit] = useState({});
   const { currency, user, userSession, palette, mode } = useCrypto();
   const portCoins = useAppSelector((state: RootState) => state.portfolio.coins);
   const dispatch = useDispatch();
 
   const handleForm = () => {
     setAddFormOn(!addFormOn);
+    setEditFormOn(false);
   };
 
   const router = useRouter();
 
   if ((!user && !userSession) || user === null) {
     router.push("/sign-up");
+  }
+
+  function handleEditForm(coin) {
+    console.log(coin);
+    setCoinToEdit(coin);
+    setEditFormOn(!editFormOn);
+    setAddFormOn(false);
   }
 
   return (
@@ -46,6 +57,13 @@ export default function Page() {
         </button>
       </div>
       <div>
+        {editFormOn && (
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+            <EditForm coinToEdit={coinToEdit} handleEditForm={handleEditForm} />
+          </div>
+        )}
+      </div>
+      <div>
         {addFormOn && (
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <CoinForm allCoinsData={allCoinsData} handleForm={handleForm} />
@@ -53,7 +71,7 @@ export default function Page() {
         )}
       </div>
       <div className="font-medium text-3xl text-accent"> Your Assets:</div>
-      <PortfolioList />
+      <PortfolioList handleEditForm={handleEditForm} />
     </div>
   );
 }

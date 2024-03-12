@@ -20,19 +20,6 @@ export const EditForm = ({ coinToEdit, handleEditForm }) => {
   const [purchasePrice, setPurchasePrice] = useState(coinToEdit.purchasePrice);
   const [purchasePriceError, setPurchasePriceError] = useState(false);
 
-  console.log("coinToEdit", coinToEdit, "coin", coin);
-
-  const handleEdit = async (id) => {
-    const docRef = doc(db, "portfoliocoins", id);
-    const payload = {
-      id: Math.random(),
-      coin: coin,
-      amount: amount,
-      purchasePrice: purchasePrice,
-      date: date,
-    };
-  };
-
   const saveEdit = async (e, id) => {
     e.preventDefault();
     if (!date || !amount || !coin) {
@@ -48,7 +35,7 @@ export const EditForm = ({ coinToEdit, handleEditForm }) => {
       const docRef = doc(db, "portfoliocoins", id);
       const payload = {
         id: Math.random(),
-        coin: coin,
+        coin: coin.coin,
         amount: amount,
         purchasePrice: purchasePrice,
         date: date,

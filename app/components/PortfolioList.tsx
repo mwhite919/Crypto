@@ -21,7 +21,7 @@ const Row = styled.div`
   border-radius: 10px;
 `;
 
-function PortfolioList() {
+function PortfolioList({ handleEditForm }) {
   const listCoins = useSelector((state) => state.portfolio.coins);
   const currency = useAppSelector((state) => state.currency);
   const dispatch = useDispatch();
@@ -62,7 +62,6 @@ function PortfolioList() {
           {coins ? (
             coins?.map((c) => (
               <div>
-                <EditForm coinToEdit={c} />
                 <Row className="h-64 bg-second m-3 z-0 p-3" key={c.id}>
                   <div className="flex justify-between w-full">
                     <div className="h-48 w-48 flex items-center justify-center ">
@@ -88,7 +87,7 @@ function PortfolioList() {
                           <button onClick={() => dispatch(removeCoin(c))}>
                             <TrashIcon />
                           </button>
-                          <button onClick={() => handleEdit(c.id)}>
+                          <button onClick={() => handleEditForm(c)}>
                             <EditIcon />
                           </button>
                         </div>
