@@ -17,22 +17,21 @@ const SignIn = () => {
     setLoading(true);
     try {
       await login(emailRef.current.value, passwordRef.current.value);
-  
+      if (currentUser) {
+        console.log("hi");
+        router.push("/portfolio");
+        return;
+      }
+      if (!currentUser) {
+        console.log("error; please login");
+        handleLoginError();
+        router.push("/sign-up");
+      }
     } catch (e) {
       console.error(e);
       handleLoginError();
     }
     setLoading(false);
-    if (currentUser) {
-        console.log("hi");
-        router.push("/portfolio");
-        return;
-      }
-      // if (!currentUser) {
-      //   console.log("error; please login");
-      //   handleLoginError();
-      //   router.push("/sign-up");
-      }
   }
 
   return (
