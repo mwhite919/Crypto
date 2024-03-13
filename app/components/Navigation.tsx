@@ -26,7 +26,7 @@ export default function Navigation() {
   const currency = useAppSelector((state) => state.currency);
   const { data: allCoinsData, error, isError, isLoading } = useGetAllCoinsQuery(
     {
-      currency: `${currency.currency}`,
+      currency: currency.currency,
       sortValue: "volume_desc",
     }
   );

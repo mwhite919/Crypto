@@ -1,5 +1,4 @@
 import { configureStore } from "@reduxjs/toolkit";
-import portfolioReducer from "./portfolio/portfolioSlice";
 import chartCoinsReducer from "./charts/chartsSlice";
 import { coinGeckoApi } from "@/app/Providers/api/apiSlice";
 import priceChartSliceReducer from "./charts/priceSlice";
@@ -9,7 +8,6 @@ export const makeStore = () => {
   return configureStore({
     reducer: {
       [coinGeckoApi.reducerPath]: coinGeckoApi.reducer,
-      portfolio: portfolioReducer,
       chartCoins: chartCoinsReducer,
       priceChart: priceChartSliceReducer,
       currency: currencySliceReducer,

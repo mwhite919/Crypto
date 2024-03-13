@@ -1,6 +1,7 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
+import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -11,9 +12,12 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-const db = getFirestore(app);
-
+const app = initializeApp(firebaseConfig);
+// const appCheck = initializeAppCheck(app, {
+//   provider: new ReCaptchaV3Provider(process.env.RECAPTCHA),
+//   isTokenAutoRefreshEnabled: true,
+// });
 const auth = getAuth(app);
 
 export { app, auth };
+export default getFirestore();

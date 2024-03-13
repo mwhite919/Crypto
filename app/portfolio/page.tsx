@@ -1,30 +1,27 @@
 "use client";
 
 import { useState } from "react";
-import { useAppSelector } from "@/redux/hooks";
-import { useDispatch } from "react-redux";
 import PortfolioList from "@/app/components/PortfolioList";
 import { CoinForm } from "@/app/components/CoinForm";
 import { useCrypto } from "../Providers/CryptoProvider";
-import { RootState } from "@/redux/store";
 import { useGetAllCoinsQuery } from "../Providers/api/apiSlice";
 import { useRouter } from "next/navigation";
+import { EditForm } from "../components/EditForm";
 
 export default function Page() {
-  const { data: allCoinsData, error, isError, isLoading } = useGetAllCoinsQuery(
-    {
-      currency: "usd",
-      sortValue: "volume_desc",
-    }
-  );
+  const { data: allCoinsData } = useGetAllCoinsQuery({
+    currency: "usd",
+    sortValue: "volume_desc",
+  });
 
   const [addFormOn, setAddFormOn] = useState(false);
-  const { currency, user, userSession, palette, mode } = useCrypto();
-  const portCoins = useAppSelector((state: RootState) => state.portfolio.coins);
-  const dispatch = useDispatch();
+  const [editFormOn, setEditFormOn] = useState(false);
+  const [coinToEdit, setCoinToEdit] = useState({});
+  const { user, userSession, palette, mode } = useCrypto();
 
   const handleForm = () => {
     setAddFormOn(!addFormOn);
+    setEditFormOn(false);
   };
 
   const router = useRouter();
@@ -33,9 +30,15 @@ export default function Page() {
     router.push("/sign-up");
   }
 
+  function handleEditForm(coin) {
+    setCoinToEdit(coin);
+    setEditFormOn(!editFormOn);
+    setAddFormOn(false);
+  }
+
   return (
     <div
-      className={`w-window h-dvh bg-base theme-${palette} theme-${mode} flex items-center justify-start flex-col  `}
+      className={`w-window h-dvh bg-base theme-${palette} theme-${mode} flex items-center justify-start flex-col`}
     >
       <div className="w-full flex justify-end my-8 mr-36 mt-36">
         <button
@@ -46,6 +49,13 @@ export default function Page() {
         </button>
       </div>
       <div>
+        {editFormOn && (
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+            <EditForm coinToEdit={coinToEdit} handleEditForm={handleEditForm} />
+          </div>
+        )}
+      </div>
+      <div>
         {addFormOn && (
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <CoinForm allCoinsData={allCoinsData} handleForm={handleForm} />
@@ -53,7 +63,7 @@ export default function Page() {
         )}
       </div>
       <div className="font-medium text-3xl text-accent"> Your Assets:</div>
-      <PortfolioList />
+      <PortfolioList handleEditForm={handleEditForm} />
     </div>
   );
 }

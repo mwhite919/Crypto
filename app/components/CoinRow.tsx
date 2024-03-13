@@ -68,7 +68,7 @@ export default function CoinRow({ coin, index }) {
     if (x < 0) return <ArrowDown />;
     if (x > 0) return <ArrowUp />;
   }
-
+  
   const graphData = coin?.sparkline_in_7d?.price.map((item) => {
     return { x: index, price: item };
   });
