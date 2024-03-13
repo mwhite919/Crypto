@@ -17,12 +17,9 @@ const chartCoinsSlice = createSlice({
   reducers: {
     handleSelect: (state, action) => {
       const coin = {
-        id: action.payload.id,
-        coin: action.payload.coin,
-        priceData: action.payload.priceData,
-        volumeData: action.payload.volumeData,
+        ...action.payload,
       };
-      if (state.coins.includes(coin)) {
+      if (state.coins.find(coin)) {
         const removed = state.coins.filter((c) => c !== coin);
         if (state.coins.length === 1) return;
         setChartCoins(removed);

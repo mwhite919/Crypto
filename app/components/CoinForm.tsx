@@ -37,7 +37,7 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
     if (coin && amount && date) {
       const collectionRef = collection(db, "portfoliocoins");
       const payload = {
-        id: Math.random(),
+        id: uid(),
         coin: coin,
         amount: amount,
         purchasePrice: purchasePrice,
@@ -333,3 +333,6 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
     </>
   );
 };
+function uid() {
+  throw new Error("Function not implemented.");
+}

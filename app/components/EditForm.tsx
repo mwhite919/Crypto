@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useState } from "react";
 import { CloseIcon, ResetIcon } from "@/app/icons/Icons";
 import axios from "axios";
 import CharacterCounter from "./characterCounter";
 import db from "../firebase/config";
-import { setDoc, addDoc, collection, doc } from "firebase/firestore";
+import { setDoc, doc } from "firebase/firestore";
+import { uid } from "uid";
 
 export const EditForm = ({ coinToEdit, handleEditForm }) => {
   const [coin, setCoin] = useState(coinToEdit);
@@ -34,7 +34,7 @@ export const EditForm = ({ coinToEdit, handleEditForm }) => {
     if (coin && amount && date) {
       const docRef = doc(db, "portfoliocoins", id);
       const payload = {
-        id: Math.random(),
+        id: uid(),
         coin: coin.coin,
         amount: amount,
         purchasePrice: purchasePrice,
