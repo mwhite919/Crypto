@@ -6,11 +6,14 @@
   :root {
     --color-base: theme("colors.slate.50");
     --color-inverse: theme("colors.indigo.900");
-    --color-primary: theme("colors.teal.400");
+    --color-primary: theme("colors.cyan.400");
     --color-second: theme("colors.slate.100");
     --color-second-inverse: theme("colors.indigo.500");
-    --color-accent: theme("colors.indigo.500");
+    --color-accent: theme("colors.indigo.600");
+    --color-accentShadow: theme("colors.indigo.800");
+    --color-accentLight: theme("colors.indigo.200");
     --color-accent2: theme("colors.cyan.400");
+    --color-navColor: theme("colors.indigo.900");
   }
 }
 
@@ -21,17 +24,10 @@
   --color-second: theme("colors.teal.100");
   --color-second-inverse: theme("colors.teal.600");
   --color-accent: theme("colors.teal.500");
+  --color-accentShadow: theme("colors.teal.200");
+  --color-accentLight: theme("colors.teal.800");
   --color-accent2: theme("colors.violet.400");
-}
-
-.theme-Neon-Pastel {
-  --color-base: theme("colors.emerald.50");
-  --color-inverse: theme("colors.slate.900");
-  --color-primary: theme("colors.rose.500");
-  --color-second: theme("colors.teal.100");
-  --color-second-inverse: theme("colors.lime.400");
-  --color-accent: theme("colors.yellow.200");
-  --color-accent2: theme("colors.blue.600");
+  --color-nav: theme("colors.teal.900");
 }
 
 .theme-Rose {
@@ -42,6 +38,10 @@
   --color-second-inverse: theme("colors.rose.400");
   --color-accent: theme("colors.rose.500");
   --color-accent2: theme("colors.rose.700");
+  --color-accentShadow: theme("colors.rose.200");
+  --color-accentLight: theme("colors.rose.800");
+  --color-accent2: theme("colors.rose.400");
+  --color-nav: theme("colors.rose.900");
 }
 
 .theme-Amber {
@@ -52,6 +52,10 @@
   --color-second-inverse: theme("colors.amber.400");
   --color-accent: theme("colors.amber.500");
   --color-accent2: theme("colors.amber.600");
+  --color-accentShadow: theme("colors.amber.200");
+  --color-accentLight: theme("colors.amber.800");
+  --color-accent2: theme("colors.blue.400");
+  --color-nav: theme("colors.amber.900");
 }
 
 .theme-light {
@@ -60,6 +64,9 @@
   --accent: var(--color-accent);
   --primary: var(--color-primary);
   --accent2: var(--color-accent2);
+  --accentShadow: var(--color-accentShadow);
+  --accentLight: var(--color-accentLight);
+  --navColor: var(--color-navColor);
 }
 
 .theme-dark {
@@ -68,4 +75,7 @@
   --accent: var(--color-accent2);
   --primary: var(--color-primary);
   --accent2: var(--color-accent);
+  --accentShadow: var(--color-accentLight);
+  --accentLight: var(--color-accentShadow);
+  --navColor: var(--color-navColor);
 }

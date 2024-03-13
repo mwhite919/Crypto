@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { ExchangeIcon } from "../icons/Icons";
 import { useAppSelector } from "@/redux/hooks";
+import { ConversionLineChart } from "./ConversionLineChart";
 
 const DropdownRow = styled.div`
   cursor: pointer;
@@ -36,6 +37,11 @@ const Converter = ({ allCoinsData }) => {
     setvariable1(conversion);
   };
 
+  const conversionGraphData = coin1.sparkline_in_7d.price.map((c, index) => ({
+    time: index,
+    conversion: c / coin2.sparkline_in_7d.price[index],
+  }));
+
   const onChange1 = (e) => {
     setValue1(e.target.value);
   };
@@ -55,56 +61,125 @@ const Converter = ({ allCoinsData }) => {
   };
 
   return (
-    <ConverterBox className="my-10 rounded-lg w-96 flex justify-between items-center">
-      <div className="flex flex-col w-full">
-        <div className="flex justify-center flex-col items-start border w-full bg-second h-full">
-          <div className="flex justify-between items-end w-full py-3 px-5 ">
-            <div>
-              <h2 className="text-sm">You sell:</h2>
+    <>
+      <ConverterBox className="my-10 rounded-lg w-96 flex justify-between items-center">
+        <div className="flex flex-col w-full">
+          <div className="flex justify-center flex-col items-start border w-full bg-second h-full">
+            <div className="flex justify-between items-end w-full py-3 px-5 ">
+              <div>
+                <h2 className="text-sm">You sell:</h2>
+                {coin1 && (
+                  <div className="flex items-center">
+                    <img src={coin1.image} className="h-8 m-2" />
+                    <h1 className="text-xl">
+                      {coin1.name} ({coin1?.symbol?.toUpperCase()})
+                    </h1>
+                  </div>
+                )}
+              </div>
+              <div>
+                <input
+                  value={variable1}
+                  onChange={(value) => handleConversionLtR(value)}
+                  className="my-2 rounded-md pl-2 text-right bg-second"
+                />
+              </div>
+            </div>
+            <div className="mx-auto bg-accent m-2 h-px w-11/12"></div>
+            <div className="pl-5">
               {coin1 && (
-                <div className="flex items-center">
-                  <img src={coin1.image} className="h-8 m-2" />
-                  <h1 className="text-xl">
-                    {coin1.name} ({coin1?.symbol?.toUpperCase()})
-                  </h1>
+                <div className="text-sm">
+                  1{coin1.symbol.toUpperCase()}={currency.symbol}
+                  {coin1.current_price}
                 </div>
               )}
-            </div>
-            <div>
               <input
-                value={variable1}
-                onChange={(value) => handleConversionLtR(value)}
-                className="my-2 rounded-md pl-2 text-right bg-second"
+                className="border-black my-4 rounded-md relative inline-block bg-slate-100"
+                value={value1}
+                onChange={onChange1}
+                placeholder="Search Coins..."
               />
+              <div className="absolute max-h-44 overflow-auto">
+                {value1 &&
+                  allCoinsData
+                    ?.filter((coin) => {
+                      const name = coin.name.toLowerCase();
+                      const search = value1.toLowerCase();
+                      return name.startsWith(search);
+                    })
+                    .map((coin) => (
+                      <DropdownRow
+                        key={coin.id}
+                        className="bg-slate-100 border-slate-300 block"
+                        onClick={() => onSearch1(coin)}
+                      >
+                        {coin.name}
+                      </DropdownRow>
+                    ))}
+              </div>
             </div>
           </div>
-          <div className="mx-auto bg-accent m-2 h-px w-11/12"></div>
+        </div>
+
+        <div className="p-5 rounded-full border-solid bg-accent abolute">
+          <ExchangeIcon />
+        </div>
+
+        <div className="flex justify-center flex-col items-start border w-full bg-second h-full">
+          <div className="flex justify-between items-end w-full  py-3 px-5">
+            <div className="flex flex-col">
+              <div className="w-7/12">
+                <h2 className="text-sm">You buy:</h2>
+                {coin2 && (
+                  <div className="flex items-center">
+                    <img
+                      alt="coin logo"
+                      src={coin2.image}
+                      className="h-8 m-2"
+                    />
+                    <h1 className="text-xl">
+                      {coin2.name}({coin2?.symbol?.toUpperCase()})
+                    </h1>
+                  </div>
+                )}
+              </div>
+            </div>
+            <input
+              onChange={(value) => handleConversionRtL(value)}
+              value={variable2}
+              id="v2"
+              className="my-2 w-44 rounded-md pl-2 text-right bg-second"
+            />
+          </div>
+
+          <div className="mx-auto m-3 bg-accent h-px w-11/12"></div>
           <div className="pl-5">
-            {coin1 && (
+            {coin2 && (
               <div className="text-sm">
-                1{coin1.symbol.toUpperCase()}={currency.symbol}
-                {coin1.current_price}
+                1{coin2.symbol.toUpperCase()}={currency.symbol}
+                {coin2.current_price}
               </div>
             )}
             <input
-              className="border-black my-4 rounded-md relative inline-block bg-slate-100"
-              value={value1}
-              onChange={onChange1}
+              className="border-black my-4 rounded-md relative inline-blockm bg-slate-100"
+              type="text"
+              value={value2}
+              onChange={onChange2}
               placeholder="Search Coins..."
             />
             <div className="absolute max-h-44 overflow-auto">
-              {value1 &&
+              {value2 &&
                 allCoinsData
                   ?.filter((coin) => {
                     const name = coin.name.toLowerCase();
-                    const search = value1.toLowerCase();
+                    const search = value2.toLowerCase();
                     return name.startsWith(search);
                   })
                   .map((coin) => (
                     <DropdownRow
                       key={coin.id}
                       className="bg-slate-100 border-slate-300 block"
-                      onClick={() => onSearch1(coin)}
+                      onClick={() => onSearch2(coin)}
                     >
                       {coin.name}
                     </DropdownRow>
@@ -112,71 +187,11 @@ const Converter = ({ allCoinsData }) => {
             </div>
           </div>
         </div>
+      </ConverterBox>
+      <div>
+        <ConversionLineChart conversionGraphData={conversionGraphData} />
       </div>
-
-      <div className="p-5 rounded-full border-solid bg-accent abolute">
-        <ExchangeIcon />
-      </div>
-
-      <div className="flex justify-center flex-col items-start border w-full bg-second h-full">
-        <div className="flex justify-between items-end w-full  py-3 px-5">
-          <div className="flex flex-col">
-            <div className="w-7/12">
-              <h2 className="text-sm">You buy:</h2>
-              {coin2 && (
-                <div className="flex items-center">
-                  <img alt="coin logo" src={coin2.image} className="h-8 m-2" />
-                  <h1 className="text-xl">
-                    {coin2.name}({coin2?.symbol?.toUpperCase()})
-                  </h1>
-                </div>
-              )}
-            </div>
-          </div>
-          <input
-            onChange={(value) => handleConversionRtL(value)}
-            value={variable2}
-            id="v2"
-            className="my-2 w-44 rounded-md pl-2 text-right bg-second"
-          />
-        </div>
-
-        <div className="mx-auto m-3 bg-accent h-px w-11/12"></div>
-        <div className="pl-5">
-          {coin2 && (
-            <div className="text-sm">
-              1{coin2.symbol.toUpperCase()}={currency.symbol}
-              {coin2.current_price}
-            </div>
-          )}
-          <input
-            className="border-black my-4 rounded-md relative inline-blockm bg-slate-100"
-            type="text"
-            value={value2}
-            onChange={onChange2}
-            placeholder="Search Coins..."
-          />
-          <div className="absolute max-h-44 overflow-auto">
-            {value2 &&
-              allCoinsData
-                ?.filter((coin) => {
-                  const name = coin.name.toLowerCase();
-                  const search = value2.toLowerCase();
-                  return name.startsWith(search);
-                })
-                .map((coin) => (
-                  <DropdownRow
-                    key={coin.id}
-                    className="bg-slate-100 border-slate-300 block"
-                    onClick={() => onSearch2(coin)}
-                  >
-                    {coin.name}
-                  </DropdownRow>
-                ))}
-          </div>
-        </div>
-      </div>
-    </ConverterBox>
+    </>
   );
 };
 
