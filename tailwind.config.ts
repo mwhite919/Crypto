@@ -9,10 +9,13 @@ module.exports = {
     extend: {
       colors: {
         base: "var(--base)",
-        primary: "var(--accent2)",
+        primary: "var(--primary)",
         second: "var(--second)",
         accent: "var(--accent)",
-        accent2: "var(--primary)",
+        accent2: "var(--accent2)",
+        navColor: "var(--navColor)",
+        accentShadow: "var(--accent-shadow)",
+        accentLight: "var(--accent-light)",
       },
       backgroundColor: {
         base: "var(--base)",
@@ -20,6 +23,7 @@ module.exports = {
         second: "var(--second)",
         accent: "var(--accent)",
         accent2: "var(--primary)",
+        navColor: "var(--navColor)",
       },
       textColor: {
         base: "var(--base)",
