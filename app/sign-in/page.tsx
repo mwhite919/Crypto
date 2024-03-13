@@ -1,17 +1,39 @@
 "use client";
+import { useState, useRef } from "react";
 import Link from "next/link";
 import { useCrypto } from "../Providers/CryptoProvider";
+import { login, useAuth } from "../firebase/config";
+import { useRouter } from "next/navigation";
 
 const SignIn = () => {
-  const {
-    handleSignIn,
-    email,
-    password,
-    handlePassword,
-    handleEmail,
-    palette,
-    mode,
-  } = useCrypto();
+  const { handleLoginError, palette, mode } = useCrypto();
+  const [loading, setLoading] = useState(false);
+  const emailRef = useRef();
+  const passwordRef = useRef();
+  const currentUser = useAuth();
+  const router = useRouter();
+
+  async function handleLogin() {
+    setLoading(true);
+    try {
+      await login(emailRef.current.value, passwordRef.current.value);
+  
+    } catch (e) {
+      console.error(e);
+      handleLoginError();
+    }
+    setLoading(false);
+    if (currentUser) {
+        console.log("hi");
+        router.push("/portfolio");
+        return;
+      }
+      // if (!currentUser) {
+      //   console.log("error; please login");
+      //   handleLoginError();
+      //   router.push("/sign-up");
+      }
+  }
 
   return (
     <div
@@ -32,20 +54,18 @@ const SignIn = () => {
         <input
           type="email"
           placeholder="Email"
-          value={email}
-          onChange={(e) => handleEmail(e)}
+          ref={emailRef}
           className="w-full p-3 mb-4 bg-accent2 rounded outline-none text-primary placeholder-gray-500"
         />
         <input
           type="password"
           placeholder="Password"
-          value={password}
-          onChange={(e) => handlePassword(e)}
+          ref={passwordRef}
           className="w-full p-3 mb-4 bg-accent2 rounded outline-none text-primary placeholder-gray-500"
         />
         <button
-          onClick={handleSignIn}
-          className="w-full p-3 bg-accent rounded text-white hover:bg-primary"
+          onClick={handleLogin}
+          className="w-full p-3 bg-accent rounded text-white hover:border-primary"
         >
           Sign In
         </button>

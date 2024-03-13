@@ -7,6 +7,7 @@ import CharacterCounter from "./characterCounter";
 import { DropDownRow } from "../utils/DropDownRow";
 import db from "../firebase/config";
 import { addDoc, collection } from "firebase/firestore";
+import { uid } from "uid";
 
 export const CoinForm = ({ allCoinsData, handleForm }) => {
   const [coin, setCoin] = useState({});
@@ -333,6 +334,3 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
     </>
   );
 };
-function uid() {
-  throw new Error("Function not implemented.");
-}

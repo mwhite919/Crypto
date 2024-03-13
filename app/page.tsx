@@ -85,8 +85,8 @@ export default function Page() {
       <div>
         <RadioGroup
           className="flex items-center justify-center mx-5 text-sm "
-          value={calculator}
-          onChange={setCalculator}
+          value={converter}
+          onChange={setConverter}
         >
           <RadioGroup.Option
             className={({ active, checked }) =>
@@ -136,7 +136,6 @@ export default function Page() {
         )}
       </div>
       <div>
-
         <Row className="bg-second flex shadow-md text-sm">
           <div
             className="flex items-center justify-center"
