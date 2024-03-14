@@ -10,7 +10,10 @@ import {
   XIcon,
   RedditIcon,
   NewTabLinkIcon,
+  TriangleUp,
+  TriangleDown,
 } from "@/app/icons/Icons";
+import { useAppSelector } from "@/redux/hooks";
 
 import { useGetSingleCoinQuery } from "@/app/Providers/api/apiSlice";
 import { useCrypto } from "@/app/Providers/CryptoProvider";
@@ -19,9 +22,9 @@ export default function Page({ params }: { params: { id: string } }) {
   const { data: coinInfo, error, isError, isLoading } = useGetSingleCoinQuery(
     params.id
   );
+
+  const currency = useAppSelector((state) => state.currency);
   const { palette, mode } = useCrypto();
-  const [currency, setCurrency] = useState("usd");
-  const [currencySymbol, setCurrencySymbol] = useState("$");
   const [copied, setCopied] = useState(false);
   const [showMore, setShowMore] = useState(false);
   const icon = coinInfo?.image?.small;
@@ -33,18 +36,36 @@ export default function Page({ params }: { params: { id: string } }) {
   const facebookLink = coinInfo?.links?.facebook_username;
   const XScreenName = coinInfo?.links?.twitter_screen_name;
   const redditPage = coinInfo?.links?.subreddit_url;
-  const currentPrice = coinInfo?.market_data?.current_price.usd?.toFixed(2);
-  const ath = coinInfo?.market_data?.ath.usd;
-  const athChange = coinInfo?.market_data?.ath_change_percentage?.usd;
-  const athDate = coinInfo?.market_data?.ath_date?.usd;
-  const atl = coinInfo?.market_data?.atl?.usd;
-  const atlChange = coinInfo?.market_data?.atl_change_percentage?.usd;
-  const atlDate = coinInfo?.market_data?.atl_date?.usd;
-  const marketCap = coinInfo?.market_data?.market_cap.usd;
-  const fullyDiluted = coinInfo?.market_data?.fully_diluted_valuation.usd;
+  const currentPrice = coinInfo?.market_data?.current_price[
+    currency.currency
+  ].toFixed(2);
+  const ath = coinInfo?.market_data?.ath[currency.currency];
+  const athChange =
+    coinInfo?.market_data?.ath_change_percentage[currency.currency];
+  const formattedAth = new Date(
+    coinInfo?.market_data?.ath_date[currency.currency]
+  ).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
+  const atl = coinInfo?.market_data?.atl[currency.currency].toFixed(2);
+  const atlChange =
+    coinInfo?.market_data?.atl_change_percentage[currency.currency];
+  const formattedAtl = new Date(
+    coinInfo?.market_data?.atl_date[currency.currency]
+  ).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+  const marketCap = coinInfo?.market_data?.market_cap[currency.currency];
+  const fullyDiluted =
+    coinInfo?.market_data?.fully_diluted_valuation[currency.currency];
   const volume24h = coinInfo?.market_data?.price_change_24h?.toFixed(4);
   const volumeMarket = (volume24h / marketCap)?.toFixed(3);
-  const totalVolume = coinInfo?.market_data?.total_volume.usd;
+  const totalVolume = coinInfo?.market_data?.total_volume[currency.currency];
   const totalSupply = coinInfo?.market_data?.total_supply;
   const maxSupply = coinInfo?.market_data?.max_supply;
   const description = coinInfo?.description?.en;
@@ -58,7 +79,7 @@ export default function Page({ params }: { params: { id: string } }) {
   return (
     <>
       <div
-        className={`flex items-center justify-center flex-col w-screen text-sm text-shadowDark pt-24 theme-${palette} theme-${mode} bg-base`}
+        className={`flex items-center justify-center flex-col w-screen h-screen text-sm text-shadowDark theme-${palette} theme-${mode} bg-base`}
       >
         <div className="w-[1000px] grid grid-cols-4 gap-2 justify-center items-start mt-36 m-6">
           <div className="flex flex-col items-center justify-center col-span-1 p-5 h-60 bg-second shadow-sm shadow-accent m-3 rounded-lg ">
@@ -97,30 +118,44 @@ export default function Page({ params }: { params: { id: string } }) {
 
           <div className="flex flex-col items-center justify-between col-span-1 h-60 bg-second p-5 rounded-lg m-3 shadow-sm shadow-accent ">
             <div></div>
-            <div className="text-2xl font-bold drop-shadow-sm">
-              {currencySymbol}
+            <div className="text-2xl text-accent font-bold drop-shadow-sm">
+              {currency.symbol}
               {currentPrice}
             </div>
             <div>
               <StackIcon />
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col text-sm">
               <div className="flex flex-col">
-                <div className="flex">
-                  All time high:
+                <div className="flex items-center justify-between">
+                  <div className="flex">
+                    <TriangleUp />
+                    All time high:
+                  </div>
                   <div>
-                    {currencySymbol}
+                    {currency.symbol}
                     {ath}
                   </div>
                 </div>
-                <div>{athDate}</div>
+                <div className="text-xs flex justify-center">
+                  {formattedAth}
+                </div>
               </div>
-              <div>
-                All time low:
-                <div>{atl}</div>
-                <div>{atlDate}</div>
+              <div className="m-1">
+                <div className="flex items-center justify-between">
+                  <div className="flex">
+                    <TriangleDown />
+                    All time low:
+                  </div>
+                  {currency.symbol}
+                  {atl}
+                </div>
+                <div className="text-xs flex justify-center">
+                  {formattedAtl}
+                </div>
               </div>
             </div>
+            <div></div>
           </div>
 
           <div className="flex flex-col items-center justify-between col-span-2 p-5 h-60 bg-second m-3 rounded-lg shadow-sm shadow-accent ">
@@ -130,7 +165,7 @@ export default function Page({ params }: { params: { id: string } }) {
                 Market Cap
               </div>
               <div>
-                {currencySymbol}
+                {currency.symbol}
                 {marketCap}
               </div>
             </div>
@@ -140,7 +175,7 @@ export default function Page({ params }: { params: { id: string } }) {
                 Fully Diluted Valuation{" "}
               </div>
               <div>
-                {currencySymbol}
+                {currency.symbol}
                 {fullyDiluted}
               </div>
             </div>
