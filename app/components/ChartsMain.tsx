@@ -133,7 +133,10 @@ export const ChartsMain = () => {
         />
       </div>
       <div>
-        <ChartsIntervalButtons />
+        <ChartsIntervalButtons
+          handleNumberOfDays={handleNumberOfDays}
+          numberOfDays={numberOfDays}
+        />
       </div>
     </div>
   );

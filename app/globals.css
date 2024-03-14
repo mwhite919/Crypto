@@ -8,11 +8,11 @@
     --color-inverse: theme("colors.indigo.900");
     --color-primary: theme("colors.cyan.400");
     --color-second: theme("colors.slate.100");
-    --color-second-inverse: theme("colors.indigo.500");
-    --color-accent: theme("colors.indigo.600");
+    --color-second-inverse: theme("colors.indigo.700");
+    --color-accent: theme("colors.indigo.800");
     --color-accentShadow: theme("colors.indigo.800");
     --color-accentLight: theme("colors.indigo.200");
-    --color-accent2: theme("colors.cyan.400");
+    --color-accent2: theme("colors.indigo.200");
     --color-navColor: theme("colors.indigo.900");
   }
 }
@@ -67,6 +67,7 @@
   --accentShadow: var(--color-accentShadow);
   --accentLight: var(--color-accentLight);
   --navColor: var(--color-navColor);
+  --navText: var(--color-accentLight);
 }
 
 .theme-dark {
@@ -78,4 +79,5 @@
   --accentShadow: var(--color-accentLight);
   --accentLight: var(--color-accentShadow);
   --navColor: var(--color-navColor);
+  --navText: var(--color-accentLight);
 }

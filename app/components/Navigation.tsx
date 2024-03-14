@@ -67,9 +67,9 @@ export default function Navigation() {
     setSearchValue(inputValue);
   };
 
-  const handleSearch = (coinId) => {
+  const handleSearch = (coinId: string) => {
     if (searchValue) {
-      const fixString = coinId.replace(/\W+/g, "-");
+      const fixString = coinId?.replace(/\W+/g, "-");
       setSearchValue("");
       return router.push(`/coininfo/${fixString}`);
     }
@@ -141,21 +141,17 @@ export default function Navigation() {
   return (
     <>
       <nav
-        className={`flex flex-col justify-center fixed top-0 z-50 theme-${palette} theme-${mode}`}
+        className={`flex flex-col justify-center fixed top-0 z-50 text-navText theme-${palette} theme-${mode}`}
       >
         <div className="flex items-center justify-center p-px text-xs bg-navColor">
-          <div className=" flex items-center mx-4 text-second">
+          <div className=" flex items-center mx-4 ">
             <CoinStackIcon />
             Coins:{marketCoins}
           </div>
-          <div className="mx-4 text-second">
-            {totalVolume && aveta(totalVolume)}
-          </div>
-          <div className="mx-4 text-second">
-            {totalMarketCap && aveta(totalMarketCap)}
-          </div>
+          <div className="mx-4 ">{totalVolume && aveta(totalVolume)}</div>
+          <div className="mx-4 ">{totalMarketCap && aveta(totalMarketCap)}</div>
 
-          <div className="mx-4 text-second flex items-center justify-center">
+          <div className="mx-4  flex items-center justify-center">
             <img
               src="https://i.ibb.co/VpjD7V6/Bitcoin-svg.png"
               className="h-4 w-4"
@@ -170,7 +166,7 @@ export default function Navigation() {
           </div>
 
           <div>
-            <div className="mx-4 text-second flex items-center justify-center">
+            <div className="mx-4  flex items-center justify-center">
               <img
                 src="https://i.ibb.co/3Spb2vB/Ethereum-icon-purple-svg.png"
                 className="h-4 w-4"
