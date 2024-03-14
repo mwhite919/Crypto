@@ -94,8 +94,8 @@ export default function Page() {
               }
                       ${
                         checked
-                          ? "bg-accent text-white"
-                          : "bg-white text-accent"
+                          ? "border-2 border-accentLight bg-accent text-second hover:scale-105"
+                          : "bg-second hover:scale-105"
                       }
                         relative flex cursor-pointer rounded-lg px-3 py-2 w-36 m-1 justify-center shadow-md focus:outline-none hover:scale-105`
             }
@@ -112,8 +112,8 @@ export default function Page() {
               }
                       ${
                         checked
-                          ? "bg-accent text-white"
-                          : "bg-white text-accent"
+                          ? "border-2 border-accentLight bg-accent text-second hover:scale-105"
+                          : "bg-second hover:scale-105"
                       }
                         relative flex cursor-pointer rounded-lg px-3 py-2 m-1 w-36 justify-center shadow-md focus:outline-none hover:scale-105`
             }

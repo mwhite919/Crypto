@@ -252,7 +252,7 @@ export default function Navigation() {
                     onKeyDown={handleKeyPress}
                     placeholder="Search..."
                     type="text"
-                    className="ml-5 drop-shadow-xl rounded-lg pl-3 relative w-44 inline-block focus: border-slate-200"
+                    className=" h-1 ml-5 drop-shadow-xl rounded-lg pl-3 relative w-44 inline-block bg-base text-shadowDark focus: border-slate-200"
                   />
                   <div className="ml-5 absolute max-h-44 overflow-y-auto w-44">
                     {showResults && mappedCoinsArray}
@@ -260,7 +260,7 @@ export default function Navigation() {
                 </div>
                 <select
                   name="currency"
-                  className="mx-5 drop-shadow-xl rounded-lg p-0.5"
+                  className="h-1 mx-5 drop-shadow-xl rounded-lg p-0.5 bg-second text-shadowDark"
                   onChange={handleCurrency}
                 >
                   {CurrencyArray?.map((c) => {
