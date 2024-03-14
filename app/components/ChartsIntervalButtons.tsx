@@ -31,7 +31,7 @@ export default function ChartsIntervalButtons({
               }
                       ${
                         checked
-                          ? "border-2 border-accentLight bg-accent text-second hover:scale-105"
+                          ? "border-2 border-shadowLight bg-accent text-second hover:scale-105"
                           : "bg-second hover:scale-105"
                       }
                           text-sm relative flex cursor-pointer font-semibold rounded-lg px-3 py-2 m-1 shadow-md focus:outline-none hover:scale-105`

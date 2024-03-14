@@ -207,8 +207,7 @@ export function MoonIcon() {
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={1.5}
-      stroke="currentColor"
-      className="w-6 h-6"
+      className="w-6 h-6 stroke-accent bg-accent fill-second border-2 rounded-lg"
     >
       <path
         strokeLinecap="round"
@@ -225,8 +224,8 @@ export function SunIcon() {
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
       strokeWidth={1.5}
-      stroke="currentColor"
-      className="w-6 h-6 stroke-accent"
+      fill="none"
+      className="w-6 h-6 stroke-second bg-accent rounded-lg"
     >
       <path
         strokeLinecap="round"

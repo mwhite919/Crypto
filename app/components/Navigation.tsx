@@ -252,7 +252,7 @@ export default function Navigation() {
                     onKeyDown={handleKeyPress}
                     placeholder="Search..."
                     type="text"
-                    className=" h-1 ml-5 drop-shadow-xl rounded-lg pl-3 relative w-44 inline-block bg-base text-shadowDark focus: border-slate-200"
+                    className="items-center h-6 text-sm ml-5 drop-shadow-xl rounded-lg pl-3 relative w-44 inline-block bg-base text-shadowDark placeholder:text-sm placeholder:text-shadowDark focus:border-slate-200"
                   />
                   <div className="ml-5 absolute max-h-44 overflow-y-auto w-44">
                     {showResults && mappedCoinsArray}
@@ -260,12 +260,16 @@ export default function Navigation() {
                 </div>
                 <select
                   name="currency"
-                  className="h-1 mx-5 drop-shadow-xl rounded-lg p-0.5 bg-second text-shadowDark"
+                  className="items-center h-6 text-sm mx-5 drop-shadow-xl rounded-lg p-0.5 bg-base border-base text-shadowDark"
                   onChange={handleCurrency}
                 >
                   {CurrencyArray?.map((c) => {
                     return (
-                      <option key={c.currency} value={c.currency}>
+                      <option
+                        className="text-sm text-shadowDark"
+                        key={c.currency}
+                        value={c.currency}
+                      >
                         {c.currency}
                         {"  "} {c.name}
                       </option>
@@ -275,7 +279,7 @@ export default function Navigation() {
                 <select
                   onChange={(e) => handlePalette(e)}
                   name="palette"
-                  className="mr-5 drop-shadow-xl rounded-lg"
+                  className=" h-6 mr-5 drop-shadow-xl text-sm rounded-lg"
                 >
                   {Palettes?.map((theme) => {
                     return (

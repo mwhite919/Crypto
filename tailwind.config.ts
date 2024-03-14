@@ -18,8 +18,8 @@ module.exports = {
         accent2: "var(--accent2)",
         navColor: "var(--navColor)",
         navText: "var(--navText)",
-        accentShadow: "var(--accentShadow)",
-        accentLight: "var(--accentLight)",
+        shadowDark: "var(--accentShadow)",
+        shadowLight: "var(--accentLight)",
       },
       backgroundColor: {
         base: "var(--base)",
