@@ -13,12 +13,13 @@ import {
 } from "@/app/icons/Icons";
 
 import { useGetSingleCoinQuery } from "@/app/Providers/api/apiSlice";
+import { useCrypto } from "@/app/Providers/CryptoProvider";
 
 export default function Page({ params }: { params: { id: string } }) {
   const { data: coinInfo, error, isError, isLoading } = useGetSingleCoinQuery(
     params.id
   );
-
+  const { palette, mode } = useCrypto();
   const [currency, setCurrency] = useState("usd");
   const [currencySymbol, setCurrencySymbol] = useState("$");
   const [copied, setCopied] = useState(false);
@@ -56,192 +57,185 @@ export default function Page({ params }: { params: { id: string } }) {
 
   return (
     <>
-      <div className="flex items-center justify-center flex-col w-screen ">
-        <div className="w-5/6 flex flex-col justify-center items-center mt-36 m-6">
-          <div className="flex items-center justify-center w-5/6">
-            <div className="flex flex-col items-center justify-center w-1/4 p-5 h-60 bg-second shadow-md shadow-accent m-3 rounded-lg ">
-              <div>
-                <img src={icon} />
-              </div>
-              <div className="text-2xl font-bold drop-shadow-md">
-                {name}({abv})
-              </div>
-              <div className="flex h-4">
-                {facebookLink && (
-                  <button
-                    onClick={() =>
-                      openInNewTab(`https://www.facebook.com/${facebookLink}`)
-                    }
-                  >
-                    <FacebookIcon />
-                  </button>
-                )}
-                {XScreenName && (
-                  <button
-                    onClick={() =>
-                      openInNewTab(`https://www.twitter.com/${XScreenName}`)
-                    }
-                  >
-                    <XIcon />
-                  </button>
-                )}
-                {redditPage && (
-                  <button onClick={() => openInNewTab(`${redditPage}`)}>
-                    <RedditIcon />
-                  </button>
-                )}
-              </div>
+      <div
+        className={`flex items-center justify-center flex-col w-screen text-sm text-shadowDark pt-24 theme-${palette} theme-${mode} bg-base`}
+      >
+        <div className="w-[1000px] grid grid-cols-4 gap-2 justify-center items-start mt-36 m-6">
+          <div className="flex flex-col items-center justify-center col-span-1 p-5 h-60 bg-second shadow-sm shadow-accent m-3 rounded-lg ">
+            <div>
+              <img src={icon} />
             </div>
+            <div className="text-xl font-bold drop-shadow-sm">
+              {name}({abv})
+            </div>
+            <div className="flex h-4">
+              {facebookLink && (
+                <button
+                  onClick={() =>
+                    openInNewTab(`https://www.facebook.com/${facebookLink}`)
+                  }
+                >
+                  <FacebookIcon />
+                </button>
+              )}
+              {XScreenName && (
+                <button
+                  onClick={() =>
+                    openInNewTab(`https://www.twitter.com/${XScreenName}`)
+                  }
+                >
+                  <XIcon />
+                </button>
+              )}
+              {redditPage && (
+                <button onClick={() => openInNewTab(`${redditPage}`)}>
+                  <RedditIcon />
+                </button>
+              )}
+            </div>
+          </div>
 
-            <div className="flex flex-col items-center justify-between w-1/4 h-60 bg-second p-5 rounded-lg m-3 shadow-md shadow-accent ">
-              <div></div>
-              <div className="text-2xl font-bold drop-shadow-md">
-                {currencySymbol}
-                {currentPrice}
-              </div>
-              <div>
-                <StackIcon />
-              </div>
+          <div className="flex flex-col items-center justify-between col-span-1 h-60 bg-second p-5 rounded-lg m-3 shadow-sm shadow-accent ">
+            <div></div>
+            <div className="text-2xl font-bold drop-shadow-sm">
+              {currencySymbol}
+              {currentPrice}
+            </div>
+            <div>
+              <StackIcon />
+            </div>
+            <div className="flex flex-col">
               <div className="flex flex-col">
-                <div className="flex flex-col">
-                  <div className="flex">
-                    All time high:
-                    <div>
-                      {currencySymbol}
-                      {ath}
-                    </div>
+                <div className="flex">
+                  All time high:
+                  <div>
+                    {currencySymbol}
+                    {ath}
                   </div>
-                  <div>{athDate}</div>
                 </div>
-                <div>
-                  All time low:
-                  <div>{atl}</div>
-                  <div>{atlDate}</div>
-                </div>
+                <div>{athDate}</div>
               </div>
-            </div>
-
-            <div className="flex flex-col items-center justify-between w-1/2 p-5 h-60 bg-second m-3 rounded-lg shadow-md shadow-accent ">
-              <div className="flex justify-between w-full">
-                <div className="flex items-center">
-                  <ArrowBullet />
-                  Market Cap
-                </div>
-                <div>
-                  {currencySymbol}
-                  {marketCap}
-                </div>
-              </div>
-              <div className="flex justify-between w-full">
-                <div className="flex items-center">
-                  <ArrowBullet />
-                  Fully Diluted Valuation{" "}
-                </div>
-                <div>
-                  {currencySymbol}
-                  {fullyDiluted}
-                </div>
-              </div>
-              <div className="flex justify-between w-full">
-                <div className="flex items-center">
-                  <ArrowBullet />
-                  Volume 24h
-                </div>
-                <div>{volume24h}</div>
-              </div>
-              <div className="flex justify-between w-full">
-                <div className="flex items-center">
-                  <ArrowBullet />
-                  Volume/Market
-                </div>
-                <div>{volumeMarket}</div>
-              </div>
-              <div className="flex justify-between w-full">
-                <div className="flex items-center">
-                  <ArrowBullet />
-                  Total Volume
-                </div>
-                <div>{totalVolume}</div>
-              </div>
-              <div className="flex justify-between w-full">
-                <div className="flex items-center">
-                  <ArrowBullet />
-                  Circulating Supply
-                </div>
-                <div>{totalSupply}</div>
-              </div>
-              <div className="flex justify-between w-full">
-                <div className="flex items-center">
-                  <ArrowBullet />
-                  Max Supply
-                </div>
-                <div>{maxSupply}</div>
+              <div>
+                All time low:
+                <div>{atl}</div>
+                <div>{atlDate}</div>
               </div>
             </div>
           </div>
 
-          <div className="flex items-start justify-center w-5/6">
-            <div className="bg-second m-3 p-5 h-1/2 rounded-lg shadow-md shadow-accent">
-              {showMore ? (
-                <div dangerouslySetInnerHTML={{ __html: description }} />
-              ) : (
-                `${description?.substring(0, 500)}`
-              )}
-              <button
-                className="text-accent italic drop-shadow-md"
-                onClick={() => setShowMore(!showMore)}
-              >
-                {showMore ? " See less" : "...See more"}
-              </button>
+          <div className="flex flex-col items-center justify-between col-span-2 p-5 h-60 bg-second m-3 rounded-lg shadow-sm shadow-accent ">
+            <div className="flex justify-between w-full">
+              <div className="flex items-center">
+                <ArrowBullet />
+                Market Cap
+              </div>
+              <div>
+                {currencySymbol}
+                {marketCap}
+              </div>
             </div>
-            <div className="flex flex-col w-1/2 rounded-lg ">
-              {webPage && (
-                <div className="h-6 bg-second m-3 p-5 flex items-center shadow-md shadow-accent">
-                  <button onClick={() => openInNewTab(`${webPage}`)}>
-                    <NewTabLinkIcon />
-                  </button>
-                  {webPage}
-                  <CopyToClipboard
-                    text={webPage}
-                    onCopy={() => setCopied(true)}
-                  >
-                    <CopyIcon />
-                  </CopyToClipboard>
-                </div>
-              )}
-
-              {blockChainwebPage && (
-                <div className="h-6 bg-second m-3 p-5 flex items-center shadow-md shadow-accent">
-                  <button onClick={() => openInNewTab(`${blockChainwebPage}`)}>
-                    <NewTabLinkIcon />
-                  </button>
-                  {webPage}
-                  <CopyToClipboard
-                    text={blockChainwebPage}
-                    onCopy={() => setCopied(true)}
-                  >
-                    <CopyIcon />
-                  </CopyToClipboard>
-                </div>
-              )}
-
-              {officialForumwebPage && (
-                <div className="h-6 bg-second m-3 p-5 flex items-center shadow-md shadow-accent">
-                  <button
-                    onClick={() => openInNewTab(`${officialForumwebPage}`)}
-                  >
-                    <NewTabLinkIcon />
-                  </button>
-                  {webPage}
-                  <CopyToClipboard
-                    text={officialForumwebPage}
-                    onCopy={() => setCopied(true)}
-                  >
-                    <CopyIcon />
-                  </CopyToClipboard>
-                </div>
-              )}
+            <div className="flex justify-between w-full">
+              <div className="flex items-center">
+                <ArrowBullet />
+                Fully Diluted Valuation{" "}
+              </div>
+              <div>
+                {currencySymbol}
+                {fullyDiluted}
+              </div>
             </div>
+            <div className="flex justify-between w-full">
+              <div className="flex items-center">
+                <ArrowBullet />
+                Volume 24h
+              </div>
+              <div>{volume24h}</div>
+            </div>
+            <div className="flex justify-between w-full">
+              <div className="flex items-center">
+                <ArrowBullet />
+                Volume/Market
+              </div>
+              <div>{volumeMarket}</div>
+            </div>
+            <div className="flex justify-between w-full">
+              <div className="flex items-center">
+                <ArrowBullet />
+                Total Volume
+              </div>
+              <div>{totalVolume}</div>
+            </div>
+            <div className="flex justify-between w-full">
+              <div className="flex items-center">
+                <ArrowBullet />
+                Circulating Supply
+              </div>
+              <div>{totalSupply}</div>
+            </div>
+            <div className="flex justify-between w-full">
+              <div className="flex items-center">
+                <ArrowBullet />
+                Max Supply
+              </div>
+              <div>{maxSupply}</div>
+            </div>
+          </div>
+
+          <div className="bg-second m-3 p-5 col-span-2 rounded-lg shadow-sm shadow-accent text-xs">
+            {showMore ? (
+              <div dangerouslySetInnerHTML={{ __html: description }} />
+            ) : (
+              `${description?.substring(0, 500)}`
+            )}
+            <button
+              className="text-accent italic drop-shadow-sm"
+              onClick={() => setShowMore(!showMore)}
+            >
+              {showMore ? " See less" : "...See more"}
+            </button>
+          </div>
+          <div className="flex flex-col col-span-2  ">
+            {webPage && (
+              <div className="h-6 bg-second m-3 p-5 flex items-center shadow-sm shadow-accent rounded-lg">
+                <button onClick={() => openInNewTab(`${webPage}`)}>
+                  <NewTabLinkIcon />
+                </button>
+                {webPage}
+                <CopyToClipboard text={webPage} onCopy={() => setCopied(true)}>
+                  <CopyIcon />
+                </CopyToClipboard>
+              </div>
+            )}
+
+            {blockChainwebPage && (
+              <div className="h-6 bg-second m-3 p-5 flex items-center shadow-sm shadow-accent rounded-lg">
+                <button onClick={() => openInNewTab(`${blockChainwebPage}`)}>
+                  <NewTabLinkIcon />
+                </button>
+                {webPage}
+                <CopyToClipboard
+                  text={blockChainwebPage}
+                  onCopy={() => setCopied(true)}
+                >
+                  <CopyIcon />
+                </CopyToClipboard>
+              </div>
+            )}
+
+            {officialForumwebPage && (
+              <div className="h-6 bg-second m-3 p-5 flex items-center shadow-sm shadow-accent rounded-lg">
+                <button onClick={() => openInNewTab(`${officialForumwebPage}`)}>
+                  <NewTabLinkIcon />
+                </button>
+                {webPage}
+                <CopyToClipboard
+                  text={officialForumwebPage}
+                  onCopy={() => setCopied(true)}
+                >
+                  <CopyIcon />
+                </CopyToClipboard>
+              </div>
+            )}
           </div>
         </div>
       </div>
