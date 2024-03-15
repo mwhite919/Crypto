@@ -7,6 +7,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      gridTemplateColumns: {
+        "19": "repeat(19, minmax(0, 1fr))",
+      },
       colors: {
         base: "var(--base)",
         primary: "var(--primary)",
@@ -14,8 +17,9 @@ module.exports = {
         accent: "var(--accent)",
         accent2: "var(--accent2)",
         navColor: "var(--navColor)",
-        accentShadow: "var(--accent-shadow)",
-        accentLight: "var(--accent-light)",
+        navText: "var(--navText)",
+        shadowDark: "var(--accentShadow)",
+        shadowLight: "var(--accentLight)",
       },
       backgroundColor: {
         base: "var(--base)",

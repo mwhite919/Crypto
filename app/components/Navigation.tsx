@@ -67,9 +67,9 @@ export default function Navigation() {
     setSearchValue(inputValue);
   };
 
-  const handleSearch = (coinId) => {
+  const handleSearch = (coinId: string) => {
     if (searchValue) {
-      const fixString = coinId.replace(/\W+/g, "-");
+      const fixString = coinId?.replace(/\W+/g, "-");
       setSearchValue("");
       return router.push(`/coininfo/${fixString}`);
     }
@@ -141,46 +141,42 @@ export default function Navigation() {
   return (
     <>
       <nav
-        className={`flex flex-col justify-center fixed top-0 z-50 theme-${palette} theme-${mode}`}
+        className={`flex flex-col justify-center fixed top-0 z-50 text-navText theme-${palette} theme-${mode}`}
       >
         <div className="flex items-center justify-center p-px text-xs bg-navColor">
-          <div className=" flex items-center mx-4 text-second">
+          <div className=" flex items-center mx-4 ">
             <CoinStackIcon />
             Coins:{marketCoins}
           </div>
-          <div className="mx-4 text-second">
-            {totalVolume && aveta(totalVolume)}
-          </div>
-          <div className="mx-4 text-second">
-            {totalMarketCap && aveta(totalMarketCap)}
-          </div>
+          <div className="mx-4 ">{totalVolume && aveta(totalVolume)}</div>
+          <div className="mx-4 ">{totalMarketCap && aveta(totalMarketCap)}</div>
 
-          <div className="mx-4 text-second flex items-center justify-center">
+          <div className="mx-4  flex items-center justify-center">
             <img
               src="https://i.ibb.co/VpjD7V6/Bitcoin-svg.png"
               className="h-4 w-4"
             />{" "}
             <div>BTC {marketCapPercentageBTC}%</div>
-            <div className="h-2 w-20 bg-base">
+            <div className="h-2 w-20 bg-shadowDark">
               <div
-                className="bg-primary min-h-2"
+                className="bg-shadowLight min-h-2"
                 style={{ width: `${marketCapPercentageBTC}%` }}
               ></div>
             </div>
           </div>
 
           <div>
-            <div className="mx-4 text-second flex items-center justify-center">
+            <div className="mx-4  flex items-center justify-center">
               <img
                 src="https://i.ibb.co/3Spb2vB/Ethereum-icon-purple-svg.png"
                 className="h-4 w-4"
               />{" "}
               <div>ETH {marketCapPercentageETH}%</div>
               <div>
-                <div className="min-h-2 w-20 bg-base">
+                <div className="min-h-2 w-20 bg-shadowDark">
                   <div
                     style={{ width: `${marketCapPercentageETH}%` }}
-                    className="bg-primary min-h-2 max-w-32"
+                    className="bg-shadowLight min-h-2 max-w-32"
                   ></div>
                 </div>
               </div>
@@ -256,7 +252,7 @@ export default function Navigation() {
                     onKeyDown={handleKeyPress}
                     placeholder="Search..."
                     type="text"
-                    className="ml-5 drop-shadow-xl rounded-lg pl-3 relative w-44 inline-block focus: border-slate-200"
+                    className="items-center h-6 text-sm ml-5 drop-shadow-xl rounded-lg pl-3 relative w-44 inline-block bg-base text-shadowDark placeholder:text-sm placeholder:text-shadowDark focus:border-slate-200"
                   />
                   <div className="ml-5 absolute max-h-44 overflow-y-auto w-44">
                     {showResults && mappedCoinsArray}
@@ -264,12 +260,16 @@ export default function Navigation() {
                 </div>
                 <select
                   name="currency"
-                  className="mx-5 drop-shadow-xl rounded-lg p-0.5"
+                  className="items-center h-6 text-sm mx-5 drop-shadow-xl rounded-lg p-0.5 bg-base border-base text-shadowDark"
                   onChange={handleCurrency}
                 >
                   {CurrencyArray?.map((c) => {
                     return (
-                      <option key={c.currency} value={c.currency}>
+                      <option
+                        className="text-sm text-shadowDark"
+                        key={c.currency}
+                        value={c.currency}
+                      >
                         {c.currency}
                         {"  "} {c.name}
                       </option>
@@ -279,7 +279,7 @@ export default function Navigation() {
                 <select
                   onChange={(e) => handlePalette(e)}
                   name="palette"
-                  className="mr-5 drop-shadow-xl rounded-lg"
+                  className=" h-6 mr-5 drop-shadow-xl text-sm rounded-lg"
                 >
                   {Palettes?.map((theme) => {
                     return (

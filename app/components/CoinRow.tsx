@@ -8,9 +8,6 @@ import { useAppSelector } from "@/redux/hooks";
 
 const Row = styled.div`
   width: 1010px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
   margin-top: 10px;
   padding-top: 4px;
   border-radius: 10px;
@@ -52,14 +49,14 @@ export default function CoinRow({ coin, index }) {
       if (rounded) {
         return "h-2 w-2 rounded-full bg-green-500";
       } else {
-        return "h-2 w-30 bg-green-500";
+        return "h-2 bg-green-500 items-center";
       }
     }
     if (x < 0) {
       if (rounded) {
         return "h-2 w-2 rounded-full bg-red-500";
       } else {
-        return "h-2 w-30 bg-red-500";
+        return "h-2 bg-red-500 items-center";
       }
     }
   }
@@ -68,7 +65,7 @@ export default function CoinRow({ coin, index }) {
     if (x < 0) return <ArrowDown />;
     if (x > 0) return <ArrowUp />;
   }
-  
+
   const graphData = coin?.sparkline_in_7d?.price.map((item) => {
     return { x: index, price: item };
   });
@@ -80,79 +77,70 @@ export default function CoinRow({ coin, index }) {
 
   return (
     <div>
-      <Row className="bg-second shadow-md text-sm">
-        <div className="flex items-center justify-center" style={{ width: 80 }}>
+      <Row className="bg-second shadow-md text-sm grid grid-cols-19 gap-2">
+        <div className="flex items-center justify-center col-span-1">
           {index}
         </div>
-        <div
-          className="flex items-center justify-center"
-          style={{ width: 115 }}
-        >
+        <div className="flex items-center justify-center col-span-1">
           <img src={coin.image} className="w-8 max-h-8 " alt="coin icon" />
         </div>
-        <div
-          style={{ width: 250 }}
-          className="col-span-3 cursor-pointer flex justify-start items-center hover:scale-105"
-        >
+        <div className="col-span-2 cursor-pointer flex justify-start items-center hover:scale-105">
           <div onClick={() => handleRoute(coin.id)}>{coin.name}</div>
         </div>
-        <div className="flex justify-start items-center" style={{ width: 250 }}>
+        <div className="flex justify-start items-center col-span-2">
           {currency.symbol}
           {coinPrice}
         </div>
-        <div className="flex justify-start items-center" style={{ width: 150 }}>
+        <div className="flex justify-start items-center ml-1 col-span-1">
           {arrowUpOrDown(oneHourPercent)}
           {oneHourPercent}%
         </div>
-        <div className="flex justify-start items-center" style={{ width: 150 }}>
+        <div className="flex justify-start items-center ml-1 col-span-1">
           {arrowUpOrDown(oneDayPercent)}
           {oneDayPercent}%
         </div>
-        <div
-          className=" flex justify-start items-center"
-          style={{ width: 150 }}
-        >
+        <div className=" flex justify-start items-center col-span-1">
           {arrowUpOrDown(sevenDayPercent)}
           {sevenDayPercent}%
         </div>
-        <div style={{ width: 300 }}>
-          <div className="flex justify-between">
+        <div className="col-span-3 items-center justify-center">
+          <div className="flex justify-between w-32 ml-2">
             <div className="flex items-center">
               <div className={greenOrRed(oneDayPercent, true)}></div>
               <div className="text-xs">{formatNumber(volume)}</div>
             </div>
             <div className="flex items-center">
-              <div className="h-2 w-2 rounded-full  bg-gray-500"></div>
               <div className="text-xs">{formatNumber(marketCap)}</div>
+              <div className="h-2 w-2 rounded-full bg-gray-500"></div>
             </div>
           </div>
-          <div className="h-2 w-32 bg-gray-500">
+          <div className="h-2 w-32 bg-gray-500 items-center">
             <div
-              className={greenOrRed(oneDayPercent, false)}
               style={{ width: limiter(volumeMarketCap) }}
+              className={greenOrRed(oneDayPercent, false)}
             ></div>
           </div>
         </div>
 
-        <div style={{ width: 300 }}>
-          <div className="flex justify-between items-center">
+        <div className="col-span-3 items-center justify-center">
+          <div className="flex justify-between w-32">
             <div className="flex items-center">
               <div className={greenOrRed(oneDayPercent, true)}></div>
               <div className="text-xs">{formatNumber(circulating)}</div>
             </div>
             <div className="flex items-center">
+              <div className="text-xs">{formatNumber(totalSupply)}</div>{" "}
               <div className="h-2 w-2 rounded-full bg-gray-500"></div>
-              <div className="text-xs">{formatNumber(totalSupply)}</div>
             </div>
           </div>
-          <div className="h-2 w-32 bg-gray-500">
+          <div className="h-2 w-32 bg-gray-500 items-center">
             <div
               className={greenOrRed(oneDayPercent, false)}
               style={{ width: limiter(circulatingTotalSupply) }}
             ></div>
           </div>
         </div>
-        <div style={{ width: 250 }}>
+        <div className="col-span-2">
           <AreaChart
             width={130}
             height={50}

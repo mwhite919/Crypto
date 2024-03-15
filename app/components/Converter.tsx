@@ -62,9 +62,9 @@ const Converter = ({ allCoinsData }) => {
 
   return (
     <>
-      <ConverterBox className="my-10 rounded-lg w-96 flex justify-between items-center">
-        <div className="flex flex-col w-full">
-          <div className="flex justify-center flex-col items-start border w-full bg-second h-full">
+      <ConverterBox className="my-10 rounded-lg w-96 flex justify-between items-center ">
+        <div className="flex flex-col w-full h-full  bg-second text-shadowDark drop-shadow-lg rounded-md">
+          <div className="flex justify-center flex-col items-start w-full h-full">
             <div className="flex justify-between items-end w-full py-3 px-5 ">
               <div>
                 <h2 className="text-sm">You sell:</h2>
@@ -81,11 +81,11 @@ const Converter = ({ allCoinsData }) => {
                 <input
                   value={variable1}
                   onChange={(value) => handleConversionLtR(value)}
-                  className="my-2 rounded-md pl-2 text-right bg-second"
+                  className="my-2 rounded-md pl-2 text-right bg-second text-shadowDark"
                 />
               </div>
             </div>
-            <div className="mx-auto bg-accent m-2 h-px w-11/12"></div>
+            <div className="mx-auto bg-accent m-3 h-px w-11/12"></div>
             <div className="pl-5">
               {coin1 && (
                 <div className="text-sm">
@@ -94,7 +94,7 @@ const Converter = ({ allCoinsData }) => {
                 </div>
               )}
               <input
-                className="border-black my-4 rounded-md relative inline-block bg-slate-100"
+                className="border-accent my-4 rounded-md relative inline-block bg-second text-shadowDark"
                 value={value1}
                 onChange={onChange1}
                 placeholder="Search Coins..."
@@ -125,8 +125,8 @@ const Converter = ({ allCoinsData }) => {
           <ExchangeIcon />
         </div>
 
-        <div className="flex justify-center flex-col items-start border w-full bg-second h-full">
-          <div className="flex justify-between items-end w-full  py-3 px-5">
+        <div className="flex justify-center flex-col items-start rounded-md w-full bg-second drop-shadow-lg text-shadowDark h-full">
+          <div className="flex justify-between items-end w-full py-3 px-5">
             <div className="flex flex-col">
               <div className="w-7/12">
                 <h2 className="text-sm">You buy:</h2>
@@ -148,7 +148,7 @@ const Converter = ({ allCoinsData }) => {
               onChange={(value) => handleConversionRtL(value)}
               value={variable2}
               id="v2"
-              className="my-2 w-44 rounded-md pl-2 text-right bg-second"
+              className="my-2 w-44 rounded-md pl-2 text-right bg-second text-shadowDark"
             />
           </div>
 
@@ -161,7 +161,7 @@ const Converter = ({ allCoinsData }) => {
               </div>
             )}
             <input
-              className="border-black my-4 rounded-md relative inline-blockm bg-slate-100"
+              className="border-accent my-4 rounded-md relative inline-block bg-second text-shadowDark"
               type="text"
               value={value2}
               onChange={onChange2}

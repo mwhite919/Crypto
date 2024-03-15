@@ -7,6 +7,7 @@ import CharacterCounter from "./characterCounter";
 import { DropDownRow } from "../utils/DropDownRow";
 import db from "../firebase/config";
 import { addDoc, collection } from "firebase/firestore";
+import { uid } from "uid";
 
 export const CoinForm = ({ allCoinsData, handleForm }) => {
   const [coin, setCoin] = useState({});
@@ -195,7 +196,7 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
       <div className="drop-shadow-xl">
         <div
           style={{ width: 700, height: 300 }}
-          className="flex justify-center items-center flex-col bg-accent rounded-lg m-10  p-10"
+          className="flex justify-center items-center flex-col bg-second rounded-lg m-10  p-10"
         >
           <div className="flex items-center justify-between w-full">
             <div className="text-second">Select Coins</div>
@@ -215,7 +216,7 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
                   <div className="absolute -inset-5">
                     <div className="w-full h-full max-w-sm mx-auto lg:mx-0 opacity-30 blur-lg bg-gradient-to-r from-second to-primary"></div>
                   </div>
-                  <div className="flex items-center justify-center relative p-8 text-lg font-bold text-second bg-accent font-pj rounded-xl ">
+                  <div className="flex items-center justify-center relative p-8 text-lg font-bold text-second bg-second font-pj rounded-xl ">
                     <img src={coin?.image} className="h-16" />
                     <span className={CharacterCounter(coin?.name.length)}>
                       {coin?.name}
@@ -305,7 +306,7 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
               </form>
               <div className="w-72 flex justify-between items-center">
                 <button
-                  className="m-3 py-2 bg-second rounded-md w-36"
+                  className="m-3 py-2 bg-base rounded-md w-36"
                   type="submit"
                   onClick={closeForm}
                 >
@@ -317,7 +318,7 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
                   }
                   type="submit"
                   onClick={handleSubmit}
-                  className={` m-3 py-2 bg-second rounded-md w-36 ${
+                  className={` m-3 py-2 bg-base rounded-md w-36 ${
                     numError || dateError || missingAmount || missingCoin
                       ? "opacity-70"
                       : ""
@@ -333,6 +334,3 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
     </>
   );
 };
-function uid() {
-  throw new Error("Function not implemented.");
-}
