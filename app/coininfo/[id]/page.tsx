@@ -40,8 +40,6 @@ export default function Page({ params }: { params: { id: string } }) {
     currency.currency
   ].toFixed(2);
   const ath = coinInfo?.market_data?.ath[currency.currency];
-  const athChange =
-    coinInfo?.market_data?.ath_change_percentage[currency.currency];
   const formattedAth = new Date(
     coinInfo?.market_data?.ath_date[currency.currency]
   ).toLocaleDateString("en-US", {
@@ -49,10 +47,10 @@ export default function Page({ params }: { params: { id: string } }) {
     month: "long",
     day: "numeric",
   });
-
   const atl = coinInfo?.market_data?.atl[currency.currency].toFixed(2);
-  const atlChange =
-    coinInfo?.market_data?.atl_change_percentage[currency.currency];
+  const priceChange24h = coinInfo?.market_data?.price_change_percentage_24h_in_currency[
+    currency.currency
+  ].toFixed(2);
   const formattedAtl = new Date(
     coinInfo?.market_data?.atl_date[currency.currency]
   ).toLocaleDateString("en-US", {
@@ -67,10 +65,8 @@ export default function Page({ params }: { params: { id: string } }) {
   const volumeMarket = (volume24h / marketCap)?.toFixed(3);
   const totalVolume = coinInfo?.market_data?.total_volume[currency.currency];
   const totalSupply = coinInfo?.market_data?.total_supply;
-  const maxSupply = coinInfo?.market_data?.max_supply;
   const description = coinInfo?.description?.en;
-
-  const markup = { __html: { description } };
+  const publicNotice = coinInfo?.public_notice;
 
   const openInNewTab = (url) => {
     window.open(url, "_blank", "noreferrer");
@@ -79,7 +75,7 @@ export default function Page({ params }: { params: { id: string } }) {
   return (
     <>
       <div
-        className={`flex items-center justify-center flex-col w-screen h-screen text-sm text-shadowDark theme-${palette} theme-${mode} bg-base`}
+        className={`flex items-center justify-start flex-col w-screen h-screen text-sm text-shadowDark theme-${palette} theme-${mode} bg-base`}
       >
         <div className="w-[1000px] grid grid-cols-4 gap-2 justify-center items-start mt-36 m-6">
           <div className="flex flex-col items-center justify-center col-span-1 p-5 h-60 bg-second shadow-sm shadow-accent m-3 rounded-lg ">
@@ -117,22 +113,27 @@ export default function Page({ params }: { params: { id: string } }) {
           </div>
 
           <div className="flex flex-col items-center justify-between col-span-1 h-60 bg-second p-5 rounded-lg m-3 shadow-sm shadow-accent ">
-            <div></div>
-            <div className="text-2xl text-accent font-bold drop-shadow-sm">
-              {currency.symbol}
-              {currentPrice}
-            </div>
-            <div>
-              <StackIcon />
+            <div className="flex flex-col items-center justify-center">
+              <div className="text-2xl text-accent font-bold drop-shadow-sm">
+                {currency.symbol}
+                {currentPrice}
+              </div>
+              <div className="flex items-center justify-center">
+                {priceChange24h >= 0 ? <TriangleUp /> : <TriangleDown />}
+                {currency.symbol}
+                {priceChange24h}(24h)
+              </div>
+              <div>
+                <StackIcon />
+              </div>
             </div>
             <div className="flex flex-col text-sm">
               <div className="flex flex-col">
-                <div className="flex items-center justify-between">
-                  <div className="flex">
-                    <TriangleUp />
-                    All time high:
+                <div className="flex items-center justify-between w-full">
+                  <div className="flex items-center mr-1">
+                    <TriangleUp /> All time high:{" "}
                   </div>
-                  <div>
+                  <div className="text-lg font-semibold">
                     {currency.symbol}
                     {ath}
                   </div>
@@ -143,12 +144,14 @@ export default function Page({ params }: { params: { id: string } }) {
               </div>
               <div className="m-1">
                 <div className="flex items-center justify-between">
-                  <div className="flex">
-                    <TriangleDown />
-                    All time low:
+                  <div className="flex items-center mr-1">
+                    <TriangleDown /> All time low:{" "}
                   </div>
-                  {currency.symbol}
-                  {atl}
+                  <div className="text-lg font-semibold">
+                    {" "}
+                    {currency.symbol}
+                    {atl}
+                  </div>
                 </div>
                 <div className="text-xs flex justify-center">
                   {formattedAtl}
@@ -210,13 +213,13 @@ export default function Page({ params }: { params: { id: string } }) {
             <div className="flex justify-between w-full">
               <div className="flex items-center">
                 <ArrowBullet />
-                Max Supply
+                Total Supply
               </div>
-              <div>{maxSupply}</div>
+              <div>{totalSupply}</div>
             </div>
           </div>
 
-          <div className="bg-second m-3 p-5 col-span-2 rounded-lg shadow-sm shadow-accent text-xs">
+          <div className="bg-second m-3 p-5 col-span-2 rounded-lg shadow-sm shadow-accent text-sm">
             {showMore ? (
               <div dangerouslySetInnerHTML={{ __html: description }} />
             ) : (
@@ -229,7 +232,17 @@ export default function Page({ params }: { params: { id: string } }) {
               {showMore ? " See less" : "...See more"}
             </button>
           </div>
+
           <div className="flex flex-col col-span-2  ">
+            {publicNotice && (
+              <div className="bg-second m-3 p-5 flex items-center font-italic shadow-sm shadow-accent rounded-lg">
+                <p className="italic">
+                  Public Notice:{" "}
+                  <div dangerouslySetInnerHTML={{ __html: publicNotice }} />
+                </p>
+              </div>
+            )}
+
             {webPage && (
               <div className="h-6 bg-second m-3 p-5 flex items-center shadow-sm shadow-accent rounded-lg">
                 <button onClick={() => openInNewTab(`${webPage}`)}>

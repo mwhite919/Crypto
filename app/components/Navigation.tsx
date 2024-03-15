@@ -157,9 +157,9 @@ export default function Navigation() {
               className="h-4 w-4"
             />{" "}
             <div>BTC {marketCapPercentageBTC}%</div>
-            <div className="h-2 w-20 bg-base">
+            <div className="h-2 w-20 bg-shadowDark">
               <div
-                className="bg-primary min-h-2"
+                className="bg-shadowLight min-h-2"
                 style={{ width: `${marketCapPercentageBTC}%` }}
               ></div>
             </div>
@@ -173,10 +173,10 @@ export default function Navigation() {
               />{" "}
               <div>ETH {marketCapPercentageETH}%</div>
               <div>
-                <div className="min-h-2 w-20 bg-base">
+                <div className="min-h-2 w-20 bg-shadowDark">
                   <div
                     style={{ width: `${marketCapPercentageETH}%` }}
-                    className="bg-primary min-h-2 max-w-32"
+                    className="bg-shadowLight min-h-2 max-w-32"
                   ></div>
                 </div>
               </div>

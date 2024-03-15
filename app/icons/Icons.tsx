@@ -189,7 +189,7 @@ export function NewTabLinkIcon() {
       viewBox="0 0 24 24"
       strokeWidth={1.5}
       stroke="currentColor"
-      className="w-6 h-6"
+      className="w-6 h-6 ml-1"
     >
       <path
         strokeLinecap="round"
@@ -357,7 +357,7 @@ export function TriangleUp() {
       width="12"
       height="12"
       viewBox="0 0 24 24"
-      className="m-px fill-teal-600"
+      className="mr-1 fill-teal-600"
     >
       <path d="M24 22h-24l12-20z" />
     </svg>
@@ -371,7 +371,7 @@ export function TriangleDown() {
       width="12"
       height="12"
       viewBox="0 0 24 24"
-      className="m-px fill-red-600 origin-center rotate-180 "
+      className="mr-1 fill-red-600 origin-center rotate-180 "
     >
       <path d="M24 22h-24l12-20z" />
     </svg>
