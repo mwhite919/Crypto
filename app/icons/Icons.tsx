@@ -243,8 +243,7 @@ export function TrashIcon() {
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={1.5}
-      stroke="currentColor"
-      className="w-6 h-6"
+      className="w-6 h-6 stroke-shadowDark"
     >
       <path
         strokeLinecap="round"
@@ -262,8 +261,7 @@ export function EditIcon() {
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={1.5}
-      stroke="currentColor"
-      className="w-6 h-6"
+      className="w-6 h-6 stroke-shadowDark"
     >
       <path
         strokeLinecap="round"

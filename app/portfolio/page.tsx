@@ -38,15 +38,19 @@ export default function Page() {
 
   return (
     <div
-      className={`w-window h-dvh bg-base theme-${palette} theme-${mode} flex items-center justify-start flex-col`}
+      className={`w-window h-dvh bg-base theme-${palette} theme-${mode} flex items-center justify-start flex-col `}
     >
-      <div className="w-full flex justify-end my-8 mr-36 mt-36">
-        <button
-          className="bg-accent p-4 rounded-lg"
-          onClick={() => setAddFormOn(!addFormOn)}
-        >
-          Add Asset
-        </button>
+      {addFormOn && (
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-2">
+          <CoinForm allCoinsData={allCoinsData} handleForm={handleForm} />
+        </div>
+      )}
+      <div
+        className={`w-full flex justify-end my-8 mr-36 mt-36 ${
+          addFormOn && "opacity-40"
+        }`}
+      >
+        <div></div>
       </div>
       <div>
         {editFormOn && (
@@ -55,15 +59,22 @@ export default function Page() {
           </div>
         )}
       </div>
-      <div>
-        {addFormOn && (
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-            <CoinForm allCoinsData={allCoinsData} handleForm={handleForm} />
-          </div>
-        )}
+      <div className="w-[900px]">
+        <div className="w-full flex justify-end">
+          {" "}
+          <button
+            className="bg-second drop-shadow-md p-4 rounded-lg text-shadowDark"
+            onClick={() => setAddFormOn(!addFormOn)}
+          >
+            Add Asset
+          </button>
+        </div>
+
+        <div className="justify-start font-medium text-xl text-shadowDark">
+          Your Statistics:
+        </div>
+        <PortfolioList handleEditForm={handleEditForm} />
       </div>
-      <div className="font-medium text-3xl text-accent"> Your Assets:</div>
-      <PortfolioList handleEditForm={handleEditForm} />
     </div>
   );
 }

@@ -73,7 +73,7 @@ export default function Page() {
 
   return (
     <div
-      className={`bg-base flex justify-center items-center flex-col text-accentShadow pt-24 theme-${palette} theme-${mode} top-36`}
+      className={`bg-base flex justify-center items-center flex-col text-shadowDark pt-24 theme-${palette} theme-${mode} top-36`}
     >
       <div>
         <div>{isLoading && <h2>fetching data...</h2>}</div>
@@ -133,7 +133,7 @@ export default function Page() {
         )}
       </div>
       <div>
-        <Row className="bg-second shadow-md text-sm text-accentShadow grid grid-cols-19 gap-2">
+        <Row className="bg-second shadow-md text-sm text-shadowDark grid grid-cols-19 gap-2">
           <div className="flex items-center justify-center col-span-1">#</div>
           <div className="col-span-1"></div>
           <div className="flex justify-start items-center col-span-2">Name</div>
