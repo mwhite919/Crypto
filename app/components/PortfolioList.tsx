@@ -68,17 +68,12 @@ function PortfolioList({ handleEditForm }) {
                 >
                   <div className="flex justify-between w-full">
                     <div className="h-48 w-48 flex items-center justify-center  ">
-                      <div className="">
-                        <div className="-inset-5">
-                          <div className="w-full h-full max-w-sm mx-auto lg:mx-0 opacity-30 blur-lg bg-gradient-to-r from-second to-primary"></div>
-                        </div>
-                        <div className="flex items-center justify-center flex-col p-8 text-shadowDark text-lg font-bold bg-base font-pj rounded-xl ">
-                          <img src={c.coin.image} className="h-16" />
-                          <div
-                            className={CharacterCounter(c?.coin?.name?.length)}
-                          >
-                            {c.coin.name}
-                          </div>
+                      <div className="flex items-center justify-center flex-col p-8 text-shadowDark text-lg font-bold bg-base font-pj rounded-xl ">
+                        <img src={c.coin.image} className="h-16" />
+                        <div
+                          className={CharacterCounter(c?.coin?.name?.length)}
+                        >
+                          {c.coin.name}
                         </div>
                       </div>
                     </div>
@@ -166,7 +161,7 @@ function PortfolioList({ handleEditForm }) {
                       </div>
                       <div className="flex flex-col items-center justify-between w-full">
                         <div className="w-24"></div>
-                        <div className="my-3 w-24 text-shadowDark font-semibold">
+                        <div className="my-3 w-full text-shadowDark font-semibold">
                           Your Coins
                         </div>
                         <div className="w-24"></div>
