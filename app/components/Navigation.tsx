@@ -122,7 +122,7 @@ export default function Navigation() {
     const selectedItem = filteredCoinsArray[selectedIndex];
     setSearchValue(selectedItem.id);
     if (!selectedItem) return resetSearchComplete();
-    handleSearch(selectedItem.key);
+    handleSearch(selectedItem.id);
     resetSearchComplete();
   };
 
