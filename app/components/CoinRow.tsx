@@ -27,36 +27,36 @@ export default function CoinRow({ coin, index }) {
   );
   const volume = coin?.total_volume;
   const marketCap = coin?.market_cap;
-  const volumeMarketCap = (volume / marketCap).toFixed(2) * 30;
+  const volumeMarketCap = (volume / marketCap) * 100;
   const circulating = coin?.circulating_supply;
   const totalSupply = Math.floor(coin.total_supply);
   const router = useRouter();
-  const circulatingTotalSupply = (circulating / totalSupply).toFixed(2) * 30;
+  const circulatingTotalSupply = (circulating / totalSupply) * 100;
   const coinPrice = coin?.current_price?.toFixed(2);
   const dataSet = coin?.price;
 
   function limiter(x) {
-    if (x < 1) {
+    if (x < 100) {
       return x;
     }
-    if (x >= 1) {
+    if (x >= 100) {
       return 100;
     }
   }
 
-  function greenOrRed(x: number, rounded: boolean) {
+  function greenOrRed(x: number, rounded: boolean, width: number) {
     if (x > 0) {
       if (rounded) {
         return "h-2 w-2 rounded-full bg-green-500";
       } else {
-        return "h-2 bg-green-500 items-center";
+        return `h-2 bg-green-500 items-center`;
       }
     }
     if (x < 0) {
       if (rounded) {
         return "h-2 w-2 rounded-full bg-red-500";
       } else {
-        return "h-2 bg-red-500 items-center";
+        return `h-2 bg-red-500 items-center items`;
       }
     }
   }
@@ -77,7 +77,7 @@ export default function CoinRow({ coin, index }) {
 
   return (
     <div>
-      <Row className="bg-second shadow-md text-sm grid grid-cols-19 gap-2">
+      <Row className="bg-second shadow-md text-sm grid grid-cols-17 gap-2">
         <div className="flex items-center justify-center col-span-1">
           {index}
         </div>
@@ -116,7 +116,7 @@ export default function CoinRow({ coin, index }) {
           </div>
           <div className="h-2 w-32 bg-gray-500 items-center">
             <div
-              style={{ width: limiter(volumeMarketCap) }}
+              style={{ width: limiter(volumeMarketCap) + "%" }}
               className={greenOrRed(oneDayPercent, false)}
             ></div>
           </div>
@@ -136,7 +136,7 @@ export default function CoinRow({ coin, index }) {
           <div className="h-2 w-32 bg-gray-500 items-center">
             <div
               className={greenOrRed(oneDayPercent, false)}
-              style={{ width: limiter(circulatingTotalSupply) }}
+              style={{ width: limiter(circulatingTotalSupply) + "%" }}
             ></div>
           </div>
         </div>

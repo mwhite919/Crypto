@@ -95,7 +95,7 @@ export default function Page() {
                       ${
                         checked
                           ? "border-2 border-shadowLight bg-accent text-second hover:scale-105"
-                          : "bg-second hover:scale-105"
+                          : "bg-second text-shadowDark hover:scale-105"
                       }
                         relative flex cursor-pointer rounded-lg px-3 py-2 w-36 m-1 justify-center shadow-md focus:outline-none hover:scale-105`
             }
@@ -113,7 +113,7 @@ export default function Page() {
                       ${
                         checked
                           ? "border-2 border-shadowLight bg-accent text-second hover:scale-105"
-                          : "bg-second hover:scale-105"
+                          : "bg-second  text-shadowDark hover:scale-105"
                       }
                         relative flex cursor-pointer rounded-lg px-3 py-2 m-1 w-36 justify-center shadow-md focus:outline-none hover:scale-105`
             }
@@ -133,7 +133,7 @@ export default function Page() {
         )}
       </div>
       <div>
-        <Row className="bg-second shadow-md text-sm text-shadowDark grid grid-cols-19 gap-2">
+        <Row className="bg-second shadow-md text-sm text-shadowDark grid grid-cols-17 gap-2">
           <div className="flex items-center justify-center col-span-1">#</div>
           <div className="col-span-1"></div>
           <div className="flex justify-start items-center col-span-2">Name</div>

@@ -72,7 +72,7 @@ export const CoinLineChart = ({ combinedDataPrices, combinedChartCoins }) => {
           name={combinedChartCoins[0]?.coinName}
           type="monotone"
           dataKey="price1"
-          stroke={colorsGroup?.strokeColor}
+          stroke={colorsGroup?.coin1.strokeColor}
           fillOpacity={1}
           fill="url(#color1)"
         />
@@ -81,7 +81,7 @@ export const CoinLineChart = ({ combinedDataPrices, combinedChartCoins }) => {
             name={combinedChartCoins[1]?.coinName}
             type="monotone"
             dataKey="price2"
-            stroke="#82ca9d"
+            stroke={colorsGroup?.coin2.strokeColor}
             fillOpacity={1}
             fill="url(#color2)"
           />
@@ -91,7 +91,7 @@ export const CoinLineChart = ({ combinedDataPrices, combinedChartCoins }) => {
             name={combinedChartCoins[2]?.coinName}
             type="monotone"
             dataKey="price3"
-            stroke="#82ca9d"
+            stroke={colorsGroup?.coin3.strokeColor}
             fillOpacity={1}
             fill="url(#color3)"
           />

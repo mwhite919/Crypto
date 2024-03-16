@@ -148,8 +148,14 @@ export default function Navigation() {
             <CoinStackIcon />
             Coins:{marketCoins}
           </div>
-          <div className="mx-4 ">{totalVolume && aveta(totalVolume)}</div>
-          <div className="mx-4 ">{totalMarketCap && aveta(totalMarketCap)}</div>
+          <div className="mx-4 ">
+            {currency.symbol}
+            {totalVolume && aveta(totalVolume)}
+          </div>
+          <div className="mx-4 ">
+            {currency.symbol}
+            {totalMarketCap && aveta(totalMarketCap)}
+          </div>
 
           <div className="mx-4  flex items-center justify-center">
             <img

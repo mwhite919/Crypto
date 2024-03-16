@@ -7,8 +7,14 @@ import {
   Legend,
   Tooltip,
 } from "recharts";
+import { lineGraphStyling } from "../utils/lineGraphStyling";
+import { useCrypto } from "../Providers/CryptoProvider";
 
 export const CoinBarChart = ({ graphData, combinedChartCoins }) => {
+  const { palette, mode } = useCrypto();
+
+  const colorsGroup = lineGraphStyling[palette];
+
   return (
     <BarChart
       className="bg-second text-xs p-2 m-1"
@@ -29,20 +35,22 @@ export const CoinBarChart = ({ graphData, combinedChartCoins }) => {
       <Bar
         name={combinedChartCoins[0]?.coinName}
         dataKey="volume1"
-        fill="#8884d8"
+        fill={colorsGroup?.coin1.strokeColor}
         activeBar={<Rectangle fill="pink" stroke="blue" />}
       />
       {combinedChartCoins[1]?.coinName && (
         <Bar
+          name={combinedChartCoins[1]?.coinName}
           dataKey="volume2"
-          fill="green"
+          fill={colorsGroup?.coin2.strokeColor}
           activeBar={<Rectangle fill="blue" stroke="blue" />}
         />
       )}
       {combinedChartCoins[2]?.coinName && (
         <Bar
+          name={combinedChartCoins[2]?.coinName}
           dataKey="volume3"
-          fill="blue"
+          fill={colorsGroup?.coin3.strokeColor}
           activeBar={<Rectangle fill="cyan" stroke="blue" />}
         />
       )}

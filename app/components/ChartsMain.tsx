@@ -123,14 +123,18 @@ export const ChartsMain = () => {
         />
       </div>
       <div className="flex mt-4">
-        <CoinLineChart
-          combinedDataPrices={combinedDataPrices}
-          combinedChartCoins={combinedChartCoins}
-        />
-        <CoinBarChart
-          graphData={combinedDataVolume}
-          combinedChartCoins={combinedChartCoins}
-        />
+        <div className="h-72 flex items-center justify-center bg-second">
+          <CoinLineChart
+            combinedDataPrices={combinedDataPrices}
+            combinedChartCoins={combinedChartCoins}
+          />
+        </div>
+        <div className="h-72 flex items-center justify-center bg-second">
+          <CoinBarChart
+            graphData={combinedDataVolume}
+            combinedChartCoins={combinedChartCoins}
+          />
+        </div>
       </div>
       <div>
         <ChartsIntervalButtons
