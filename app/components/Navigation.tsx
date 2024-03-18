@@ -16,8 +16,8 @@ import {
   StackIcon,
   SunIcon,
 } from "../icons/Icons";
-import { DropDownRow } from "../utils/DropDownRow";
-import { Palettes } from "../utils/Palettes";
+import { DropDownRow } from "../constants/DropDownRow";
+import { Palettes } from "../constants/Palettes";
 import { changeCurr } from "@/redux/currency/currencySlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { useAppSelector } from "@/redux/hooks";

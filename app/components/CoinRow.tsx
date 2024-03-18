@@ -2,11 +2,30 @@ import React from "react";
 import { formatNumber, priceFormatNumber } from "@/app/utils/formatNumber";
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
-import { AreaChart, Area, XAxis, YAxis, Tooltip } from "recharts";
 import ArrowDown, { ArrowUp } from "../icons/Icons";
 import { useAppSelector } from "@/redux/hooks";
-import { lineGraphStyling } from "../utils/lineGraphStyling";
+import { graphStyling } from "../constants/graphStyling";
 import { useCrypto } from "../Providers/CryptoProvider";
+import {
+  Chart as ChartJS,
+  LogarithmicScale,
+  TimeScale,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Legend,
+} from "chart.js";
+import { Line } from "react-chartjs-2";
+ChartJS.register(
+  LogarithmicScale,
+  TimeScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  CategoryScale,
+  Legend
+);
 
 const Row = styled.div`
   width: 1010px;
@@ -19,7 +38,7 @@ export default function CoinRow({ coin, index }) {
   const currency = useAppSelector((state) => state.currency);
   const { palette, mode } = useCrypto();
 
-  const colorsGroup = lineGraphStyling[palette];
+  const colorsGroup = graphStyling[palette];
 
   const oneHourPercent = coin?.price_change_percentage_1h_in_currency?.toFixed(
     2
@@ -71,9 +90,44 @@ export default function CoinRow({ coin, index }) {
     if (x > 0) return <ArrowUp />;
   }
 
-  const graphData = coin?.sparkline_in_7d?.price.map((item) => {
-    return { x: index, price: item };
+  const graphData = coin?.sparkline_in_7d?.price.map((item, index) => {
+    return { x: index, y: item };
   });
+
+  const data = {
+    labels: graphData.map((item) => item.x),
+    datasets: [
+      {
+        data: graphData.map((item) => item.y),
+        borderColor: colorsGroup?.coin1.stopColor1,
+        pointRadius: 0,
+        borderWidth: 1,
+        fill: true,
+        borderRadius: "5",
+        tension: 0.5,
+        pointBackgroundColor: "transparent",
+        pointBorderColor: "transparent",
+      },
+    ],
+  };
+
+  const options = {
+    plugins: {
+      legend: {
+        display: false,
+      },
+    },
+    scales: {
+      y: {
+        display: false,
+        type: "logarithmic",
+      },
+      x: {
+        display: false,
+        type: "time",
+      },
+    },
+  };
 
   const handleRoute = (coinId) => {
     const fixString = coinId.replace(/\W+/g, "-");
@@ -146,37 +200,7 @@ export default function CoinRow({ coin, index }) {
           </div>
         </div>
         <div className="col-span-2 flex items-center justify-center">
-          <AreaChart
-            width={130}
-            height={50}
-            data={graphData}
-            margin={{ top: 10, right: 30, left: 0, bottom: 2 }}
-          >
-            <defs>
-              <linearGradient id="colorP" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="5%"
-                  stopColor={colorsGroup.coin1.stopColor1}
-                  stopOpacity={0.8}
-                />
-                <stop
-                  offset="95%"
-                  stopColor={colorsGroup.coin1.stopColor2}
-                  stopOpacity={0}
-                />
-              </linearGradient>
-            </defs>
-            <XAxis hide domain={["auto", "auto"]} />
-            <YAxis scale="log" domain={["auto", "auto"]} hide />
-            <Tooltip />
-            <Area
-              type="monotone"
-              dataKey="price"
-              stroke={colorsGroup.coin1.strokeColor}
-              fillOpacity={1}
-              fill="url(#colorP)"
-            />
-          </AreaChart>
+          <Line options={options} data={data} className="p-1" />
         </div>
       </Row>
     </div>

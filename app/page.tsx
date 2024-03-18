@@ -9,8 +9,6 @@ import ChartsMain from "./components/ChartsMain";
 import Converter from "./components/Converter";
 import styled from "styled-components";
 import { RadioGroup } from "@headlessui/react";
-import { CoinSwiper } from "@/app/components/CoinSwiper";
-import InfiniteScroll from "react-infinite-scroll-component";
 
 const Row = styled.div`
   width: 1010px;

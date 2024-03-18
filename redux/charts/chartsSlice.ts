@@ -14,8 +14,6 @@ interface ChartCoinsState {
 
 const initialState: ChartCoinsState = {
   chartCoins: [],
-  chartCoins2: [],
-  labels: [],
 };
 
 const chartCoinsSlice = createSlice({
@@ -32,14 +30,6 @@ const chartCoinsSlice = createSlice({
           volume: action.payload.volume.map(mapGraphData),
         };
         state.chartCoins.push(chartCoin);
-        const chartCoin2 = {
-          id: action.payload.id,
-          coinName: action.payload.coinName,
-          time: action.payload.time,
-          prices: action.payload.prices.map(mapGraphData2),
-          volume: action.payload.volume.map(mapGraphData2),
-        };
-        state.chartCoins2.push(chartCoin2);
         return;
       }
       if (state.chartCoins.find((c) => c.id === action.payload.id)) {

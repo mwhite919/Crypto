@@ -1,4 +1,4 @@
-export const lineGraphStyling = {
+export const graphStyling = {
   Basic: {
     coin1: {
       strokeColor: "#818cf8",
