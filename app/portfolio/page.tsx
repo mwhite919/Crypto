@@ -20,8 +20,6 @@ export default function Page() {
   const [coinToEdit, setCoinToEdit] = useState({});
   const { loading, currentUser, palette, mode } = useCrypto();
 
-  console.log(currentUser);
-
   const handleForm = () => {
     setAddFormOn(!addFormOn);
     setEditFormOn(false);
@@ -40,7 +38,7 @@ export default function Page() {
       className={`w-window h-dvh bg-base theme-${palette} theme-${mode} flex items-center justify-start flex-col`}
     >
       {loading && (
-        <div className="w-full flex justify-end my-8 mr-36 mt-36">
+        <div className="w-screen h-screen flex justify-center items-center my-8 mr-36 mt-36 cursor-wait">
           Loading...
         </div>
       )}

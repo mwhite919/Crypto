@@ -6,7 +6,7 @@ import { login, useAuth } from "../firebase/config";
 import { useRouter } from "next/navigation";
 
 const SignIn = () => {
-  const { handleLoginError, palette, mode } = useCrypto();
+  const { handleLoginError, loginError, palette, mode } = useCrypto();
   const [loading, setLoading] = useState(false);
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -18,14 +18,8 @@ const SignIn = () => {
     try {
       await login(emailRef.current.value, passwordRef.current.value);
       if (currentUser) {
-        console.log("hi");
         router.push("/portfolio");
         return;
-      }
-      if (!currentUser) {
-        console.log("error; please login");
-        handleLoginError();
-        router.push("/sign-up");
       }
     } catch (e) {
       console.error(e);
@@ -50,6 +44,12 @@ const SignIn = () => {
           </Link>{" "}
           to sign-up!
         </div>
+        {loginError && (
+          <p>
+            "Sorry about that, there was an error logging in, please try again."
+          </p>
+        )}
+        ,
         <input
           type="email"
           placeholder="Email"

@@ -57,6 +57,7 @@ function PortfolioList({ handleEditForm }) {
 
   function findPercentPriceChange(purchasedP: number, currentP: number) {
     const percentageChange = ((currentP - purchasedP) / purchasedP) * 100;
+    console.log(percentageChange, "percentage change");
     return `${percentageChange.toFixed(2)}%`;
   }
 
@@ -183,15 +184,8 @@ function PortfolioList({ handleEditForm }) {
                             </div>
                             <div className="text-accent text-lg font-semibold">
                               {findPercentPriceChange(
-                                parseInt(c.purchasePrice[currency.currency]),
-                                c.coin.current_price
-                              ) ? (
-                                findPercentPriceChange(
-                                  c.purchasePrice[currency.currency],
-                                  c.coin.current_price
-                                )
-                              ) : (
-                                <p>Did not save</p>
+                                parseInt(c?.purchasePrice[currency.currency]),
+                                parseInt(c?.coin.current_price)
                               )}
                             </div>
                           </div>
@@ -201,9 +195,11 @@ function PortfolioList({ handleEditForm }) {
                             </div>
                             <div className="text-accent text-lg font-semibold">
                               {currency.symbol}{" "}
-                              {c?.purchasePrice[
-                                currency.currency.toLowerCase()
-                              ].toFixed(2)}
+                              {parseInt(
+                                c?.purchasePrice[
+                                  currency.currency.toLowerCase()
+                                ]
+                              ).toFixed(2)}
                             </div>
                           </div>
                           <div className="p-3">
