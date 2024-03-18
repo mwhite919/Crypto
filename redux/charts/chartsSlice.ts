@@ -1,7 +1,11 @@
 "use client";
 
 import { createSlice } from "@reduxjs/toolkit";
-import { mapGraphData } from "@/app/components/MapGraphData";
+import {
+  mapGraphData,
+  mapGraphData2,
+  mapGraphDataTime,
+} from "@/app/components/MapGraphData";
 
 interface ChartCoinsState {
   value: any;
@@ -10,6 +14,8 @@ interface ChartCoinsState {
 
 const initialState: ChartCoinsState = {
   chartCoins: [],
+  chartCoins2: [],
+  labels: [],
 };
 
 const chartCoinsSlice = createSlice({
@@ -26,6 +32,14 @@ const chartCoinsSlice = createSlice({
           volume: action.payload.volume.map(mapGraphData),
         };
         state.chartCoins.push(chartCoin);
+        const chartCoin2 = {
+          id: action.payload.id,
+          coinName: action.payload.coinName,
+          time: action.payload.time,
+          prices: action.payload.prices.map(mapGraphData2),
+          volume: action.payload.volume.map(mapGraphData2),
+        };
+        state.chartCoins2.push(chartCoin2);
         return;
       }
       if (state.chartCoins.find((c) => c.id === action.payload.id)) {

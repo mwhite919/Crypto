@@ -15,6 +15,24 @@ export const CoinBarChart = ({ graphData, combinedChartCoins }) => {
 
   const colorsGroup = lineGraphStyling[palette];
 
+  function xAxisColor(mode) {
+    if (mode === "dark") {
+      {
+        return "white";
+      }
+    } else {
+      if (palette === "Basic") {
+        return "#3730a3";
+      }
+      if (palette === "Teal") {
+        return "#0f766e";
+      }
+      if (palette === "Rose") {
+        return "#9f1239";
+      }
+    }
+  }
+
   return (
     <BarChart
       className="bg-second text-xs p-2 m-1"
@@ -28,7 +46,11 @@ export const CoinBarChart = ({ graphData, combinedChartCoins }) => {
         bottom: 10,
       }}
     >
-      <XAxis domain={["auto", "auto"]} dataKey="time" />
+      <XAxis
+        domain={["auto", "auto"]}
+        dataKey="time"
+        stroke={xAxisColor(mode)}
+      />
       <YAxis scale="log" domain={["auto", "auto"]} hide />
       <Tooltip />
       <Legend verticalAlign="top" align="left" height={36} />

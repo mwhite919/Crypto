@@ -203,14 +203,14 @@ export default function Navigation() {
               </div>
               <Link
                 href="/"
-                className="flex items-center mx-2 drop-shadow-md text-accent hover:scale-105"
+                className="flex items-center mx-2 drop-shadow-md text-shadowDark hover:scale-105"
               >
                 <HomeIcon />
                 <p className="ml-2">Home</p>
               </Link>
               <Link
                 href="/portfolio"
-                className="flex items-center mx-2 drop-shadow-md text-accent hover:scale-105"
+                className="flex items-center mx-2 drop-shadow-md text-shadowDark hover:scale-105"
               >
                 <StackIcon />
                 <p className="ml-2">Portfolio</p>
@@ -220,7 +220,7 @@ export default function Navigation() {
               <div>
                 {user ? (
                   <div className="flex justify-end items-center my-1 mr-5">
-                    <div className="text-accent italic">
+                    <div className="text-shadowDark italic">
                       User: <span className="text-accent2">{user?.email}</span>
                     </div>
                     <Link href="/">
@@ -285,8 +285,11 @@ export default function Navigation() {
                 <select
                   onChange={(e) => handlePalette(e)}
                   name="palette"
-                  className=" h-6 mr-5 drop-shadow-xl text-sm rounded-lg"
+                  className=" h-6 mr-5 drop-shadow-xl text-sm rounded-lg bg-base text-shadowDark"
                 >
+                  <option className="bg-second text-shadowDark text-sm">
+                    Theme
+                  </option>
                   {Palettes?.map((theme) => {
                     return (
                       <option

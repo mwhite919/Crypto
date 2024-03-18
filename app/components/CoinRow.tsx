@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { AreaChart, Area, XAxis, YAxis, Tooltip } from "recharts";
 import ArrowDown, { ArrowUp } from "../icons/Icons";
 import { useAppSelector } from "@/redux/hooks";
+import { lineGraphStyling } from "../utils/lineGraphStyling";
+import { useCrypto } from "../Providers/CryptoProvider";
 
 const Row = styled.div`
   width: 1010px;
@@ -15,6 +17,9 @@ const Row = styled.div`
 
 export default function CoinRow({ coin, index }) {
   const currency = useAppSelector((state) => state.currency);
+  const { palette, mode } = useCrypto();
+
+  const colorsGroup = lineGraphStyling[palette];
 
   const oneHourPercent = coin?.price_change_percentage_1h_in_currency?.toFixed(
     2
@@ -103,7 +108,7 @@ export default function CoinRow({ coin, index }) {
           {arrowUpOrDown(sevenDayPercent)}
           {sevenDayPercent}%
         </div>
-        <div className="col-span-3 items-center justify-center">
+        <div className="col-span-3 flex flex-col items-center justify-center">
           <div className="flex justify-between w-32 ml-2">
             <div className="flex items-center">
               <div className={greenOrRed(oneDayPercent, true)}></div>
@@ -122,7 +127,7 @@ export default function CoinRow({ coin, index }) {
           </div>
         </div>
 
-        <div className="col-span-3 items-center justify-center">
+        <div className="col-span-3 flex items-center justify-center flex-col">
           <div className="flex justify-between w-32">
             <div className="flex items-center">
               <div className={greenOrRed(oneDayPercent, true)}></div>
@@ -140,7 +145,7 @@ export default function CoinRow({ coin, index }) {
             ></div>
           </div>
         </div>
-        <div className="col-span-2">
+        <div className="col-span-2 flex items-center justify-center">
           <AreaChart
             width={130}
             height={50}
@@ -149,8 +154,16 @@ export default function CoinRow({ coin, index }) {
           >
             <defs>
               <linearGradient id="colorP" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+                <stop
+                  offset="5%"
+                  stopColor={colorsGroup.coin1.stopColor1}
+                  stopOpacity={0.8}
+                />
+                <stop
+                  offset="95%"
+                  stopColor={colorsGroup.coin1.stopColor2}
+                  stopOpacity={0}
+                />
               </linearGradient>
             </defs>
             <XAxis hide domain={["auto", "auto"]} />
@@ -159,7 +172,7 @@ export default function CoinRow({ coin, index }) {
             <Area
               type="monotone"
               dataKey="price"
-              stroke="#82ca9d"
+              stroke={colorsGroup.coin1.strokeColor}
               fillOpacity={1}
               fill="url(#colorP)"
             />

@@ -10,6 +10,35 @@ import { CoinSwiper } from "./CoinSwiper";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { priceChart } from "@/redux/charts/priceSlice";
 import { timeInterval } from "@/redux/charts/timeSlice";
+import {
+  Chart as ChartJS,
+  LogarithmicScale,
+  TimeScale,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Filler,
+  Legend,
+  Colors,
+} from "chart.js";
+import "chartjs-adapter-date-fns";
+import { Line } from "react-chartjs-2";
+
+ChartJS.register(
+  LogarithmicScale,
+  TimeScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Filler,
+  Legend,
+  CategoryScale
+);
 
 export const ChartsMain = () => {
   const currency = useAppSelector((state) => state.currency);
@@ -18,6 +47,81 @@ export const ChartsMain = () => {
   const combinedChartCoins = useAppSelector(
     (state) => state.chartCoins.chartCoins
   );
+
+  const chartCoin1 = useAppSelector((state) => state.chartCoins.chartCoins2);
+  const prices = useAppSelector((state) => state.chartCoins.chartCoins2.prices);
+  const labels = useAppSelector((state) => state.chartCoins.labels);
+  console.log(
+    "chartcoins2",
+    chartCoin1[0]?.prices,
+    "combined",
+    combinedChartCoins,
+    prices
+  );
+
+  const options = {
+    animation: {
+      duration: 2000,
+    },
+    scales: {
+      y: {
+        display: false,
+        type: "logarithmic",
+      },
+      x: {
+        grid: {
+          color: "transparent",
+        },
+        type: "time",
+        time: {
+          unit: "day",
+        },
+        ticks: {
+          font: {
+            size: 12,
+          },
+          maxRotation: 0,
+          minRotation: 0,
+        },
+      },
+    },
+  };
+
+  const data = {
+    labels: combinedChartCoins[0]?.prices.map((item) => item.time),
+    datasets: [
+      {
+        label: combinedChartCoins[0]?.coinName,
+        data: combinedChartCoins[0]?.prices.map((item) => item.yData),
+        borderColor: "rgb(255, 99, 2)",
+        // backgroundColor: "rgba(255, 99, 0, 0.5)",
+        borderRadius: "5",
+        tension: 0.5,
+        pointBackgroundColor: "transparent",
+        pointBorderColor: "transparent",
+      },
+      {
+        label: combinedChartCoins[1]?.coinName,
+        data: combinedChartCoins[1]?.prices.map((item) => item.yData),
+        borderColor: "rgb(255, 44, 132)",
+        // backgroundColor: "rgba(0, 99, 132, 0.5)",
+        borderRadius: "5",
+        tension: 0.5,
+        pointBackgroundColor: "transparent",
+        pointBorderColor: "transparent",
+      },
+      {
+        label: combinedChartCoins[2]?.coinName,
+        data: combinedChartCoins[2]?.prices.map((item) => item.yData),
+        borderColor: "rgb(44, 99, 132)",
+        // backgroundColor: "rgba(255, 0, 132, 0.5)",
+        borderRadius: "5",
+        tension: 0.5,
+        pointBackgroundColor: "transparent",
+        pointBorderColor: "transparent",
+      },
+    ],
+  };
 
   const dispatch = useAppDispatch();
 
@@ -122,14 +226,19 @@ export const ChartsMain = () => {
           combinedChartCoins={combinedChartCoins}
         />
       </div>
+
+      <div>
+        <Line options={options} data={data} className="h-72  " />
+      </div>
+
       <div className="flex mt-4">
-        <div className="h-72 flex items-center justify-center bg-second">
+        <div className="h-72 m-1 flex items-center justify-center bg-second">
           <CoinLineChart
             combinedDataPrices={combinedDataPrices}
             combinedChartCoins={combinedChartCoins}
           />
         </div>
-        <div className="h-72 flex items-center justify-center bg-second">
+        <div className="h-72 m-1 flex items-center justify-center bg-second">
           <CoinBarChart
             graphData={combinedDataVolume}
             combinedChartCoins={combinedChartCoins}
