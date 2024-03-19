@@ -1,22 +1,8 @@
 export const every_nth = (arr, dayCount) => {
-  if (dayCount <= 7) {
-    return arr?.filter(function (value, index, Arr) {
-      return index % 5 == 0;
-    });
-  }
-  if (dayCount <= 30) {
-    return arr?.filter(function (value, index, Arr) {
-      return index % 15 == 0;
-    });
-  }
-  if (dayCount <= 365) {
-    return arr?.filter(function (value, index, Arr) {
-      return index % 20 == 0;
-    });
-  }
-  if (dayCount > 365) {
-    return arr?.filter(function (value, index, Arr) {
-      return index % 25 == 0;
-    });
-  }
+  let decimator = 5;
+  if (dayCount <= 30) decimator = 15;
+  else if (dayCount <= 185) decimator = 18;
+  else if (dayCount <= 365) decimator = 20;
+  else if (dayCount > 365) decimator = 25;
+  return arr?.filter((_, index) => index % decimator == 0);
 };
