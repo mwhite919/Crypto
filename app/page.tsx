@@ -9,8 +9,6 @@ import ChartsMain from "./components/ChartsMain";
 import Converter from "./components/Converter";
 import styled from "styled-components";
 import { RadioGroup } from "@headlessui/react";
-import { CoinSwiper } from "@/app/components/CoinSwiper";
-import InfiniteScroll from "react-infinite-scroll-component";
 
 const Row = styled.div`
   width: 1010px;
@@ -22,56 +20,14 @@ export default function Page() {
   const currency = useAppSelector((state) => state.currency);
   const { palette, mode } = useCrypto();
   const [converter, setConverter] = useState(false);
-  const [sortValue, setSortValue] = useState("market_cap_desc");
-  const [sortByVolume, setSortByVolume] = useState(true);
-  const [sortByMarketCap, setSortByMarketCap] = useState(false);
-  const [sortById, setSortById] = useState(false);
-  const [sortByPrice, setSortByPrice] = useState(false);
 
   const { data: allCoinsData, error, isError, isLoading } = useGetAllCoinsQuery(
     {
       currency: currency.currency,
-      sortValue: sortValue,
+      sortValue: "market_cap_desc",
     }
   );
 
-  const handleSort = (value) => {
-    setSortValue(value);
-    if (value === "volume") {
-      setSortByVolume(!sortByVolume);
-      if (sortByVolume) {
-        setSortValue("volume_desc");
-      } else {
-        setSortValue("volume_asc");
-      }
-    }
-    if (value === "marketcap") {
-      setSortByMarketCap(!sortByMarketCap);
-      if (sortByMarketCap) {
-        setSortValue("market_cap_desc");
-      } else {
-        setSortValue("market_cap_asc");
-      }
-    }
-    if (value === "id") {
-      setSortById(!sortById);
-      if (sortById) {
-        setSortValue("id_desc");
-      } else {
-        setSortValue("id_asc");
-      }
-    }
-    if (value === "price") {
-      setSortByPrice(!sortByPrice);
-      if (sortByPrice) {
-        setSortValue("price_desc");
-      } else {
-        setSortValue("price_asc");
-      }
-    }
-  };
-
-  console.log(isLoading, "Loading");
   return (
     <>
       <div
