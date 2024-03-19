@@ -142,7 +142,7 @@ export default function Navigation() {
       <nav
         className={`flex flex-col justify-center fixed top-0 z-50 text-navText theme-${palette} theme-${mode}`}
       >
-        {isLoading && <div className="w-screen h-screen cursor-wait"></div>}
+        {isLoading && <div className="w-full h-full cursor-wait"></div>}
         {isError && (
           <div>
             An error occured during loading. Please refresh your page and try

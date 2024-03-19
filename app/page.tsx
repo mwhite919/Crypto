@@ -82,7 +82,11 @@ export default function Page() {
         <div></div>
         <div>
           <div>{isLoading && <h2>fetching data...</h2>}</div>
-          <div>{error && <h2>page loading</h2>}</div>
+          <div>
+            {isError && (
+              <h2>An error occured while loading. Please try again.</h2>
+            )}
+          </div>
         </div>
         <div>
           <RadioGroup
