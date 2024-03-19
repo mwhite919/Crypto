@@ -4,12 +4,13 @@ import { createSlice } from "@reduxjs/toolkit";
 import { mapGraphData } from "@/app/components/MapGraphData";
 
 interface ChartCoinsState {
-  value: any;
+  isLoading: boolean;
   chartCoins: chartCoins[];
 }
 
 const initialState: ChartCoinsState = {
   chartCoins: [],
+  isLoading: false,
 };
 
 const chartCoinsSlice = createSlice({
@@ -17,6 +18,7 @@ const chartCoinsSlice = createSlice({
   initialState,
   reducers: {
     addChartCoin: (state, action: any) => {
+      state.isLoading = true;
       if (state.chartCoins.length < 1) {
         const chartCoin = {
           id: action.payload.id,
@@ -26,15 +28,21 @@ const chartCoinsSlice = createSlice({
           volume: action.payload.volume.map(mapGraphData),
         };
         state.chartCoins.push(chartCoin);
+        state.isLoading = false;
         return;
       }
       if (state.chartCoins.find((c) => c.id === action.payload.id)) {
-        if (state.chartCoins.length === 1) return;
+        if (state.chartCoins.length === 1) {
+          state.isLoading = false;
+          return;
+        }
         state.chartCoins = state.chartCoins.filter(
           (c) => c.id !== action.payload.id
         );
+        state.isLoading = false;
       } else {
         if (state.chartCoins.length >= 3) {
+          state.isLoading = false;
           return state;
         }
         const chartCoin = {
@@ -45,11 +53,11 @@ const chartCoinsSlice = createSlice({
           volume: action.payload.volume.map(mapGraphData),
         };
         state.chartCoins.push(chartCoin);
-        {
-        }
+        state.isLoading = false;
       }
     },
     updateAllCoins: (state, action: any) => {
+      state.isLoading = true;
       state.chartCoins.map((chartCoin, index) => {
         chartCoin.id = chartCoin.id;
         chartCoin.coinName = chartCoin.coinName;
@@ -59,6 +67,7 @@ const chartCoinsSlice = createSlice({
           mapGraphData
         );
       });
+      state.isLoading = false;
     },
   },
 });

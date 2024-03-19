@@ -19,6 +19,8 @@ export const ChartsMain = () => {
     (state) => state.chartCoins.chartCoins
   );
 
+  const isLoading = useAppSelector((state) => state.chartCoins.isLoading);
+
   const dispatch = useAppDispatch();
 
   const handleClick = (coin) => {
@@ -112,7 +114,11 @@ export const ChartsMain = () => {
   );
 
   return (
-    <div className="flex flex-col justify-center items-center my-3">
+    <div
+      className={`flex flex-col justify-center items-center my-3 ${
+        isLoading ? "cursor-wait" : ""
+      }`}
+    >
       <div className="text-xs flex items-center justify-center w-full mt-2">
         Select currency to view statistics
       </div>
@@ -122,15 +128,17 @@ export const ChartsMain = () => {
           combinedChartCoins={combinedChartCoins}
         />
       </div>
-      <div className="flex mt-4">
-        <CoinLineChart
-          combinedDataPrices={combinedDataPrices}
-          combinedChartCoins={combinedChartCoins}
-        />
-        <CoinBarChart
-          graphData={combinedDataVolume}
-          combinedChartCoins={combinedChartCoins}
-        />
+      <div>
+        <div className="flex mt-4">
+          <CoinLineChart
+            combinedDataPrices={combinedDataPrices}
+            combinedChartCoins={combinedChartCoins}
+          />
+          <CoinBarChart
+            graphData={combinedDataVolume}
+            combinedChartCoins={combinedChartCoins}
+          />
+        </div>
       </div>
       <div>
         <ChartsIntervalButtons

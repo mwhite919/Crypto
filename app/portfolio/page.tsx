@@ -38,7 +38,7 @@ export default function Page() {
 
   return (
     <div
-      className={`w-window h-dvh bg-base theme-${palette} theme-${mode} flex items-center justify-start flex-col  `}
+      className={`w-window min-h-window bg-base theme-${palette} theme-${mode} flex items-center justify-start flex-col  `}
     >
       <div className="w-full flex justify-center my-8 mr-36 mt-36 relative">
         {editFormOn && (
