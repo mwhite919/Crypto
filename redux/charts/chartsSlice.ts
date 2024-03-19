@@ -1,7 +1,11 @@
 "use client";
 
 import { createSlice } from "@reduxjs/toolkit";
-import { mapGraphData } from "@/app/components/MapGraphData";
+import {
+  mapGraphData,
+  mapGraphData2,
+  mapGraphDataTime,
+} from "@/app/components/MapGraphData";
 
 interface ChartCoinsState {
   value: any;

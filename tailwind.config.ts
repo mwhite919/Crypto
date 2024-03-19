@@ -8,7 +8,7 @@ module.exports = {
   theme: {
     extend: {
       gridTemplateColumns: {
-        "19": "repeat(19, minmax(0, 1fr))",
+        "17": "repeat(17, minmax(0, 1fr))",
       },
       colors: {
         base: "var(--base)",

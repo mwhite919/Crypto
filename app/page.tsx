@@ -9,8 +9,6 @@ import ChartsMain from "./components/ChartsMain";
 import Converter from "./components/Converter";
 import styled from "styled-components";
 import { RadioGroup } from "@headlessui/react";
-import { CoinSwiper } from "@/app/components/CoinSwiper";
-import InfiniteScroll from "react-infinite-scroll-component";
 
 const Row = styled.div`
   width: 1010px;
@@ -95,7 +93,7 @@ export default function Page() {
                       ${
                         checked
                           ? "border-2 border-shadowLight bg-accent text-second hover:scale-105"
-                          : "bg-second hover:scale-105"
+                          : "bg-second text-shadowDark hover:scale-105"
                       }
                         relative flex cursor-pointer rounded-lg px-3 py-2 w-36 m-1 justify-center shadow-md focus:outline-none hover:scale-105`
             }
@@ -113,7 +111,7 @@ export default function Page() {
                       ${
                         checked
                           ? "border-2 border-shadowLight bg-accent text-second hover:scale-105"
-                          : "bg-second hover:scale-105"
+                          : "bg-second  text-shadowDark hover:scale-105"
                       }
                         relative flex cursor-pointer rounded-lg px-3 py-2 m-1 w-36 justify-center shadow-md focus:outline-none hover:scale-105`
             }
@@ -133,7 +131,7 @@ export default function Page() {
         )}
       </div>
       <div>
-        <Row className="bg-second shadow-md text-sm text-shadowDark grid grid-cols-19 gap-2">
+        <Row className="bg-second shadow-md text-xs text-shadowDark grid grid-cols-17 ">
           <div className="flex items-center justify-center col-span-1">#</div>
           <div className="col-span-1"></div>
           <div className="flex justify-start items-center col-span-2">Name</div>
@@ -149,13 +147,15 @@ export default function Page() {
           <div className="flex justify-start items-center ml-1 col-span-1">
             7d%
           </div>
-          <div className="flex justify-start items-center ml-2 col-span-3">
-            24h Volume/<br></br>Market Cap
+          <div className="flex justify-center items-center ml-2 col-span-3">
+            24h Volume/Market Cap
           </div>
-          <div className="flex justify-start items-center col-span-3">
-            Circulating/<br></br> Total Supply
+          <div className="flex justify-center items-center col-span-3">
+            Circulating/ Total Supply
           </div>
-          <div className="ml-4 col-span-2">Last 7d</div>
+          <div className="flex justify-start items-center col-span-2">
+            Last 7d
+          </div>
         </Row>
       </div>
 
