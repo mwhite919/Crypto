@@ -29,7 +29,7 @@
     "app/Providers/CryptoProvider.tsx",
     "app/Providers/CryptoProvider.tsx",
     "app/Providers/CryptoProvider.tsx",
-    "app/utils/DropDownRow.js"
+    "app/constants/DropDownRow.js"
   ],
   "exclude": ["node_modules"]
 }

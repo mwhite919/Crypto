@@ -223,7 +223,11 @@ export default function Page({ params }: { params: { id: string } }) {
             {showMore ? (
               <div dangerouslySetInnerHTML={{ __html: description }} />
             ) : (
-              `${description?.substring(0, 500)}`
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: `${description?.substring(0, 500)}`,
+                }}
+              />
             )}
             <button
               className="text-accent italic drop-shadow-sm"

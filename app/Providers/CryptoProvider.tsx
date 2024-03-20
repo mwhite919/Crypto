@@ -8,7 +8,7 @@ import {
 import { auth } from "@/app/firebase/config";
 import { signOut } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import { Palettes } from "../utils/Palettes";
+import { Palettes } from "../constants/Palettes";
 
 export const CryptoContext = createContext();
 export function useCrypto() {

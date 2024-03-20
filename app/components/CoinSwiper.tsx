@@ -3,7 +3,7 @@ import ArrowDown, { ArrowUp } from "@/app/icons/Icons";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import "@/app/utils/coin-swiper.css";
+import "@/app/constants/coin-swiper.css";
 import { useAppSelector } from "@/redux/hooks";
 
 export const CoinSwiper = ({ handleClick, combinedChartCoins }) => {

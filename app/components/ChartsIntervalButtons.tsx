@@ -26,7 +26,7 @@ export default function ChartsIntervalButtons({
             className={({ active, checked }) =>
               `${
                 active
-                  ? "ring-2 ring-white/60 ring-offset-2 ring-offset-accent2-300 hover:scale-105"
+                  ? "ring-2 ring-accent/60 ring-offset-2 ring-offset-accent-300 hover:scale-105"
                   : ""
               }
                       ${

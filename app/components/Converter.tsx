@@ -2,13 +2,29 @@ import { useState } from "react";
 import styled from "styled-components";
 import { ExchangeIcon } from "../icons/Icons";
 import { useAppSelector } from "@/redux/hooks";
-import { ConversionLineChart } from "./ConversionLineChart";
-
-const DropdownRow = styled.div`
-  cursor: pointer;
-  text-align: start;
-  margin: 2px, 0;
-`;
+import { Line } from "react-chartjs-2";
+import { useCrypto } from "../Providers/CryptoProvider";
+import {
+  Chart as ChartJS,
+  LogarithmicScale,
+  TimeScale,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Legend,
+} from "chart.js";
+ChartJS.register(
+  LogarithmicScale,
+  TimeScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  CategoryScale,
+  Legend
+);
+import { graphStyling } from "../constants/graphStyling";
+import { DropDownRow } from "../constants/DropDownRow";
 
 const ConverterBox = styled.div`
   width: 1010px;
@@ -22,6 +38,10 @@ const Converter = ({ allCoinsData }) => {
   const [coin2, setCoin2] = useState(allCoinsData[1]);
   const [variable1, setvariable1] = useState("0");
   const [variable2, setvariable2] = useState("0");
+
+  const { palette, mode } = useCrypto();
+
+  const colorsGroup = graphStyling[palette];
 
   const handleConversionLtR = (e) => {
     const result = e.target.value.replace(/\D/g, "");
@@ -37,10 +57,83 @@ const Converter = ({ allCoinsData }) => {
     setvariable1(conversion);
   };
 
-  const conversionGraphData = coin1.sparkline_in_7d.price.map((c, index) => ({
+  const conversionGraphData = coin1?.sparkline_in_7d.price.map((c, index) => ({
     time: index,
-    conversion: c / coin2.sparkline_in_7d.price[index],
+    conversion: c / coin2?.sparkline_in_7d.price[index],
   }));
+
+  function options(title) {
+    return {
+      animation: {
+        duration: 2000,
+      },
+      layout: {
+        padding: 10,
+      },
+      maintainAspectRatio: false,
+      interaction: { mode: "index" },
+      plugins: {
+        title: {
+          display: true,
+          text: title,
+          position: "top",
+          align: "start",
+        },
+        legend: {
+          display: false,
+        },
+      },
+      scales: {
+        y: {
+          display: false,
+          type: "logarithmic",
+        },
+        x: {
+          grid: {
+            color: "transparent",
+          },
+          type: "time",
+          time: {
+            unit: "day",
+          },
+          ticks: {
+            font: {
+              size: 12,
+            },
+            maxRotation: 0,
+            minRotation: 0,
+          },
+        },
+      },
+    };
+  }
+
+  const data = {
+    labels: conversionGraphData?.map((item) => item.time),
+    datasets: [
+      {
+        data: conversionGraphData?.map((item) => item.conversion),
+        borderColor: colorsGroup?.coin1.stopColor1,
+        backgroundColor: (context) => {
+          const ctx = context.chart.ctx;
+          const gradient = ctx.createLinearGradient(0, 0, 0, 350);
+          gradient.addColorStop(
+            0,
+            colorsGroup?.coin1.stopColor1 || "rgba(255, 99, 2, 0.2)"
+          );
+          gradient.addColorStop(1, "rgba(0, 0, 0, 0.0)");
+          return gradient;
+        },
+        pointRadius: 0,
+        borderWidth: 3,
+        fill: true,
+        borderRadius: "5",
+        tension: 0.5,
+        pointBackgroundColor: "transparent",
+        pointBorderColor: "transparent",
+      },
+    ],
+  };
 
   const onChange1 = (e) => {
     setValue1(e.target.value);
@@ -108,13 +201,13 @@ const Converter = ({ allCoinsData }) => {
                       return name.startsWith(search);
                     })
                     .map((coin) => (
-                      <DropdownRow
+                      <DropDownRow
                         key={coin.id}
-                        className="bg-slate-100 border-slate-300 block"
+                        className="bg-second text-shadowDark border-slate-300 block"
                         onClick={() => onSearch1(coin)}
                       >
                         {coin.name}
-                      </DropdownRow>
+                      </DropDownRow>
                     ))}
               </div>
             </div>
@@ -176,20 +269,20 @@ const Converter = ({ allCoinsData }) => {
                     return name.startsWith(search);
                   })
                   .map((coin) => (
-                    <DropdownRow
+                    <DropDownRow
                       key={coin.id}
-                      className="bg-slate-100 border-slate-300 block"
+                      className="bg-second text-shadowDark border-slate-300 block"
                       onClick={() => onSearch2(coin)}
                     >
                       {coin.name}
-                    </DropdownRow>
+                    </DropDownRow>
                   ))}
             </div>
           </div>
         </div>
       </ConverterBox>
-      <div>
-        <ConversionLineChart conversionGraphData={conversionGraphData} />
+      <div className="h-64 rounded-lg p-0">
+        <Line options={options(`${coin1.name} to ${coin2.name}`)} data={data} />
       </div>
     </>
   );
