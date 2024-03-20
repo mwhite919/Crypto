@@ -115,7 +115,7 @@ function PortfolioList({ handleEditForm }) {
                         <div className="text-xs text-shadowDark ">
                           Volume vs Market Cap:
                         </div>
-                        <div className="flex items-center justify-center text-accent text-xs font-semibold ">
+                        <div className="flex items-center justify-center text-accent font-semibold ">
                           {limiter(
                             percentage(
                               c?.coin?.total_volume,
@@ -207,7 +207,7 @@ function PortfolioList({ handleEditForm }) {
                           <div className="text-xs text-center text-shadowDark">
                             Purchase Price:
                           </div>
-                          <div className="text-accent text-lg font-semibold">
+                          <div className="text-accent font-semibold">
                             {currency.symbol}
                             {parseInt(
                               c.purchasePrice[currency.currency.toLowerCase()]
@@ -218,7 +218,7 @@ function PortfolioList({ handleEditForm }) {
                           <div className="text-xs text-center text-shadowDark">
                             Date Purchased:
                           </div>
-                          <div className="text-accent text-lg font-semibold">
+                          <div className="text-accent font-semibold">
                             {c.date.split("-").reverse().join("-")}
                           </div>
                         </div>

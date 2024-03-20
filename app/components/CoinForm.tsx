@@ -19,7 +19,6 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
   const [searchValue, setSearchValue] = useState("");
   const [numError, setnumError] = useState(false);
   const [purchasePrice, setPurchasePrice] = useState("");
-  const [purchasePriceError, setPurchasePriceError] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState(-1);
   const [showResults, setShowResults] = useState(false);
   const resultContainer = useRef<HTMLDivElement>(null);
@@ -79,7 +78,7 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
       );
       setPurchasePrice(data.market_data.current_price);
     } catch (err) {
-      setPurchasePriceError(true);
+      console.log(err);
     }
   };
 

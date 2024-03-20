@@ -27,6 +27,7 @@ import { Line, Bar } from "react-chartjs-2";
 import { graphStyling } from "../constants/graphStyling";
 import { useCrypto } from "../Providers/CryptoProvider";
 import { every_nth } from "./Every_nth";
+import { convertUnixToDate } from "../utils/UnixTimeConverter";
 
 ChartJS.register(
   LogarithmicScale,
@@ -43,15 +44,16 @@ ChartJS.register(
 );
 
 export const ChartsMain = () => {
-  const currency = useAppSelector((state) => state.currency);
-  const [numberOfDays, setNumberOfDays] = useState("7");
-
   const combinedChartCoins = useAppSelector(
     (state) => state.chartCoins.chartCoins
   );
 
-  const { palette, mode } = useCrypto();
+  const currency = useAppSelector((state) => state.currency);
 
+  const [numberOfDays, setNumberOfDays] = useState("7");
+  const [displayLineData, setDisplayLineData] = useState("");
+  const [dateToDisplay, setDateToDisplay] = useState("");
+  const { palette, mode } = useCrypto();
   const colorsGroup = graphStyling[palette];
 
   function units(num) {
@@ -66,57 +68,70 @@ export const ChartsMain = () => {
     }
   }
 
-  function options(title) {
-    return {
-      animation: {
-        duration: 2000,
+  const options = {
+    animation: {
+      duration: 2000,
+    },
+    maintainAspectRatio: false,
+    interaction: { mode: "index" },
+    color: "white",
+    plugins: {
+      legend: {
+        display: true,
+        position: "bottom",
+        align: "start",
       },
-      layout: {
-        padding: 10,
-      },
-      maintainAspectRatio: false,
-      interaction: { mode: "index" },
-      plugins: {
-        title: {
-          display: true,
-          text: title,
-          position: "top",
-          align: "start",
-        },
-        subtitle: {
-          display: true,
-          text: "Custom Chart Subtitle",
-        },
-        legend: {
-          display: true,
-          position: "bottom",
-          align: "start",
-        },
-      },
-      scales: {
-        y: {
-          display: false,
-          type: "logarithmic",
-        },
-        x: {
-          grid: {
-            color: "transparent",
-          },
-          type: "time",
-          time: {
-            unit: units(numberOfDays),
-          },
-          ticks: {
-            font: {
-              size: 12,
-            },
-            maxRotation: 0,
-            minRotation: 0,
+      tooltip: {
+        mode: "nearest",
+        intersect: false,
+        callbacks: {
+          label: function (context) {
+            let label = context.dataset.label || "";
+
+            if (label) {
+              label += ": ";
+            }
+            if (context.parsed.y !== null) {
+              label += new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: currency.currency,
+              }).format(context.parsed.y);
+            }
+            setDisplayLineData(label);
+            setDateToDisplay(convertUnixToDate(context.parsed.x));
+            return label;
           },
         },
       },
-    };
-  }
+      hover: {
+        mode: "nearest",
+        intersect: false,
+      },
+    },
+    scales: {
+      y: {
+        display: false,
+        type: "logarithmic",
+      },
+      x: {
+        grid: {
+          color: "transparent",
+        },
+        type: "time",
+        time: {
+          unit: units(numberOfDays),
+        },
+        ticks: {
+          font: {
+            size: 12,
+            color: "white",
+          },
+          maxRotation: 0,
+          minRotation: 0,
+        },
+      },
+    },
+  };
 
   function pricesData(coinCount: number) {
     if (coinCount <= 1) {
@@ -508,6 +523,22 @@ export const ChartsMain = () => {
   }, []);
 
   useEffect(() => {
+    setDisplayLineData(
+      combinedChartCoins[0]?.coinName +
+        " " +
+        currency?.symbol +
+        combinedChartCoins[0]?.prices[combinedChartCoins.length - 1].yData
+          .toFixed(2)
+          .toString()
+    );
+    setDateToDisplay(
+      convertUnixToDate(
+        combinedChartCoins[0]?.prices[combinedChartCoins.length - 1].time
+      )
+    );
+  }, [combinedChartCoins]);
+
+  useEffect(() => {
     dispatch(
       timeInterval({
         chartCoins: combinedChartCoins,
@@ -535,20 +566,26 @@ export const ChartsMain = () => {
 
       <div></div>
 
-      <div className="flex mt-4 w-[1010px] items-center justify-between">
-        <div className="w-[475px] h-[300px] flex items-center justify-center bg-second rounded-md">
-          <Line
-            options={options("Prices")}
-            data={pricesData(combinedChartCoins.length)}
-            className="p-1"
-          />
+      <div className="flex mt-4 w-[1010px] h-[350] items-center justify-between">
+        <div className="w-[495px]  flex flex-col items-start justify-center bg-second rounded-lg drop-shadow-sm p-4">
+          <div className="text-shadowDark text-lg font-bold">{`${displayLineData}`}</div>
+          <div className="text-shadowDark text-sm font-semibold">{`${dateToDisplay}`}</div>
+          <div className=" w-[475px] h-[300px]">
+            <Line
+              options={options}
+              data={pricesData(combinedChartCoins.length)}
+            />
+          </div>
         </div>
-        <div className="w-[475px] h-[300px] flex items-center justify-center bg-second rounded-md">
-          <Bar
-            options={options("Volume 24h")}
-            data={volumeData(combinedChartCoins.length)}
-            className="p-1"
-          />
+        <div className="w-[495px] flex flex-col items-start justify-center bg-second rounded-md drop-shadow-sm p-4">
+          <div className="text-shadowDark text-lg font-bold">Volume 24h</div>
+          <div className="text-shadowDark text-sm font-semibold">{`${dateToDisplay}`}</div>
+          <div className=" w-[475px] h-[300px]">
+            <Bar
+              options={options}
+              data={volumeData(combinedChartCoins.length)}
+            />
+          </div>
         </div>
       </div>
       <div>
