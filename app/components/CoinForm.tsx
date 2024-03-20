@@ -192,8 +192,8 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
 
   return (
     <>
-      <div className="drop-shadow-xl z-40 absolute">
-        <div className="flex w-[700px] h-[300px] justify-center items-center flex-col bg-second text-shadowDark rounded-lg m-10   p-10">
+      <div className="drop-shadow-xl border-[1px] border-base">
+        <div className="flex w-[700px] h-[300px] justify-center items-center flex-col bg-second text-shadowDark rounded-lg">
           <div className="flex items-center justify-between w-full">
             <div className="text-second">Select Coins</div>
             <div className="w-16 flex justify-between mb-3">

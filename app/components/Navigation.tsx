@@ -104,7 +104,11 @@ export default function Navigation() {
       className={`
     cursor-pointer
     hover:bg-slate-200
-     ${focusedIndex === index ? "active bg-slate-200" : "bg-white"}`}
+     ${
+       focusedIndex === index
+         ? "active bg-base text-shadowDark"
+         : "bg-shadowDark text-shadowLight"
+     }`}
       onMouseDown={() => handleSelection(index)}
       onBlur={resetSearchComplete}
     >

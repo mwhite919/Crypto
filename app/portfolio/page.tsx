@@ -35,7 +35,7 @@ export default function Page() {
 
   return (
     <div
-      className={`w-window min-h-window bg-base theme-${palette} theme-${mode} flex items-center justify-start flex-col `}
+      className={`w-window min-h-window bg-base theme-${palette} theme-${mode} flex items-center justify-start flex-col`}
     >
       {loading && (
         <div className="w-screen h-screen flex justify-center items-center my-8 mr-36 mt-36 cursor-wait">
@@ -47,30 +47,35 @@ export default function Page() {
       </div>
       {currentUser && !loading ? (
         <div>
-          <div className="w-full flex justify-end my-8 mr-36 mt-36 ">
-            <button
-              className="bg-accent p-4 rounded-lg"
-              onClick={() => setAddFormOn(!addFormOn)}
-            >
-              Add Asset
-            </button>
-          </div>
-          <div>
-            {editFormOn && (
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                <EditForm
-                  coinToEdit={coinToEdit}
-                  handleEditForm={handleEditForm}
-                />
+          <div className="w-full h-full">
+            <div>
+              <div className="w-full flex justify-end my-8 mr-36 mt-36 ">
+                <button
+                  className="bg-accent p-4 rounded-lg"
+                  onClick={() => setAddFormOn(!addFormOn)}
+                >
+                  Add Asset
+                </button>
               </div>
-            )}
-          </div>
-          <div className="relative w-full h-full">
-            {addFormOn && (
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-1 border-shadowDark">
-                <CoinForm allCoinsData={allCoinsData} handleForm={handleForm} />
-              </div>
-            )}
+
+              {editFormOn && (
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  z-30">
+                  <EditForm
+                    coinToEdit={coinToEdit}
+                    handleEditForm={handleEditForm}
+                  />
+                </div>
+              )}
+
+              {addFormOn && (
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30">
+                  <CoinForm
+                    allCoinsData={allCoinsData}
+                    handleForm={handleForm}
+                  />
+                </div>
+              )}
+            </div>
           </div>
           <div className="font-medium text-3xl text-accent"> Your Assets:</div>
           <PortfolioList className="z-0" handleEditForm={handleEditForm} />
