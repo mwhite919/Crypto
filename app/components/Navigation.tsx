@@ -164,9 +164,13 @@ export default function Navigation() {
               className="h-4 w-4"
             />{" "}
             <div>BTC {marketCapPercentageBTC}%</div>
-            <div className="h-2 w-20 bg-shadowDark">
+            <div
+              className={`min-h-2 w-20 ${
+                mode === "dark" ? "bg-shadowDark" : "bg-second"
+              }`}
+            >
               <div
-                className="bg-shadowLight min-h-2"
+                className="bg-accent min-h-2"
                 style={{ width: `${marketCapPercentageBTC}%` }}
               ></div>
             </div>
@@ -180,10 +184,14 @@ export default function Navigation() {
               />{" "}
               <div>ETH {marketCapPercentageETH}%</div>
               <div>
-                <div className="min-h-2 w-20 bg-shadowDark">
+                <div
+                  className={`min-h-2 w-20 ${
+                    mode === "dark" ? "bg-shadowDark" : "bg-second"
+                  }`}
+                >
                   <div
                     style={{ width: `${marketCapPercentageETH}%` }}
-                    className="bg-shadowLight min-h-2 max-w-32"
+                    className="bg-accent min-h-2 max-w-32"
                   ></div>
                 </div>
               </div>
@@ -222,7 +230,8 @@ export default function Navigation() {
                 {currentUser ? (
                   <div className="flex justify-end items-center my-1 mr-5">
                     <div className="text-shadowDark italic">
-                      User: <span className="text-accent2">{user?.email}</span>
+                      User:{" "}
+                      <span className="text-accent2">{currentUser?.email}</span>
                     </div>
                     <Link href="/">
                       <button

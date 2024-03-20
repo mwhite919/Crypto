@@ -35,7 +35,6 @@ export default function Page() {
           isLoading && "cursor-wait"
         }`}
       >
-        <div></div>
         <div>
           <div>{isLoading && <h2>fetching data...</h2>}</div>
           <div>
@@ -81,57 +80,62 @@ export default function Page() {
                           : "bg-second  text-shadowDark hover:scale-105"
                       }
                         relative flex cursor-pointer rounded-lg px-3 py-2 m-1 w-36 justify-center shadow-md focus:outline-none hover:scale-105`
-            }
-            value={true}
-          >
-            {({ checked }) => <span className={checked && ""}>Converter</span>}
-          </RadioGroup.Option>
-        </RadioGroup>
-      </div>
-      <div>
-        {converter ? (
-          <Converter allCoinsData={allCoinsData} />
-        ) : (
-          <div>
-            <ChartsMain />
-          </div>
-        )}
-      </div>
-      <div>
-        <Row className="bg-second shadow-md text-xs text-shadowDark grid grid-cols-17 ">
-          <div className="flex items-center justify-center col-span-1">#</div>
-          <div className="col-span-1"></div>
-          <div className="flex justify-start items-center col-span-2">Name</div>
-          <div className="flex justify-start items-center col-span-2">
-            Price
-          </div>
-          <div className="flex justify-start items-center ml-1 col-span-1">
-            1h%
-          </div>
-          <div className="flex justify-start items-center ml-1 col-span-1">
-            24hr%
-          </div>
-          <div className="flex justify-start items-center ml-1 col-span-1">
-            7d%
-          </div>
-          <div className="flex justify-center items-center ml-2 col-span-3">
-            24h Volume/Market Cap
-          </div>
-          <div className="flex justify-center items-center col-span-3">
-            Circulating/ Total Supply
-          </div>
-          <div className="flex justify-start items-center col-span-2">
-            Last 7d
-          </div>
-        </Row>
-      </div>
+              }
+              value={true}
+            >
+              {({ checked }) => (
+                <span className={checked && ""}>Converter</span>
+              )}
+            </RadioGroup.Option>
+          </RadioGroup>
+        </div>
+        <div>
+          {converter ? (
+            <Converter allCoinsData={allCoinsData} />
+          ) : (
+            <div>
+              <ChartsMain />
+            </div>
+          )}
+        </div>
+        <div>
+          <Row className="bg-second shadow-md text-xs font-semibold text-shadowDark grid grid-cols-17 ">
+            <div className="flex items-center justify-center col-span-1">#</div>
+            <div className="col-span-1"></div>
+            <div className="flex justify-start items-center col-span-2">
+              Name
+            </div>
+            <div className="flex justify-start items-center col-span-2">
+              Price
+            </div>
+            <div className="flex justify-start items-center ml-1 col-span-1">
+              1h%
+            </div>
+            <div className="flex justify-start items-center ml-1 col-span-1">
+              24hr%
+            </div>
+            <div className="flex justify-start items-center ml-1 col-span-1">
+              7d%
+            </div>
+            <div className="flex justify-center items-center ml-2 col-span-3">
+              24h Volume/Market Cap
+            </div>
+            <div className="flex justify-center items-center col-span-3">
+              Circulating/ Total Supply
+            </div>
+            <div className="flex justify-start items-center col-span-2">
+              Last 7d
+            </div>
+          </Row>
+        </div>
 
-      <div>
-        {allCoinsData?.map((coin, index) => (
-          <div key={coin.id}>
-            <CoinRow coin={coin} index={index + 1} />
-          </div>
-        ))}
+        <div>
+          {allCoinsData?.map((coin, index) => (
+            <div key={coin.id}>
+              <CoinRow coin={coin} index={index + 1} />
+            </div>
+          ))}
+        </div>
       </div>
     </>
   );

@@ -48,7 +48,6 @@ export const ChartsMain = () => {
     (state) => state.chartCoins.chartCoins
   );
 
-
   const isLoading = useAppSelector((state) => state.chartCoins.isLoading);
   const currency = useAppSelector((state) => state.currency);
   const [numberOfDays, setNumberOfDays] = useState("7");
@@ -75,7 +74,6 @@ export const ChartsMain = () => {
     },
     maintainAspectRatio: false,
     interaction: { mode: "index" },
-    color: "white",
     plugins: {
       legend: {
         display: true,
@@ -125,7 +123,6 @@ export const ChartsMain = () => {
         ticks: {
           font: {
             size: 12,
-            color: "white",
           },
           maxRotation: 0,
           minRotation: 0,

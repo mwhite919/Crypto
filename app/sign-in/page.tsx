@@ -49,18 +49,17 @@ const SignIn = () => {
             "Sorry about that, there was an error logging in, please try again."
           </p>
         )}
-        ,
         <input
           type="email"
           placeholder="Email"
           ref={emailRef}
-          className="w-full p-3 mb-4 bg-accent2 rounded outline-none text-primary placeholder-gray-500"
+          className="w-full p-3 mb-4 rounded outline-none text-primary placeholder-gray-500"
         />
         <input
           type="password"
           placeholder="Password"
           ref={passwordRef}
-          className="w-full p-3 mb-4 bg-accent2 rounded outline-none text-primary placeholder-gray-500"
+          className="w-full p-3 mb-4 rounded outline-none text-primary placeholder-gray-500"
         />
         <button
           onClick={handleLogin}

@@ -199,7 +199,7 @@ export default function CoinRow({ coin, index }) {
             ></div>
           </div>
         </div>
-        <div className="col-span-2 flex items-center justify-center">
+        <div className="col-span-2 flex items-start justify-center">
           <Line options={options} data={data} className="p-1" />
         </div>
       </Row>
