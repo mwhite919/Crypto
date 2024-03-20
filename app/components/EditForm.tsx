@@ -110,13 +110,10 @@ export const EditForm = ({ coinToEdit, handleEditForm }) => {
 
   return (
     <>
-      <div className="drop-shadow-xl">
-        <div
-          style={{ width: 700, height: 300 }}
-          className="flex justify-center items-center flex-col bg-accent rounded-lg m-10  p-10"
-        >
+      <div className="drop-shadow-xl border-[1px] border-base">
+        <div className="flex w-[700px] h-[300px] justify-center items-center flex-col bg-second text-shadowDark rounded-lg">
           <div className="flex items-center justify-between w-full">
-            <div className="text-second">Select Coins</div>
+            <div>Select Coins</div>
             <div className="w-16 flex justify-between mb-3">
               <button onClick={resetForm}>
                 <ResetIcon />
@@ -132,7 +129,7 @@ export const EditForm = ({ coinToEdit, handleEditForm }) => {
                 <div className="absolute -inset-5">
                   <div className="w-full h-full max-w-sm mx-auto lg:mx-0 opacity-30 blur-lg bg-gradient-to-r from-second to-primary"></div>
                 </div>
-                <div className="flex items-center justify-center relative p-8 text-lg font-bold text-second bg-accent font-pj rounded-xl ">
+                <div className="flex items-center justify-center relative p-8 text-lg font-bold font-pj rounded-xl ">
                   <img src={coin.coin.image} className="h-16" />
                   <span className={CharacterCounter(coin?.coin?.name?.length)}>
                     {coin.coin.name}

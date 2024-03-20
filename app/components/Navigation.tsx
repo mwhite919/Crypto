@@ -34,11 +34,11 @@ export default function Navigation() {
   const { data: barData } = useGetTopBarInfoQuery();
   const dispatch = useAppDispatch();
   const currentUser = useAuth();
-
   const { handlePalette, handleMode, palette, mode } = useCrypto();
   const [searchValue, setSearchValue] = useState("");
   const [focusedIndex, setFocusedIndex] = useState(-1);
   const [showResults, setShowResults] = useState(false);
+  const [searchError, setSearchError] = useState(false);
   const marketCoins = barData?.data?.active_cryptocurrencies;
   const totalVolume = Math.floor(
     parseInt(barData?.data?.total_volume[currency.currency])
@@ -104,7 +104,11 @@ export default function Navigation() {
       className={`
     cursor-pointer
     hover:bg-slate-200
-     ${focusedIndex === index ? "active bg-slate-200" : "bg-white"}`}
+     ${
+       focusedIndex === index
+         ? "active bg-base text-shadowDark"
+         : "bg-shadowDark text-shadowLight"
+     }`}
       onMouseDown={() => handleSelection(index)}
       onBlur={resetSearchComplete}
     >
@@ -114,6 +118,13 @@ export default function Navigation() {
 
   const handleSelection = (selectedIndex: number) => {
     const selectedItem = filteredCoinsArray[selectedIndex];
+    if (selectedItem === undefined) {
+      setTimeout(() => {
+        setSearchError(false);
+      }, 3000);
+      setSearchError(true);
+      return;
+    }
     setSearchValue(selectedItem.id);
     if (!selectedItem) return resetSearchComplete();
     handleSearch(selectedItem.id);
@@ -147,14 +158,14 @@ export default function Navigation() {
         <div className="flex items-center justify-center p-px text-xs bg-navColor">
           <div className=" flex items-center mx-4 ">
             <CoinStackIcon />
-            Coins:{marketCoins}
+            Active Coins:{marketCoins}
           </div>
           <div className="mx-4 ">
-            {currency.symbol}
+            Total Volume: {currency.symbol}
             {totalVolume && aveta(totalVolume)}
           </div>
           <div className="mx-4 ">
-            {currency.symbol}
+            Total Market Cap: {currency.symbol}
             {totalMarketCap && aveta(totalMarketCap)}
           </div>
 
@@ -164,9 +175,14 @@ export default function Navigation() {
               className="h-4 w-4"
             />{" "}
             <div>BTC {marketCapPercentageBTC}%</div>
-            <div className="h-2 w-20 bg-shadowDark">
+            <div
+              className={`min-h-2 w-20 ${
+                mode === "dark" ? "bg-shadowDark" : "bg-second"
+              }`}
+              git
+            >
               <div
-                className="bg-shadowLight min-h-2"
+                className="bg-accent min-h-2"
                 style={{ width: `${marketCapPercentageBTC}%` }}
               ></div>
             </div>
@@ -180,10 +196,14 @@ export default function Navigation() {
               />{" "}
               <div>ETH {marketCapPercentageETH}%</div>
               <div>
-                <div className="min-h-2 w-20 bg-shadowDark">
+                <div
+                  className={`min-h-2 w-20 ${
+                    mode === "dark" ? "bg-shadowDark" : "bg-second"
+                  }`}
+                >
                   <div
                     style={{ width: `${marketCapPercentageETH}%` }}
-                    className="bg-shadowLight min-h-2 max-w-32"
+                    className="bg-accent min-h-2 max-w-32"
                   ></div>
                 </div>
               </div>
@@ -222,7 +242,8 @@ export default function Navigation() {
                 {currentUser ? (
                   <div className="flex justify-end items-center my-1 mr-5">
                     <div className="text-shadowDark italic">
-                      User: <span className="text-accent2">{user?.email}</span>
+                      User:{" "}
+                      <span className="text-accent2">{currentUser?.email}</span>
                     </div>
                     <Link href="/">
                       <button
@@ -260,14 +281,19 @@ export default function Navigation() {
                     placeholder="Search..."
                     type="text"
                     className="items-center h-6 text-sm ml-5 drop-shadow-xl rounded-lg pl-3 relative w-44 inline-block bg-base text-shadowDark placeholder:text-sm placeholder:text-shadowDark focus:border-slate-200"
-                  />
+                  />{" "}
+                  {searchError && (
+                    <p className="text-xs text-shadowDark pt-[2px]">
+                      Search invalid. Please check and try again.
+                    </p>
+                  )}
                   <div className="ml-5 absolute max-h-44 overflow-y-auto w-44">
                     {showResults && mappedCoinsArray}
                   </div>
                 </div>
                 <select
                   name="currency"
-                  className="items-center h-6 text-sm mx-5 drop-shadow-xl rounded-lg p-0.5 bg-base border-base text-shadowDark"
+                  className="items-center h-6 text-sm mx-5 drop-shadow-xl rounded-lg p-0.5 bg-second border-base text-shadowDark"
                   onChange={handleCurrency}
                 >
                   {CurrencyArray?.map((c) => {
