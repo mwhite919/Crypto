@@ -48,8 +48,9 @@ export const ChartsMain = () => {
     (state) => state.chartCoins.chartCoins
   );
 
-  const currency = useAppSelector((state) => state.currency);
 
+  const isLoading = useAppSelector((state) => state.chartCoins.isLoading);
+  const currency = useAppSelector((state) => state.currency);
   const [numberOfDays, setNumberOfDays] = useState("7");
   const [displayLineData, setDisplayLineData] = useState("");
   const [dateToDisplay, setDateToDisplay] = useState("");
@@ -553,7 +554,11 @@ export const ChartsMain = () => {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center my-3">
+    <div
+      className={`flex flex-col justify-center items-center my-3 ${
+        isLoading ? "cursor-wait" : ""
+      }`}
+    >
       <div className="text-xs flex items-center justify-center w-full mt-2">
         Select currency to view statistics
       </div>
@@ -563,7 +568,6 @@ export const ChartsMain = () => {
           combinedChartCoins={combinedChartCoins}
         />
       </div>
-
       <div></div>
 
       <div className="flex mt-4 w-[1010px] h-[350] items-center justify-between">

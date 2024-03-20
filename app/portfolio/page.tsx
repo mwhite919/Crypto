@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { EditForm } from "../components/EditForm";
 
 export default function Page() {
-  const { data: allCoinsData } = useGetAllCoinsQuery({
+  const { data: allCoinsData, isLoading, isError } = useGetAllCoinsQuery({
     currency: "usd",
     sortValue: "volume_desc",
   });
@@ -38,9 +38,18 @@ export default function Page() {
 
   return (
     <div
-      className={`w-window min-h- bg-base theme-${palette} theme-${mode} flex items-start justify-center flex-col  `}
+      className={`w-window min-h-window bg-base theme-${palette} theme-${mode} flex items-center justify-start flex-col  `}
     >
-      <div className="w-full flex justify-center mt-36 relative">
+      <div>
+        {isLoading && <div className="w-full h-full cursor-wait"></div>}
+        <div>{isLoading && <h2>fetching data...</h2>}</div>
+        <div>
+          {isError && (
+            <h2>An error occured while loading. Please try again.</h2>
+          )}
+        </div>
+      </div>
+      <div className="w-full flex justify-center my-8 mr-36 mt-36 relative">
         {editFormOn && (
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <EditForm coinToEdit={coinToEdit} handleEditForm={handleEditForm} />

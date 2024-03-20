@@ -24,12 +24,11 @@ import { useAppSelector } from "@/redux/hooks";
 
 export default function Navigation() {
   const currency = useAppSelector((state) => state.currency);
-  const { data: allCoinsData, error, isError, isLoading } = useGetAllCoinsQuery(
-    {
-      currency: currency.currency,
-      sortValue: "volume_desc",
-    }
-  );
+
+  const { data: allCoinsData, isError, isLoading } = useGetAllCoinsQuery({
+    currency: currency.currency,
+    sortValue: "volume_desc",
+  });
 
   const { data: barData } = useGetTopBarInfoQuery();
   const dispatch = useAppDispatch();
@@ -143,6 +142,13 @@ export default function Navigation() {
       <nav
         className={`flex flex-col justify-center fixed top-0 z-50 text-navText theme-${palette} theme-${mode}`}
       >
+        {isLoading && <div className="w-full h-full cursor-wait"></div>}
+        {isError && (
+          <div>
+            An error occured during loading. Please refresh your page and try
+            again.
+          </div>
+        )}
         <div className="flex items-center justify-center p-px text-xs bg-navColor">
           <div className=" flex items-center mx-4 ">
             <CoinStackIcon />

@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
-import styled from "styled-components";
 import {
   EditIcon,
   TrashIcon,
@@ -11,14 +10,7 @@ import {
 import CharacterCounter from "./characterCounter";
 import { useAppSelector } from "@/redux/hooks";
 import db from "../firebase/config";
-import {
-  onSnapshot,
-  collection,
-  doc,
-  deleteDoc,
-  query,
-  orderBy,
-} from "firebase/firestore";
+import { onSnapshot, collection, doc, deleteDoc } from "firebase/firestore";
 
 function PortfolioList({ handleEditForm }) {
   const currency = useAppSelector((state) => state.currency);
