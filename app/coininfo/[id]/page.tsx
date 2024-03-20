@@ -78,6 +78,11 @@ export default function Page({ params }: { params: { id: string } }) {
         className={`flex items-center justify-start flex-col w-screen h-screen text-sm text-shadowDark theme-${palette} theme-${mode} bg-base`}
       >
         <div className="w-[1000px] grid grid-cols-4 gap-2 justify-center items-start mt-36 m-6">
+          {params === undefined ? (
+            <div>Coin not found. Please check your spelling and try again.</div>
+          ) : (
+            ""
+          )}
           <div className="flex flex-col items-center justify-center col-span-1 p-5 h-60 bg-second shadow-sm shadow-accent m-3 rounded-lg ">
             <div>
               <img src={icon} />
