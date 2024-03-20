@@ -18,10 +18,10 @@
 }
 
 .theme-Teal {
-  --color-base: theme("colors.teal.100");
+  --color-base: theme("colors.teal.50");
   --color-inverse: theme("colors.teal.900");
   --color-primary: theme("colors.teal.400");
-  --color-second: theme("colors.teal.200");
+  --color-second: theme("colors.teal.100");
   --color-second-inverse: theme("colors.teal.600");
   --color-accent: theme("colors.teal.600");
   --color-accentShadow: theme("colors.teal.900");
@@ -31,15 +31,15 @@
 }
 
 .theme-Rose {
-  --color-base: theme("colors.rose.200");
+  --color-base: theme("colors.rose.50");
   --color-inverse: theme("colors.rose.900");
   --color-primary: theme("colors.rose.500");
-  --color-second: theme("colors.rose.200");
+  --color-second: theme("colors.rose.100");
   --color-second-inverse: theme("colors.rose.600");
   --color-accent: theme("colors.rose.500");
   --color-accentShadow: theme("colors.rose.900");
   --color-accentLight: theme("colors.rose.100");
-  --color-accent2: theme("colors.purple.600");
+  --color-accent2: theme("colors.yellow.400");
   --color-navColor: theme("colors.rose.900");
 }
 

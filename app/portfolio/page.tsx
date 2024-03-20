@@ -38,9 +38,9 @@ export default function Page() {
 
   return (
     <div
-      className={`w-window h-dvh bg-base theme-${palette} theme-${mode} flex items-center justify-start flex-col  `}
+      className={`w-window min-h- bg-base theme-${palette} theme-${mode} flex items-start justify-center flex-col  `}
     >
-      <div className="w-full flex justify-center my-8 mr-36 mt-36 relative">
+      <div className="w-full flex justify-center mt-36 relative">
         {editFormOn && (
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <EditForm coinToEdit={coinToEdit} handleEditForm={handleEditForm} />
