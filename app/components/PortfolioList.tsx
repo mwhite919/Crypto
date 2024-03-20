@@ -57,7 +57,6 @@ function PortfolioList({ handleEditForm }) {
 
   function findPercentPriceChange(purchasedP: number, currentP: number) {
     const percentageChange = ((currentP - purchasedP) / purchasedP) * 100;
-    console.log(percentageChange, "percentage change");
     return `${percentageChange.toFixed(2)}%`;
   }
 
