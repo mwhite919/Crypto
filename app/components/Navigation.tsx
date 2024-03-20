@@ -269,11 +269,6 @@ export default function Navigation() {
               </div>
               <div className="flex justify-end items-center mb-2 ">
                 <div>
-                  {searchError && (
-                    <p className="text-xs text-shadowDark">
-                      Search invalid. Please check and try again.
-                    </p>
-                  )}
                   <input
                     value={searchValue ?? ""}
                     onBlur={resetSearchComplete}
@@ -282,7 +277,12 @@ export default function Navigation() {
                     placeholder="Search..."
                     type="text"
                     className="items-center h-6 text-sm ml-5 drop-shadow-xl rounded-lg pl-3 relative w-44 inline-block bg-base text-shadowDark placeholder:text-sm placeholder:text-shadowDark focus:border-slate-200"
-                  />
+                  />{" "}
+                  {searchError && (
+                    <p className="text-xs text-shadowDark pt-[2px]">
+                      Search invalid. Please check and try again.
+                    </p>
+                  )}
                   <div className="ml-5 absolute max-h-44 overflow-y-auto w-44">
                     {showResults && mappedCoinsArray}
                   </div>
