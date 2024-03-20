@@ -133,17 +133,6 @@ export const ChartsMain = () => {
     },
   };
 
-  console.log(
-    currency.symbol +
-      combinedChartCoins[0]?.prices[
-        combinedChartCoins.length - 1
-      ].yData.toFixed(2),
-
-    convertUnixToDate(
-      combinedChartCoins[0]?.prices[combinedChartCoins.length - 1].time
-    )
-  );
-
   function pricesData(coinCount: number) {
     if (coinCount <= 1) {
       return {
