@@ -2,13 +2,29 @@ import { useState } from "react";
 import styled from "styled-components";
 import { ExchangeIcon } from "../icons/Icons";
 import { useAppSelector } from "@/redux/hooks";
-import { ConversionLineChart } from "./ConversionLineChart";
-
-const DropdownRow = styled.div`
-  cursor: pointer;
-  text-align: start;
-  margin: 2px, 0;
-`;
+import { Line } from "react-chartjs-2";
+import { useCrypto } from "../Providers/CryptoProvider";
+import {
+  Chart as ChartJS,
+  LogarithmicScale,
+  TimeScale,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Legend,
+} from "chart.js";
+ChartJS.register(
+  LogarithmicScale,
+  TimeScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  CategoryScale,
+  Legend
+);
+import { graphStyling } from "../constants/graphStyling";
+import { DropDownRow } from "../constants/DropDownRow";
 
 const ConverterBox = styled.div`
   width: 1010px;
@@ -22,6 +38,10 @@ const Converter = ({ allCoinsData }) => {
   const [coin2, setCoin2] = useState(allCoinsData[1]);
   const [variable1, setvariable1] = useState("0");
   const [variable2, setvariable2] = useState("0");
+
+  const { palette, mode } = useCrypto();
+
+  const colorsGroup = graphStyling[palette];
 
   const handleConversionLtR = (e) => {
     const result = e.target.value.replace(/\D/g, "");
@@ -37,10 +57,83 @@ const Converter = ({ allCoinsData }) => {
     setvariable1(conversion);
   };
 
-  const conversionGraphData = coin1.sparkline_in_7d.price.map((c, index) => ({
+  const conversionGraphData = coin1?.sparkline_in_7d.price.map((c, index) => ({
     time: index,
-    conversion: c / coin2.sparkline_in_7d.price[index],
+    conversion: c / coin2?.sparkline_in_7d.price[index],
   }));
+
+  function options(title) {
+    return {
+      animation: {
+        duration: 2000,
+      },
+      layout: {
+        padding: 10,
+      },
+      maintainAspectRatio: false,
+      interaction: { mode: "index" },
+      plugins: {
+        title: {
+          display: true,
+          text: title,
+          position: "top",
+          align: "start",
+        },
+        legend: {
+          display: false,
+        },
+      },
+      scales: {
+        y: {
+          display: false,
+          type: "logarithmic",
+        },
+        x: {
+          grid: {
+            color: "transparent",
+          },
+          type: "time",
+          time: {
+            unit: "day",
+          },
+          ticks: {
+            font: {
+              size: 12,
+            },
+            maxRotation: 0,
+            minRotation: 0,
+          },
+        },
+      },
+    };
+  }
+
+  const data = {
+    labels: conversionGraphData?.map((item) => item.time),
+    datasets: [
+      {
+        data: conversionGraphData?.map((item) => item.conversion),
+        borderColor: colorsGroup?.coin1.stopColor1,
+        backgroundColor: (context) => {
+          const ctx = context.chart.ctx;
+          const gradient = ctx.createLinearGradient(0, 0, 0, 350);
+          gradient.addColorStop(
+            0,
+            colorsGroup?.coin1.stopColor1 || "rgba(255, 99, 2, 0.2)"
+          );
+          gradient.addColorStop(1, "rgba(0, 0, 0, 0.0)");
+          return gradient;
+        },
+        pointRadius: 0,
+        borderWidth: 3,
+        fill: true,
+        borderRadius: "5",
+        tension: 0.5,
+        pointBackgroundColor: "transparent",
+        pointBorderColor: "transparent",
+      },
+    ],
+  };
 
   const onChange1 = (e) => {
     setValue1(e.target.value);
@@ -62,9 +155,9 @@ const Converter = ({ allCoinsData }) => {
 
   return (
     <>
-      <ConverterBox className="my-10 rounded-lg w-96 flex justify-between items-center">
-        <div className="flex flex-col w-full">
-          <div className="flex justify-center flex-col items-start border w-full bg-second h-full">
+      <ConverterBox className="my-10 rounded-lg w-96 flex justify-between items-center ">
+        <div className="flex flex-col w-full h-full  bg-second text-shadowDark drop-shadow-lg rounded-md">
+          <div className="flex justify-center flex-col items-start w-full h-full">
             <div className="flex justify-between items-end w-full py-3 px-5 ">
               <div>
                 <h2 className="text-sm">You sell:</h2>
@@ -81,11 +174,11 @@ const Converter = ({ allCoinsData }) => {
                 <input
                   value={variable1}
                   onChange={(value) => handleConversionLtR(value)}
-                  className="my-2 rounded-md pl-2 text-right bg-second"
+                  className="my-2 rounded-md pl-2 text-right bg-second text-shadowDark"
                 />
               </div>
             </div>
-            <div className="mx-auto bg-accent m-2 h-px w-11/12"></div>
+            <div className="mx-auto bg-accent m-3 h-px w-11/12"></div>
             <div className="pl-5">
               {coin1 && (
                 <div className="text-sm">
@@ -94,7 +187,7 @@ const Converter = ({ allCoinsData }) => {
                 </div>
               )}
               <input
-                className="border-black my-4 rounded-md relative inline-block bg-slate-100"
+                className="border-accent my-4 rounded-md relative inline-block bg-second text-shadowDark"
                 value={value1}
                 onChange={onChange1}
                 placeholder="Search Coins..."
@@ -108,13 +201,13 @@ const Converter = ({ allCoinsData }) => {
                       return name.startsWith(search);
                     })
                     .map((coin) => (
-                      <DropdownRow
+                      <DropDownRow
                         key={coin.id}
-                        className="bg-slate-100 border-slate-300 block"
+                        className="bg-second text-shadowDark border-slate-300 block"
                         onClick={() => onSearch1(coin)}
                       >
                         {coin.name}
-                      </DropdownRow>
+                      </DropDownRow>
                     ))}
               </div>
             </div>
@@ -125,8 +218,8 @@ const Converter = ({ allCoinsData }) => {
           <ExchangeIcon />
         </div>
 
-        <div className="flex justify-center flex-col items-start border w-full bg-second h-full">
-          <div className="flex justify-between items-end w-full  py-3 px-5">
+        <div className="flex justify-center flex-col items-start rounded-md w-full bg-second drop-shadow-lg text-shadowDark h-full">
+          <div className="flex justify-between items-end w-full py-3 px-5">
             <div className="flex flex-col">
               <div className="w-7/12">
                 <h2 className="text-sm">You buy:</h2>
@@ -148,7 +241,7 @@ const Converter = ({ allCoinsData }) => {
               onChange={(value) => handleConversionRtL(value)}
               value={variable2}
               id="v2"
-              className="my-2 w-44 rounded-md pl-2 text-right bg-second"
+              className="my-2 w-44 rounded-md pl-2 text-right bg-second text-shadowDark"
             />
           </div>
 
@@ -161,7 +254,7 @@ const Converter = ({ allCoinsData }) => {
               </div>
             )}
             <input
-              className="border-black my-4 rounded-md relative inline-blockm bg-slate-100"
+              className="border-accent my-4 rounded-md relative inline-block bg-second text-shadowDark"
               type="text"
               value={value2}
               onChange={onChange2}
@@ -176,20 +269,20 @@ const Converter = ({ allCoinsData }) => {
                     return name.startsWith(search);
                   })
                   .map((coin) => (
-                    <DropdownRow
+                    <DropDownRow
                       key={coin.id}
-                      className="bg-slate-100 border-slate-300 block"
+                      className="bg-second text-shadowDark border-slate-300 block"
                       onClick={() => onSearch2(coin)}
                     >
                       {coin.name}
-                    </DropdownRow>
+                    </DropDownRow>
                   ))}
             </div>
           </div>
         </div>
       </ConverterBox>
-      <div>
-        <ConversionLineChart conversionGraphData={conversionGraphData} />
+      <div className="h-64 rounded-lg p-0">
+        <Line options={options(`${coin1.name} to ${coin2.name}`)} data={data} />
       </div>
     </>
   );

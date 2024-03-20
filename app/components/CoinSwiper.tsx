@@ -3,18 +3,16 @@ import ArrowDown, { ArrowUp } from "@/app/icons/Icons";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import "@/app/utils/coin-swiper.css";
+import "@/app/constants/coin-swiper.css";
 import { useAppSelector } from "@/redux/hooks";
 
 export const CoinSwiper = ({ handleClick, combinedChartCoins }) => {
   const currency = useAppSelector((state) => state.currency);
 
-  const { data: allCoinsData, error, isError, isLoading } = useGetAllCoinsQuery(
-    {
-      currency: currency.currency,
-      sortValue: "volume_desc",
-    }
-  );
+  const { data: allCoinsData, isError, isLoading } = useGetAllCoinsQuery({
+    currency: currency.currency,
+    sortValue: "volume_desc",
+  });
 
   let top10Coins: any[] = [];
   if (allCoinsData !== null && typeof allCoinsData === "object") {
@@ -33,6 +31,15 @@ export const CoinSwiper = ({ handleClick, combinedChartCoins }) => {
     <div>
       {top10Coins && (
         <div>
+          {isLoading && (
+            <div className="w-full h-full flex justify-center items-center cursor-wait">
+              Loading...
+            </div>
+          )}
+          {isError && (
+            <h2>An error occured while loading. Please try again.</h2>
+          )}
+
           <Slider {...settings}>
             {top10Coins?.map((coin) => (
               <div key={coin.id}>

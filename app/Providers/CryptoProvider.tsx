@@ -2,7 +2,7 @@
 import { useState, createContext, useContext, useEffect } from "react";
 import { login, useAuth } from "@/app/firebase/config";
 import { useRouter } from "next/navigation";
-import { Palettes } from "../utils/Palettes";
+import { Palettes } from "../constants/Palettes";
 
 export const CryptoContext = createContext();
 export function useCrypto() {

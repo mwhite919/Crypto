@@ -10,7 +10,7 @@ import { EditForm } from "../components/EditForm";
 import Link from "next/link";
 
 export default function Page() {
-  const { data: allCoinsData } = useGetAllCoinsQuery({
+  const { data: allCoinsData, isLoading, isError } = useGetAllCoinsQuery({
     currency: "usd",
     sortValue: "volume_desc",
   });
@@ -35,13 +35,18 @@ export default function Page() {
 
   return (
     <div
-      className={`w-window h-dvh bg-base theme-${palette} theme-${mode} flex items-center justify-start flex-col`}
+      className={`w-window min-h-window bg-base theme-${palette} theme-${mode} flex items-center justify-start flex-col`}
     >
       {loading && (
         <div className="w-screen h-screen flex justify-center items-center my-8 mr-36 mt-36 cursor-wait">
           Loading...
         </div>
       )}
+        <div>
+          {isError && (
+            <h2>An error occured while loading. Please try again.</h2>
+          )}
+        </div>
       {currentUser && !loading ? (
         <div>
           <div className="w-full flex justify-end my-8 mr-36 mt-36">

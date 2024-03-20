@@ -16,8 +16,8 @@ import {
   StackIcon,
   SunIcon,
 } from "../icons/Icons";
-import { DropDownRow } from "../utils/DropDownRow";
-import { Palettes } from "../utils/Palettes";
+import { DropDownRow } from "../constants/DropDownRow";
+import { Palettes } from "../constants/Palettes";
 import { changeCurr } from "@/redux/currency/currencySlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { useAppSelector } from "@/redux/hooks";
@@ -25,12 +25,11 @@ import { useAuth, logout } from "../firebase/config";
 
 export default function Navigation() {
   const currency = useAppSelector((state) => state.currency);
-  const { data: allCoinsData, error, isError, isLoading } = useGetAllCoinsQuery(
-    {
-      currency: currency.currency,
-      sortValue: "volume_desc",
-    }
-  );
+
+  const { data: allCoinsData, isError, isLoading } = useGetAllCoinsQuery({
+    currency: currency.currency,
+    sortValue: "volume_desc",
+  });
 
   const { data: barData } = useGetTopBarInfoQuery();
   const dispatch = useAppDispatch();
@@ -62,9 +61,9 @@ export default function Navigation() {
     setSearchValue(inputValue);
   };
 
-  const handleSearch = (coinId) => {
+  const handleSearch = (coinId: string) => {
     if (searchValue) {
-      const fixString = coinId.replace(/\W+/g, "-");
+      const fixString = coinId?.replace(/\W+/g, "-");
       setSearchValue("");
       return router.push(`/coininfo/${fixString}`);
     }
@@ -117,7 +116,7 @@ export default function Navigation() {
     const selectedItem = filteredCoinsArray[selectedIndex];
     setSearchValue(selectedItem.id);
     if (!selectedItem) return resetSearchComplete();
-    handleSearch(selectedItem.key);
+    handleSearch(selectedItem.id);
     resetSearchComplete();
   };
 
@@ -136,46 +135,55 @@ export default function Navigation() {
   return (
     <>
       <nav
-        className={`flex flex-col justify-center fixed top-0 z-50 theme-${palette} theme-${mode}`}
+        className={`flex flex-col justify-center fixed top-0 z-50 text-navText theme-${palette} theme-${mode}`}
       >
+        {isLoading && <div className="w-full h-full cursor-wait"></div>}
+        {isError && (
+          <div>
+            An error occured during loading. Please refresh your page and try
+            again.
+          </div>
+        )}
         <div className="flex items-center justify-center p-px text-xs bg-navColor">
-          <div className=" flex items-center mx-4 text-second">
+          <div className=" flex items-center mx-4 ">
             <CoinStackIcon />
             Coins:{marketCoins}
           </div>
-          <div className="mx-4 text-second">
+          <div className="mx-4 ">
+            {currency.symbol}
             {totalVolume && aveta(totalVolume)}
           </div>
-          <div className="mx-4 text-second">
+          <div className="mx-4 ">
+            {currency.symbol}
             {totalMarketCap && aveta(totalMarketCap)}
           </div>
 
-          <div className="mx-4 text-second flex items-center justify-center">
+          <div className="mx-4  flex items-center justify-center">
             <img
               src="https://i.ibb.co/VpjD7V6/Bitcoin-svg.png"
               className="h-4 w-4"
             />{" "}
             <div>BTC {marketCapPercentageBTC}%</div>
-            <div className="h-2 w-20 bg-base">
+            <div className="h-2 w-20 bg-shadowDark">
               <div
-                className="bg-primary min-h-2"
+                className="bg-shadowLight min-h-2"
                 style={{ width: `${marketCapPercentageBTC}%` }}
               ></div>
             </div>
           </div>
 
           <div>
-            <div className="mx-4 text-second flex items-center justify-center">
+            <div className="mx-4  flex items-center justify-center">
               <img
                 src="https://i.ibb.co/3Spb2vB/Ethereum-icon-purple-svg.png"
                 className="h-4 w-4"
               />{" "}
               <div>ETH {marketCapPercentageETH}%</div>
               <div>
-                <div className="min-h-2 w-20 bg-base">
+                <div className="min-h-2 w-20 bg-shadowDark">
                   <div
                     style={{ width: `${marketCapPercentageETH}%` }}
-                    className="bg-primary min-h-2 max-w-32"
+                    className="bg-shadowLight min-h-2 max-w-32"
                   ></div>
                 </div>
               </div>
@@ -196,14 +204,14 @@ export default function Navigation() {
               </div>
               <Link
                 href="/"
-                className="flex items-center mx-2 drop-shadow-md text-accent hover:scale-105"
+                className="flex items-center mx-2 drop-shadow-md text-shadowDark hover:scale-105"
               >
                 <HomeIcon />
                 <p className="ml-2">Home</p>
               </Link>
               <Link
                 href="/portfolio"
-                className="flex items-center mx-2 drop-shadow-md text-accent hover:scale-105"
+                className="flex items-center mx-2 drop-shadow-md text-shadowDark hover:scale-105"
               >
                 <StackIcon />
                 <p className="ml-2">Portfolio</p>
@@ -213,9 +221,8 @@ export default function Navigation() {
               <div>
                 {currentUser ? (
                   <div className="flex justify-end items-center my-1 mr-5">
-                    <div className="text-accent italic">
-                      User:{" "}
-                      <span className="text-accent2">{currentUser?.email}</span>
+                    <div className="text-shadowDark italic">
+                      User: <span className="text-accent2">{user?.email}</span>
                     </div>
                     <Link href="/">
                       <button
@@ -252,7 +259,7 @@ export default function Navigation() {
                     onKeyDown={handleKeyPress}
                     placeholder="Search..."
                     type="text"
-                    className="ml-5 drop-shadow-xl rounded-lg pl-3 relative w-44 inline-block focus: border-slate-200"
+                    className="items-center h-6 text-sm ml-5 drop-shadow-xl rounded-lg pl-3 relative w-44 inline-block bg-base text-shadowDark placeholder:text-sm placeholder:text-shadowDark focus:border-slate-200"
                   />
                   <div className="ml-5 absolute max-h-44 overflow-y-auto w-44">
                     {showResults && mappedCoinsArray}
@@ -260,12 +267,16 @@ export default function Navigation() {
                 </div>
                 <select
                   name="currency"
-                  className="mx-5 drop-shadow-xl rounded-lg p-0.5"
+                  className="items-center h-6 text-sm mx-5 drop-shadow-xl rounded-lg p-0.5 bg-base border-base text-shadowDark"
                   onChange={handleCurrency}
                 >
                   {CurrencyArray?.map((c) => {
                     return (
-                      <option key={c.currency} value={c.currency}>
+                      <option
+                        className="text-sm text-shadowDark"
+                        key={c.currency}
+                        value={c.currency}
+                      >
                         {c.currency}
                         {"  "} {c.name}
                       </option>
@@ -275,8 +286,11 @@ export default function Navigation() {
                 <select
                   onChange={(e) => handlePalette(e)}
                   name="palette"
-                  className="mr-5 drop-shadow-xl rounded-lg"
+                  className=" h-6 mr-5 drop-shadow-xl text-sm rounded-lg bg-base text-shadowDark"
                 >
+                  <option className="bg-second text-shadowDark text-sm">
+                    Theme
+                  </option>
                   {Palettes?.map((theme) => {
                     return (
                       <option
