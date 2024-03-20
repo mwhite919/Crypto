@@ -1,25 +1,32 @@
 "use client";
-import { useState } from "react";
-import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
-import { auth } from "@/app/firebase/config";
+import { useState, useRef } from "react";
+import { signup, useAuth } from "../firebase/config";
 import { useCrypto } from "../Providers/CryptoProvider";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const SignUp = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [createUserWithEmailAndPassword] = useCreateUserWithEmailAndPassword(
-    auth
-  );
+  const currentUser = useAuth();
+  const emailRef = useRef();
+  const passwordRef = useRef();
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
-  const {
-    loginError,
-    handleSignUp,
-    handlePassword,
-    handleEmail,
-    mode,
-    palette,
-  } = useCrypto();
+  async function handleSignUp() {
+    try {
+      setLoading(true);
+      await signup(emailRef.current.value, passwordRef.current.value);
+      setLoading(false);
+      router.push("/portfolio");
+    } catch (error) {
+      setLoading(false);
+      setError(true);
+      console.log(error);
+    }
+  }
+
+  const { loginError, mode, palette } = useCrypto();
 
   return (
     <div
@@ -44,22 +51,19 @@ const SignUp = () => {
           </div>
         )}
         <input
-          type="email"
+          ref={emailRef}
           placeholder="Email"
-          value={email}
-          onChange={(e) => handleEmail(e)}
-          className="w-full p-3 mb-4 bg-accent2 rounded outline-none text-primary placeholder-gray-500"
+          className="w-full p-3 mb-4 rounded outline-none text-primary placeholder-gray-500"
         />
         <input
+          ref={passwordRef}
           type="password"
           placeholder="Password"
-          value={password}
-          onChange={(e) => handlePassword(e)}
-          className="w-full p-3 mb-4 bg-accent2 rounded outline-none text-primary placeholder-gray-500"
+          className="w-full p-3 mb-4 rounded outline-none text-primary placeholder-gray-500"
         />
         <button
           onClick={handleSignUp}
-          className="w-full p-3 bg-accent rounded text-white hover:bg-primary"
+          className="w-full p-3 bg-accent rounded text-white hover:border-primary"
         >
           Sign Up
         </button>

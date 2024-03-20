@@ -7,6 +7,7 @@ import { useCrypto } from "../Providers/CryptoProvider";
 import { useGetAllCoinsQuery } from "../Providers/api/apiSlice";
 import { useRouter } from "next/navigation";
 import { EditForm } from "../components/EditForm";
+import Link from "next/link";
 
 export default function Page() {
   const { data: allCoinsData, isLoading, isError } = useGetAllCoinsQuery({
@@ -17,7 +18,7 @@ export default function Page() {
   const [addFormOn, setAddFormOn] = useState(false);
   const [editFormOn, setEditFormOn] = useState(false);
   const [coinToEdit, setCoinToEdit] = useState({});
-  const { user, userSession, palette, mode } = useCrypto();
+  const { loading, currentUser, palette, mode } = useCrypto();
 
   const handleForm = () => {
     setAddFormOn(!addFormOn);
@@ -25,10 +26,6 @@ export default function Page() {
   };
 
   const router = useRouter();
-
-  if ((!user && !userSession) || user === null) {
-    router.push("/sign-up");
-  }
 
   function handleEditForm(coin) {
     setCoinToEdit(coin);
@@ -38,46 +35,67 @@ export default function Page() {
 
   return (
     <div
-      className={`w-window min-h-window bg-base theme-${palette} theme-${mode} flex items-center justify-start flex-col  `}
+      className={`w-window min-h-window bg-base theme-${palette} theme-${mode} flex items-center justify-start flex-col`}
     >
-      <div>
-        {isLoading && <div className="w-full h-full cursor-wait"></div>}
-        <div>{isLoading && <h2>fetching data...</h2>}</div>
+      {loading && (
+        <div className="w-screen h-screen flex justify-center items-center my-8 mr-36 mt-36 cursor-wait">
+          Loading...
+        </div>
+      )}
         <div>
           {isError && (
             <h2>An error occured while loading. Please try again.</h2>
           )}
         </div>
-      </div>
-      <div className="w-full flex justify-center my-8 mr-36 mt-36 relative">
-        {editFormOn && (
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-            <EditForm coinToEdit={coinToEdit} handleEditForm={handleEditForm} />
-          </div>
-        )}
-        {addFormOn && (
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-2">
-            <CoinForm allCoinsData={allCoinsData} handleForm={handleForm} />
-          </div>
-        )}
-
-        <div className="w-[900px]">
-          <div className="w-full flex justify-end">
-            {" "}
+      {currentUser && !loading ? (
+        <div>
+          <div className="w-full flex justify-end my-8 mr-36 mt-36">
             <button
-              className="bg-second drop-shadow-md p-4 rounded-lg text-shadowDark"
+              className="bg-accent p-4 rounded-lg"
               onClick={() => setAddFormOn(!addFormOn)}
             >
               Add Asset
             </button>
           </div>
-          <div className="justify-start font-medium text-xl text-shadowDark">
-            Your Statistics:
+          <div>
+            {editFormOn && (
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                <EditForm
+                  coinToEdit={coinToEdit}
+                  handleEditForm={handleEditForm}
+                />
+              </div>
+            )}
           </div>
-
+          <div>
+            {addFormOn && (
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                <CoinForm allCoinsData={allCoinsData} handleForm={handleForm} />
+              </div>
+            )}
+          </div>
+          <div className="font-medium text-3xl text-accent"> Your Assets:</div>
           <PortfolioList handleEditForm={handleEditForm} />
         </div>
-      </div>
+      ) : (
+        <div className="flex justify-center items-center text-lg  mt-36">
+          Porfolio's are available only to our members. Please{" "}
+          <Link
+            href="/sign-in"
+            className="drop-shadow-md text-accent mx-2 hover:scale-105"
+          >
+            Sign-in
+          </Link>{" "}
+          or{" "}
+          <Link
+            href="/sign-up"
+            className="drop-shadow-md text-accent mx-2 hover:scale-105"
+          >
+            Sign-up
+          </Link>{" "}
+          for a free account.
+        </div>
+      )}
     </div>
   );
 }

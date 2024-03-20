@@ -21,6 +21,7 @@ import { Palettes } from "../constants/Palettes";
 import { changeCurr } from "@/redux/currency/currencySlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { useAppSelector } from "@/redux/hooks";
+import { useAuth, logout } from "../firebase/config";
 
 export default function Navigation() {
   const currency = useAppSelector((state) => state.currency);
@@ -32,15 +33,9 @@ export default function Navigation() {
 
   const { data: barData } = useGetTopBarInfoQuery();
   const dispatch = useAppDispatch();
+  const currentUser = useAuth();
 
-  const {
-    handleSignOut,
-    user,
-    handlePalette,
-    handleMode,
-    palette,
-    mode,
-  } = useCrypto();
+  const { handlePalette, handleMode, palette, mode } = useCrypto();
   const [searchValue, setSearchValue] = useState("");
   const [focusedIndex, setFocusedIndex] = useState(-1);
   const [showResults, setShowResults] = useState(false);
@@ -224,7 +219,7 @@ export default function Navigation() {
             </div>
             <div className="flex flex-col content-evenly">
               <div>
-                {user ? (
+                {currentUser ? (
                   <div className="flex justify-end items-center my-1 mr-5">
                     <div className="text-shadowDark italic">
                       User: <span className="text-accent2">{user?.email}</span>
@@ -232,7 +227,7 @@ export default function Navigation() {
                     <Link href="/">
                       <button
                         className="drop-shadow-md text-accent mx-2 hover:scale-105"
-                        onClick={handleSignOut}
+                        onClick={() => logout()}
                       >
                         Log out
                       </button>
