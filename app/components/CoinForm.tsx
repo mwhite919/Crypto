@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { CloseIcon, ResetIcon } from "@/app/icons/Icons";
 import axios from "axios";
-import CharacterCounter from "./CharacterCounter";
+import CharacterCounter from "./characterCounter";
 import { DropDownRow } from "../constants/DropDownRow";
 import db from "../firebase/config";
 import { addDoc, collection } from "firebase/firestore";
