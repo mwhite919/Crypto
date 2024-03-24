@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { CloseIcon, ResetIcon } from "@/app/icons/Icons";
 import axios from "axios";
-import CharacterCounter from "./characterCounter";
+import { CloseIcon, ResetIcon } from "@/app/icons/Icons";
+import CharacterCounter from "./CharacterCounter";
 import db from "../firebase/config";
 import { setDoc, doc } from "firebase/firestore";
 import { uid } from "uid";
