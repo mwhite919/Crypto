@@ -14,17 +14,18 @@ import {
   TriangleDown,
 } from "@/app/icons/Icons";
 import { useAppSelector } from "@/redux/hooks";
-
 import { useGetSingleCoinQuery } from "@/app/Providers/api/apiSlice";
 import { useCrypto } from "@/app/Providers/CryptoProvider";
 
 export default function Page({ params }: { params: { id: string } }) {
+  const { palette, mode } = useCrypto();
+
   const { data: coinInfo, error, isError, isLoading } = useGetSingleCoinQuery(
     params.id
   );
 
   const currency = useAppSelector((state) => state.currency);
-  const { palette, mode } = useCrypto();
+
   const [copied, setCopied] = useState(false);
   const [showMore, setShowMore] = useState(false);
   const icon = coinInfo?.image?.small;

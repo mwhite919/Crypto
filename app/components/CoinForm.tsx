@@ -5,7 +5,7 @@ import axios from "axios";
 import { CloseIcon, ResetIcon } from "@/app/icons/Icons";
 import { DropDownRow } from "../constants/DropDownRow";
 import db from "../firebase/config";
-import CharacterCounter from "./CharacterCounter";
+import CharacterCounter from "./characterCounter";
 import { addDoc, collection } from "firebase/firestore";
 import { uid } from "uid";
 

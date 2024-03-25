@@ -3,7 +3,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { CloseIcon, ResetIcon } from "@/app/icons/Icons";
-import CharacterCounter from "./CharacterCounter";
+import CharacterCounter from "./characterCounter";
 import db from "../firebase/config";
 import { setDoc, doc } from "firebase/firestore";
 import { uid } from "uid";
