@@ -3,7 +3,7 @@ import { useState, createContext, useContext, useEffect } from "react";
 import { useAuth } from "@/app/firebase/config";
 import { Palettes } from "../constants/Palettes";
 
-export const CryptoContext = createContext(null);
+export const CryptoContext = createContext({ palette: "default", mode: "" });
 export function useCrypto() {
   const value = useContext(CryptoContext);
   return value;
@@ -36,17 +36,14 @@ interface Props {
   children: any;
 }
 
-export default function CryptoProvider({ children }) {
+export default function CryptoProvider({ children }: Props) {
   const [loginError, setLoginError] = useState(false);
   const currentUser = useAuth();
 
   function handleLoginError() {
     setLoginError(!loginError);
   }
-  const [palette, setPalette] = useStickyState(
-    Palettes[0],
-    "theme-palette" || "basic"
-  );
+  const [palette, setPalette] = useStickyState(Palettes[0], "theme-palette");
   const [mode, setMode] = useStickyState(modes[0], "theme-mode" || "light");
 
   function handlePalette(e: string) {
