@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import PortfolioList from "@/app/components/PortfolioList";
-import { CoinForm } from "@/app/components/CoinForm";
+import PortfolioList from "../components/PortfolioList";
+import { CoinForm } from "../components/CoinForm";
 import { useCrypto } from "../Providers/CryptoProvider";
 import { useGetAllCoinsQuery } from "../Providers/api/apiSlice";
 import { useRouter } from "next/navigation";
