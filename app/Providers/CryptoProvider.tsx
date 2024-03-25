@@ -1,10 +1,9 @@
 "use client";
 import { useState, createContext, useContext, useEffect } from "react";
 import { useAuth } from "@/app/firebase/config";
-import { useRouter } from "next/navigation";
 import { Palettes } from "../constants/Palettes";
 
-export const CryptoContext = createContext();
+export const CryptoContext = createContext(null);
 export function useCrypto() {
   const value = useContext(CryptoContext);
   return value;
