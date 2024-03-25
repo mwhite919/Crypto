@@ -32,6 +32,10 @@ function useStickyState(
   ];
 }
 
+interface Props {
+  children: any;
+}
+
 export default function CryptoProvider({ children }) {
   const [loginError, setLoginError] = useState(false);
   const currentUser = useAuth();
