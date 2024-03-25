@@ -7,7 +7,7 @@ import {
   TriangleDown,
   TriangleUp,
 } from "@/app/icons/Icons";
-import CharacterCounter from "./characterCounter";
+import CharacterCounter from "./CharacterCounter";
 import { useAppSelector } from "@/redux/hooks";
 import db from "../firebase/config";
 import { onSnapshot, collection, doc, deleteDoc } from "firebase/firestore";
