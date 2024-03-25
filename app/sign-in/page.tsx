@@ -16,7 +16,9 @@ const SignIn = () => {
   async function handleLogin() {
     setLoading(true);
     try {
+      setLoading(true);
       await login(emailRef.current.value, passwordRef.current.value);
+      setLoading(false);
       if (currentUser) {
         router.push("/portfolio");
         return;
@@ -30,7 +32,9 @@ const SignIn = () => {
 
   return (
     <div
-      className={`min-h-screen flex items-center justify-center bg-base theme-${palette} theme-${mode} top-36`}
+      className={`min-h-screen flex items-center justify-center bg-base theme-${palette} theme-${mode} top-36 ${
+        loading && "cursor-wait"
+      }`}
     >
       <div className="bg-second p-10 rounded-lg shadow-xl w-96">
         <h1 className="text-accent text-2xl ">Sign In</h1>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useGetAllCoinsQuery } from "./Providers/api/apiSlice";
 import { useCrypto } from "./Providers/CryptoProvider";
 import { useAppSelector } from "@/redux/hooks";
@@ -21,12 +21,10 @@ export default function Page() {
   const { palette, mode } = useCrypto();
   const [converter, setConverter] = useState(false);
 
-  const { data: allCoinsData, error, isError, isLoading } = useGetAllCoinsQuery(
-    {
-      currency: currency.currency,
-      sortValue: "market_cap_desc",
-    }
-  );
+  const { data: allCoinsData, isError, isLoading } = useGetAllCoinsQuery({
+    currency: currency.currency,
+    sortValue: "market_cap_desc",
+  });
 
   return (
     <>

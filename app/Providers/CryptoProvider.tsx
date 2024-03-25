@@ -1,6 +1,6 @@
 "use client";
 import { useState, createContext, useContext, useEffect } from "react";
-import { login, useAuth } from "@/app/firebase/config";
+import { useAuth } from "@/app/firebase/config";
 import { useRouter } from "next/navigation";
 import { Palettes } from "../constants/Palettes";
 
@@ -34,11 +34,7 @@ function useStickyState(
 }
 
 export default function CryptoProvider({ children }) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false);
   const [loginError, setLoginError] = useState(false);
-
-  const router = useRouter();
   const currentUser = useAuth();
 
   function handleLoginError() {

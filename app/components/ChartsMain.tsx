@@ -26,7 +26,7 @@ import "chartjs-adapter-date-fns";
 import { Line, Bar } from "react-chartjs-2";
 import { graphStyling } from "../constants/graphStyling";
 import { useCrypto } from "../Providers/CryptoProvider";
-import { every_nth } from "./Every_nth";
+import { everyNth } from "./Every_nth";
 import { convertUnixToDate } from "../utils/UnixTimeConverter";
 
 ChartJS.register(
@@ -134,14 +134,14 @@ export const ChartsMain = () => {
   function pricesData(coinCount: number) {
     if (coinCount <= 1) {
       return {
-        labels: every_nth(
+        labels: everyNth(
           combinedChartCoins[0]?.prices.map((item) => item.time),
           numberOfDays
         ),
         datasets: [
           {
             label: combinedChartCoins[0]?.coinName,
-            data: every_nth(
+            data: everyNth(
               combinedChartCoins[0]?.prices.map((item) => item.yData),
               numberOfDays
             ),
@@ -170,14 +170,14 @@ export const ChartsMain = () => {
 
     if (coinCount === 2) {
       return {
-        labels: every_nth(
+        labels: everyNth(
           combinedChartCoins[0]?.prices.map((item) => item.time),
           numberOfDays
         ),
         datasets: [
           {
             label: combinedChartCoins[0]?.coinName,
-            data: every_nth(
+            data: everyNth(
               combinedChartCoins[0]?.prices.map((item) => item.yData),
               numberOfDays
             ),
@@ -202,7 +202,7 @@ export const ChartsMain = () => {
           },
           {
             label: combinedChartCoins[1]?.coinName,
-            data: every_nth(
+            data: everyNth(
               combinedChartCoins[1]?.prices.map((item) => item.yData),
               numberOfDays
             ),
@@ -230,14 +230,14 @@ export const ChartsMain = () => {
     }
     if (coinCount === 3) {
       return {
-        labels: every_nth(
+        labels: everyNth(
           combinedChartCoins[0]?.prices.map((item) => item.time),
           numberOfDays
         ),
         datasets: [
           {
             label: combinedChartCoins[0]?.coinName,
-            data: every_nth(
+            data: everyNth(
               combinedChartCoins[0]?.prices.map((item) => item.yData),
               numberOfDays
             ),
@@ -284,7 +284,7 @@ export const ChartsMain = () => {
           },
           {
             label: combinedChartCoins[2]?.coinName,
-            data: every_nth(
+            data: everyNth(
               combinedChartCoins[2]?.prices.map((item) => item.yData),
               numberOfDays
             ),
@@ -315,14 +315,14 @@ export const ChartsMain = () => {
   function volumeData(coinCount: number) {
     if (coinCount <= 1) {
       return {
-        labels: every_nth(
+        labels: everyNth(
           combinedChartCoins[0]?.volume.map((item) => item.time),
           numberOfDays
         ),
         datasets: [
           {
             label: combinedChartCoins[0]?.coinName,
-            data: every_nth(
+            data: everyNth(
               combinedChartCoins[0]?.volume.map((item) => item.yData),
               numberOfDays
             ),
@@ -351,14 +351,14 @@ export const ChartsMain = () => {
 
     if (coinCount === 2) {
       return {
-        labels: every_nth(
+        labels: everyNth(
           combinedChartCoins[0]?.volume.map((item) => item.time),
           numberOfDays
         ),
         datasets: [
           {
             label: combinedChartCoins[0]?.coinName,
-            data: every_nth(
+            data: everyNth(
               combinedChartCoins[0]?.volume.map((item) => item.yData),
               numberOfDays
             ),
@@ -383,7 +383,7 @@ export const ChartsMain = () => {
           },
           {
             label: combinedChartCoins[1]?.coinName,
-            data: every_nth(
+            data: everyNth(
               combinedChartCoins[1]?.volume.map((item) => item.yData),
               numberOfDays
             ),
@@ -411,14 +411,14 @@ export const ChartsMain = () => {
     }
     if (coinCount === 3) {
       return {
-        labels: every_nth(
+        labels: everyNth(
           combinedChartCoins[0]?.volume.map((item) => item.time),
           numberOfDays
         ),
         datasets: [
           {
             label: combinedChartCoins[0]?.coinName,
-            data: every_nth(
+            data: everyNth(
               combinedChartCoins[0]?.volume.map((item) => item.yData),
               numberOfDays
             ),
@@ -443,7 +443,7 @@ export const ChartsMain = () => {
           },
           {
             label: combinedChartCoins[1]?.coinName,
-            data: every_nth(
+            data: everyNth(
               combinedChartCoins[1]?.volume.map((item) => item.yData),
               numberOfDays
             ),
@@ -468,7 +468,7 @@ export const ChartsMain = () => {
           },
           {
             label: combinedChartCoins[2]?.coinName,
-            data: every_nth(
+            data: everyNth(
               combinedChartCoins[2]?.volume.map((item) => item.yData),
               numberOfDays
             ),

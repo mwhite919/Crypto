@@ -1,4 +1,4 @@
-export const every_nth = (arr, dayCount) => {
+export const everyNth = (arr, dayCount) => {
   let decimator = 5;
   if (dayCount <= 30) decimator = 15;
   else if (dayCount <= 185) decimator = 18;

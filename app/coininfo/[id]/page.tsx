@@ -76,7 +76,9 @@ export default function Page({ params }: { params: { id: string } }) {
   return (
     <>
       <div
-        className={`flex items-center justify-start flex-col w-screen h-screen text-sm text-shadowDark theme-${palette} theme-${mode} bg-base`}
+        className={`flex items-center justify-start flex-col w-screen h-screen text-sm text-shadowDark theme-${palette} theme-${mode} bg-base ${
+          isLoading && "cursor-wait"
+        }`}
       >
         <div className="w-[1000px] grid grid-cols-4 gap-2 justify-center items-start mt-36 m-6">
           {params === undefined ? (

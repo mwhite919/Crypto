@@ -15,10 +15,8 @@ export const EditForm = ({ coinToEdit, handleEditForm }) => {
   const [missingAmount, setMissingAmount] = useState(false);
   const [date, setDate] = useState(coinToEdit.date);
   const [dateError, setDateError] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
   const [numError, setnumError] = useState(false);
   const [purchasePrice, setPurchasePrice] = useState(coinToEdit.purchasePrice);
-  const [purchasePriceError, setPurchasePriceError] = useState(false);
 
   const saveEdit = async (e, id) => {
     e.preventDefault();
@@ -93,7 +91,7 @@ export const EditForm = ({ coinToEdit, handleEditForm }) => {
     setMissingAmount(!amount);
   };
 
-  const handleDateBlur = (e) => {
+  const handleDateBlur = () => {
     if (date) {
       setDateError(false);
     }

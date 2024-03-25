@@ -1,5 +1,5 @@
 import React from "react";
-import { formatNumber, priceFormatNumber } from "@/app/utils/formatNumber";
+import { formatNumber } from "@/app/utils/formatNumber";
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
 import ArrowDown, { ArrowUp } from "../icons/Icons";
@@ -36,7 +36,7 @@ const Row = styled.div`
 
 export default function CoinRow({ coin, index }) {
   const currency = useAppSelector((state) => state.currency);
-  const { palette, mode } = useCrypto();
+  const { palette } = useCrypto();
 
   const colorsGroup = graphStyling[palette];
 
@@ -57,7 +57,6 @@ export default function CoinRow({ coin, index }) {
   const router = useRouter();
   const circulatingTotalSupply = (circulating / totalSupply) * 100;
   const coinPrice = coin?.current_price?.toFixed(2);
-  const dataSet = coin?.price;
 
   function limiter(x) {
     if (x < 100) {
@@ -68,7 +67,7 @@ export default function CoinRow({ coin, index }) {
     }
   }
 
-  function greenOrRed(x: number, rounded: boolean, width: number) {
+  function greenOrRed(x: number, rounded: boolean) {
     if (x > 0) {
       if (rounded) {
         return "h-2 w-2 rounded-full bg-green-500";

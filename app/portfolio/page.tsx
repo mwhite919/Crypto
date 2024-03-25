@@ -5,7 +5,6 @@ import PortfolioList from "../components/PortfolioList";
 import { CoinForm } from "../components/CoinForm";
 import { useCrypto } from "../Providers/CryptoProvider";
 import { useGetAllCoinsQuery } from "../Providers/api/apiSlice";
-import { useRouter } from "next/navigation";
 import { EditForm } from "../components/EditForm";
 import Link from "next/link";
 
@@ -18,14 +17,12 @@ export default function Page() {
   const [addFormOn, setAddFormOn] = useState(false);
   const [editFormOn, setEditFormOn] = useState(false);
   const [coinToEdit, setCoinToEdit] = useState({});
-  const { loading, currentUser, palette, mode } = useCrypto();
+  const { currentUser, palette, mode } = useCrypto();
 
   const handleForm = () => {
     setAddFormOn(!addFormOn);
     setEditFormOn(false);
   };
-
-  const router = useRouter();
 
   function handleEditForm(coin) {
     setCoinToEdit(coin);
@@ -37,7 +34,7 @@ export default function Page() {
     <div
       className={`w-window min-h-window bg-base theme-${palette} theme-${mode} flex items-center justify-start flex-col`}
     >
-      {loading && (
+      {isLoading && (
         <div className="w-screen h-screen flex justify-center items-center my-8 mr-36 mt-36 cursor-wait">
           Loading...
         </div>
