@@ -1,20 +1,44 @@
 "use client";
-import { useState, createContext, useContext, useEffect } from "react";
+import {
+  useState,
+  createContext,
+  useContext,
+  useEffect,
+  ChangeEvent,
+} from "react";
 import { useAuth } from "@/app/firebase/config";
 import { Palettes } from "../constants/Palettes";
 
-export const CryptoContext = createContext({ palette: "default", mode: "" });
+interface CryptoContextType {
+  palette: string;
+  mode: string;
+  handlePalette: (e: ChangeEvent<HTMLInputElement>) => void;
+  handleMode: (value: string) => void;
+  loginError: boolean;
+  handleLoginError: () => void;
+  currentUser: any;
+}
+
+export const CryptoContext = createContext<CryptoContextType>({
+  palette: "default",
+  mode: "light",
+  handlePalette: (e: ChangeEvent<HTMLInputElement>) => {},
+  handleMode: (value: string) => {},
+  loginError: false,
+  handleLoginError: () => {},
+  currentUser: null,
+});
+
 export function useCrypto() {
-  const value = useContext(CryptoContext);
-  return value;
+  return useContext(CryptoContext);
 }
 
 const modes = ["light", "dark"];
 function useStickyState(
-  defaultValue: string | undefined,
+  defaultValue: string,
   key: string
-): [string | undefined, (v: string) => void] {
-  const [value, setValue] = useState<string | undefined>(defaultValue);
+): [string, (v: string) => void] {
+  const [value, setValue] = useState<string>(defaultValue);
 
   useEffect(() => {
     const stickyValue = localStorage.getItem(key);
@@ -36,11 +60,6 @@ interface Props {
   children: any;
 }
 
-interface Palettes {
-  theme: string;
-  class: string;
-}
-
 export default function CryptoProvider({ children }: Props) {
   const [loginError, setLoginError] = useState(false);
   const currentUser = useAuth();
@@ -48,10 +67,13 @@ export default function CryptoProvider({ children }: Props) {
   function handleLoginError() {
     setLoginError(!loginError);
   }
-  const [palette, setPalette] = useStickyState(Palettes[0], "theme-palette");
-  const [mode, setMode] = useStickyState(modes[0], "theme-mode" || "light");
+  const [palette, setPalette] = useStickyState(
+    Palettes[0].theme,
+    "theme-palette"
+  );
+  const [mode, setMode] = useStickyState(modes[0], "theme-mode");
 
-  function handlePalette(e: string) {
+  function handlePalette(e: ChangeEvent<HTMLInputElement>) {
     setPalette(e.target.value);
   }
 
