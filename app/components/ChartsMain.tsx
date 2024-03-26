@@ -134,6 +134,68 @@ export const ChartsMain = () => {
     },
   };
 
+  const optionsBar: ChartOptions<"bar"> = {
+    animation: {
+      duration: 2000,
+    },
+    maintainAspectRatio: false,
+    interaction: { mode: "nearest" },
+    plugins: {
+      legend: {
+        display: true,
+        position: "bottom",
+        align: "start",
+      },
+      tooltip: {
+        mode: "nearest",
+        intersect: false,
+        callbacks: {
+          label: function (tooltipItem) {
+            let label = tooltipItem.dataset.label || "";
+            if (label) {
+              label += ": ";
+            }
+            if (tooltipItem.parsed.y !== null) {
+              label += new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: currency.currency,
+              }).format(tooltipItem.parsed.y);
+            }
+            setDisplayLineData(label);
+            setDateToDisplay(convertUnixToDate(tooltipItem.parsed.x));
+            return label;
+          },
+        },
+      },
+    },
+    hover: {
+      mode: "nearest",
+      intersect: false,
+    },
+    scales: {
+      y: {
+        display: false,
+        type: "logarithmic",
+      },
+      x: {
+        grid: {
+          color: "transparent",
+        },
+        type: "time",
+        time: {
+          unit: units(numberOfDays),
+        },
+        ticks: {
+          font: {
+            size: 12,
+          },
+          maxRotation: 0,
+          minRotation: 0,
+        },
+      },
+    },
+  };
+
   function pricesData(coinCount: number): ChartData<"line", any, unknown> {
     if (coinCount <= 1) {
       return {
@@ -623,7 +685,7 @@ export const ChartsMain = () => {
           <div className="text-shadowDark text-sm font-semibold">{`${dateToDisplay}`}</div>
           <div className=" w-[475px] h-[300px]">
             <Bar
-              options={options}
+              options={optionsBar}
               data={volumeData(combinedChartCoins.length)}
             />
           </div>
