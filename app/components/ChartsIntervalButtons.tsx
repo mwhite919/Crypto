@@ -1,8 +1,13 @@
 import { RadioGroup } from "@headlessui/react";
+
+interface Props {
+  handleNumberOfDays: (value: string) => void;
+  numberOfDays: string;
+}
 export default function ChartsIntervalButtons({
   handleNumberOfDays,
   numberOfDays,
-}) {
+}: Props) {
   const times = [
     { name: "1D", value: "1" },
     { name: "1W", value: "7" },
