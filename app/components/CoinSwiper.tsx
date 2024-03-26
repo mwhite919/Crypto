@@ -6,7 +6,24 @@ import "slick-carousel/slick/slick-theme.css";
 import "@/app/constants/coin-swiper.css";
 import { useAppSelector } from "@/redux/hooks";
 
-export const CoinSwiper = ({ handleClick, combinedChartCoins }) => {
+interface Coin {
+  id: string;
+  image: string;
+  name: string;
+  symbol: string;
+  current_price: number;
+  price_change_percentage_1h_in_currency: number;
+}
+
+interface Props {
+  handleClick: (coin: Coin) => void;
+  combinedChartCoins: Coin[];
+}
+
+export const CoinSwiper: React.FC<Props> = ({
+  handleClick,
+  combinedChartCoins,
+}) => {
   const currency = useAppSelector((state) => state.currency);
 
   const { data: allCoinsData, isError, isLoading } = useGetAllCoinsQuery({
@@ -70,9 +87,9 @@ export const CoinSwiper = ({ handleClick, combinedChartCoins }) => {
                         </div>
                         <div className="flex items-center ml-1">
                           {coin?.price_change_percentage_1h_in_currency > 0 ? (
-                            <ArrowUp className="h-3" />
+                            <ArrowUp />
                           ) : (
-                            <ArrowDown className="h-3" />
+                            <ArrowDown />
                           )}
                           {coin?.price_change_percentage_1h_in_currency.toFixed(
                             2
