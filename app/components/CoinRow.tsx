@@ -14,7 +14,7 @@ import {
   LinearScale,
   PointElement,
   LineElement,
-  Legend,
+  ChartOptions,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 ChartJS.register(
@@ -23,8 +23,7 @@ ChartJS.register(
   LinearScale,
   PointElement,
   LineElement,
-  CategoryScale,
-  Legend
+  CategoryScale
 );
 
 const Row = styled.div`
@@ -34,11 +33,53 @@ const Row = styled.div`
   border-radius: 10px;
 `;
 
-export default function CoinRow({ coin, index }) {
+interface CoinType {
+  id: string;
+  image: string | undefined;
+  name: string;
+  symbol: string;
+  price: number;
+  total_volume: number;
+  market_cap: number;
+  total_supply: number;
+  circulating_supply: number;
+  current_price: number;
+  price_change_percentage_1h_in_currency: number;
+  price_change_percentage_24h_in_currency: number;
+  price_change_percentage_7d_in_currency: number;
+  index: number;
+  sparkline_in_7d: {
+    price: number[];
+  };
+}
+
+interface Props {
+  coin: CoinType;
+  index: number;
+}
+
+type GraphStyle = keyof typeof graphStyling;
+
+interface GraphData {
+  labels: number[];
+  datasets: {
+    data: number[];
+    borderColor: string;
+    pointRadius: number;
+    borderWidth: number;
+    fill: boolean;
+    borderRadius: string;
+    tension: number;
+    pointBackgroundColor: string;
+    pointBorderColor: string;
+  }[];
+}
+
+export default function CoinRow({ coin, index }: Props) {
   const currency = useAppSelector((state) => state.currency);
   const { palette } = useCrypto();
 
-  const colorsGroup = graphStyling[palette];
+  const colorsGroup = graphStyling[palette as GraphStyle];
 
   const oneHourPercent = coin?.price_change_percentage_1h_in_currency?.toFixed(
     2
@@ -58,7 +99,7 @@ export default function CoinRow({ coin, index }) {
   const circulatingTotalSupply = (circulating / totalSupply) * 100;
   const coinPrice = coin?.current_price?.toFixed(2);
 
-  function limiter(x) {
+  function limiter(x: number) {
     if (x < 100) {
       return x;
     }
@@ -89,16 +130,17 @@ export default function CoinRow({ coin, index }) {
     if (x > 0) return <ArrowUp />;
   }
 
-  const graphData = coin?.sparkline_in_7d?.price.map((item, index) => {
-    return { x: index, y: item };
-  });
-
-  const data = {
-    labels: graphData.map((item) => item.x),
+  const graphData = coin?.sparkline_in_7d?.price.map(
+    (item: any, index: any) => {
+      return { x: index, y: item };
+    }
+  );
+  const data: GraphData = {
+    labels: [1, 2, 3, 4, 5],
     datasets: [
       {
-        data: graphData.map((item) => item.y),
-        borderColor: colorsGroup?.coin1.stopColor1,
+        data: [10, 20, 30, 40, 50],
+        borderColor: "red",
         pointRadius: 0,
         borderWidth: 1,
         fill: true,
@@ -110,7 +152,7 @@ export default function CoinRow({ coin, index }) {
     ],
   };
 
-  const options = {
+  const options: ChartOptions<"line"> = {
     plugins: {
       legend: {
         display: false,
@@ -118,17 +160,17 @@ export default function CoinRow({ coin, index }) {
     },
     scales: {
       y: {
-        display: false,
         type: "logarithmic",
+        display: false,
       },
       x: {
-        display: false,
         type: "time",
+        display: false,
       },
     },
   };
 
-  const handleRoute = (coinId) => {
+  const handleRoute = (coinId: string) => {
     const fixString = coinId.replace(/\W+/g, "-");
     return router.push(`/coininfo/${fixString}`);
   };
@@ -150,21 +192,21 @@ export default function CoinRow({ coin, index }) {
           {coinPrice}
         </div>
         <div className="flex justify-start items-center ml-1 col-span-1">
-          {arrowUpOrDown(oneHourPercent)}
+          {arrowUpOrDown(Number(oneHourPercent))}
           {oneHourPercent}%
         </div>
         <div className="flex justify-start items-center ml-1 col-span-1">
-          {arrowUpOrDown(oneDayPercent)}
+          {arrowUpOrDown(Number(oneDayPercent))}
           {oneDayPercent}%
         </div>
         <div className=" flex justify-start items-center col-span-1">
-          {arrowUpOrDown(sevenDayPercent)}
+          {arrowUpOrDown(Number(sevenDayPercent))}
           {sevenDayPercent}%
         </div>
         <div className="col-span-3 flex flex-col items-center justify-center">
           <div className="flex justify-between w-32 ml-2">
             <div className="flex items-center">
-              <div className={greenOrRed(oneDayPercent, true)}></div>
+              <div className={greenOrRed(Number(oneDayPercent), true)}></div>
               <div className="text-xs">{formatNumber(volume)}</div>
             </div>
             <div className="flex items-center">
@@ -175,7 +217,7 @@ export default function CoinRow({ coin, index }) {
           <div className="h-2 w-32 bg-gray-500 items-center">
             <div
               style={{ width: limiter(volumeMarketCap) + "%" }}
-              className={greenOrRed(oneDayPercent, false)}
+              className={greenOrRed(Number(oneDayPercent), false)}
             ></div>
           </div>
         </div>
@@ -183,7 +225,7 @@ export default function CoinRow({ coin, index }) {
         <div className="col-span-3 flex items-center justify-center flex-col">
           <div className="flex justify-between w-32">
             <div className="flex items-center">
-              <div className={greenOrRed(oneDayPercent, true)}></div>
+              <div className={greenOrRed(Number(oneDayPercent), true)}></div>
               <div className="text-xs">{formatNumber(circulating)}</div>
             </div>
             <div className="flex items-center">
@@ -193,7 +235,7 @@ export default function CoinRow({ coin, index }) {
           </div>
           <div className="h-2 w-32 bg-gray-500 items-center">
             <div
-              className={greenOrRed(oneDayPercent, false)}
+              className={greenOrRed(Number(oneDayPercent), false)}
               style={{ width: limiter(circulatingTotalSupply) + "%" }}
             ></div>
           </div>
