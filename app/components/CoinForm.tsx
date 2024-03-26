@@ -1,6 +1,14 @@
 "use client";
 
-import { useEffect, useState, useRef, useCallback } from "react";
+import {
+  useEffect,
+  useState,
+  useRef,
+  useCallback,
+  FC,
+  ChangeEvent,
+  SetStateAction,
+} from "react";
 import axios from "axios";
 import { CloseIcon, ResetIcon } from "@/app/icons/Icons";
 import { DropDownRow } from "../constants/DropDownRow";
@@ -9,8 +17,23 @@ import CharacterCounter from "./CharacterCounter";
 import { addDoc, collection } from "firebase/firestore";
 import { uid } from "uid";
 
-export const CoinForm = ({ allCoinsData, handleForm }) => {
-  const [coin, setCoin] = useState({});
+interface Coin {
+  id: string;
+  coin: any[];
+  amount: number;
+  purchasePrice: number;
+  date: string;
+  image: string;
+  name: string;
+}
+
+interface CoinFormProps {
+  allCoinsData: Coin[];
+  handleForm: () => void;
+}
+
+export const CoinForm: FC<CoinFormProps> = ({ allCoinsData, handleForm }) => {
+  const [coin, setCoin] = useState<Coin | undefined>(undefined);
   const [missingCoin, setMissingCoin] = useState(false);
   const [amount, setAmount] = useState("");
   const [missingAmount, setMissingAmount] = useState(false);
@@ -23,7 +46,7 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
   const [showResults, setShowResults] = useState(false);
   const resultContainer = useRef<HTMLDivElement>(null);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     if (!date || !amount || !coin) {
       if (!date) setDateError(true);
@@ -31,7 +54,7 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
     if (!amount) {
       setMissingAmount(true);
     }
-    if (!coin.name) {
+    if (!coin?.name) {
       setMissingCoin(true);
     }
     if (coin && amount && date) {
@@ -46,7 +69,7 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
       const docRef = await addDoc(collectionRef, payload);
       handleForm();
       setSearchValue("");
-      setCoin({});
+      setCoin(undefined);
       setAmount("");
       setDate("");
     }
@@ -55,14 +78,14 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
   const closeForm = () => {
     handleForm();
     setSearchValue("");
-    setCoin({});
+    setCoin(undefined);
     setAmount("");
     setDate("");
   };
 
   const resetForm = () => {
     setSearchValue("");
-    setCoin({});
+    setCoin(undefined);
     setAmount("");
     setDate("");
     setnumError(false);
@@ -86,7 +109,9 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
     getPurchasePrice(coin.id, date.split("-").reverse().join("-"));
   }
 
-  const handleSearchChange = (e) => {
+  const handleSearchChange = (e: {
+    target: { validity: { patternMismatch: any }; value: any };
+  }) => {
     const newValueIsValid = !e.target.validity.patternMismatch;
     if (numError) {
       if (newValueIsValid) {
@@ -98,7 +123,9 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
     setShowResults(true);
   };
 
-  const handleBlur = (e) => {
+  const handleBlur = (e: {
+    target: { validity: { patternMismatch: any } };
+  }) => {
     if (e.target.validity.patternMismatch) {
       setnumError(true);
     }
@@ -118,18 +145,20 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
     }
   };
 
-  const handleDate = (e) => {
+  const handleDate = (e: ChangeEvent<HTMLInputElement>) => {
     setDateError(false);
     setDate(e.target.value);
   };
 
-  const handleAmountChange = (e) => {
+  const handleAmountChange = (e: {
+    target: { value: SetStateAction<string> };
+  }) => {
     setAmount(e.target.value);
   };
 
-  const handleSearch = (searchedCoin) => {
+  const handleSearch = (searchedCoin: SetStateAction<Coin | undefined>) => {
     if (searchValue) {
-      setSearchValue(searchedCoin.name);
+      setSearchValue(searchedCoin?.name as string);
       setCoin(searchedCoin);
       setMissingCoin(false);
     }
@@ -269,8 +298,8 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
                 <input
                   type="text"
                   onChange={handleAmountChange}
-                  value={amount}
-                  placeholder="How much?"
+                  value={amount ? amount : ""}
+                  placeholder="How many?"
                   inputMode="decimal"
                   pattern="[0-9]*[.,]?[0-9]+"
                   onBlur={handleBlur}

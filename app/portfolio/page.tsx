@@ -42,7 +42,7 @@ export default function Page() {
       <div>
         {isError && <h2>An error occured while loading. Please try again.</h2>}
       </div>
-      {currentUser && !loading ? (
+      {currentUser && !isLoading ? (
         <div>
           <div className="w-full h-full">
             <div>
