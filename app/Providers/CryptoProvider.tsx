@@ -35,9 +35,9 @@ export function useCrypto() {
 
 const modes = ["light", "dark"];
 function useStickyState(
-  defaultValue: string,
-  key: string
-): [string, (v: string) => void] {
+  defaultValue: any,
+  key: any
+): [any, (v: string) => void] {
   const [value, setValue] = useState<string>(defaultValue);
 
   useEffect(() => {
