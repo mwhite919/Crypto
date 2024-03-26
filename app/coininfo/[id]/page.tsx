@@ -69,7 +69,7 @@ export default function Page({ params }: { params: { id: string } }) {
   const description = coinInfo?.description?.en;
   const publicNotice = coinInfo?.public_notice;
 
-  const openInNewTab = (url) => {
+  const openInNewTab = (url: string) => {
     window.open(url, "_blank", "noreferrer");
   };
 

@@ -36,6 +36,11 @@ interface Props {
   children: any;
 }
 
+interface Palettes {
+  theme: string;
+  class: string;
+}
+
 export default function CryptoProvider({ children }: Props) {
   const [loginError, setLoginError] = useState(false);
   const currentUser = useAuth();
