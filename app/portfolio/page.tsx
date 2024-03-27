@@ -17,7 +17,7 @@ export default function Page() {
 
   const [addFormOn, setAddFormOn] = useState(false);
   const [editFormOn, setEditFormOn] = useState(false);
-  const [coinToEdit, setCoinToEdit] = useState<Coin | null>(null);
+  const [coinToEdit, setCoinToEdit] = useState<Coin | undefined>();
   const { currentUser, palette, mode } = useCrypto();
 
   const handleForm = () => {
@@ -25,7 +25,7 @@ export default function Page() {
     setEditFormOn(false);
   };
 
-  function handleEditForm(coin: Coin | null) {
+  function handleEditForm(coin: Coin) {
     setCoinToEdit(coin);
     setEditFormOn(!editFormOn);
     setAddFormOn(false);
@@ -56,7 +56,7 @@ export default function Page() {
                 </button>
               </div>
 
-              {editFormOn && (
+              {editFormOn && coinToEdit && (
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  z-30">
                   <EditForm
                     coinToEdit={coinToEdit}
