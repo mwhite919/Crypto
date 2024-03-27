@@ -9,13 +9,13 @@ import ChartsMain from "./components/ChartsMain";
 import Converter from "./components/Converter";
 import styled from "styled-components";
 import { RadioGroup } from "@headlessui/react";
+import { CoinType } from "./sharedinterfaces";
 
 const Row = styled.div`
   width: 1010px;
   height: 50px;
   border-radius: 10px;
 `;
-
 export default function Page() {
   const currency = useAppSelector((state) => state.currency);
   const { palette, mode } = useCrypto();
@@ -63,7 +63,7 @@ export default function Page() {
               }
               value={false}
             >
-              {({ checked }) => <span className={checked && ""}>Coins</span>}
+              {({ checked }) => <span>Coins</span>}
             </RadioGroup.Option>
             <RadioGroup.Option
               className={({ active, checked }) =>
@@ -81,9 +81,7 @@ export default function Page() {
               }
               value={true}
             >
-              {({ checked }) => (
-                <span className={checked && ""}>Converter</span>
-              )}
+              {({ checked }) => <span>Converter</span>}
             </RadioGroup.Option>
           </RadioGroup>
         </div>
@@ -128,7 +126,7 @@ export default function Page() {
         </div>
 
         <div>
-          {allCoinsData?.map((coin, index) => (
+          {allCoinsData?.map((coin: CoinType, index: number) => (
             <div key={coin.id}>
               <CoinRow coin={coin} index={index + 1} />
             </div>
