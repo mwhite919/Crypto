@@ -54,7 +54,7 @@ export const ChartsMain = () => {
 
   const isLoading = useAppSelector((state) => state.chartCoins.isLoading);
   const currency = useAppSelector((state) => state.currency);
-  const [numberOfDays, setNumberOfDays] = useState("7");
+  const [numberOfDays, setNumberOfDays] = useState(7);
   const [displayLineData, setDisplayLineData] = useState("");
   const [dateToDisplay, setDateToDisplay] = useState("");
   const { palette, mode } = useCrypto();
@@ -121,7 +121,7 @@ export const ChartsMain = () => {
         },
         type: "time",
         time: {
-          unit: units(numberOfDays),
+          unit: units(String(numberOfDays)),
         },
         ticks: {
           font: {
@@ -183,7 +183,7 @@ export const ChartsMain = () => {
         },
         type: "time",
         time: {
-          unit: units(numberOfDays),
+          unit: units(String(numberOfDays)),
         },
         ticks: {
           font: {
@@ -606,7 +606,7 @@ export const ChartsMain = () => {
         currency: currency.currency,
         coinId: coin.id,
         coinName: coin.name,
-        days: numberOfDays,
+        days: String(numberOfDays),
       })
     );
   };
@@ -617,7 +617,7 @@ export const ChartsMain = () => {
         currency: currency.currency,
         coinId: "bitcoin",
         coinName: "Bitcoin",
-        days: numberOfDays,
+        days: String(numberOfDays),
       })
     );
   }, []);
@@ -643,12 +643,12 @@ export const ChartsMain = () => {
       timeInterval({
         chartCoins: combinedChartCoins,
         currency: currency.currency,
-        days: numberOfDays,
+        days: String(numberOfDays),
       })
     );
   }, [numberOfDays, currency]);
 
-  function handleNumberOfDays(value: React.SetStateAction<string>) {
+  function handleNumberOfDays(value: React.SetStateAction<number>) {
     setNumberOfDays(value);
   }
 

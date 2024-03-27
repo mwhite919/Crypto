@@ -12,7 +12,7 @@ import { Palettes } from "../constants/Palettes";
 interface CryptoContextType {
   palette: string;
   mode: string;
-  handlePalette: (e: ChangeEvent<HTMLInputElement>) => void;
+  handlePalette: (e: ChangeEvent<HTMLSelectElement>) => void;
   handleMode: (value: string) => void;
   loginError: boolean;
   handleLoginError: () => void;
@@ -22,7 +22,7 @@ interface CryptoContextType {
 export const CryptoContext = createContext<CryptoContextType>({
   palette: "default",
   mode: "light",
-  handlePalette: (e: ChangeEvent<HTMLInputElement>) => {},
+  handlePalette: (e: ChangeEvent<HTMLSelectElement>) => {},
   handleMode: (value: string) => {},
   loginError: false,
   handleLoginError: () => {},
@@ -73,9 +73,9 @@ export default function CryptoProvider({ children }: Props) {
   );
   const [mode, setMode] = useStickyState(modes[0], "theme-mode");
 
-  function handlePalette(e: ChangeEvent<HTMLInputElement>) {
+  const handlePalette = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setPalette(e.target.value);
-  }
+  };
 
   function handleMode(value: string) {
     setMode(value);

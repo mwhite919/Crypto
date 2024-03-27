@@ -11,31 +11,52 @@ import CharacterCounter from "./CharacterCounter";
 import { useAppSelector } from "@/redux/hooks";
 import db from "../firebase/config";
 import { onSnapshot, collection, doc, deleteDoc } from "firebase/firestore";
+import { Coin } from "../sharedinterfaces";
 
-function PortfolioList({ handleEditForm }) {
+interface PortfolioListProps {
+  handleEditForm: (data: any) => void;
+}
+
+function PortfolioList({ handleEditForm }: PortfolioListProps) {
   const currency = useAppSelector((state) => state.currency);
-  const [coins, setCoins] = useState([]);
+  const [coins, setCoins] = useState<
+    {
+      amount: number;
+      purchasePrice: any;
+      date: any;
+      coin: Coin;
+      id: string;
+    }[]
+  >([]);
 
   useEffect(
     () =>
       onSnapshot(collection(db, "portfoliocoins"), (snapshot) => {
-        setCoins(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+        const tester = snapshot.docs.map((doc) => ({
+          amount: doc.data().amount,
+          purchasePrice: doc.data().purchasePrice,
+          date: doc.data().date,
+          coin: doc.data().coin,
+          id: doc.id,
+        }));
+        console.log("tester", tester);
+        setCoins(tester);
       }),
     []
   );
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id: string) => {
     const docRef = doc(db, "portfoliocoins", id);
     await deleteDoc(docRef);
   };
 
-  function percentage(x, y) {
+  function percentage(x: number, y: number) {
     return (x / y).toFixed(2);
   }
 
-  function limiter(x) {
+  function limiter(x: number) {
     if (x < 1) {
-      return x;
+      return Number(x);
     }
     if (x >= 1) {
       return 100;
@@ -109,9 +130,11 @@ function PortfolioList({ handleEditForm }) {
                         </div>
                         <div className="flex items-center justify-center text-accent font-semibold ">
                           {limiter(
-                            percentage(
-                              c?.coin?.total_volume,
-                              c?.coin?.market_cap
+                            parseInt(
+                              percentage(
+                                c?.coin?.total_volume,
+                                c?.coin?.market_cap
+                              )
                             )
                           )}
                           %
@@ -120,9 +143,11 @@ function PortfolioList({ handleEditForm }) {
                               className="h-2 bg-accent"
                               style={{
                                 width: limiter(
-                                  percentage(
-                                    c?.coin?.total_volume,
-                                    c?.coin?.market_cap
+                                  parseInt(
+                                    percentage(
+                                      c?.coin?.total_volume,
+                                      c?.coin?.market_cap
+                                    )
                                   )
                                 ),
                               }}

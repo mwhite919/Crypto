@@ -1,6 +1,17 @@
 "use client";
 import Link from "next/link";
-import { useState, useEffect, useRef, useCallback } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  JSXElementConstructor,
+  Key,
+  PromiseLikeOfReactNode,
+  ReactElement,
+  ReactNode,
+  ReactPortal,
+} from "react";
 import {
   useGetAllCoinsQuery,
   useGetTopBarInfoQuery,
@@ -8,7 +19,7 @@ import {
 import aveta from "aveta";
 import { useRouter } from "next/navigation";
 import { useCrypto } from "../Providers/CryptoProvider";
-import { CurrencyArray } from "./Currencies";
+import { CurrencyArray } from "../constants/Currencies";
 import {
   CoinStackIcon,
   HomeIcon,
@@ -31,9 +42,9 @@ export default function Navigation() {
     sortValue: "volume_desc",
   });
 
-  const { data: barData } = useGetTopBarInfoQuery();
+  const { data: barData } = useGetTopBarInfoQuery("");
   const dispatch = useAppDispatch();
-  const currentUser = useAuth();
+  const currentUser: any = useAuth();
   const { handlePalette, handleMode, palette, mode } = useCrypto();
   const [searchValue, setSearchValue] = useState("");
   const [focusedIndex, setFocusedIndex] = useState(-1);
@@ -55,7 +66,7 @@ export default function Navigation() {
   const resultContainer = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
-  const handleChange = (e) => {
+  const handleChange = (e: { target: { value: string } }) => {
     const inputValue = e.target.value;
     setShowResults(true);
     setSearchValue(inputValue);
@@ -91,17 +102,18 @@ export default function Navigation() {
     setFocusedIndex(nextIndexCount);
   };
 
-  const filteredCoinsArray = allCoinsData?.filter((coin) => {
+  const filteredCoinsArray = allCoinsData?.filter((coin: { name: string }) => {
     const name = coin.name.toLowerCase();
     const search = searchValue.toLowerCase();
     return name.startsWith(search);
   });
 
-  const mappedCoinsArray = filteredCoinsArray?.map((coin, index) => (
-    <DropDownRow
-      key={coin.id}
-      ref={index === focusedIndex ? resultContainer : null}
-      className={`
+  const mappedCoinsArray = filteredCoinsArray?.map(
+    (coin: { id: Key | null | undefined; name: string }, index: number) => (
+      <DropDownRow
+        key={coin.id}
+        ref={index === focusedIndex ? resultContainer : null}
+        className={`
     cursor-pointer
     hover:bg-slate-200
      ${
@@ -109,12 +121,13 @@ export default function Navigation() {
          ? "active bg-base text-shadowDark"
          : "bg-shadowDark text-shadowLight"
      }`}
-      onMouseDown={() => handleSelection(index)}
-      onBlur={resetSearchComplete}
-    >
-      {coin.name}
-    </DropDownRow>
-  ));
+        onMouseDown={() => handleSelection(index)}
+        onBlur={resetSearchComplete}
+      >
+        {coin.name}
+      </DropDownRow>
+    )
+  );
 
   const handleSelection = (selectedIndex: number) => {
     const selectedItem = filteredCoinsArray[selectedIndex];
@@ -131,14 +144,14 @@ export default function Navigation() {
     resetSearchComplete();
   };
 
-  const handleCurrency = (e) => {
+  const handleCurrency = (e: { target: { value: any } }) => {
     const value = e.target.value;
     const newCurrency = CurrencyArray.find((c) => c.currency === value);
     dispatch(
       changeCurr({
-        currency: newCurrency.currency,
-        symbol: newCurrency.symbol,
-        name: newCurrency.name,
+        currency: newCurrency?.currency,
+        symbol: newCurrency?.symbol,
+        name: newCurrency?.name,
       })
     );
   };
@@ -179,7 +192,6 @@ export default function Navigation() {
               className={`min-h-2 w-20 ${
                 mode === "dark" ? "bg-shadowDark" : "bg-second"
               }`}
-              git
             >
               <div
                 className="bg-accent min-h-2"

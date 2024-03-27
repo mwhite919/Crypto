@@ -1,24 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { ChangeEvent, FC, MouseEvent, SetStateAction, useState } from "react";
 import axios from "axios";
 import { CloseIcon, ResetIcon } from "@/app/icons/Icons";
 import CharacterCounter from "./CharacterCounter";
 import db from "../firebase/config";
 import { setDoc, doc } from "firebase/firestore";
 import { uid } from "uid";
+import { Coin } from "../sharedinterfaces";
 
-export const EditForm = ({ coinToEdit, handleEditForm }) => {
-  const [coin, setCoin] = useState(coinToEdit);
+interface CoinFormProps {
+  coinToEdit: Coin;
+  handleEditForm: () => void;
+}
+
+export const EditForm: FC<CoinFormProps> = ({ coinToEdit, handleEditForm }) => {
+  const [coin, setCoin] = useState<Coin>(coinToEdit);
   const [missingCoin, setMissingCoin] = useState(false);
-  const [amount, setAmount] = useState(coinToEdit.amount);
+  const [amount, setAmount] = useState<number>(coinToEdit.amount);
   const [missingAmount, setMissingAmount] = useState(false);
-  const [date, setDate] = useState(coinToEdit.date);
+  const [date, setDate] = useState<string>(coinToEdit.date);
   const [dateError, setDateError] = useState(false);
-  const [numError, setnumError] = useState(false);
+  const [numError, setNumError] = useState(false);
   const [purchasePrice, setPurchasePrice] = useState(coinToEdit.purchasePrice);
 
-  const saveEdit = async (e, id) => {
+  const saveEdit = async (e: any, id: string) => {
     e.preventDefault();
     if (!date || !amount || !coin) {
       if (!date) setDateError(true);
@@ -40,9 +46,6 @@ export const EditForm = ({ coinToEdit, handleEditForm }) => {
       };
       await setDoc(docRef, payload);
       handleEditForm();
-      setCoin({});
-      setAmount("");
-      setDate("");
     }
   };
 
@@ -57,7 +60,7 @@ export const EditForm = ({ coinToEdit, handleEditForm }) => {
     setCoin(coinToEdit);
     setAmount(coinToEdit.amount);
     setDate(coinToEdit.date);
-    setnumError(false);
+    setNumError(false);
     setMissingAmount(false);
     setMissingCoin(false);
     setDateError(false);
@@ -70,7 +73,7 @@ export const EditForm = ({ coinToEdit, handleEditForm }) => {
       );
       setPurchasePrice(data.market_data.current_price);
     } catch (err) {
-      setPurchasePriceError(true);
+      console.log(err);
     }
   };
 
@@ -78,14 +81,16 @@ export const EditForm = ({ coinToEdit, handleEditForm }) => {
     getPurchasePrice(coin.id, date.split("-").reverse().join("-"));
   }
 
-  const handleBlur = (e) => {
+  const handleBlur = (e: {
+    target: { validity: { patternMismatch: any } };
+  }) => {
     if (e.target.validity.patternMismatch) {
-      setnumError(true);
+      setNumError(true);
     }
     const newValueIsValid = !e.target.validity.patternMismatch;
     if (numError) {
       if (newValueIsValid) {
-        setnumError(false);
+        setNumError(false);
       }
     }
     setMissingAmount(!amount);
@@ -97,13 +102,14 @@ export const EditForm = ({ coinToEdit, handleEditForm }) => {
     }
   };
 
-  const handleDate = (e) => {
+  const handleDate = (e: ChangeEvent<HTMLInputElement>) => {
     setDateError(false);
     setDate(e.target.value);
   };
 
-  const handleAmountChange = (e) => {
-    setAmount(e.target.value);
+  const handleAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const newValue = parseFloat(e.target.value);
+    setAmount(newValue);
   };
 
   return (

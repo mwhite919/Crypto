@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, SetStateAction, useState } from "react";
 import styled from "styled-components";
 import { ExchangeIcon } from "../icons/Icons";
 import { useAppSelector } from "@/redux/hooks";
@@ -13,6 +13,7 @@ import {
   PointElement,
   LineElement,
   Legend,
+  ChartOptions,
 } from "chart.js";
 ChartJS.register(
   LogarithmicScale,
@@ -25,33 +26,36 @@ ChartJS.register(
 );
 import { graphStyling } from "../constants/graphStyling";
 import { DropDownRow } from "../constants/DropDownRow";
+import { CoinType } from "../sharedinterfaces";
 
 const ConverterBox = styled.div`
   width: 1010px;
 `;
 
-const Converter = ({ allCoinsData }) => {
+type GraphStyle = keyof typeof graphStyling;
+
+const Converter = ({ allCoinsData }: { allCoinsData: CoinType[] }) => {
   const currency = useAppSelector((state) => state.currency);
   const [value1, setValue1] = useState("");
   const [value2, setValue2] = useState("");
   const [coin1, setCoin1] = useState(allCoinsData[0]);
   const [coin2, setCoin2] = useState(allCoinsData[1]);
-  const [variable1, setvariable1] = useState("0");
-  const [variable2, setvariable2] = useState("0");
+  const [variable1, setvariable1] = useState(0);
+  const [variable2, setvariable2] = useState(0);
 
   const { palette, mode } = useCrypto();
 
-  const colorsGroup = graphStyling[palette];
+  const colorsGroup = graphStyling[palette as GraphStyle];
 
-  const handleConversionLtR = (e) => {
-    const result = e.target.value.replace(/\D/g, "");
+  const handleConversionLtR = (e: ChangeEvent<HTMLInputElement>) => {
+    const result = parseInt(e.target.value.replace(/\D/g, ""));
     const conversion = (result * coin1.current_price) / coin2.current_price;
     setvariable1(result);
     setvariable2(conversion);
   };
 
-  const handleConversionRtL = (e) => {
-    const result = e.target.value.replace(/\D/g, "");
+  const handleConversionRtL = (e: ChangeEvent<HTMLInputElement>) => {
+    const result = parseInt(e.target.value.replace(/\D/g, ""));
     const conversion = (result * coin2.current_price) / coin1.current_price;
     setvariable2(result);
     setvariable1(conversion);
@@ -62,51 +66,49 @@ const Converter = ({ allCoinsData }) => {
     conversion: c / coin2?.sparkline_in_7d.price[index],
   }));
 
-  function options(title) {
-    return {
-      animation: {
-        duration: 2000,
+  const options: ChartOptions<"line"> = {
+    animation: {
+      duration: 2000,
+    },
+    layout: {
+      padding: 10,
+    },
+    maintainAspectRatio: false,
+    interaction: { mode: "index" },
+    plugins: {
+      title: {
+        display: true,
+        text: `${coin1.name} to ${coin2.name}`,
+        position: "top",
+        align: "start",
       },
-      layout: {
-        padding: 10,
+      legend: {
+        display: false,
       },
-      maintainAspectRatio: false,
-      interaction: { mode: "index" },
-      plugins: {
-        title: {
-          display: true,
-          text: title,
-          position: "top",
-          align: "start",
-        },
-        legend: {
-          display: false,
-        },
+    },
+    scales: {
+      y: {
+        display: false,
+        type: "logarithmic",
       },
-      scales: {
-        y: {
-          display: false,
-          type: "logarithmic",
+      x: {
+        grid: {
+          color: "transparent",
         },
-        x: {
-          grid: {
-            color: "transparent",
+        type: "time",
+        time: {
+          unit: "day",
+        },
+        ticks: {
+          font: {
+            size: 12,
           },
-          type: "time",
-          time: {
-            unit: "day",
-          },
-          ticks: {
-            font: {
-              size: 12,
-            },
-            maxRotation: 0,
-            minRotation: 0,
-          },
+          maxRotation: 0,
+          minRotation: 0,
         },
       },
-    };
-  }
+    },
+  };
 
   const data = {
     labels: conversionGraphData?.map((item) => item.time),
@@ -114,7 +116,7 @@ const Converter = ({ allCoinsData }) => {
       {
         data: conversionGraphData?.map((item) => item.conversion),
         borderColor: colorsGroup?.coin1.stopColor1,
-        backgroundColor: (context) => {
+        backgroundColor: (context: { chart: { ctx: any } }) => {
           const ctx = context.chart.ctx;
           const gradient = ctx.createLinearGradient(0, 0, 0, 350);
           gradient.addColorStop(
@@ -135,20 +137,20 @@ const Converter = ({ allCoinsData }) => {
     ],
   };
 
-  const onChange1 = (e) => {
+  const onChange1 = (e: { target: { value: SetStateAction<string> } }) => {
     setValue1(e.target.value);
   };
 
-  const onChange2 = (e) => {
+  const onChange2 = (e: { target: { value: SetStateAction<string> } }) => {
     setValue2(e.target.value);
   };
 
-  const onSearch1 = (coin) => {
+  const onSearch1 = (coin: SetStateAction<CoinType>) => {
     setCoin1(coin);
     setValue1("");
   };
 
-  const onSearch2 = (coin) => {
+  const onSearch2 = (coin: SetStateAction<CoinType>) => {
     setCoin2(coin);
     setValue2("");
   };
@@ -282,7 +284,7 @@ const Converter = ({ allCoinsData }) => {
         </div>
       </ConverterBox>
       <div className="h-64 rounded-lg p-0">
-        <Line options={options(`${coin1.name} to ${coin2.name}`)} data={data} />
+        <Line options={options} data={data} />
       </div>
     </>
   );
