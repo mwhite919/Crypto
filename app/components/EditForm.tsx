@@ -9,20 +9,20 @@ import { setDoc, doc } from "firebase/firestore";
 import { uid } from "uid";
 import { Coin } from "../sharedinterfaces";
 
-interface CoinFormProps {
+interface EditFormProps {
   coinToEdit: Coin;
-  handleEditForm: () => void;
+  handleEditForm: (coin: Coin) => void;
 }
 
-export const EditForm: FC<CoinFormProps> = ({ coinToEdit, handleEditForm }) => {
+export const EditForm: FC<EditFormProps> = ({ coinToEdit, handleEditForm }) => {
   const [coin, setCoin] = useState<Coin>(coinToEdit);
   const [missingCoin, setMissingCoin] = useState(false);
-  const [amount, setAmount] = useState<number>(coinToEdit.amount);
+  const [amount, setAmount] = useState<number>(0);
   const [missingAmount, setMissingAmount] = useState(false);
-  const [date, setDate] = useState<string>(coinToEdit.date);
+  const [date, setDate] = useState<string>("");
   const [dateError, setDateError] = useState(false);
   const [numError, setNumError] = useState(false);
-  const [purchasePrice, setPurchasePrice] = useState(coinToEdit.purchasePrice);
+  const [purchasePrice, setPurchasePrice] = useState("");
 
   const saveEdit = async (e: any, id: string) => {
     e.preventDefault();
@@ -32,10 +32,10 @@ export const EditForm: FC<CoinFormProps> = ({ coinToEdit, handleEditForm }) => {
     if (!amount) {
       setMissingAmount(true);
     }
-    if (!coin.name) {
+    if (!coin?.name) {
       setMissingCoin(true);
     }
-    if (coin && amount && date) {
+    if (coin && amount && date && coinToEdit) {
       const docRef = doc(db, "portfoliocoins", id);
       const payload = {
         id: uid(),
@@ -45,21 +45,21 @@ export const EditForm: FC<CoinFormProps> = ({ coinToEdit, handleEditForm }) => {
         date: date,
       };
       await setDoc(docRef, payload);
-      handleEditForm();
+      handleEditForm(coin);
     }
   };
 
   const closeForm = () => {
-    handleEditForm();
+    handleEditForm(coin);
     setCoin(coinToEdit);
-    setAmount(coinToEdit.amount);
-    setDate(coinToEdit.date);
+    setAmount(0);
+    setDate("");
   };
 
   const resetForm = () => {
     setCoin(coinToEdit);
-    setAmount(coinToEdit.amount);
-    setDate(coinToEdit.date);
+    setAmount(coinToEdit?.amount);
+    setDate(coinToEdit?.date);
     setNumError(false);
     setMissingAmount(false);
     setMissingCoin(false);
@@ -134,9 +134,9 @@ export const EditForm: FC<CoinFormProps> = ({ coinToEdit, handleEditForm }) => {
                   <div className="w-full h-full max-w-sm mx-auto lg:mx-0 opacity-30 blur-lg bg-gradient-to-r from-second to-primary"></div>
                 </div>
                 <div className="flex items-center justify-center relative p-8 text-lg font-bold font-pj rounded-xl ">
-                  <img src={coin.coin.image} className="h-16" />
-                  <span className={CharacterCounter(coin?.coin?.name?.length)}>
-                    {coin.coin.name}
+                  <img src={coin?.coin.image} className="h-16" />
+                  <span className={CharacterCounter(coin?.coin?.name.length)}>
+                    {coin?.coin.name}
                   </span>
                 </div>
               </div>
@@ -144,7 +144,7 @@ export const EditForm: FC<CoinFormProps> = ({ coinToEdit, handleEditForm }) => {
             <div className="flex flex-col justify-start h-48 w-1/2 items-start ">
               <form>
                 <div>
-                  <h2>{coin.name}</h2>
+                  <h2>{coin?.name}</h2>
                 </div>
                 {numError && (
                   <p

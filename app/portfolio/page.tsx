@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import PortfolioList from "../components/PortfolioList";
 import { CoinForm } from "../components/CoinForm";
 import { useCrypto } from "../Providers/CryptoProvider";
 import { useGetAllCoinsQuery } from "../Providers/api/apiSlice";
 import { EditForm } from "../components/EditForm";
 import Link from "next/link";
+import { Coin } from "../sharedinterfaces";
 
 export default function Page() {
   const { data: allCoinsData, isLoading, isError } = useGetAllCoinsQuery({
@@ -16,7 +17,7 @@ export default function Page() {
 
   const [addFormOn, setAddFormOn] = useState(false);
   const [editFormOn, setEditFormOn] = useState(false);
-  const [coinToEdit, setCoinToEdit] = useState({});
+  const [coinToEdit, setCoinToEdit] = useState<Coin | null>(null);
   const { currentUser, palette, mode } = useCrypto();
 
   const handleForm = () => {
@@ -24,7 +25,7 @@ export default function Page() {
     setEditFormOn(false);
   };
 
-  function handleEditForm(coin) {
+  function handleEditForm(coin: Coin | null) {
     setCoinToEdit(coin);
     setEditFormOn(!editFormOn);
     setAddFormOn(false);
@@ -75,7 +76,7 @@ export default function Page() {
             </div>
           </div>
           <div className="font-medium text-3xl text-accent"> Your Assets:</div>
-          <PortfolioList className="z-0" handleEditForm={handleEditForm} />
+          <PortfolioList handleEditForm={handleEditForm} />
         </div>
       ) : (
         <div className="flex justify-center items-center text-lg  mt-36">

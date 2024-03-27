@@ -8,6 +8,12 @@ import {
   FC,
   ChangeEvent,
   SetStateAction,
+  JSXElementConstructor,
+  Key,
+  PromiseLikeOfReactNode,
+  ReactElement,
+  ReactNode,
+  ReactPortal,
 } from "react";
 import axios from "axios";
 import { CloseIcon, ResetIcon } from "@/app/icons/Icons";
@@ -32,7 +38,7 @@ interface CoinFormProps {
   handleForm: () => void;
 }
 
-export const CoinForm: FC<CoinFormProps> = ({ allCoinsData, handleForm }) => {
+export const CoinForm = ({ allCoinsData, handleForm }: CoinFormProps) => {
   const [coin, setCoin] = useState<Coin | undefined>(undefined);
   const [missingCoin, setMissingCoin] = useState(false);
   const [amount, setAmount] = useState("");
@@ -188,27 +194,29 @@ export const CoinForm: FC<CoinFormProps> = ({ allCoinsData, handleForm }) => {
     setFocusedIndex(nextIndexCount);
   };
 
-  const filteredCoinsArray = allCoinsData?.filter((coin) => {
+  const filteredCoinsArray = allCoinsData?.filter((coin: { name: string }) => {
     const name = coin.name.toLowerCase();
     const search = searchValue.toLowerCase();
     const coins = name.startsWith(search);
     return coins;
   });
 
-  const mappedCoinsArray = filteredCoinsArray?.map((coin, index) => (
-    <DropDownRow
-      key={coin.id}
-      ref={index === focusedIndex ? resultContainer : null}
-      className={`
+  const mappedCoinsArray = filteredCoinsArray?.map(
+    (coin: { id: Key | null | undefined; name: string }, index: number) => (
+      <DropDownRow
+        key={coin.id}
+        ref={index === focusedIndex ? resultContainer : null}
+        className={`
     cursor-pointer
     hover:bg-slate-200
      ${focusedIndex === index ? "active bg-slate-200" : "bg-white"}`}
-      onMouseDown={() => handleSelection(index)}
-      onBlur={resetSearchComplete}
-    >
-      {coin.name}
-    </DropDownRow>
-  ));
+        onMouseDown={() => handleSelection(index)}
+        onBlur={resetSearchComplete}
+      >
+        {coin.name}
+      </DropDownRow>
+    )
+  );
 
   const handleSelection = (selectedIndex: number) => {
     const selectedItem = filteredCoinsArray[selectedIndex];

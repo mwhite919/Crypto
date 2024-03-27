@@ -26,7 +26,7 @@ export interface ChartCoin {
 export interface CoinType {
   id: string;
   image: string | undefined;
-  name: string;
+  name: any;
   symbol: string;
   price: number;
   total_volume: number;

@@ -70,7 +70,7 @@ function PortfolioList({ handleEditForm }: PortfolioListProps) {
 
   return (
     <>
-      <div>
+      <div className="z-0">
         <div>
           {coins ? (
             coins?.map((c) => (
