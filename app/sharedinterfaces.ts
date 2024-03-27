@@ -8,7 +8,7 @@ export interface Coin {
   value: string;
   id: string;
   coin: CoinType;
-  amount: string;
+  amount: number;
   purchasePrice: any;
   date: string;
   image: string;
