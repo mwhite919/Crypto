@@ -1,4 +1,4 @@
-export function formatNumber(number) {
+export function formatNumber(number: number) {
   if (number < 1000) {
     return number;
   } else if (number >= 1000 && number < 1_000_000) {
@@ -12,7 +12,7 @@ export function formatNumber(number) {
   }
 }
 
-export function priceFormatNumber(number) {
+export function priceFormatNumber(number: number) {
   if (number < 10000) {
     return number;
   } else if (number >= 10000 && number < 1_000_000) {

@@ -44,12 +44,11 @@ type GraphStyle = keyof typeof graphStyling;
 interface GraphData {
   labels: number[];
   datasets: {
-    data: number[];
+    data: any[];
     borderColor: string;
     pointRadius: number;
     borderWidth: number;
     fill: boolean;
-    borderRadius: string;
     tension: number;
     pointBackgroundColor: string;
     pointBorderColor: string;
@@ -117,15 +116,14 @@ export default function CoinRow({ coin, index }: Props) {
     }
   );
   const data: GraphData = {
-    labels: [1, 2, 3, 4, 5],
+    labels: [1, 2, 3, 4, 5, 6, 7],
     datasets: [
       {
-        data: [10, 20, 30, 40, 50],
+        data: graphData,
         borderColor: "red",
         pointRadius: 0,
         borderWidth: 1,
         fill: true,
-        borderRadius: "5",
         tension: 0.5,
         pointBackgroundColor: "transparent",
         pointBorderColor: "transparent",

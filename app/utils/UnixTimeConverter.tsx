@@ -13,7 +13,7 @@ const monthNames = [
   "December",
 ];
 
-export function convertUnixToDate(time) {
+export function convertUnixToDate(time: string | number | Date) {
   const date = new Date(time);
   const year = date.getFullYear();
   const month = date.getMonth() + 1;

@@ -24,7 +24,7 @@ export const priceChart = createAsyncThunk(
         time: days,
         prices: json.prices,
         volume: json.total_volumes,
-      } as ChartCoin)
+      })
     );
   }
 );

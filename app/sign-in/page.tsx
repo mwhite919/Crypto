@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, RefObject } from "react";
 import Link from "next/link";
 import { useCrypto } from "../Providers/CryptoProvider";
 import { login, useAuth } from "../firebase/config";
@@ -8,8 +8,10 @@ import { useRouter } from "next/navigation";
 const SignIn = () => {
   const { handleLoginError, loginError, palette, mode } = useCrypto();
   const [loading, setLoading] = useState(false);
-  const emailRef = useRef();
-  const passwordRef = useRef();
+  const emailRef: RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
+  const passwordRef: RefObject<HTMLInputElement> = useRef<HTMLInputElement>(
+    null
+  );
   const currentUser = useAuth();
   const router = useRouter();
 
@@ -17,11 +19,13 @@ const SignIn = () => {
     setLoading(true);
     try {
       setLoading(true);
-      await login(emailRef.current.value, passwordRef.current.value);
-      setLoading(false);
-      if (currentUser) {
-        router.push("/portfolio");
-        return;
+      if (emailRef.current && passwordRef.current?.value) {
+        await login(emailRef.current.value, passwordRef.current.value);
+        setLoading(false);
+        if (currentUser) {
+          router.push("/portfolio");
+          return;
+        }
       }
     } catch (e) {
       console.error(e);
