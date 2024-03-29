@@ -34,7 +34,7 @@ export function logout() {
   return signOut(auth);
 }
 
-export function getFirebaseFirestore() {
+export default function getFirebaseFirestore() {
   const { firestore } = initializeFirebase();
   return firestore;
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { SetStateAction, useState } from "react";
+import { useState } from "react";
 import PortfolioList from "../components/PortfolioList";
 import { CoinForm } from "../components/CoinForm";
 import { useCrypto } from "../Providers/CryptoProvider";
@@ -8,7 +8,6 @@ import { useGetAllCoinsQuery } from "../Providers/api/apiSlice";
 import { EditForm } from "../components/EditForm";
 import Link from "next/link";
 import { Coin } from "../sharedinterfaces";
-
 export default function Page() {
   const { data: allCoinsData, isLoading, isError } = useGetAllCoinsQuery({
     currency: "usd",

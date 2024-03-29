@@ -9,7 +9,7 @@ import {
 } from "@/app/icons/Icons";
 import CharacterCounter from "./CharacterCounter";
 import { useAppSelector } from "@/redux/hooks";
-import db from "../firebase/config";
+import { db } from "../firebase/config";
 import { onSnapshot, collection, doc, deleteDoc } from "firebase/firestore";
 import { Coin } from "../sharedinterfaces";
 
