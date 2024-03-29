@@ -12,7 +12,7 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-export function initializeFirebase() {
+export default function initializeFirebase() {
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const firestore = getFirestore(app);
@@ -34,7 +34,7 @@ export function logout() {
   return signOut(auth);
 }
 
-export default function getFirebaseFirestore() {
+export function getFirebaseFirestore() {
   const { firestore } = initializeFirebase();
   return firestore;
 }
