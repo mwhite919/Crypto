@@ -33,17 +33,16 @@ function PortfolioList({ handleEditForm }: PortfolioListProps) {
   useEffect(
     () =>
       onSnapshot(collection(db, "portfoliocoins"), (snapshot) => {
-        const tester = snapshot.docs.map((doc) => ({
+        const collect = snapshot.docs.map((doc) => ({
           amount: doc.data().amount,
           purchasePrice: doc.data().purchasePrice,
           date: doc.data().date,
           coin: doc.data().coin,
           id: doc.id,
         }));
-        console.log("tester", tester);
-        setCoins(tester);
+        setCoins(collect);
       }),
-    []
+    [db]
   );
 
   const handleDelete = async (id: string) => {
