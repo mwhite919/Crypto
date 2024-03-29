@@ -9,7 +9,7 @@ import {
 } from "@/app/icons/Icons";
 import CharacterCounter from "./CharacterCounter";
 import { useAppSelector } from "@/redux/hooks";
-import { db } from "../firebase/config";
+import initializeFirebase from "../firebase/config";
 import { onSnapshot, collection, doc, deleteDoc } from "firebase/firestore";
 import { Coin } from "../sharedinterfaces";
 
@@ -18,6 +18,7 @@ interface PortfolioListProps {
 }
 
 function PortfolioList({ handleEditForm }: PortfolioListProps) {
+  const { db } = initializeFirebase();
   const currency = useAppSelector((state) => state.currency);
   const [coins, setCoins] = useState<
     {

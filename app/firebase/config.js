@@ -13,11 +13,11 @@ const firebaseConfig = {
 };
 
 export default function initializeFirebase() {
+  const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
-  return { app, auth };
+  const db = getFirestore(app);
+  return { app, auth, db };
 }
-const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
 
 export function signup(email, password) {
   const { auth } = initializeFirebase();
