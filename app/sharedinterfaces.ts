@@ -21,7 +21,7 @@ export interface ChartCoin {
   time: string | number;
   prices: any[];
   volume: any[];
-  yData: number[];
+  yData: any[];
 }
 
 export interface CoinType {

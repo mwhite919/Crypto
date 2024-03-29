@@ -30,6 +30,7 @@ const chartCoinsSlice = createSlice({
         time: string;
         prices: any;
         volume: any;
+        yData: any;
       }>
     ) => {
       state.isLoading = true;
@@ -40,6 +41,7 @@ const chartCoinsSlice = createSlice({
           time: action.payload.time,
           prices: action.payload.prices.map(mapGraphData),
           volume: action.payload.volume.map(mapGraphData),
+          yData: action.payload.yData,
         };
         state.chartCoins.push(chartCoin);
         state.isLoading = false;
@@ -65,6 +67,7 @@ const chartCoinsSlice = createSlice({
           time: action.payload.time,
           prices: action.payload.prices.map(mapGraphData),
           volume: action.payload.volume.map(mapGraphData),
+          yData: action.payload.yData,
         };
         state.chartCoins.push(chartCoin);
         state.isLoading = false;
