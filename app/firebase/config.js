@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { initializeApp, firebase } from "firebase/app";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -13,11 +13,11 @@ const firebaseConfig = {
 };
 
 export default function initializeFirebase() {
-  const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
-  const firestore = getFirestore(app);
-  return { app, auth, firestore };
+  return { app, auth };
 }
+const app = initializeApp(firebaseConfig);
+export const db = getFirestore(app);
 
 export function signup(email, password) {
   const { auth } = initializeFirebase();
@@ -45,7 +45,7 @@ export function useAuth() {
   useEffect(() => {
     const { auth } = initializeFirebase();
     const unsubscribe = onAuthStateChanged(auth, setCurrentUser);
-    return unsubscribe;
+    return () => unsubscribe();
   }, []);
 
   return currentUser;
