@@ -27,7 +27,9 @@ export const timeInterval = createAsyncThunk(
         return { id: coin.id, data: json };
       })
     ).then((newArr) => {
+      /* tslint:disable-next-line */
       thunkAPI.dispatch(updateAllCoins(newArr));
+      console.log("secondconsole", newArr);
     });
   }
 );
