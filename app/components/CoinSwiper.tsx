@@ -5,6 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "@/app/constants/coin-swiper.css";
 import { useAppSelector } from "@/redux/hooks";
+import { ChartCoin } from "../sharedinterfaces";
 
 interface Coin {
   id: string;
@@ -17,7 +18,7 @@ interface Coin {
 
 interface Props {
   handleClick: (coin: Coin) => void;
-  combinedChartCoins: Coin[];
+  combinedChartCoins: ChartCoin[];
 }
 
 export const CoinSwiper: React.FC<Props> = ({

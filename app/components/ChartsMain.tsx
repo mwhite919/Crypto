@@ -30,6 +30,7 @@ import { graphStyling } from "../constants/graphStyling";
 import { useCrypto } from "../Providers/CryptoProvider";
 import { everyNth } from "./Every_nth";
 import { convertUnixToDate } from "../utils/UnixTimeConverter";
+import { ChartCoin } from "../sharedinterfaces";
 
 ChartJS.register(
   LogarithmicScale,
@@ -48,10 +49,9 @@ ChartJS.register(
 type GraphStyle = keyof typeof graphStyling;
 
 export const ChartsMain = () => {
-  const combinedChartCoins = useAppSelector(
+  const combinedChartCoins: ChartCoin[] = useAppSelector(
     (state) => state.chartCoins.chartCoins
   );
-
   const isLoading = useAppSelector((state) => state.chartCoins.isLoading);
   const currency = useAppSelector((state) => state.currency);
   const [numberOfDays, setNumberOfDays] = useState(7);
@@ -59,6 +59,7 @@ export const ChartsMain = () => {
   const [dateToDisplay, setDateToDisplay] = useState("");
   const { palette, mode } = useCrypto();
   const colorsGroup = graphStyling[palette as GraphStyle];
+  const dispatch = useAppDispatch();
 
   function units(num: string) {
     if (Number(num) == 1) {
@@ -210,7 +211,7 @@ export const ChartsMain = () => {
             label: combinedChartCoins[0]?.coinName,
             data: everyNth(
               combinedChartCoins[0]?.prices.map(
-                (item: { yData: any }) => item.yData
+                (item: { yData: number }) => item.yData
               ),
               numberOfDays
             ),
@@ -597,8 +598,6 @@ export const ChartsMain = () => {
     }
     return data;
   }
-
-  const dispatch = useAppDispatch();
 
   const handleClick = (coin: { id: any; name: any }) => {
     dispatch(
