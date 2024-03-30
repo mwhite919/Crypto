@@ -30,9 +30,10 @@ function PortfolioList({ handleEditForm }: PortfolioListProps) {
     }[]
   >([]);
 
-  useEffect(
-    () =>
-      onSnapshot(collection(db, "portfoliocoins"), (snapshot) => {
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      collection(db, "portfoliocoins"),
+      (snapshot) => {
         const collect = snapshot.docs.map((doc) => ({
           amount: doc.data().amount,
           purchasePrice: doc.data().purchasePrice,
@@ -41,9 +42,10 @@ function PortfolioList({ handleEditForm }: PortfolioListProps) {
           id: doc.id,
         }));
         setCoins(collect);
-      }),
-    [db]
-  );
+      }
+    );
+    return () => unsubscribe();
+  }, [db]);
 
   const handleDelete = async (id: string) => {
     const docRef = doc(db, "portfoliocoins", id);

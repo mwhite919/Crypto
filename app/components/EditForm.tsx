@@ -5,7 +5,7 @@ import axios from "axios";
 import { CloseIcon, ResetIcon } from "@/app/icons/Icons";
 import CharacterCounter from "./CharacterCounter";
 import initializeFirebase from "../firebase/config";
-import { setDoc, doc } from "firebase/firestore";
+import { setDoc, doc, collection } from "firebase/firestore";
 import { uid } from "uid";
 import { Coin } from "../sharedinterfaces";
 
