@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { initializeApp } from "firebase/app";
-import { getAuth, onAuthStateChanged } from "firebatse/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
