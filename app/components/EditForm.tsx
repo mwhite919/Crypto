@@ -4,7 +4,7 @@ import { ChangeEvent, FC, MouseEvent, SetStateAction, useState } from "react";
 import axios from "axios";
 import { CloseIcon, ResetIcon } from "@/app/icons/Icons";
 import CharacterCounter from "./CharacterCounter";
-import db from "../firebase/config";
+import initializeFirebase from "../firebase/config";
 import { setDoc, doc } from "firebase/firestore";
 import { uid } from "uid";
 import { Coin } from "../sharedinterfaces";
@@ -23,6 +23,7 @@ export const EditForm: FC<EditFormProps> = ({ coinToEdit, handleEditForm }) => {
   const [dateError, setDateError] = useState(false);
   const [numError, setNumError] = useState(false);
   const [purchasePrice, setPurchasePrice] = useState("");
+  const { db } = initializeFirebase();
 
   const saveEdit = async (e: any, id: string) => {
     e.preventDefault();
