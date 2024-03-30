@@ -18,6 +18,7 @@ export default function initializeFirebase() {
   const db = getFirestore(app);
   return { app, auth, db };
 }
+git;
 
 export function signup(email, password) {
   const { auth } = initializeFirebase();
