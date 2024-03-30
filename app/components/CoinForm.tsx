@@ -18,7 +18,7 @@ import {
 import axios from "axios";
 import { CloseIcon, ResetIcon } from "@/app/icons/Icons";
 import { DropDownRow } from "../constants/DropDownRow";
-import db from "../firebase/config";
+import initializeFirebase from "../firebase/config";
 import CharacterCounter from "./CharacterCounter";
 import { addDoc, collection } from "firebase/firestore";
 import { uid } from "uid";
@@ -51,6 +51,7 @@ export const CoinForm = ({ allCoinsData, handleForm }: CoinFormProps) => {
   const [focusedIndex, setFocusedIndex] = useState(-1);
   const [showResults, setShowResults] = useState(false);
   const resultContainer = useRef<HTMLDivElement>(null);
+  const { db } = initializeFirebase();
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
