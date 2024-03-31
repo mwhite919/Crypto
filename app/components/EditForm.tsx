@@ -17,12 +17,12 @@ interface EditFormProps {
 export const EditForm: FC<EditFormProps> = ({ coinToEdit, handleEditForm }) => {
   const [coin, setCoin] = useState<Coin>(coinToEdit);
   const [missingCoin, setMissingCoin] = useState(false);
-  const [amount, setAmount] = useState<number>(0);
+  const [amount, setAmount] = useState<number>(coinToEdit.amount);
   const [missingAmount, setMissingAmount] = useState(false);
-  const [date, setDate] = useState<string>("");
+  const [date, setDate] = useState<string>(coinToEdit.date);
   const [dateError, setDateError] = useState(false);
   const [numError, setNumError] = useState(false);
-  const [purchasePrice, setPurchasePrice] = useState("");
+  const [purchasePrice, setPurchasePrice] = useState(coinToEdit.purchasePrice);
   const { db } = initializeFirebase();
 
   const saveEdit = async (e: any, id: string) => {
@@ -150,16 +150,18 @@ export const EditForm: FC<EditFormProps> = ({ coinToEdit, handleEditForm }) => {
                 {numError && (
                   <p
                     role="alert"
-                    className="text-xs"
+                    className="text-xs pl-3"
                     style={{ color: "rgb(200, 0, 0)" }}
                   >
                     Please make sure you've entered a <em>number</em>
                   </p>
                 )}
+
+                <div className="text-sm pl-3">Amount:</div>
                 {missingAmount && (
                   <p
                     role="alert"
-                    className="text-xs"
+                    className="text-xs pl-3"
                     style={{ color: "rgb(200, 0, 0)" }}
                   >
                     Please enter an amount.
@@ -168,7 +170,7 @@ export const EditForm: FC<EditFormProps> = ({ coinToEdit, handleEditForm }) => {
                 <input
                   type="text"
                   onChange={handleAmountChange}
-                  value={amount}
+                  value={amount ? amount : ""}
                   placeholder="How much?"
                   inputMode="decimal"
                   pattern="[0-9]*[.,]?[0-9]+"
@@ -180,7 +182,7 @@ export const EditForm: FC<EditFormProps> = ({ coinToEdit, handleEditForm }) => {
                 {dateError && (
                   <p
                     role="alert"
-                    className="text-xs"
+                    className="text-xs pl-3"
                     style={{ color: "rgb(200, 0, 0)" }}
                   >
                     Please enter a date.

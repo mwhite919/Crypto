@@ -208,9 +208,13 @@ export const CoinForm = ({ allCoinsData, handleForm }: CoinFormProps) => {
         key={coin.id}
         ref={index === focusedIndex ? resultContainer : null}
         className={`
-    cursor-pointer
-    hover:bg-slate-200
-     ${focusedIndex === index ? "active bg-slate-200" : "bg-white"}`}
+    cursor-pointer text-shadowDark bg-second
+    hover:bg-shadowDark hover:text-shadowLight
+     ${
+       focusedIndex === index
+         ? "active text-shadowLight bg-shadowDark"
+         : "text-shadowDark bg-second"
+     }`}
         onMouseDown={() => handleSelection(index)}
         onBlur={resetSearchComplete}
       >
@@ -250,8 +254,8 @@ export const CoinForm = ({ allCoinsData, handleForm }: CoinFormProps) => {
                   <div className="absolute -inset-5">
                     <div className="w-full h-full max-w-sm mx-auto lg:mx-0 opacity-30 blur-lg bg-gradient-to-r from-second to-primary"></div>
                   </div>
-                  <div className="flex items-center justify-center relative p-8 text-lg font-bold text-second bg-second font-pj rounded-xl ">
-                    <img src={coin?.image} className="h-16" />
+                  <div className="flex items-center justify-center relative p-8 text-lg font-bold text-shadowDark bg-second font-pj rounded-xl ">
+                    <img src={coin?.image} className="h-16 pr-1" />
                     <span className={CharacterCounter(coin?.name.length)}>
                       {coin?.name}
                     </span>
@@ -264,7 +268,7 @@ export const CoinForm = ({ allCoinsData, handleForm }: CoinFormProps) => {
                 {missingCoin && (
                   <p
                     role="alert"
-                    className="text-xs"
+                    className="text-xs pl-3"
                     style={{ color: "rgb(200, 0, 0)" }}
                   >
                     Please choose a coin.
@@ -279,7 +283,7 @@ export const CoinForm = ({ allCoinsData, handleForm }: CoinFormProps) => {
                     onBlur={resetSearchComplete}
                     placeholder={"Start typing to find your coin..."}
                     type="text"
-                    className={`mx-3 drop-shadow-md rounded-sm pl-3 w-72 shadow-md relative inline-block focus: border-slate-200
+                    className={`mx-3 drop-shadow-md rounded-sm pl-3 w-72 shadow-md relative text-shadowDark bg-second inline-block focus: border-slate-200
                     ${missingCoin ? "border-2 mb-2 border-rose-600" : "my-3"}`}
                   />
                   <div className="mx-3 absolute max-h-44 overflow-y-auto w-72">
@@ -289,7 +293,7 @@ export const CoinForm = ({ allCoinsData, handleForm }: CoinFormProps) => {
                 {numError && (
                   <p
                     role="alert"
-                    className="text-xs"
+                    className="text-xs pl-3"
                     style={{ color: "rgb(200, 0, 0)" }}
                   >
                     Please make sure you've entered a <em>number</em>
@@ -298,7 +302,7 @@ export const CoinForm = ({ allCoinsData, handleForm }: CoinFormProps) => {
                 {missingAmount && (
                   <p
                     role="alert"
-                    className="text-xs"
+                    className="text-xs pl-3"
                     style={{ color: "rgb(200, 0, 0)" }}
                   >
                     Please enter an amount.
@@ -312,14 +316,14 @@ export const CoinForm = ({ allCoinsData, handleForm }: CoinFormProps) => {
                   inputMode="decimal"
                   pattern="[0-9]*[.,]?[0-9]+"
                   onBlur={handleBlur}
-                  className={`mx-3 drop-shadow-md rounded-sm pl-3 ${
+                  className={`mx-3 drop-shadow-md rounded-sm pl-3 text-shadowDark bg-second ${
                     numError ? "border-2 mb-2 border-rose-600" : "my-3"
                   }`}
                 />
                 {dateError && (
                   <p
                     role="alert"
-                    className="text-xs"
+                    className="text-xs pl-3"
                     style={{ color: "rgb(200, 0, 0)" }}
                   >
                     Please enter a date.
@@ -333,7 +337,7 @@ export const CoinForm = ({ allCoinsData, handleForm }: CoinFormProps) => {
                   value={date}
                   onBlur={handleDateBlur}
                   max={new Date().toISOString().split("T")[0]}
-                  className={`mx-3 drop-shadow-md rounded-sm pl-3 ${
+                  className={`mx-3 drop-shadow-md rounded-sm pl-3 text-shadowDark bg-second ${
                     dateError ? "border-2 mb-2 border-rose-600" : "my-3"
                   }`}
                 />
