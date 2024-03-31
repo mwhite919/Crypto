@@ -40,7 +40,7 @@ export default function Page({ params }: { params: { id: string } }) {
   const currentPrice = coinInfo?.market_data?.current_price[
     currency.currency
   ].toFixed(2);
-  const ath = coinInfo?.market_data?.ath[currency.currency];
+  const ath = coinInfo?.market_data?.ath[currency.currency].toFixed(2);
   const formattedAth = new Date(
     coinInfo?.market_data?.ath_date[currency.currency]
   ).toLocaleDateString("en-US", {
@@ -237,12 +237,14 @@ export default function Page({ params }: { params: { id: string } }) {
                 }}
               />
             )}
-            <button
-              className="text-accent italic drop-shadow-sm"
-              onClick={() => setShowMore(!showMore)}
-            >
-              {showMore ? " See less" : "...See more"}
-            </button>
+            {description?.length > 500 && (
+              <button
+                className="text-accent italic drop-shadow-sm"
+                onClick={() => setShowMore(!showMore)}
+              >
+                {showMore ? " See less" : "...See more"}
+              </button>
+            )}
           </div>
 
           <div className="flex flex-col col-span-2  ">

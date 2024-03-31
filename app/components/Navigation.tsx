@@ -114,12 +114,12 @@ export default function Navigation() {
         key={coin.id}
         ref={index === focusedIndex ? resultContainer : null}
         className={`
-    cursor-pointer
-    hover:bg-slate-200
+    cursor-pointer text-shadowDark bg-second
+    hover:bg-shadowDark hover:text-shadowLight
      ${
        focusedIndex === index
-         ? "active bg-base text-shadowDark"
-         : "bg-shadowDark text-shadowLight"
+         ? "active text-shadowLight bg-shadowDark"
+         : "text-shadowDark bg-second"
      }`}
         onMouseDown={() => handleSelection(index)}
         onBlur={resetSearchComplete}

@@ -205,7 +205,7 @@ const Converter = ({ allCoinsData }: { allCoinsData: CoinType[] }) => {
                     .map((coin) => (
                       <DropDownRow
                         key={coin.id}
-                        className="bg-second text-shadowDark border-slate-300 block"
+                        className="bg-shadowLight text-shadowDark hover:text-shadowLight hover:bg-shadowDark border-slate-300 block"
                         onClick={() => onSearch1(coin)}
                       >
                         {coin.name}
@@ -273,7 +273,7 @@ const Converter = ({ allCoinsData }: { allCoinsData: CoinType[] }) => {
                   .map((coin) => (
                     <DropDownRow
                       key={coin.id}
-                      className="bg-second text-shadowDark border-slate-300 block"
+                      className="bg-shadowLight text-shadowDark hover:text-shadowLight hover:bg-shadowDark border-slate-300 block"
                       onClick={() => onSearch2(coin)}
                     >
                       {coin.name}
