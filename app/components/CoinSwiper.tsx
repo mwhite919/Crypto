@@ -63,7 +63,7 @@ export const CoinSwiper: React.FC<Props> = ({
               <div key={coin.id}>
                 <div>
                   <div
-                    className={`flex items-center justify-start text-xs ml-2 mb-2 h-16 p-3 drop-shadow-md rounded-md cursor-pointer
+                    className={`flex items-center justify-center sm:justify-start text-xs m-2 sm:ml-2 sm:mb-2 h-12 sm:h-16 p-3 drop-shadow-md rounded-md cursor-pointer
                     ${
                       combinedChartCoins?.find((c) => c.id === coin.id)
                         ? "border-2 border-accentLight bg-accent text-second hover:scale-105"
@@ -75,18 +75,21 @@ export const CoinSwiper: React.FC<Props> = ({
                       <img className="w-7 m-2" src={coin.image} />
                     </div>
                     <div className="flex flex-col justify-center items-even h-full ">
-                      <div className="font-semibold mb-0.5 text-sm">
+                      <div className=" text-sm font-semibold sm:hidden">
+                        {coin.symbol.toUpperCase()}
+                      </div>
+                      <div className="font-semibold mb-0.5 text-sm hidden sm:inline">
                         {coin.name.length > 11
                           ? coin.name.substring(0, 16).concat("...")
                           : coin.name + "  " + `(${coin.symbol.toUpperCase()})`}
                       </div>
-                      <div className="flex">
+                      <div className="hidden sm:flex">
                         {" "}
                         <div>
                           {currency.symbol}
                           {coin.current_price.toFixed(2)}
                         </div>
-                        <div className="flex items-center ml-1">
+                        <div className="items-center ml-1 ">
                           {coin?.price_change_percentage_1h_in_currency > 0 ? (
                             <ArrowUp />
                           ) : (

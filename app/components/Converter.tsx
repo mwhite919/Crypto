@@ -157,8 +157,8 @@ const Converter = ({ allCoinsData }: { allCoinsData: CoinType[] }) => {
 
   return (
     <>
-      <ConverterBox className="my-10 rounded-lg w-96 flex justify-between items-center ">
-        <div className="flex flex-col w-full h-full  bg-second text-shadowDark drop-shadow-lg rounded-md">
+      <ConverterBox className="my-10 rounded-lg w-[330px] sm:w-96 flex flex-col sm:flex-row justify-between items-center ">
+        <div className="flex flex-col w-[330px] sm:w-full h-full bg-second text-shadowDark drop-shadow-lg rounded-md">
           <div className="flex justify-center flex-col items-start w-full h-full">
             <div className="flex justify-between items-end w-full py-3 px-5 ">
               <div>
@@ -166,7 +166,7 @@ const Converter = ({ allCoinsData }: { allCoinsData: CoinType[] }) => {
                 {coin1 && (
                   <div className="flex items-center">
                     <img src={coin1.image} className="h-8 m-2" />
-                    <h1 className="text-xl">
+                    <h1 className="sm:text-xl">
                       {coin1.name} ({coin1?.symbol?.toUpperCase()})
                     </h1>
                   </div>
@@ -220,10 +220,10 @@ const Converter = ({ allCoinsData }: { allCoinsData: CoinType[] }) => {
           <ExchangeIcon />
         </div>
 
-        <div className="flex justify-center flex-col items-start rounded-md w-full bg-second drop-shadow-lg text-shadowDark h-full">
+        <div className="flex justify-center flex-col items-start rounded-md w-[330px] sm:w-full bg-second drop-shadow-lg text-shadowDark h-full">
           <div className="flex justify-between items-end w-full py-3 px-5">
             <div className="flex flex-col">
-              <div className="w-7/12">
+              <div className="sm:w-7/12">
                 <h2 className="text-sm">You buy:</h2>
                 {coin2 && (
                   <div className="flex items-center">
@@ -232,7 +232,7 @@ const Converter = ({ allCoinsData }: { allCoinsData: CoinType[] }) => {
                       src={coin2.image}
                       className="h-8 m-2"
                     />
-                    <h1 className="text-xl">
+                    <h1 className="font-semibold sm:text-xl">
                       {coin2.name}({coin2?.symbol?.toUpperCase()})
                     </h1>
                   </div>
@@ -283,7 +283,7 @@ const Converter = ({ allCoinsData }: { allCoinsData: CoinType[] }) => {
           </div>
         </div>
       </ConverterBox>
-      <div className="h-64 rounded-lg p-0">
+      <div className="w-[330px] sm:h-64 rounded-lg p-0">
         <Line options={options} data={data} />
       </div>
     </>

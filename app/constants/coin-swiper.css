@@ -1,4 +1,7 @@
 .slick-slider {
-    width: 1010px;
-    margin: 15px;
+  width: 1010px;
+  margin: 15px;
+  @media (max-width: 640px) {
+    width: 330px;
+  }
 }

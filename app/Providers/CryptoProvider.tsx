@@ -17,6 +17,8 @@ interface CryptoContextType {
   loginError: boolean;
   handleLoginError: () => void;
   currentUser: any;
+  handleConverter: () => void;
+  converter: boolean;
 }
 
 export const CryptoContext = createContext<CryptoContextType>({
@@ -27,6 +29,8 @@ export const CryptoContext = createContext<CryptoContextType>({
   loginError: false,
   handleLoginError: () => {},
   currentUser: null,
+  handleConverter: () => {},
+  converter: false,
 });
 
 export function useCrypto() {
@@ -63,6 +67,7 @@ interface Props {
 export default function CryptoProvider({ children }: Props) {
   const [loginError, setLoginError] = useState(false);
   const currentUser = useAuth();
+  const [converter, setConverter] = useState(false);
 
   function handleLoginError() {
     setLoginError(!loginError);
@@ -81,9 +86,15 @@ export default function CryptoProvider({ children }: Props) {
     setMode(value);
   }
 
+  function handleConverter() {
+    setConverter(!converter);
+  }
+
   return (
     <CryptoContext.Provider
       value={{
+        handleConverter,
+        converter,
         palette,
         mode,
         handlePalette,

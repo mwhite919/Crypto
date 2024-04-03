@@ -658,7 +658,7 @@ export const ChartsMain = () => {
       }`}
     >
       <div className="text-xs flex items-center justify-center w-full mt-2">
-        Select currency to view statistics
+        Select coin to view statistics
       </div>
       <div>
         <CoinSwiper
@@ -668,21 +668,21 @@ export const ChartsMain = () => {
       </div>
       <div></div>
 
-      <div className="flex mt-4 w-[1010px] h-[350] items-center justify-between">
-        <div className="w-[495px]  flex flex-col items-start justify-center bg-second rounded-lg drop-shadow-sm p-4">
+      <div className="flex flex-col sm:flex-row mt-4 sm:w-[1010px] sm:h-[350px] items-center justify-between w-[330px]">
+        <div className="w-[330px] sm:w-[495px] flex flex-col items-start justify-center bg-second rounded-lg drop-shadow-sm p-4">
           <div className="text-shadowDark text-lg font-bold">{`${displayLineData}`}</div>
           <div className="text-shadowDark text-sm font-semibold">{`${dateToDisplay}`}</div>
-          <div className=" w-[475px] h-[300px]">
+          <div className="w-[300px] h-[220px] flex justify-center sm:w-[475px] sm:h-[300px]">
             <Line
               options={options}
               data={pricesData(combinedChartCoins.length)}
             />
           </div>
         </div>
-        <div className="w-[495px] flex flex-col items-start justify-center bg-second rounded-md drop-shadow-sm p-4">
+        <div className="w-[330px] sm:w-[495px] flex flex-col items-start justify-center bg-second rounded-lg drop-shadow-sm p-4">
           <div className="text-shadowDark text-lg font-bold">Volume 24h</div>
           <div className="text-shadowDark text-sm font-semibold">{`${dateToDisplay}`}</div>
-          <div className=" w-[475px] h-[300px]">
+          <div className="w-[300px] h-[220px] sm:w-[475px] sm:h-[300px]">
             <Bar
               options={optionsBar}
               data={volumeData(combinedChartCoins.length)}

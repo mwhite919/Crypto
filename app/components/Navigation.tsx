@@ -21,6 +21,7 @@ import { useRouter } from "next/navigation";
 import { useCrypto } from "../Providers/CryptoProvider";
 import { CurrencyArray } from "../constants/Currencies";
 import {
+  CalculatorIcon,
   CoinStackIcon,
   HomeIcon,
   MoonIcon,
@@ -45,7 +46,14 @@ export default function Navigation() {
   const { data: barData } = useGetTopBarInfoQuery("");
   const dispatch = useAppDispatch();
   const currentUser: any = useAuth();
-  const { handlePalette, handleMode, palette, mode } = useCrypto();
+  const {
+    handlePalette,
+    handleMode,
+    palette,
+    mode,
+    converter,
+    handleConverter,
+  } = useCrypto();
   const [searchValue, setSearchValue] = useState("");
   const [focusedIndex, setFocusedIndex] = useState(-1);
   const [showResults, setShowResults] = useState(false);
@@ -169,15 +177,15 @@ export default function Navigation() {
           </div>
         )}
         <div className="flex items-center justify-center p-px text-xs bg-navColor">
-          <div className=" flex items-center mx-4 ">
+          <div className="hidden sm:flex items-center mx-4 ">
             <CoinStackIcon />
             Active Coins:{marketCoins}
           </div>
-          <div className="mx-4 ">
+          <div className="mx-4 hidden sm:inline ">
             Total Volume: {currency.symbol}
             {totalVolume && aveta(totalVolume)}
           </div>
-          <div className="mx-4 ">
+          <div className="mx-4 text-xs ">
             Total Market Cap: {currency.symbol}
             {totalMarketCap && aveta(totalMarketCap)}
           </div>
@@ -187,9 +195,12 @@ export default function Navigation() {
               src="https://i.ibb.co/VpjD7V6/Bitcoin-svg.png"
               className="h-4 w-4"
             />{" "}
-            <div>BTC {marketCapPercentageBTC}%</div>
+            <div>
+              <span className="hidden sm:inline">BTC</span>{" "}
+              {marketCapPercentageBTC}%
+            </div>
             <div
-              className={`min-h-2 w-20 ${
+              className={`h-2 w-16 sm:w-20 ${
                 mode === "dark" ? "bg-shadowDark" : "bg-second"
               }`}
             >
@@ -201,21 +212,24 @@ export default function Navigation() {
           </div>
 
           <div>
-            <div className="mx-4  flex items-center justify-center">
+            <div className="mx-4 flex items-center justify-center">
               <img
                 src="https://i.ibb.co/3Spb2vB/Ethereum-icon-purple-svg.png"
                 className="h-4 w-4"
               />{" "}
-              <div>ETH {marketCapPercentageETH}%</div>
+              <div>
+                <span className="hidden sm:inline">ETC</span>{" "}
+                {marketCapPercentageETH}%
+              </div>
               <div>
                 <div
-                  className={`min-h-2 w-20 ${
+                  className={`h-2 w-16 sm:w-20 ${
                     mode === "dark" ? "bg-shadowDark" : "bg-second"
                   }`}
                 >
                   <div
                     style={{ width: `${marketCapPercentageETH}%` }}
-                    className="bg-accent min-h-2 max-w-32"
+                    className="bg-accent min-h-2"
                   ></div>
                 </div>
               </div>
@@ -230,30 +244,29 @@ export default function Navigation() {
                   href="/"
                   className="flex items-center mx-2 drop-shadow-md text-accent hover:scale-105"
                 >
-                  {" "}
                   <img src="https://i.ibb.co/RBwgfPy/Logo.png" alt="logo"></img>
                 </Link>
               </div>
               <Link
                 href="/"
-                className="flex items-center mx-2 drop-shadow-md text-shadowDark hover:scale-105"
+                className="hidden sm:flex items-center mx-2 drop-shadow-md text-shadowDark hover:scale-105"
               >
                 <HomeIcon />
                 <p className="ml-2">Home</p>
               </Link>
               <Link
                 href="/portfolio"
-                className="flex items-center mx-2 drop-shadow-md text-shadowDark hover:scale-105"
+                className="hidden sm:flex items-center mx-2 drop-shadow-md text-shadowDark hover:scale-105"
               >
                 <StackIcon />
-                <p className="ml-2">Portfolio</p>
+                <p className="ml-2 hidden sm:inline">Portfolio</p>
               </Link>
             </div>
             <div className="flex flex-col content-evenly">
               <div>
                 {currentUser ? (
                   <div className="flex justify-end items-center my-1 mr-5">
-                    <div className="text-shadowDark italic">
+                    <div className="hidden sm:inline text-shadowDark italic">
                       User:{" "}
                       <span className="text-accent2">{currentUser?.email}</span>
                     </div>
@@ -292,7 +305,7 @@ export default function Navigation() {
                     onKeyDown={handleKeyPress}
                     placeholder="Search..."
                     type="text"
-                    className="items-center h-6 text-sm ml-5 drop-shadow-xl rounded-lg pl-3 relative w-44 inline-block bg-base text-shadowDark placeholder:text-sm placeholder:text-shadowDark focus:border-slate-200"
+                    className="items-center h-6 text-sm sm:ml-5 drop-shadow-xl rounded-lg pl-3 relative w-8 sm:w-44 inline-block bg-base text-shadowDark placeholder:text-sm placeholder:text-shadowDark focus:border-slate-200"
                   />{" "}
                   {searchError && (
                     <p className="text-xs text-shadowDark pt-[2px]">
@@ -305,7 +318,7 @@ export default function Navigation() {
                 </div>
                 <select
                   name="currency"
-                  className="items-center h-6 text-sm mx-5 drop-shadow-xl rounded-lg p-0.5 bg-second border-base text-shadowDark"
+                  className="items-center h-6 text-sm sm:mx-5 drop-shadow-xl rounded-lg p-0.5 bg-second border-base text-shadowDark"
                   onChange={handleCurrency}
                 >
                   {CurrencyArray?.map((c) => {
@@ -316,7 +329,6 @@ export default function Navigation() {
                         value={c.currency}
                       >
                         {c.currency}
-                        {"  "} {c.name}
                       </option>
                     );
                   })}
@@ -324,7 +336,7 @@ export default function Navigation() {
                 <select
                   onChange={(e) => handlePalette(e)}
                   name="palette"
-                  className=" h-6 mr-5 drop-shadow-xl text-sm rounded-lg bg-base text-shadowDark"
+                  className="hidden sm:inline h-6 mr-5 drop-shadow-xl text-sm rounded-lg bg-base text-shadowDark"
                 >
                   <option className="bg-second text-shadowDark text-sm">
                     Theme
@@ -364,6 +376,37 @@ export default function Navigation() {
           </div>
         </div>
       </nav>
+
+      <div className="sm:hidden fixed bottom-0 left-0 z-50 w-full h-16 bg-white border-t border-gray-200 dark:bg-gray-700 dark:border-gray-600">
+        <div className="grid h-full max-w-lg grid-cols-3 mx-auto font-medium">
+          <Link
+            href="/"
+            className="inline-flex flex-col items-center justify-center px-5 drop-shadow-md text-shadowDark hover:scale-105"
+          >
+            <HomeIcon />
+            <span className="text-sm text-gray-500 dark:text-gray-400">
+              <p className="text-sm">Home</p>
+            </span>{" "}
+          </Link>
+          <Link
+            href="/portfolio"
+            className="inline-flex flex-col items-center justify-center px-5 drop-shadow-md text-shadowDark hover:scale-105"
+          >
+            <StackIcon />
+            <p className="text-sm">Portfolio</p>
+          </Link>
+          <Link
+            href="/"
+            onClick={handleConverter}
+            className="inline-flex flex-col items-center justify-center px-5 drop-shadow-md text-shadowDark hover:scale-105"
+          >
+            <CalculatorIcon />
+            <span className="text-sm text-gray-500 dark:text-gray-400">
+              <p className="text-sm">Converter</p>
+            </span>
+          </Link>
+        </div>
+      </div>
     </>
   );
 }

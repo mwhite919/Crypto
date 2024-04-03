@@ -32,6 +32,12 @@ const Row = styled.div`
   margin-top: 10px;
   padding-top: 4px;
   border-radius: 10px;
+
+  @media (max-width: 600px) {
+    width: 300px;
+    padding: 6px;
+    margin-top: 12px;
+  }
 `;
 
 interface Props {
@@ -156,7 +162,7 @@ export default function CoinRow({ coin, index }: Props) {
 
   return (
     <div>
-      <Row className="bg-second shadow-md text-sm grid grid-cols-17 gap-2">
+      <Row className="bg-second shadow-md text-sm grid grid-cols-10 sm:grid-cols-17 gap-2">
         <div className="flex items-center justify-center col-span-1">
           {index}
         </div>
@@ -170,19 +176,19 @@ export default function CoinRow({ coin, index }: Props) {
           {currency.symbol}
           {coinPrice}
         </div>
-        <div className="flex justify-start items-center ml-1 col-span-1">
+        <div className="justify-start items-center ml-1 col-span-2 sm:col-span-1 flex">
           {arrowUpOrDown(Number(oneHourPercent))}
           {oneHourPercent}%
         </div>
-        <div className="flex justify-start items-center ml-1 col-span-1">
+        <div className="justify-start items-center ml-1 col-span-2 sm:col-span-1 flex">
           {arrowUpOrDown(Number(oneDayPercent))}
           {oneDayPercent}%
         </div>
-        <div className=" flex justify-start items-center col-span-1">
+        <div className="justify-start items-center col-span-1 hidden sm:flex">
           {arrowUpOrDown(Number(sevenDayPercent))}
           {sevenDayPercent}%
         </div>
-        <div className="col-span-3 flex flex-col items-center justify-center">
+        <div className=" sm:col-span-3 flex-col items-center justify-center hidden sm:flex">
           <div className="flex justify-between w-32 ml-2">
             <div className="flex items-center">
               <div className={greenOrRed(Number(oneDayPercent), true)}></div>
@@ -201,7 +207,7 @@ export default function CoinRow({ coin, index }: Props) {
           </div>
         </div>
 
-        <div className="col-span-3 flex items-center justify-center flex-col">
+        <div className="sm:col-span-3  items-center justify-center flex-col hidden sm:flex">
           <div className="flex justify-between w-32">
             <div className="flex items-center">
               <div className={greenOrRed(Number(oneDayPercent), true)}></div>
@@ -212,14 +218,14 @@ export default function CoinRow({ coin, index }: Props) {
               <div className="h-2 w-2 rounded-full bg-gray-500"></div>
             </div>
           </div>
-          <div className="h-2 w-32 bg-gray-500 items-center">
+          <div className="h-2 w-32 bg-gray-500 items-center hidden sm:flex">
             <div
               className={greenOrRed(Number(oneDayPercent), false)}
               style={{ width: limiter(circulatingTotalSupply) + "%" }}
             ></div>
           </div>
         </div>
-        <div className="col-span-2 flex items-start justify-center">
+        <div className="sm:col-span-2 items-start justify-center hidden sm:flex">
           <Line options={options} data={data} className="p-1" />
         </div>
       </Row>
