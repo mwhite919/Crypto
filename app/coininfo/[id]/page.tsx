@@ -76,17 +76,17 @@ export default function Page({ params }: { params: { id: string } }) {
   return (
     <>
       <div
-        className={`flex items-center justify-start flex-col w-screen h-screen text-sm text-shadowDark theme-${palette} theme-${mode} bg-base ${
+        className={`flex items-center justify-center sm:justify-start flex-col w-screen text-sm text-shadowDark theme-${palette} theme-${mode} bg-base ${
           isLoading && "cursor-wait"
         }`}
       >
-        <div className="w-[1000px] grid grid-cols-4 gap-2 justify-center items-start mt-36 m-6">
+        <div className=" w-[300px] sm:w-[1000px] sm:grid grid-cols-1 sm:grid-cols-4 sm:gap-2 justify-center items-start mt-36 ">
           {params === undefined ? (
             <div>Coin not found. Please check your spelling and try again.</div>
           ) : (
             ""
           )}
-          <div className="flex flex-col items-center justify-center col-span-1 p-5 h-60 bg-second shadow-sm shadow-accent m-3 rounded-lg ">
+          <div className="flex flex-col items-center justify-center col-span-1 p-5 h-60 bg-second shadow-sm shadow-accent m-4 sm:m-3 rounded-lg ">
             <div>
               <img src={icon} />
             </div>
@@ -120,7 +120,7 @@ export default function Page({ params }: { params: { id: string } }) {
             </div>
           </div>
 
-          <div className="flex flex-col items-center justify-between col-span-1 h-60 bg-second p-5 rounded-lg m-3 shadow-sm shadow-accent ">
+          <div className="flex flex-col items-center justify-between col-span-1 h-60 bg-second p-5 rounded-lg m-4 sm:m-3 shadow-sm shadow-accent ">
             <div className="flex flex-col items-center justify-center">
               <div className="text-2xl text-accent font-bold drop-shadow-sm">
                 {currency.symbol}
@@ -169,7 +169,7 @@ export default function Page({ params }: { params: { id: string } }) {
             <div></div>
           </div>
 
-          <div className="flex flex-col items-center justify-between col-span-2 p-5 h-60 bg-second m-3 rounded-lg shadow-sm shadow-accent ">
+          <div className="flex flex-col items-center justify-between col-span-1 sm:col-span-2 p-5 h-60 bg-second m-4 sm:m-3 rounded-lg shadow-sm shadow-accent ">
             <div className="flex justify-between w-full">
               <div className="flex items-center">
                 <ArrowBullet />
@@ -227,7 +227,7 @@ export default function Page({ params }: { params: { id: string } }) {
             </div>
           </div>
 
-          <div className="bg-second m-3 p-5 col-span-2 rounded-lg shadow-sm shadow-accent text-sm">
+          <div className="bg-second m-4 sm:m-3 p-5 col-span-1 sm:col-span-2 rounded-lg shadow-sm shadow-accent text-sm">
             {showMore ? (
               <div dangerouslySetInnerHTML={{ __html: description }} />
             ) : (
@@ -247,9 +247,9 @@ export default function Page({ params }: { params: { id: string } }) {
             )}
           </div>
 
-          <div className="flex flex-col col-span-2  ">
+          <div className="flex flex-col col-span-2">
             {publicNotice && (
-              <div className="bg-second m-3 p-5 flex items-center font-italic shadow-sm shadow-accent rounded-lg">
+              <div className="bg-second m-4 sm:m-3 p-5 flex items-center font-italic shadow-sm shadow-accent rounded-lg">
                 <p className="italic">
                   Public Notice:{" "}
                   <div dangerouslySetInnerHTML={{ __html: publicNotice }} />
@@ -258,7 +258,7 @@ export default function Page({ params }: { params: { id: string } }) {
             )}
 
             {webPage && (
-              <div className="h-6 bg-second m-3 p-5 flex items-center shadow-sm shadow-accent rounded-lg">
+              <div className="h-6 bg-second m-4 sm:m-3 p-5 flex items-center shadow-sm shadow-accent rounded-lg">
                 <button onClick={() => openInNewTab(`${webPage}`)}>
                   <NewTabLinkIcon />
                 </button>
@@ -270,7 +270,7 @@ export default function Page({ params }: { params: { id: string } }) {
             )}
 
             {blockChainwebPage && (
-              <div className="h-6 bg-second m-3 p-5 flex items-center shadow-sm shadow-accent rounded-lg">
+              <div className="h-6 bg-second m-4 sm:m-3 p-5 flex items-center shadow-sm shadow-accent rounded-lg">
                 <button onClick={() => openInNewTab(`${blockChainwebPage}`)}>
                   <NewTabLinkIcon />
                 </button>

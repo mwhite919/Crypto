@@ -25,6 +25,7 @@ import {
   CoinStackIcon,
   HomeIcon,
   MoonIcon,
+  SearchIcon,
   StackIcon,
   SunIcon,
 } from "../icons/Icons";
@@ -238,12 +239,12 @@ export default function Navigation() {
           </div>
         </div>
         <div className="bg-second text-sm fixed top-4 z-50 w-full">
-          <div className="flex justify-between items-center w-screen  ">
-            <div className="flex justify-between items-center min-w-fit ml-5">
+          <div className="flex justify-between items-center w-full  ">
+            <div className="flex justify-between items-center min-w-fit sm:ml-5">
               <div className="mx-2 drop-shadow-md">
                 <Link
                   href="/"
-                  className="flex items-center mx-2 drop-shadow-md text-accent hover:scale-105"
+                  className="flex items-center sm:mx-2 drop-shadow-md text-accent hover:scale-105"
                 >
                   <img src="https://i.ibb.co/RBwgfPy/Logo.png" alt="logo"></img>
                 </Link>

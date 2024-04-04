@@ -157,8 +157,8 @@ const Converter = ({ allCoinsData }: { allCoinsData: CoinType[] }) => {
 
   return (
     <>
-      <ConverterBox className="my-10 rounded-lg w-[330px] sm:w-96 flex flex-col sm:flex-row justify-between items-center ">
-        <div className="flex flex-col w-[330px] sm:w-full h-full bg-second text-shadowDark drop-shadow-lg rounded-md">
+      <ConverterBox className="my-10 rounded-lg w-[300px] sm:w-96 flex flex-col sm:flex-row justify-between items-center ">
+        <div className="flex flex-col w-[300px] sm:w-full h-full bg-second text-shadowDark drop-shadow-lg rounded-md">
           <div className="flex justify-center flex-col items-start w-full h-full">
             <div className="flex justify-between items-end w-full py-3 px-5 ">
               <div>
@@ -220,7 +220,7 @@ const Converter = ({ allCoinsData }: { allCoinsData: CoinType[] }) => {
           <ExchangeIcon />
         </div>
 
-        <div className="flex justify-center flex-col items-start rounded-md w-[330px] sm:w-full bg-second drop-shadow-lg text-shadowDark h-full">
+        <div className="flex justify-center flex-col items-start rounded-md w-[300px] sm:w-full bg-second drop-shadow-lg text-shadowDark h-full">
           <div className="flex justify-between items-end w-full py-3 px-5">
             <div className="flex flex-col">
               <div className="sm:w-7/12">
@@ -243,7 +243,7 @@ const Converter = ({ allCoinsData }: { allCoinsData: CoinType[] }) => {
               onChange={(value) => handleConversionRtL(value)}
               value={variable2}
               id="v2"
-              className="my-2 w-44 rounded-md pl-2 text-right bg-second text-shadowDark"
+              className="my-2 sm:w-44 rounded-md pl-2 text-right bg-second text-shadowDark"
             />
           </div>
 
