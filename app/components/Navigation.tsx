@@ -176,7 +176,7 @@ export default function Navigation() {
             again.
           </div>
         )}
-        <div className="flex items-center justify-center p-px text-xs bg-navColor">
+        <div className="fixed top-0 z-50 w-full flex items-center justify-center p-px text-xs bg-navColor">
           <div className="hidden sm:flex items-center mx-4 ">
             <CoinStackIcon />
             Active Coins:{marketCoins}
@@ -185,8 +185,9 @@ export default function Navigation() {
             Total Volume: {currency.symbol}
             {totalVolume && aveta(totalVolume)}
           </div>
-          <div className="mx-4 text-xs ">
-            Total Market Cap: {currency.symbol}
+          <div className="mx-4 text-xs hidden sm:inline">
+            Total Market Cap:
+            {currency.symbol}
             {totalMarketCap && aveta(totalMarketCap)}
           </div>
 
@@ -236,7 +237,7 @@ export default function Navigation() {
             </div>
           </div>
         </div>
-        <div className="bg-second text-sm">
+        <div className="bg-second text-sm fixed top-4 z-50 w-full">
           <div className="flex justify-between items-center w-screen  ">
             <div className="flex justify-between items-center min-w-fit ml-5">
               <div className="mx-2 drop-shadow-md">
@@ -289,7 +290,7 @@ export default function Navigation() {
                     </Link>
                     <Link
                       href="/sign-up"
-                      className="drop-shadow-md text-accent mx-2 hover:scale-105"
+                      className="hidden sm:inline drop-shadow-md text-accent mx-2 hover:scale-105"
                     >
                       Sign-up
                     </Link>
@@ -375,38 +376,37 @@ export default function Navigation() {
             </div>
           </div>
         </div>
-      </nav>
-
-      <div className="sm:hidden fixed bottom-0 left-0 z-50 w-full h-16 bg-white border-t border-gray-200 dark:bg-gray-700 dark:border-gray-600">
-        <div className="grid h-full max-w-lg grid-cols-3 mx-auto font-medium">
-          <Link
-            href="/"
-            className="inline-flex flex-col items-center justify-center px-5 drop-shadow-md text-shadowDark hover:scale-105"
-          >
-            <HomeIcon />
-            <span className="text-sm text-gray-500 dark:text-gray-400">
-              <p className="text-sm">Home</p>
-            </span>{" "}
-          </Link>
-          <Link
-            href="/portfolio"
-            className="inline-flex flex-col items-center justify-center px-5 drop-shadow-md text-shadowDark hover:scale-105"
-          >
-            <StackIcon />
-            <p className="text-sm">Portfolio</p>
-          </Link>
-          <Link
-            href="/"
-            onClick={handleConverter}
-            className="inline-flex flex-col items-center justify-center px-5 drop-shadow-md text-shadowDark hover:scale-105"
-          >
-            <CalculatorIcon />
-            <span className="text-sm text-gray-500 dark:text-gray-400">
-              <p className="text-sm">Converter</p>
-            </span>
-          </Link>
+        <div className="sm:hidden fixed bottom-0 left-0 z-50 w-full h-16 bg-second ">
+          <div className="grid h-full max-w-lg grid-cols-3 mx-auto font-medium  bg-second">
+            <Link
+              href="/"
+              className="inline-flex flex-col items-center justify-center px-5 drop-shadow-md text-shadowDark hover:scale-105"
+            >
+              <HomeIcon />
+              <span className="text-sm text-shadowDark">
+                <p className="text-sm">Home</p>
+              </span>{" "}
+            </Link>
+            <Link
+              href="/portfolio"
+              className="inline-flex flex-col items-center justify-center px-5 drop-shadow-md text-shadowDark hover:scale-105"
+            >
+              <StackIcon />
+              <p className="text-sm">Portfolio</p>
+            </Link>
+            <Link
+              href="/"
+              onClick={handleConverter}
+              className="inline-flex flex-col items-center justify-center px-5 drop-shadow-md text-shadowDark hover:scale-105"
+            >
+              <CalculatorIcon />
+              <span className="text-sm text-shadowDark ">
+                <p className="text-sm">Converter</p>
+              </span>
+            </Link>
+          </div>
         </div>
-      </div>
+      </nav>
     </>
   );
 }

@@ -668,7 +668,7 @@ export const ChartsMain = () => {
       </div>
       <div></div>
 
-      <div className="flex flex-col sm:flex-row mt-4 sm:w-[1010px] sm:h-[350px] items-center justify-between w-[330px]">
+      <div className="flex flex-col sm:flex-row mt-3 sm:my-6 sm:w-[1010px] sm:h-[350px] items-center justify-between w-[330px]">
         <div className="w-[330px] sm:w-[495px] flex flex-col items-start justify-center bg-second rounded-lg drop-shadow-sm p-4">
           <div className="text-shadowDark text-lg font-bold">{`${displayLineData}`}</div>
           <div className="text-shadowDark text-sm font-semibold">{`${dateToDisplay}`}</div>
@@ -679,7 +679,7 @@ export const ChartsMain = () => {
             />
           </div>
         </div>
-        <div className="w-[330px] sm:w-[495px] flex flex-col items-start justify-center bg-second rounded-lg drop-shadow-sm p-4">
+        <div className="mt-2 sm:mt-0 w-[330px] sm:w-[495px] flex flex-col items-start justify-center bg-second rounded-lg drop-shadow-sm p-4">
           <div className="text-shadowDark text-lg font-bold">Volume 24h</div>
           <div className="text-shadowDark text-sm font-semibold">{`${dateToDisplay}`}</div>
           <div className="w-[300px] h-[220px] sm:w-[475px] sm:h-[300px]">
