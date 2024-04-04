@@ -80,7 +80,7 @@ export default function Page({ params }: { params: { id: string } }) {
           isLoading && "cursor-wait"
         }`}
       >
-        <div className=" w-[300px] sm:w-[1000px] sm:grid grid-cols-1 sm:grid-cols-4 sm:gap-2 justify-center items-start mt-36 ">
+        <div className=" w-[300px] sm:w-[1000px] sm:grid grid-cols-1 sm:grid-cols-4 sm:gap-2 justify-center items-start my-[120px] sm:mt-36 ">
           {params === undefined ? (
             <div>Coin not found. Please check your spelling and try again.</div>
           ) : (
@@ -227,7 +227,7 @@ export default function Page({ params }: { params: { id: string } }) {
             </div>
           </div>
 
-          <div className="bg-second m-4 sm:m-3 p-5 col-span-1 sm:col-span-2 rounded-lg shadow-sm shadow-accent text-sm">
+          <div className="bg-second mt-4 mx-2 mb-2 sm:m-3 p-5 col-span-1 sm:col-span-2 rounded-lg shadow-sm shadow-accent text-sm">
             {showMore ? (
               <div dangerouslySetInnerHTML={{ __html: description }} />
             ) : (
@@ -249,7 +249,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
           <div className="flex flex-col col-span-2">
             {publicNotice && (
-              <div className="bg-second m-4 sm:m-3 p-5 flex items-center font-italic shadow-sm shadow-accent rounded-lg">
+              <div className="bg-second mt-4 sm:m-3 p-5 flex items-center font-italic shadow-sm shadow-accent rounded-lg">
                 <p className="italic">
                   Public Notice:{" "}
                   <div dangerouslySetInnerHTML={{ __html: publicNotice }} />
@@ -258,7 +258,7 @@ export default function Page({ params }: { params: { id: string } }) {
             )}
 
             {webPage && (
-              <div className="h-6 bg-second m-4 sm:m-3 p-5 flex items-center shadow-sm shadow-accent rounded-lg">
+              <div className="h-6 bg-second m-2 sm:m-3 p-5 flex items-center shadow-sm shadow-accent rounded-lg">
                 <button onClick={() => openInNewTab(`${webPage}`)}>
                   <NewTabLinkIcon />
                 </button>
@@ -270,7 +270,7 @@ export default function Page({ params }: { params: { id: string } }) {
             )}
 
             {blockChainwebPage && (
-              <div className="h-6 bg-second m-4 sm:m-3 p-5 flex items-center shadow-sm shadow-accent rounded-lg">
+              <div className="h-6 bg-second m-2 sm:m-3 p-5 flex items-center shadow-sm shadow-accent rounded-lg">
                 <button onClick={() => openInNewTab(`${blockChainwebPage}`)}>
                   <NewTabLinkIcon />
                 </button>
@@ -285,7 +285,7 @@ export default function Page({ params }: { params: { id: string } }) {
             )}
 
             {officialForumwebPage && (
-              <div className="h-6 bg-second m-3 p-5 flex items-center shadow-sm shadow-accent rounded-lg">
+              <div className="h-6 bg-second m-2 p-5 flex items-center shadow-sm shadow-accent rounded-lg">
                 <button onClick={() => openInNewTab(`${officialForumwebPage}`)}>
                   <NewTabLinkIcon />
                 </button>
