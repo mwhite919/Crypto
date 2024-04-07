@@ -77,10 +77,10 @@ function PortfolioList({ handleEditForm }: PortfolioListProps) {
           {coins ? (
             coins?.map((c) => (
               <div
-                className="w-[900px] rounded-lg flex justify-center items-center h-64 bg-second my-3 z-0 p-3 drop-shadow-md"
+                className="w-[300px] sm:w-[900px] rounded-lg flex justify-center items-center h-64 bg-second my-3 z-0 p-3 drop-shadow-md"
                 key={c.id}
               >
-                <div className="flex justify-between w-full">
+                <div className="flex flex-col sm:inline justify-between w-full">
                   <div className="h-48 w-48 flex items-center justify-center  ">
                     <div className="flex items-center justify-center flex-col p-8 text-shadowDark text-lg font-bold bg-base font-pj rounded-xl ">
                       <img src={c.coin.image} className="h-16" />
@@ -90,7 +90,7 @@ function PortfolioList({ handleEditForm }: PortfolioListProps) {
                     </div>
                   </div>
                   <div className="flex flex-col text-center w-full">
-                    <div className="flex justify-between items-center">
+                    <div className="hidden sm:flex justify-between items-center">
                       <div className="w-24"></div>
                       <div className="text-shadowDark font-semibold w-24">
                         Market Price
@@ -175,7 +175,7 @@ function PortfolioList({ handleEditForm }: PortfolioListProps) {
                         </div>
                       </div>
                     </div>
-                    <div className="flex flex-col items-center justify-between w-full">
+                    <div className="hidden sm:flex flex-col items-center justify-between w-full">
                       <div className="w-24"></div>
                       <div className="my-3 w-full text-shadowDark font-semibold">
                         Your Coins

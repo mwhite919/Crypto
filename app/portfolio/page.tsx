@@ -32,7 +32,7 @@ export default function Page() {
 
   return (
     <div
-      className={`w-window min-h-window bg-base theme-${palette} theme-${mode} flex items-center justify-start flex-col`}
+      className={`w-full min-h-full bg-base theme-${palette} theme-${mode} flex items-center justify-start flex-col`}
     >
       {isLoading && (
         <div className="w-screen h-screen flex justify-center items-center my-8 mr-36 mt-36 cursor-wait">

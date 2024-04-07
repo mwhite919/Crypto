@@ -307,7 +307,7 @@ export default function Navigation() {
                     onKeyDown={handleKeyPress}
                     placeholder="Search..."
                     type="text"
-                    className="items-center h-6 text-sm sm:ml-5 drop-shadow-xl rounded-lg pl-3 relative w-8 sm:w-44 inline-block bg-base text-shadowDark placeholder:text-sm placeholder:text-shadowDark focus:border-slate-200"
+                    className="items-center h-6 text-sm sm:ml-5 drop-shadow-xl rounded-lg pl-3 relative w-[70px] sm:w-44 inline-block bg-base text-shadowDark placeholder:text-sm placeholder:text-shadowDark focus:border-slate-200"
                   />{" "}
                   {searchError && (
                     <p className="text-xs text-shadowDark pt-[2px]">
