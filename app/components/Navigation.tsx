@@ -177,7 +177,7 @@ export default function Navigation() {
             again.
           </div>
         )}
-        <div className="fixed top-0 z-50 w-full flex items-center justify-center p-px text-xs bg-navColor">
+        <div className="fixed top-0 z-50 w-full h-5 flex items-center justify-center py-0.5 text-xs bg-navColor">
           <div className="hidden sm:flex items-center mx-4 ">
             <CoinStackIcon />
             Active Coins:{marketCoins}
@@ -238,7 +238,7 @@ export default function Navigation() {
             </div>
           </div>
         </div>
-        <div className="bg-second text-sm fixed top-4 z-50 w-full">
+        <div className="bg-second text-sm fixed top-5 z-50 w-full">
           <div className="flex justify-between items-center w-full  ">
             <div className="flex justify-between items-center min-w-fit sm:ml-5">
               <div className="mx-2 drop-shadow-md">

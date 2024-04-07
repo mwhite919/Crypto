@@ -235,26 +235,23 @@ export const CoinForm = ({ allCoinsData, handleForm }: CoinFormProps) => {
   return (
     <>
       <div className="drop-shadow-xl border-[1px] border-base">
-        <div className="flex w-[700px] h-[300px] justify-center items-center flex-col bg-second text-shadowDark rounded-lg">
+        <div className="flex w-[290px] sm:w-[700px] h-[500px] sm:h-[300px] justify-center items-center flex-col bg-second text-shadowDark rounded-lg">
           <div className="flex items-center justify-between w-full">
             <div className="text-second">Select Coins</div>
-            <div className="w-16 flex justify-between mb-3">
+            <div className="hidden w-16 sm:flex justify-between ml-5 mb-5 sm:mb-3">
               <button onClick={resetForm}>
                 <ResetIcon />
               </button>
-              <button onClick={closeForm}>
-                <CloseIcon />
-              </button>
             </div>
           </div>
-          <div className=" w-full flex justify-center items-center ">
-            <div className="h-48 w-1/2 flex items-center justify-center p-10 ">
+          <div className=" w-full flex flex-col sm:flex-row justify-center items-center ">
+            <div className="h-24 border border-base rounded-md sm:border-none sm:h-48 w-1/2 flex items-center justify-center p-10 ">
               {coin?.name && (
-                <div className="relative ">
+                <div className="relative py-5 px-3 m-3 ">
                   <div className="absolute -inset-5">
-                    <div className="w-full h-full max-w-sm mx-auto lg:mx-0 opacity-30 blur-lg bg-gradient-to-r from-second to-primary"></div>
+                    <div className="w-full h-full max-w-sm mx-auto sm:mx-0 opacity-30 blur-lg bg-gradient-to-r from-accent to-primary"></div>
                   </div>
-                  <div className="flex items-center justify-center relative p-8 text-lg font-bold text-shadowDark bg-second font-pj rounded-xl ">
+                  <div className="border border-base flex items-center justify-center relative p-12 sm:p-8 text-lg font-bold text-shadowDark bg-second font-pj rounded-xl ">
                     <img src={coin?.image} className="h-16 pr-1" />
                     <span className={CharacterCounter(coin?.name.length)}>
                       {coin?.name}
@@ -263,7 +260,7 @@ export const CoinForm = ({ allCoinsData, handleForm }: CoinFormProps) => {
                 </div>
               )}
             </div>
-            <div className="flex flex-col justify-start h-48 w-1/2 items-start ">
+            <div className="flex flex-col justify-start h-48 my-8 sm:w-1/2 items-start ">
               <form>
                 {missingCoin && (
                   <p
@@ -283,7 +280,7 @@ export const CoinForm = ({ allCoinsData, handleForm }: CoinFormProps) => {
                     onBlur={resetSearchComplete}
                     placeholder={"Start typing to find your coin..."}
                     type="text"
-                    className={`mx-3 drop-shadow-md rounded-sm pl-3 w-72 shadow-md relative text-shadowDark bg-second inline-block focus: border-slate-200
+                    className={`mx-3 drop-shadow-md rounded-sm pl-3 w-[240px] sm:w-72 shadow-md relative text-shadowDark bg-second inline-block focus: border-slate-200
                     ${missingCoin ? "border-2 mb-2 border-rose-600" : "my-3"}`}
                   />
                   <div className="mx-3 absolute max-h-44 overflow-y-auto w-72">

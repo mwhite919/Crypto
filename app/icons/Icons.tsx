@@ -355,7 +355,7 @@ export function TriangleUp() {
       width="12"
       height="12"
       viewBox="0 0 24 24"
-      className="mr-1 fill-teal-600"
+      className="mx-1 fill-green-600"
     >
       <path d="M24 22h-24l12-20z" />
     </svg>
@@ -409,6 +409,25 @@ export function SearchIcon() {
         strokeLinecap="round"
         strokeLinejoin="round"
         d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+      />
+    </svg>
+  );
+}
+
+export function PlusIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={1.5}
+      stroke="currentColor"
+      className="w-8 h-8 drop-shadow-lg"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
       />
     </svg>
   );

@@ -77,16 +77,27 @@ function PortfolioList({ handleEditForm }: PortfolioListProps) {
           {coins ? (
             coins?.map((c) => (
               <div
-                className="w-[300px] sm:w-[900px] rounded-lg flex justify-center items-center h-64 bg-second my-3 z-0 p-3 drop-shadow-md"
+                className="w-[300px] sm:w-[900px] rounded-lg flex justify-center items-center sm:h-64 bg-second my-3 z-0 p-3 drop-shadow-md"
                 key={c.id}
               >
-                <div className="flex flex-col sm:inline justify-between w-full">
-                  <div className="h-48 w-48 flex items-center justify-center  ">
-                    <div className="flex items-center justify-center flex-col p-8 text-shadowDark text-lg font-bold bg-base font-pj rounded-xl ">
-                      <img src={c.coin.image} className="h-16" />
-                      <div className={CharacterCounter(c?.coin?.name?.length)}>
-                        {c.coin.name}
+                <div className="flex flex-col sm:flex-row justify-between w-full">
+                  <div className="sm:h-48 sm:w-48 flex items-center justify-center  ">
+                    <div className="flex items-center w-[276px] p-4 justify-between sm:justify-center sm:flex-col sm:p-8 text-shadowDark sm:text-lg sm:bg-base font-pj rounded-xl ">
+                      <img
+                        src={c.coin.image}
+                        className="h-16 hidden sm:inline"
+                      />
+                      <div className="flex flex-col justify-center items-start font-semibold">
+                        <div
+                          className={CharacterCounter(c?.coin?.name?.length)}
+                        >
+                          {c.coin.name}
+                        </div>
+                        <div className="sm:hidden text-xs font-normal">
+                          Purchased {c.date.split("-").reverse().join("-")}
+                        </div>
                       </div>
+                      <img src={c.coin.image} className="h-8 sm:hidden" />
                     </div>
                   </div>
                   <div className="flex flex-col text-center w-full">
@@ -104,19 +115,19 @@ function PortfolioList({ handleEditForm }: PortfolioListProps) {
                         </button>
                       </div>
                     </div>
-                    <div className="flex w-full justify-evenly items-center border-b  border-accent h-1/2">
-                      <div className="flex flex-col justify-center items-center p-3 text-shadowDark">
+                    <div className="grid grid-cols-2 sm:flex w-full justify-evenly items-center sm:border-b  border-accent h-1/2">
+                      <div className="col-span-1 flex flex-col justify-center items-center p-3 text-shadowDark">
                         <div className="text-xs">Current Price:</div>
                         <div className="text-accent font-semibold">
                           {currency.symbol}
                           {c?.coin?.current_price?.toFixed(2)}
                         </div>
                       </div>
-                      <div className="flex flex-col justify-center items-center p-3 ">
+                      <div className="col-span-1 sm:flex flex-col justify-center items-center p-3 ">
                         <div className="text-xs text-shadowDark">
                           Price Change 24h:
                         </div>
-                        <div className="flex items-center text-accent font-semibold">
+                        <div className="flex items-center justify-center text-accent font-semibold">
                           {currency.symbol}
                           {c?.coin?.price_change_24h?.toFixed(2)}
                           {c?.coin?.price_change_24h >= 0 ? (
@@ -126,7 +137,7 @@ function PortfolioList({ handleEditForm }: PortfolioListProps) {
                           )}
                         </div>
                       </div>
-                      <div className="flex flex-col justify-center items-center p-3 text-center ">
+                      <div className=" col-span-1 flex flex-col justify-center items-center p-3 text-center ">
                         <div className="text-xs text-shadowDark ">
                           Volume vs Market Cap:
                         </div>
@@ -158,7 +169,7 @@ function PortfolioList({ handleEditForm }: PortfolioListProps) {
                         </div>
                       </div>
 
-                      <div className="flex flex-col justify-center items-center p-3">
+                      <div className="col-span-1 flex flex-col justify-center items-center p-3">
                         <div className="text-xs text-shadowDark text-center">
                           Circulating Supply vs Total Supply:
                         </div>

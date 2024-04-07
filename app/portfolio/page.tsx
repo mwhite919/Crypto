@@ -8,6 +8,7 @@ import { useGetAllCoinsQuery } from "../Providers/api/apiSlice";
 import { EditForm } from "../components/EditForm";
 import Link from "next/link";
 import { Coin } from "../sharedinterfaces";
+import { PlusIcon } from "../icons/Icons";
 export default function Page() {
   const { data: allCoinsData, isLoading, isError } = useGetAllCoinsQuery({
     currency: "usd",
@@ -43,12 +44,12 @@ export default function Page() {
         {isError && <h2>An error occured while loading. Please try again.</h2>}
       </div>
       {currentUser && !isLoading ? (
-        <div>
+        <div className="my-24 sm:m-0">
           <div className="w-full h-full">
             <div>
-              <div className="w-full flex justify-end my-8 mr-36 mt-36 ">
+              <div className="w-full flex justify-end mr-36 sm:mt-36 ">
                 <button
-                  className="bg-accent p-4 rounded-lg"
+                  className="hidden sm:inline bg-accent p-4 rounded-lg"
                   onClick={() => setAddFormOn(!addFormOn)}
                 >
                   Add Asset
@@ -74,7 +75,15 @@ export default function Page() {
               )}
             </div>
           </div>
-          <div className="font-medium text-3xl text-accent"> Your Assets:</div>
+          <div className="font-medium flex justify-between items-end text-lg sm:text-3xl text-accent">
+            <p>Your Assets:</p>{" "}
+            <button
+              className="sm:hidden"
+              onClick={() => setAddFormOn(!addFormOn)}
+            >
+              <PlusIcon />
+            </button>
+          </div>
           <PortfolioList handleEditForm={handleEditForm} />
         </div>
       ) : (
