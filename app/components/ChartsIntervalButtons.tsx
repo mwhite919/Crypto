@@ -15,7 +15,6 @@ export default function ChartsIntervalButtons({
     { name: "3M", value: "90" },
     { name: "6M", value: "180" },
     { name: "1Y", value: "365" },
-    { name: "5Y", value: "1825" },
   ];
 
   return (
