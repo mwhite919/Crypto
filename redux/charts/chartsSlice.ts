@@ -1,15 +1,16 @@
 "use client";
 
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   mapGraphData,
   mapGraphData2,
   mapGraphDataTime,
 } from "@/app/components/MapGraphData";
+import { ChartCoin } from "@/app/sharedinterfaces";
 
 interface ChartCoinsState {
   isLoading: boolean;
-  chartCoins: chartCoins[];
+  chartCoins: ChartCoin[];
 }
 
 const initialState: ChartCoinsState = {
@@ -21,7 +22,17 @@ const chartCoinsSlice = createSlice({
   name: "chartCoins",
   initialState,
   reducers: {
-    addChartCoin: (state, action: any) => {
+    addChartCoin: (
+      state,
+      action: PayloadAction<{
+        id: string;
+        coinName: string;
+        time: string;
+        prices: any;
+        volume: any;
+        yData: any;
+      }>
+    ) => {
       state.isLoading = true;
       if (state.chartCoins.length < 1) {
         const chartCoin = {
@@ -30,6 +41,7 @@ const chartCoinsSlice = createSlice({
           time: action.payload.time,
           prices: action.payload.prices.map(mapGraphData),
           volume: action.payload.volume.map(mapGraphData),
+          yData: action.payload.yData,
         };
         state.chartCoins.push(chartCoin);
         state.isLoading = false;
@@ -55,6 +67,7 @@ const chartCoinsSlice = createSlice({
           time: action.payload.time,
           prices: action.payload.prices.map(mapGraphData),
           volume: action.payload.volume.map(mapGraphData),
+          yData: action.payload.yData,
         };
         state.chartCoins.push(chartCoin);
         state.isLoading = false;
@@ -66,8 +79,8 @@ const chartCoinsSlice = createSlice({
         chartCoin.id = chartCoin.id;
         chartCoin.coinName = chartCoin.coinName;
         chartCoin.time = chartCoin.time;
-        chartCoin.prices = action.payload[index].data.prices.map(mapGraphData);
-        chartCoin.volume = action.payload[index].data.total_volumes.map(
+        chartCoin.prices = action.payload[index].data.prices?.map(mapGraphData);
+        chartCoin.volume = action.payload[index].data.total_volumes?.map(
           mapGraphData
         );
       });

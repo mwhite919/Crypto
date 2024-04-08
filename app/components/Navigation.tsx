@@ -1,6 +1,17 @@
 "use client";
 import Link from "next/link";
-import { useState, useEffect, useRef, useCallback } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  JSXElementConstructor,
+  Key,
+  PromiseLikeOfReactNode,
+  ReactElement,
+  ReactNode,
+  ReactPortal,
+} from "react";
 import {
   useGetAllCoinsQuery,
   useGetTopBarInfoQuery,
@@ -8,11 +19,13 @@ import {
 import aveta from "aveta";
 import { useRouter } from "next/navigation";
 import { useCrypto } from "../Providers/CryptoProvider";
-import { CurrencyArray } from "./Currencies";
+import { CurrencyArray } from "../constants/Currencies";
 import {
+  CalculatorIcon,
   CoinStackIcon,
   HomeIcon,
   MoonIcon,
+  SearchIcon,
   StackIcon,
   SunIcon,
 } from "../icons/Icons";
@@ -31,10 +44,17 @@ export default function Navigation() {
     sortValue: "volume_desc",
   });
 
-  const { data: barData } = useGetTopBarInfoQuery();
+  const { data: barData } = useGetTopBarInfoQuery("");
   const dispatch = useAppDispatch();
-  const currentUser = useAuth();
-  const { handlePalette, handleMode, palette, mode } = useCrypto();
+  const currentUser: any = useAuth();
+  const {
+    handlePalette,
+    handleMode,
+    palette,
+    mode,
+    converter,
+    handleConverter,
+  } = useCrypto();
   const [searchValue, setSearchValue] = useState("");
   const [focusedIndex, setFocusedIndex] = useState(-1);
   const [showResults, setShowResults] = useState(false);
@@ -55,7 +75,7 @@ export default function Navigation() {
   const resultContainer = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
-  const handleChange = (e) => {
+  const handleChange = (e: { target: { value: string } }) => {
     const inputValue = e.target.value;
     setShowResults(true);
     setSearchValue(inputValue);
@@ -91,30 +111,32 @@ export default function Navigation() {
     setFocusedIndex(nextIndexCount);
   };
 
-  const filteredCoinsArray = allCoinsData?.filter((coin) => {
+  const filteredCoinsArray = allCoinsData?.filter((coin: { name: string }) => {
     const name = coin.name.toLowerCase();
     const search = searchValue.toLowerCase();
     return name.startsWith(search);
   });
 
-  const mappedCoinsArray = filteredCoinsArray?.map((coin, index) => (
-    <DropDownRow
-      key={coin.id}
-      ref={index === focusedIndex ? resultContainer : null}
-      className={`
-    cursor-pointer
-    hover:bg-slate-200
+  const mappedCoinsArray = filteredCoinsArray?.map(
+    (coin: { id: Key | null | undefined; name: string }, index: number) => (
+      <DropDownRow
+        key={coin.id}
+        ref={index === focusedIndex ? resultContainer : null}
+        className={`
+    cursor-pointer text-shadowDark bg-second
+    hover:bg-shadowDark hover:text-shadowLight
      ${
        focusedIndex === index
-         ? "active bg-base text-shadowDark"
-         : "bg-shadowDark text-shadowLight"
+         ? "active text-shadowLight bg-shadowDark"
+         : "text-shadowDark bg-second"
      }`}
-      onMouseDown={() => handleSelection(index)}
-      onBlur={resetSearchComplete}
-    >
-      {coin.name}
-    </DropDownRow>
-  ));
+        onMouseDown={() => handleSelection(index)}
+        onBlur={resetSearchComplete}
+      >
+        {coin.name}
+      </DropDownRow>
+    )
+  );
 
   const handleSelection = (selectedIndex: number) => {
     const selectedItem = filteredCoinsArray[selectedIndex];
@@ -131,14 +153,14 @@ export default function Navigation() {
     resetSearchComplete();
   };
 
-  const handleCurrency = (e) => {
+  const handleCurrency = (e: { target: { value: any } }) => {
     const value = e.target.value;
     const newCurrency = CurrencyArray.find((c) => c.currency === value);
     dispatch(
       changeCurr({
-        currency: newCurrency.currency,
-        symbol: newCurrency.symbol,
-        name: newCurrency.name,
+        currency: newCurrency?.currency,
+        symbol: newCurrency?.symbol,
+        name: newCurrency?.name,
       })
     );
   };
@@ -155,17 +177,18 @@ export default function Navigation() {
             again.
           </div>
         )}
-        <div className="flex items-center justify-center p-px text-xs bg-navColor">
-          <div className=" flex items-center mx-4 ">
+        <div className="fixed top-0 z-50 w-full h-5 flex items-center justify-center py-0.5 text-xs bg-navColor">
+          <div className="hidden sm:flex items-center mx-4 ">
             <CoinStackIcon />
             Active Coins:{marketCoins}
           </div>
-          <div className="mx-4 ">
+          <div className="mx-4 hidden sm:inline ">
             Total Volume: {currency.symbol}
             {totalVolume && aveta(totalVolume)}
           </div>
-          <div className="mx-4 ">
-            Total Market Cap: {currency.symbol}
+          <div className="mx-4 text-xs hidden sm:inline">
+            Total Market Cap:
+            {currency.symbol}
             {totalMarketCap && aveta(totalMarketCap)}
           </div>
 
@@ -174,12 +197,14 @@ export default function Navigation() {
               src="https://i.ibb.co/VpjD7V6/Bitcoin-svg.png"
               className="h-4 w-4"
             />{" "}
-            <div>BTC {marketCapPercentageBTC}%</div>
+            <div>
+              <span className="hidden sm:inline">BTC</span>{" "}
+              {marketCapPercentageBTC}%
+            </div>
             <div
-              className={`min-h-2 w-20 ${
+              className={`h-2 w-16 sm:w-20 ${
                 mode === "dark" ? "bg-shadowDark" : "bg-second"
               }`}
-              git
             >
               <div
                 className="bg-accent min-h-2"
@@ -189,59 +214,73 @@ export default function Navigation() {
           </div>
 
           <div>
-            <div className="mx-4  flex items-center justify-center">
+            <div className="mx-4 flex items-center justify-center">
               <img
                 src="https://i.ibb.co/3Spb2vB/Ethereum-icon-purple-svg.png"
                 className="h-4 w-4"
               />{" "}
-              <div>ETH {marketCapPercentageETH}%</div>
+              <div>
+                <span className="hidden sm:inline">ETC</span>{" "}
+                {marketCapPercentageETH}%
+              </div>
               <div>
                 <div
-                  className={`min-h-2 w-20 ${
+                  className={`h-2 w-16 sm:w-20 ${
                     mode === "dark" ? "bg-shadowDark" : "bg-second"
                   }`}
                 >
                   <div
                     style={{ width: `${marketCapPercentageETH}%` }}
-                    className="bg-accent min-h-2 max-w-32"
+                    className="bg-accent min-h-2"
                   ></div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div className="bg-second text-sm">
-          <div className="flex justify-between items-center w-screen  ">
-            <div className="flex justify-between items-center min-w-fit ml-5">
+        <div className="bg-second text-sm fixed top-5 z-50 w-full">
+          <div className="flex justify-between items-center w-full  ">
+            <div className="flex justify-between items-center min-w-fit sm:ml-5">
               <div className="mx-2 drop-shadow-md">
                 <Link
                   href="/"
-                  className="flex items-center mx-2 drop-shadow-md text-accent hover:scale-105"
+                  className="flex items-center sm:mx-2 drop-shadow-md text-accent hover:scale-105"
                 >
-                  {" "}
-                  <img src="https://i.ibb.co/RBwgfPy/Logo.png" alt="logo"></img>
+                  {mode === "dark" ? (
+                    <img
+                      src="https://i.ibb.co/9py9W2V/site-Logo-Purple-2.png"
+                      alt="logo"
+                      className="h-16"
+                    ></img>
+                  ) : (
+                    <img
+                      src="https://i.ibb.co/Z22x96J/site-Logo-Purple-1.png"
+                      alt="logo"
+                      className="h-16"
+                    ></img>
+                  )}
                 </Link>
               </div>
               <Link
                 href="/"
-                className="flex items-center mx-2 drop-shadow-md text-shadowDark hover:scale-105"
+                className="hidden sm:flex items-center mx-2 drop-shadow-md text-shadowDark hover:scale-105"
               >
                 <HomeIcon />
                 <p className="ml-2">Home</p>
               </Link>
               <Link
                 href="/portfolio"
-                className="flex items-center mx-2 drop-shadow-md text-shadowDark hover:scale-105"
+                className="hidden sm:flex items-center mx-2 drop-shadow-md text-shadowDark hover:scale-105"
               >
                 <StackIcon />
-                <p className="ml-2">Portfolio</p>
+                <p className="ml-2 hidden sm:inline">Portfolio</p>
               </Link>
             </div>
             <div className="flex flex-col content-evenly">
               <div>
                 {currentUser ? (
                   <div className="flex justify-end items-center my-1 mr-5">
-                    <div className="text-shadowDark italic">
+                    <div className="hidden sm:inline text-shadowDark italic">
                       User:{" "}
                       <span className="text-accent2">{currentUser?.email}</span>
                     </div>
@@ -264,7 +303,7 @@ export default function Navigation() {
                     </Link>
                     <Link
                       href="/sign-up"
-                      className="drop-shadow-md text-accent mx-2 hover:scale-105"
+                      className="hidden sm:inline drop-shadow-md text-accent mx-2 hover:scale-105"
                     >
                       Sign-up
                     </Link>
@@ -280,7 +319,7 @@ export default function Navigation() {
                     onKeyDown={handleKeyPress}
                     placeholder="Search..."
                     type="text"
-                    className="items-center h-6 text-sm ml-5 drop-shadow-xl rounded-lg pl-3 relative w-44 inline-block bg-base text-shadowDark placeholder:text-sm placeholder:text-shadowDark focus:border-slate-200"
+                    className="items-center h-6 text-sm sm:ml-5 drop-shadow-xl rounded-lg pl-3 relative w-[70px] sm:w-44 inline-block bg-base text-shadowDark placeholder:text-sm placeholder:text-shadowDark focus:border-slate-200"
                   />{" "}
                   {searchError && (
                     <p className="text-xs text-shadowDark pt-[2px]">
@@ -293,7 +332,7 @@ export default function Navigation() {
                 </div>
                 <select
                   name="currency"
-                  className="items-center h-6 text-sm mx-5 drop-shadow-xl rounded-lg p-0.5 bg-second border-base text-shadowDark"
+                  className="items-center h-6 text-sm sm:mx-5 drop-shadow-xl rounded-lg p-0.5 bg-second border-base text-shadowDark"
                   onChange={handleCurrency}
                 >
                   {CurrencyArray?.map((c) => {
@@ -304,7 +343,6 @@ export default function Navigation() {
                         value={c.currency}
                       >
                         {c.currency}
-                        {"  "} {c.name}
                       </option>
                     );
                   })}
@@ -312,7 +350,7 @@ export default function Navigation() {
                 <select
                   onChange={(e) => handlePalette(e)}
                   name="palette"
-                  className=" h-6 mr-5 drop-shadow-xl text-sm rounded-lg bg-base text-shadowDark"
+                  className="hidden sm:inline h-6 mr-5 drop-shadow-xl text-sm rounded-lg bg-base text-shadowDark"
                 >
                   <option className="bg-second text-shadowDark text-sm">
                     Theme
@@ -349,6 +387,36 @@ export default function Navigation() {
                 )}
               </div>
             </div>
+          </div>
+        </div>
+        <div className="sm:hidden fixed bottom-0 left-0 z-50 w-full h-16 bg-second ">
+          <div className="grid h-full max-w-lg grid-cols-3 mx-auto font-medium  bg-second">
+            <Link
+              href="/"
+              className="inline-flex flex-col items-center justify-center px-5 drop-shadow-md text-shadowDark hover:scale-105"
+            >
+              <HomeIcon />
+              <span className="text-sm text-shadowDark">
+                <p className="text-sm">Home</p>
+              </span>{" "}
+            </Link>
+            <Link
+              href="/portfolio"
+              className="inline-flex flex-col items-center justify-center px-5 drop-shadow-md text-shadowDark hover:scale-105"
+            >
+              <StackIcon />
+              <p className="text-sm">Portfolio</p>
+            </Link>
+            <Link
+              href="/"
+              onClick={handleConverter}
+              className="inline-flex flex-col items-center justify-center px-5 drop-shadow-md text-shadowDark hover:scale-105"
+            >
+              <CalculatorIcon />
+              <span className="text-sm text-shadowDark ">
+                <p className="text-sm">Converter</p>
+              </span>
+            </Link>
           </div>
         </div>
       </nav>

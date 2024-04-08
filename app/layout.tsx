@@ -3,7 +3,6 @@ import "./globals.css";
 import Navigation from "./components/Navigation";
 import CryptoProvider from "./Providers/CryptoProvider";
 import StoreProvider from "./Providers/StoreProvider";
-import { PortFolioProvider } from "./Providers/PortfolioProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",

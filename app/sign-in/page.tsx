@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, RefObject } from "react";
 import Link from "next/link";
 import { useCrypto } from "../Providers/CryptoProvider";
 import { login, useAuth } from "../firebase/config";
@@ -8,18 +8,24 @@ import { useRouter } from "next/navigation";
 const SignIn = () => {
   const { handleLoginError, loginError, palette, mode } = useCrypto();
   const [loading, setLoading] = useState(false);
-  const emailRef = useRef();
-  const passwordRef = useRef();
+  const emailRef: RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
+  const passwordRef: RefObject<HTMLInputElement> = useRef<HTMLInputElement>(
+    null
+  );
   const currentUser = useAuth();
   const router = useRouter();
 
   async function handleLogin() {
     setLoading(true);
     try {
-      await login(emailRef.current.value, passwordRef.current.value);
-      if (currentUser) {
-        router.push("/portfolio");
-        return;
+      setLoading(true);
+      if (emailRef.current && passwordRef.current?.value) {
+        await login(emailRef.current.value, passwordRef.current.value);
+        setLoading(false);
+        if (currentUser) {
+          router.push("/portfolio");
+          return;
+        }
       }
     } catch (e) {
       console.error(e);
@@ -30,7 +36,9 @@ const SignIn = () => {
 
   return (
     <div
-      className={`min-h-screen flex items-center justify-center bg-base theme-${palette} theme-${mode} top-36`}
+      className={`min-h-screen flex items-center justify-center bg-base theme-${palette} theme-${mode} top-36 ${
+        loading && "cursor-wait"
+      }`}
     >
       <div className="bg-second p-10 rounded-lg shadow-xl w-96">
         <h1 className="text-accent text-2xl ">Sign In</h1>

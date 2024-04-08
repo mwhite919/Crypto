@@ -6,9 +6,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const SignUp = () => {
-  const currentUser = useAuth();
-  const emailRef = useRef();
-  const passwordRef = useRef();
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -16,9 +15,11 @@ const SignUp = () => {
   async function handleSignUp() {
     try {
       setLoading(true);
-      await signup(emailRef.current.value, passwordRef.current.value);
-      setLoading(false);
-      router.push("/portfolio");
+      if (emailRef.current && passwordRef.current) {
+        await signup(emailRef.current.value, passwordRef.current.value);
+        setLoading(false);
+        router.push("/portfolio");
+      }
     } catch (error) {
       setLoading(false);
       setError(true);
@@ -30,8 +31,11 @@ const SignUp = () => {
 
   return (
     <div
-      className={`min-h-screen flex items-center justify-center bg-base theme-${palette} theme-${mode} top-36`}
+      className={`min-h-screen flex items-center justify-center bg-base theme-${palette} theme-${mode} top-36 ${
+        loading && "cursor-wait"
+      }`}
     >
+      {error && "There was an error loading. Please try again"}
       <div className="bg-second p-10 rounded-lg shadow-xl w-96">
         <h1 className="text-accent text-2xl">Sign up for a free account!</h1>
         <div className="text-primary my-2">

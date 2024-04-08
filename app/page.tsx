@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useGetAllCoinsQuery } from "./Providers/api/apiSlice";
 import { useCrypto } from "./Providers/CryptoProvider";
 import { useAppSelector } from "@/redux/hooks";
@@ -9,24 +9,26 @@ import ChartsMain from "./components/ChartsMain";
 import Converter from "./components/Converter";
 import styled from "styled-components";
 import { RadioGroup } from "@headlessui/react";
+import { CoinType } from "./sharedinterfaces";
 
 const Row = styled.div`
   width: 1010px;
   height: 50px;
   border-radius: 10px;
+  @media (max-width: 600px) {
+    width: 300px;
+    padding: 6px;
+    margin-top: 12px;
+  }
 `;
-
 export default function Page() {
   const currency = useAppSelector((state) => state.currency);
-  const { palette, mode } = useCrypto();
-  const [converter, setConverter] = useState(false);
+  const { palette, mode, converter, handleConverter } = useCrypto();
 
-  const { data: allCoinsData, error, isError, isLoading } = useGetAllCoinsQuery(
-    {
-      currency: currency.currency,
-      sortValue: "market_cap_desc",
-    }
-  );
+  const { data: allCoinsData, isError, isLoading } = useGetAllCoinsQuery({
+    currency: currency.currency,
+    sortValue: "market_cap_desc",
+  });
 
   return (
     <>
@@ -47,7 +49,7 @@ export default function Page() {
           <RadioGroup
             className="flex items-center justify-center mx-5 text-sm "
             value={converter}
-            onChange={setConverter}
+            onChange={handleConverter}
           >
             <RadioGroup.Option
               className={({ active, checked }) =>
@@ -65,7 +67,7 @@ export default function Page() {
               }
               value={false}
             >
-              {({ checked }) => <span className={checked && ""}>Coins</span>}
+              {({ checked }) => <span>Coins</span>}
             </RadioGroup.Option>
             <RadioGroup.Option
               className={({ active, checked }) =>
@@ -83,9 +85,7 @@ export default function Page() {
               }
               value={true}
             >
-              {({ checked }) => (
-                <span className={checked && ""}>Converter</span>
-              )}
+              {({ checked }) => <span>Converter</span>}
             </RadioGroup.Option>
           </RadioGroup>
         </div>
@@ -94,47 +94,50 @@ export default function Page() {
             <Converter allCoinsData={allCoinsData} />
           ) : (
             <div>
-              <ChartsMain />
+              <div>
+                <ChartsMain />
+              </div>
+              <div className="flex flex-col items-center justify-center">
+                <Row className="bg-second shadow-md text-xs font-semibold text-shadowDark grid grid-cols-10 sm:grid-cols-17 gap-2 ">
+                  <div className="flex items-center justify-center col-span-1">
+                    #
+                  </div>
+                  <div className="col-span-1"></div>
+                  <div className="flex justify-start items-center col-span-2">
+                    Name
+                  </div>
+                  <div className="flex justify-start items-center col-span-2">
+                    Price
+                  </div>
+                  <div className="flex justify-start items-center ml-1 col-span-2 sm:col-span-1 ">
+                    1h%
+                  </div>
+                  <div className="flex justify-start items-center ml-1 col-span-2 sm:col-span-1">
+                    24hr%
+                  </div>
+                  <div className="hidden sm:flex justify-start items-center ml-1 col-span-1">
+                    7d%
+                  </div>
+                  <div className="hidden sm:flex justify-center items-center ml-2 col-span-3">
+                    24h Volume/Market Cap
+                  </div>
+                  <div className="hidden sm:flex justify-center items-center col-span-3">
+                    Circulating/ Total Supply
+                  </div>
+                  <div className="hidden sm:flex justify-start items-center col-span-2">
+                    Last 7d
+                  </div>
+                </Row>
+              </div>
+              <div className="flex flex-col items-center justify-center">
+                {allCoinsData?.map((coin: CoinType, index: number) => (
+                  <div key={coin.id}>
+                    <CoinRow coin={coin} index={index + 1} />
+                  </div>
+                ))}
+              </div>
             </div>
           )}
-        </div>
-        <div>
-          <Row className="bg-second shadow-md text-xs font-semibold text-shadowDark grid grid-cols-17 ">
-            <div className="flex items-center justify-center col-span-1">#</div>
-            <div className="col-span-1"></div>
-            <div className="flex justify-start items-center col-span-2">
-              Name
-            </div>
-            <div className="flex justify-start items-center col-span-2">
-              Price
-            </div>
-            <div className="flex justify-start items-center ml-1 col-span-1">
-              1h%
-            </div>
-            <div className="flex justify-start items-center ml-1 col-span-1">
-              24hr%
-            </div>
-            <div className="flex justify-start items-center ml-1 col-span-1">
-              7d%
-            </div>
-            <div className="flex justify-center items-center ml-2 col-span-3">
-              24h Volume/Market Cap
-            </div>
-            <div className="flex justify-center items-center col-span-3">
-              Circulating/ Total Supply
-            </div>
-            <div className="flex justify-start items-center col-span-2">
-              Last 7d
-            </div>
-          </Row>
-        </div>
-
-        <div>
-          {allCoinsData?.map((coin, index) => (
-            <div key={coin.id}>
-              <CoinRow coin={coin} index={index + 1} />
-            </div>
-          ))}
         </div>
       </div>
     </>

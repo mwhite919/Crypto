@@ -2,7 +2,7 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 
-interface CurrencyState {
+interface initialState {
   currency: string;
   symbol: string;
   name: string;

@@ -1,26 +1,31 @@
 "use client";
 
-import { useState } from "react";
+import { ChangeEvent, FC, MouseEvent, SetStateAction, useState } from "react";
 import axios from "axios";
 import { CloseIcon, ResetIcon } from "@/app/icons/Icons";
 import CharacterCounter from "./CharacterCounter";
-import db from "../firebase/config";
-import { setDoc, doc } from "firebase/firestore";
+import initializeFirebase from "../firebase/config";
+import { setDoc, doc, collection } from "firebase/firestore";
 import { uid } from "uid";
+import { Coin } from "../sharedinterfaces";
 
-export const EditForm = ({ coinToEdit, handleEditForm }) => {
-  const [coin, setCoin] = useState(coinToEdit);
+interface EditFormProps {
+  coinToEdit: Coin;
+  handleEditForm: (coin: Coin) => void;
+}
+
+export const EditForm: FC<EditFormProps> = ({ coinToEdit, handleEditForm }) => {
+  const [coin, setCoin] = useState<Coin>(coinToEdit);
   const [missingCoin, setMissingCoin] = useState(false);
-  const [amount, setAmount] = useState(coinToEdit.amount);
+  const [amount, setAmount] = useState<number>(coinToEdit.amount);
   const [missingAmount, setMissingAmount] = useState(false);
-  const [date, setDate] = useState(coinToEdit.date);
+  const [date, setDate] = useState<string>(coinToEdit.date);
   const [dateError, setDateError] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
-  const [numError, setnumError] = useState(false);
+  const [numError, setNumError] = useState(false);
   const [purchasePrice, setPurchasePrice] = useState(coinToEdit.purchasePrice);
-  const [purchasePriceError, setPurchasePriceError] = useState(false);
+  const { db } = initializeFirebase();
 
-  const saveEdit = async (e, id) => {
+  const saveEdit = async (e: any, id: string) => {
     e.preventDefault();
     if (!date || !amount || !coin) {
       if (!date) setDateError(true);
@@ -28,10 +33,10 @@ export const EditForm = ({ coinToEdit, handleEditForm }) => {
     if (!amount) {
       setMissingAmount(true);
     }
-    if (!coin.name) {
+    if (!coin?.name) {
       setMissingCoin(true);
     }
-    if (coin && amount && date) {
+    if (coin && amount && date && coinToEdit) {
       const docRef = doc(db, "portfoliocoins", id);
       const payload = {
         id: uid(),
@@ -41,25 +46,22 @@ export const EditForm = ({ coinToEdit, handleEditForm }) => {
         date: date,
       };
       await setDoc(docRef, payload);
-      handleEditForm();
-      setCoin({});
-      setAmount("");
-      setDate("");
+      handleEditForm(coin);
     }
   };
 
   const closeForm = () => {
-    handleEditForm();
+    handleEditForm(coin);
     setCoin(coinToEdit);
-    setAmount(coinToEdit.amount);
-    setDate(coinToEdit.date);
+    setAmount(0);
+    setDate("");
   };
 
   const resetForm = () => {
     setCoin(coinToEdit);
-    setAmount(coinToEdit.amount);
-    setDate(coinToEdit.date);
-    setnumError(false);
+    setAmount(coinToEdit?.amount);
+    setDate(coinToEdit?.date);
+    setNumError(false);
     setMissingAmount(false);
     setMissingCoin(false);
     setDateError(false);
@@ -72,7 +74,7 @@ export const EditForm = ({ coinToEdit, handleEditForm }) => {
       );
       setPurchasePrice(data.market_data.current_price);
     } catch (err) {
-      setPurchasePriceError(true);
+      console.log(err);
     }
   };
 
@@ -80,32 +82,35 @@ export const EditForm = ({ coinToEdit, handleEditForm }) => {
     getPurchasePrice(coin.id, date.split("-").reverse().join("-"));
   }
 
-  const handleBlur = (e) => {
+  const handleBlur = (e: {
+    target: { validity: { patternMismatch: any } };
+  }) => {
     if (e.target.validity.patternMismatch) {
-      setnumError(true);
+      setNumError(true);
     }
     const newValueIsValid = !e.target.validity.patternMismatch;
     if (numError) {
       if (newValueIsValid) {
-        setnumError(false);
+        setNumError(false);
       }
     }
     setMissingAmount(!amount);
   };
 
-  const handleDateBlur = (e) => {
+  const handleDateBlur = () => {
     if (date) {
       setDateError(false);
     }
   };
 
-  const handleDate = (e) => {
+  const handleDate = (e: ChangeEvent<HTMLInputElement>) => {
     setDateError(false);
     setDate(e.target.value);
   };
 
-  const handleAmountChange = (e) => {
-    setAmount(e.target.value);
+  const handleAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const newValue = parseFloat(e.target.value);
+    setAmount(newValue);
   };
 
   return (
@@ -130,9 +135,9 @@ export const EditForm = ({ coinToEdit, handleEditForm }) => {
                   <div className="w-full h-full max-w-sm mx-auto lg:mx-0 opacity-30 blur-lg bg-gradient-to-r from-second to-primary"></div>
                 </div>
                 <div className="flex items-center justify-center relative p-8 text-lg font-bold font-pj rounded-xl ">
-                  <img src={coin.coin.image} className="h-16" />
-                  <span className={CharacterCounter(coin?.coin?.name?.length)}>
-                    {coin.coin.name}
+                  <img src={coin?.coin.image} className="h-16" />
+                  <span className={CharacterCounter(coin?.coin?.name.length)}>
+                    {coin?.coin.name}
                   </span>
                 </div>
               </div>
@@ -140,21 +145,23 @@ export const EditForm = ({ coinToEdit, handleEditForm }) => {
             <div className="flex flex-col justify-start h-48 w-1/2 items-start ">
               <form>
                 <div>
-                  <h2>{coin.name}</h2>
+                  <h2>{coin?.name}</h2>
                 </div>
                 {numError && (
                   <p
                     role="alert"
-                    className="text-xs"
+                    className="text-xs pl-3"
                     style={{ color: "rgb(200, 0, 0)" }}
                   >
                     Please make sure you've entered a <em>number</em>
                   </p>
                 )}
+
+                <div className="text-sm pl-3">Amount:</div>
                 {missingAmount && (
                   <p
                     role="alert"
-                    className="text-xs"
+                    className="text-xs pl-3"
                     style={{ color: "rgb(200, 0, 0)" }}
                   >
                     Please enter an amount.
@@ -163,7 +170,7 @@ export const EditForm = ({ coinToEdit, handleEditForm }) => {
                 <input
                   type="text"
                   onChange={handleAmountChange}
-                  value={amount}
+                  value={amount ? amount : ""}
                   placeholder="How much?"
                   inputMode="decimal"
                   pattern="[0-9]*[.,]?[0-9]+"
@@ -175,7 +182,7 @@ export const EditForm = ({ coinToEdit, handleEditForm }) => {
                 {dateError && (
                   <p
                     role="alert"
-                    className="text-xs"
+                    className="text-xs pl-3"
                     style={{ color: "rgb(200, 0, 0)" }}
                   >
                     Please enter a date.

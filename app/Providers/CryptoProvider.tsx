@@ -1,21 +1,48 @@
 "use client";
-import { useState, createContext, useContext, useEffect } from "react";
-import { login, useAuth } from "@/app/firebase/config";
-import { useRouter } from "next/navigation";
+import {
+  useState,
+  createContext,
+  useContext,
+  useEffect,
+  ChangeEvent,
+} from "react";
+import { useAuth } from "@/app/firebase/config";
 import { Palettes } from "../constants/Palettes";
 
-export const CryptoContext = createContext();
+interface CryptoContextType {
+  palette: string;
+  mode: string;
+  handlePalette: (e: ChangeEvent<HTMLSelectElement>) => void;
+  handleMode: (value: string) => void;
+  loginError: boolean;
+  handleLoginError: () => void;
+  currentUser: any;
+  handleConverter: () => void;
+  converter: boolean;
+}
+
+export const CryptoContext = createContext<CryptoContextType>({
+  palette: "default",
+  mode: "light",
+  handlePalette: (e: ChangeEvent<HTMLSelectElement>) => {},
+  handleMode: (value: string) => {},
+  loginError: false,
+  handleLoginError: () => {},
+  currentUser: null,
+  handleConverter: () => {},
+  converter: false,
+});
+
 export function useCrypto() {
-  const value = useContext(CryptoContext);
-  return value;
+  return useContext(CryptoContext);
 }
 
 const modes = ["light", "dark"];
 function useStickyState(
-  defaultValue: string | undefined,
-  key: string
-): [string | undefined, (v: string) => void] {
-  const [value, setValue] = useState<string | undefined>(defaultValue);
+  defaultValue: any,
+  key: any
+): [any, (v: string) => void] {
+  const [value, setValue] = useState<string>(defaultValue);
 
   useEffect(() => {
     const stickyValue = localStorage.getItem(key);
@@ -33,34 +60,41 @@ function useStickyState(
   ];
 }
 
-export default function CryptoProvider({ children }) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const [loginError, setLoginError] = useState(false);
+interface Props {
+  children: any;
+}
 
-  const router = useRouter();
+export default function CryptoProvider({ children }: Props) {
+  const [loginError, setLoginError] = useState(false);
   const currentUser = useAuth();
+  const [converter, setConverter] = useState(false);
 
   function handleLoginError() {
     setLoginError(!loginError);
   }
   const [palette, setPalette] = useStickyState(
-    Palettes[0],
-    "theme-palette" || "basic"
+    Palettes[0].theme,
+    "theme-palette"
   );
-  const [mode, setMode] = useStickyState(modes[0], "theme-mode" || "light");
+  const [mode, setMode] = useStickyState(modes[0], "theme-mode");
 
-  function handlePalette(e: string) {
+  const handlePalette = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setPalette(e.target.value);
-  }
+  };
 
   function handleMode(value: string) {
     setMode(value);
   }
 
+  function handleConverter() {
+    setConverter(!converter);
+  }
+
   return (
     <CryptoContext.Provider
       value={{
+        handleConverter,
+        converter,
         palette,
         mode,
         handlePalette,

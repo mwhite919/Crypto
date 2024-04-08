@@ -21,13 +21,16 @@ import {
   Legend,
   Colors,
   BarElement,
+  ChartOptions,
+  ChartData,
 } from "chart.js";
 import "chartjs-adapter-date-fns";
 import { Line, Bar } from "react-chartjs-2";
 import { graphStyling } from "../constants/graphStyling";
 import { useCrypto } from "../Providers/CryptoProvider";
-import { every_nth } from "./Every_nth";
+import { everyNth } from "./Every_nth";
 import { convertUnixToDate } from "../utils/UnixTimeConverter";
+import { ChartCoin } from "../sharedinterfaces";
 
 ChartJS.register(
   LogarithmicScale,
@@ -43,37 +46,39 @@ ChartJS.register(
   CategoryScale
 );
 
+type GraphStyle = keyof typeof graphStyling;
+
 export const ChartsMain = () => {
-  const combinedChartCoins = useAppSelector(
+  const combinedChartCoins: ChartCoin[] = useAppSelector(
     (state) => state.chartCoins.chartCoins
   );
-
   const isLoading = useAppSelector((state) => state.chartCoins.isLoading);
   const currency = useAppSelector((state) => state.currency);
-  const [numberOfDays, setNumberOfDays] = useState("7");
+  const [numberOfDays, setNumberOfDays] = useState(7);
   const [displayLineData, setDisplayLineData] = useState("");
   const [dateToDisplay, setDateToDisplay] = useState("");
   const { palette, mode } = useCrypto();
-  const colorsGroup = graphStyling[palette];
+  const colorsGroup = graphStyling[palette as GraphStyle];
+  const dispatch = useAppDispatch();
 
-  function units(num) {
-    if (num == 1) {
+  function units(num: string) {
+    if (Number(num) == 1) {
       return "hour";
     }
-    if (num >= 2) {
+    if (Number(num) >= 2) {
       return "day";
     }
-    if (num >= 180) {
+    if (Number(num) >= 180) {
       return "week";
     }
   }
 
-  const options = {
+  const options: ChartOptions<"line"> = {
     animation: {
       duration: 2000,
     },
     maintainAspectRatio: false,
-    interaction: { mode: "index" },
+    interaction: { mode: "nearest" },
     plugins: {
       legend: {
         display: true,
@@ -84,28 +89,27 @@ export const ChartsMain = () => {
         mode: "nearest",
         intersect: false,
         callbacks: {
-          label: function (context) {
-            let label = context.dataset.label || "";
-
+          label: function (tooltipItem) {
+            let label = tooltipItem.dataset.label || "";
             if (label) {
               label += ": ";
             }
-            if (context.parsed.y !== null) {
+            if (tooltipItem.parsed.y !== null) {
               label += new Intl.NumberFormat("en-US", {
                 style: "currency",
                 currency: currency.currency,
-              }).format(context.parsed.y);
+              }).format(tooltipItem.parsed.y);
             }
             setDisplayLineData(label);
-            setDateToDisplay(convertUnixToDate(context.parsed.x));
+            setDateToDisplay(convertUnixToDate(tooltipItem.parsed.x));
             return label;
           },
         },
       },
-      hover: {
-        mode: "nearest",
-        intersect: false,
-      },
+    },
+    hover: {
+      mode: "nearest",
+      intersect: false,
     },
     scales: {
       y: {
@@ -118,7 +122,7 @@ export const ChartsMain = () => {
         },
         type: "time",
         time: {
-          unit: units(numberOfDays),
+          unit: units(String(numberOfDays)),
         },
         ticks: {
           font: {
@@ -131,22 +135,88 @@ export const ChartsMain = () => {
     },
   };
 
-  function pricesData(coinCount: number) {
+  const optionsBar: ChartOptions<"bar"> = {
+    animation: {
+      duration: 2000,
+    },
+    maintainAspectRatio: false,
+    interaction: { mode: "nearest" },
+    plugins: {
+      legend: {
+        display: true,
+        position: "bottom",
+        align: "start",
+      },
+      tooltip: {
+        mode: "nearest",
+        intersect: false,
+        callbacks: {
+          label: function (tooltipItem) {
+            let label = tooltipItem.dataset.label || "";
+            if (label) {
+              label += ": ";
+            }
+            if (tooltipItem.parsed.y !== null) {
+              label += new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: currency.currency,
+              }).format(tooltipItem.parsed.y);
+            }
+            setDisplayLineData(label);
+            setDateToDisplay(convertUnixToDate(tooltipItem.parsed.x));
+            return label;
+          },
+        },
+      },
+    },
+    hover: {
+      mode: "nearest",
+      intersect: false,
+    },
+    scales: {
+      y: {
+        display: false,
+        type: "logarithmic",
+      },
+      x: {
+        grid: {
+          color: "transparent",
+        },
+        type: "time",
+        time: {
+          unit: units(String(numberOfDays)),
+        },
+        ticks: {
+          font: {
+            size: 12,
+          },
+          maxRotation: 0,
+          minRotation: 0,
+        },
+      },
+    },
+  };
+
+  function pricesData(coinCount: number): ChartData<"line", any, unknown> {
     if (coinCount <= 1) {
       return {
-        labels: every_nth(
-          combinedChartCoins[0]?.prices.map((item) => item.time),
+        labels: everyNth(
+          combinedChartCoins[0]?.prices.map(
+            (item: { time: number }) => item.time
+          ),
           numberOfDays
         ),
         datasets: [
           {
             label: combinedChartCoins[0]?.coinName,
-            data: every_nth(
-              combinedChartCoins[0]?.prices.map((item) => item.yData),
+            data: everyNth(
+              combinedChartCoins[0]?.prices.map(
+                (item: { yData: number }) => item.yData
+              ),
               numberOfDays
             ),
             borderColor: colorsGroup?.coin1.stopColor1,
-            backgroundColor: (context) => {
+            backgroundColor: (context: { chart: { ctx: any } }) => {
               const ctx = context.chart.ctx;
               const gradient = ctx.createLinearGradient(0, 0, 0, 350);
               gradient.addColorStop(
@@ -159,7 +229,6 @@ export const ChartsMain = () => {
             pointRadius: 0,
             borderWidth: 3,
             fill: true,
-            borderRadius: "5",
             tension: 0.5,
             pointBackgroundColor: "transparent",
             pointBorderColor: "transparent",
@@ -170,19 +239,23 @@ export const ChartsMain = () => {
 
     if (coinCount === 2) {
       return {
-        labels: every_nth(
-          combinedChartCoins[0]?.prices.map((item) => item.time),
+        labels: everyNth(
+          combinedChartCoins[0]?.prices.map(
+            (item: { time: number }) => item.time
+          ),
           numberOfDays
         ),
         datasets: [
           {
             label: combinedChartCoins[0]?.coinName,
-            data: every_nth(
-              combinedChartCoins[0]?.prices.map((item) => item.yData),
+            data: everyNth(
+              combinedChartCoins[0]?.prices.map(
+                (item: { yData: number }) => item.yData
+              ),
               numberOfDays
             ),
             borderColor: colorsGroup?.coin1.stopColor1,
-            backgroundColor: (context) => {
+            backgroundColor: (context: { chart: { ctx: any } }) => {
               const ctx = context.chart.ctx;
               const gradient = ctx.createLinearGradient(0, 0, 0, 350);
               gradient.addColorStop(
@@ -195,19 +268,20 @@ export const ChartsMain = () => {
             pointRadius: 0,
             borderWidth: 3,
             fill: true,
-            borderRadius: "5",
             tension: 0.5,
             pointBackgroundColor: "transparent",
             pointBorderColor: "transparent",
           },
           {
             label: combinedChartCoins[1]?.coinName,
-            data: every_nth(
-              combinedChartCoins[1]?.prices.map((item) => item.yData),
+            data: everyNth(
+              combinedChartCoins[1]?.prices.map(
+                (item: { yData: number }) => item.yData
+              ),
               numberOfDays
             ),
             borderColor: colorsGroup?.coin2.stopColor1,
-            backgroundColor: (context) => {
+            backgroundColor: (context: { chart: { ctx: any } }) => {
               const ctx = context.chart.ctx;
               const gradient = ctx.createLinearGradient(0, 0, 0, 350);
               gradient.addColorStop(
@@ -220,7 +294,6 @@ export const ChartsMain = () => {
             pointRadius: 0,
             borderWidth: 3,
             fill: true,
-            borderRadius: "5",
             tension: 0.5,
             pointBackgroundColor: "transparent",
             pointBorderColor: "transparent",
@@ -230,19 +303,23 @@ export const ChartsMain = () => {
     }
     if (coinCount === 3) {
       return {
-        labels: every_nth(
-          combinedChartCoins[0]?.prices.map((item) => item.time),
+        labels: everyNth(
+          combinedChartCoins[0]?.prices.map(
+            (item: { time: number }) => item.time
+          ),
           numberOfDays
         ),
         datasets: [
           {
             label: combinedChartCoins[0]?.coinName,
-            data: every_nth(
-              combinedChartCoins[0]?.prices.map((item) => item.yData),
+            data: everyNth(
+              combinedChartCoins[0]?.prices.map(
+                (item: { yData: number }) => item.yData
+              ),
               numberOfDays
             ),
             borderColor: colorsGroup?.coin1.stopColor1,
-            backgroundColor: (context) => {
+            backgroundColor: (context: { chart: { ctx: any } }) => {
               const ctx = context.chart.ctx;
               const gradient = ctx.createLinearGradient(0, 0, 0, 350);
               gradient.addColorStop(
@@ -255,16 +332,17 @@ export const ChartsMain = () => {
             pointRadius: 0,
             borderWidth: 3,
             fill: true,
-            borderRadius: "5",
             tension: 0.5,
             pointBackgroundColor: "transparent",
             pointBorderColor: "transparent",
           },
           {
             label: combinedChartCoins[1]?.coinName,
-            data: combinedChartCoins[1]?.prices.map((item) => item.yData),
+            data: combinedChartCoins[1]?.prices.map(
+              (item: { yData: number }) => item.yData
+            ),
             borderColor: colorsGroup?.coin2.stopColor1,
-            backgroundColor: (context) => {
+            backgroundColor: (context: { chart: { ctx: any } }) => {
               const ctx = context.chart.ctx;
               const gradient = ctx.createLinearGradient(0, 0, 0, 350);
               gradient.addColorStop(
@@ -277,19 +355,20 @@ export const ChartsMain = () => {
             pointRadius: 0,
             borderWidth: 3,
             fill: true,
-            borderRadius: "5",
             tension: 0.5,
             pointBackgroundColor: "transparent",
             pointBorderColor: "transparent",
           },
           {
             label: combinedChartCoins[2]?.coinName,
-            data: every_nth(
-              combinedChartCoins[2]?.prices.map((item) => item.yData),
+            data: everyNth(
+              combinedChartCoins[2]?.prices.map(
+                (item: { yData: number }) => item.yData
+              ),
               numberOfDays
             ),
             borderColor: colorsGroup?.coin3.stopColor1,
-            backgroundColor: (context) => {
+            backgroundColor: (context: { chart: { ctx: any } }) => {
               const ctx = context.chart.ctx;
               const gradient = ctx.createLinearGradient(0, 0, 0, 350);
               gradient.addColorStop(
@@ -302,7 +381,6 @@ export const ChartsMain = () => {
             pointRadius: 0,
             borderWidth: 3,
             fill: true,
-            borderRadius: "5",
             tension: 0.5,
             pointBackgroundColor: "transparent",
             pointBorderColor: "transparent",
@@ -310,24 +388,36 @@ export const ChartsMain = () => {
         ],
       };
     }
+    return {
+      labels: [],
+      datasets: [],
+    };
   }
 
   function volumeData(coinCount: number) {
+    let data: ChartData<"bar", any, unknown> = {
+      labels: [],
+      datasets: [],
+    };
     if (coinCount <= 1) {
       return {
-        labels: every_nth(
-          combinedChartCoins[0]?.volume.map((item) => item.time),
+        labels: everyNth(
+          combinedChartCoins[0]?.volume.map(
+            (item: { time: number }) => item.time
+          ),
           numberOfDays
         ),
         datasets: [
           {
             label: combinedChartCoins[0]?.coinName,
-            data: every_nth(
-              combinedChartCoins[0]?.volume.map((item) => item.yData),
+            data: everyNth(
+              combinedChartCoins[0]?.volume.map(
+                (item: { yData: number }) => item.yData
+              ),
               numberOfDays
             ),
             borderColor: colorsGroup?.coin1.stopColor1,
-            backgroundColor: (context) => {
+            backgroundColor: (context: { chart: { ctx: any } }) => {
               const ctx = context.chart.ctx;
               const gradient = ctx.createLinearGradient(0, 0, 0, 350);
               gradient.addColorStop(
@@ -337,10 +427,8 @@ export const ChartsMain = () => {
               gradient.addColorStop(1, "rgba(0, 0, 0, 0.0)");
               return gradient;
             },
-            pointRadius: 0,
             borderWidth: 3,
             fill: true,
-            borderRadius: "5",
             tension: 0.5,
             pointBackgroundColor: "transparent",
             pointBorderColor: "transparent",
@@ -351,19 +439,23 @@ export const ChartsMain = () => {
 
     if (coinCount === 2) {
       return {
-        labels: every_nth(
-          combinedChartCoins[0]?.volume.map((item) => item.time),
+        labels: everyNth(
+          combinedChartCoins[0]?.volume.map(
+            (item: { time: number }) => item.time
+          ),
           numberOfDays
         ),
         datasets: [
           {
             label: combinedChartCoins[0]?.coinName,
-            data: every_nth(
-              combinedChartCoins[0]?.volume.map((item) => item.yData),
+            data: everyNth(
+              combinedChartCoins[0]?.volume.map(
+                (item: { yData: number }) => item.yData
+              ),
               numberOfDays
             ),
             borderColor: colorsGroup?.coin1.stopColor1,
-            backgroundColor: (context) => {
+            backgroundColor: (context: { chart: { ctx: any } }) => {
               const ctx = context.chart.ctx;
               const gradient = ctx.createLinearGradient(0, 0, 0, 350);
               gradient.addColorStop(
@@ -376,19 +468,21 @@ export const ChartsMain = () => {
             pointRadius: 0,
             borderWidth: 3,
             fill: true,
-            borderRadius: "5",
+            borderRadius: 5,
             tension: 0.5,
             pointBackgroundColor: "transparent",
             pointBorderColor: "transparent",
           },
           {
             label: combinedChartCoins[1]?.coinName,
-            data: every_nth(
-              combinedChartCoins[1]?.volume.map((item) => item.yData),
+            data: everyNth(
+              combinedChartCoins[1]?.volume.map(
+                (item: { yData: number }) => item.yData
+              ),
               numberOfDays
             ),
             borderColor: colorsGroup?.coin2.stopColor1,
-            backgroundColor: (context) => {
+            backgroundColor: (context: { chart: { ctx: any } }) => {
               const ctx = context.chart.ctx;
               const gradient = ctx.createLinearGradient(0, 0, 0, 350);
               gradient.addColorStop(
@@ -401,7 +495,7 @@ export const ChartsMain = () => {
             pointRadius: 0,
             borderWidth: 3,
             fill: true,
-            borderRadius: "5",
+            borderRadius: 5,
             tension: 0.5,
             pointBackgroundColor: "transparent",
             pointBorderColor: "transparent",
@@ -411,19 +505,23 @@ export const ChartsMain = () => {
     }
     if (coinCount === 3) {
       return {
-        labels: every_nth(
-          combinedChartCoins[0]?.volume.map((item) => item.time),
+        labels: everyNth(
+          combinedChartCoins[0]?.volume.map(
+            (item: { time: number }) => item.time
+          ),
           numberOfDays
         ),
         datasets: [
           {
             label: combinedChartCoins[0]?.coinName,
-            data: every_nth(
-              combinedChartCoins[0]?.volume.map((item) => item.yData),
+            data: everyNth(
+              combinedChartCoins[0]?.volume.map(
+                (item: { yData: number }) => item.yData
+              ),
               numberOfDays
             ),
             borderColor: colorsGroup?.coin1.stopColor1,
-            backgroundColor: (context) => {
+            backgroundColor: (context: { chart: { ctx: any } }) => {
               const ctx = context.chart.ctx;
               const gradient = ctx.createLinearGradient(0, 0, 0, 350);
               gradient.addColorStop(
@@ -436,19 +534,21 @@ export const ChartsMain = () => {
             pointRadius: 0,
             borderWidth: 3,
             fill: true,
-            borderRadius: "5",
+            borderRadius: 5,
             tension: 0.5,
             pointBackgroundColor: "transparent",
             pointBorderColor: "transparent",
           },
           {
             label: combinedChartCoins[1]?.coinName,
-            data: every_nth(
-              combinedChartCoins[1]?.volume.map((item) => item.yData),
+            data: everyNth(
+              combinedChartCoins[1]?.volume.map(
+                (item: { yData: number }) => item.yData
+              ),
               numberOfDays
             ),
             borderColor: colorsGroup?.coin2.stopColor1,
-            backgroundColor: (context) => {
+            backgroundColor: (context: { chart: { ctx: any } }) => {
               const ctx = context.chart.ctx;
               const gradient = ctx.createLinearGradient(0, 0, 0, 350);
               gradient.addColorStop(
@@ -461,19 +561,21 @@ export const ChartsMain = () => {
             pointRadius: 0,
             borderWidth: 3,
             fill: true,
-            borderRadius: "5",
+            borderRadius: 5,
             tension: 0.5,
             pointBackgroundColor: "transparent",
             pointBorderColor: "transparent",
           },
           {
             label: combinedChartCoins[2]?.coinName,
-            data: every_nth(
-              combinedChartCoins[2]?.volume.map((item) => item.yData),
+            data: everyNth(
+              combinedChartCoins[2]?.volume.map(
+                (item: { yData: number }) => item.yData
+              ),
               numberOfDays
             ),
             borderColor: colorsGroup?.coin3.stopColor1,
-            backgroundColor: (context) => {
+            backgroundColor: (context: { chart: { ctx: any } }) => {
               const ctx = context.chart.ctx;
               const gradient = ctx.createLinearGradient(0, 0, 0, 350);
               gradient.addColorStop(
@@ -486,7 +588,7 @@ export const ChartsMain = () => {
             pointRadius: 0,
             borderWidth: 3,
             fill: true,
-            borderRadius: "5",
+            borderRadius: 5,
             tension: 0.5,
             pointBackgroundColor: "transparent",
             pointBorderColor: "transparent",
@@ -494,17 +596,16 @@ export const ChartsMain = () => {
         ],
       };
     }
+    return data;
   }
 
-  const dispatch = useAppDispatch();
-
-  const handleClick = (coin) => {
+  const handleClick = (coin: { id: any; name: any }) => {
     dispatch(
       priceChart({
         currency: currency.currency,
         coinId: coin.id,
         coinName: coin.name,
-        days: numberOfDays,
+        days: String(numberOfDays),
       })
     );
   };
@@ -515,7 +616,7 @@ export const ChartsMain = () => {
         currency: currency.currency,
         coinId: "bitcoin",
         coinName: "Bitcoin",
-        days: numberOfDays,
+        days: String(numberOfDays),
       })
     );
   }, []);
@@ -541,12 +642,12 @@ export const ChartsMain = () => {
       timeInterval({
         chartCoins: combinedChartCoins,
         currency: currency.currency,
-        days: numberOfDays,
+        days: String(numberOfDays),
       })
     );
   }, [numberOfDays, currency]);
 
-  function handleNumberOfDays(value) {
+  function handleNumberOfDays(value: React.SetStateAction<number>) {
     setNumberOfDays(value);
   }
 
@@ -557,7 +658,7 @@ export const ChartsMain = () => {
       }`}
     >
       <div className="text-xs flex items-center justify-center w-full mt-2">
-        Select currency to view statistics
+        Select coin to view statistics
       </div>
       <div>
         <CoinSwiper
@@ -567,23 +668,23 @@ export const ChartsMain = () => {
       </div>
       <div></div>
 
-      <div className="flex mt-4 w-[1010px] h-[350] items-center justify-between">
-        <div className="w-[495px]  flex flex-col items-start justify-center bg-second rounded-lg drop-shadow-sm p-4">
+      <div className="flex flex-col sm:flex-row mt-3 sm:my-6 sm:w-[1010px] sm:h-[350px] items-center justify-between w-[330px]">
+        <div className="w-[330px] sm:w-[495px] flex flex-col items-start justify-center bg-second rounded-lg drop-shadow-sm p-4">
           <div className="text-shadowDark text-lg font-bold">{`${displayLineData}`}</div>
           <div className="text-shadowDark text-sm font-semibold">{`${dateToDisplay}`}</div>
-          <div className=" w-[475px] h-[300px]">
+          <div className="w-[300px] h-[220px] flex justify-center sm:w-[475px] sm:h-[300px]">
             <Line
               options={options}
               data={pricesData(combinedChartCoins.length)}
             />
           </div>
         </div>
-        <div className="w-[495px] flex flex-col items-start justify-center bg-second rounded-md drop-shadow-sm p-4">
+        <div className="mt-2 sm:mt-0 w-[330px] sm:w-[495px] flex flex-col items-start justify-center bg-second rounded-lg drop-shadow-sm p-4">
           <div className="text-shadowDark text-lg font-bold">Volume 24h</div>
           <div className="text-shadowDark text-sm font-semibold">{`${dateToDisplay}`}</div>
-          <div className=" w-[475px] h-[300px]">
+          <div className="w-[300px] h-[220px] sm:w-[475px] sm:h-[300px]">
             <Bar
-              options={options}
+              options={optionsBar}
               data={volumeData(combinedChartCoins.length)}
             />
           </div>

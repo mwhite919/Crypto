@@ -1,16 +1,45 @@
 "use client";
 
-import { useEffect, useState, useRef, useCallback } from "react";
+import {
+  useEffect,
+  useState,
+  useRef,
+  useCallback,
+  FC,
+  ChangeEvent,
+  SetStateAction,
+  JSXElementConstructor,
+  Key,
+  PromiseLikeOfReactNode,
+  ReactElement,
+  ReactNode,
+  ReactPortal,
+} from "react";
 import axios from "axios";
 import { CloseIcon, ResetIcon } from "@/app/icons/Icons";
 import { DropDownRow } from "../constants/DropDownRow";
-import db from "../firebase/config";
+import initializeFirebase from "../firebase/config";
 import CharacterCounter from "./CharacterCounter";
 import { addDoc, collection } from "firebase/firestore";
 import { uid } from "uid";
 
-export const CoinForm = ({ allCoinsData, handleForm }) => {
-  const [coin, setCoin] = useState({});
+interface Coin {
+  id: string;
+  coin: any[];
+  amount: number;
+  purchasePrice: number;
+  date: string;
+  image: string;
+  name: string;
+}
+
+interface CoinFormProps {
+  allCoinsData: Coin[];
+  handleForm: () => void;
+}
+
+export const CoinForm = ({ allCoinsData, handleForm }: CoinFormProps) => {
+  const [coin, setCoin] = useState<Coin | undefined>(undefined);
   const [missingCoin, setMissingCoin] = useState(false);
   const [amount, setAmount] = useState("");
   const [missingAmount, setMissingAmount] = useState(false);
@@ -22,8 +51,9 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
   const [focusedIndex, setFocusedIndex] = useState(-1);
   const [showResults, setShowResults] = useState(false);
   const resultContainer = useRef<HTMLDivElement>(null);
+  const { db } = initializeFirebase();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     if (!date || !amount || !coin) {
       if (!date) setDateError(true);
@@ -31,7 +61,7 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
     if (!amount) {
       setMissingAmount(true);
     }
-    if (!coin.name) {
+    if (!coin?.name) {
       setMissingCoin(true);
     }
     if (coin && amount && date) {
@@ -46,7 +76,7 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
       const docRef = await addDoc(collectionRef, payload);
       handleForm();
       setSearchValue("");
-      setCoin({});
+      setCoin(undefined);
       setAmount("");
       setDate("");
     }
@@ -55,14 +85,14 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
   const closeForm = () => {
     handleForm();
     setSearchValue("");
-    setCoin({});
+    setCoin(undefined);
     setAmount("");
     setDate("");
   };
 
   const resetForm = () => {
     setSearchValue("");
-    setCoin({});
+    setCoin(undefined);
     setAmount("");
     setDate("");
     setnumError(false);
@@ -86,7 +116,9 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
     getPurchasePrice(coin.id, date.split("-").reverse().join("-"));
   }
 
-  const handleSearchChange = (e) => {
+  const handleSearchChange = (e: {
+    target: { validity: { patternMismatch: any }; value: any };
+  }) => {
     const newValueIsValid = !e.target.validity.patternMismatch;
     if (numError) {
       if (newValueIsValid) {
@@ -98,7 +130,9 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
     setShowResults(true);
   };
 
-  const handleBlur = (e) => {
+  const handleBlur = (e: {
+    target: { validity: { patternMismatch: any } };
+  }) => {
     if (e.target.validity.patternMismatch) {
       setnumError(true);
     }
@@ -118,18 +152,20 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
     }
   };
 
-  const handleDate = (e) => {
+  const handleDate = (e: ChangeEvent<HTMLInputElement>) => {
     setDateError(false);
     setDate(e.target.value);
   };
 
-  const handleAmountChange = (e) => {
+  const handleAmountChange = (e: {
+    target: { value: SetStateAction<string> };
+  }) => {
     setAmount(e.target.value);
   };
 
-  const handleSearch = (searchedCoin) => {
+  const handleSearch = (searchedCoin: SetStateAction<Coin | undefined>) => {
     if (searchValue) {
-      setSearchValue(searchedCoin.name);
+      setSearchValue(searchedCoin?.name as string);
       setCoin(searchedCoin);
       setMissingCoin(false);
     }
@@ -159,27 +195,33 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
     setFocusedIndex(nextIndexCount);
   };
 
-  const filteredCoinsArray = allCoinsData?.filter((coin) => {
+  const filteredCoinsArray = allCoinsData?.filter((coin: { name: string }) => {
     const name = coin.name.toLowerCase();
     const search = searchValue.toLowerCase();
     const coins = name.startsWith(search);
     return coins;
   });
 
-  const mappedCoinsArray = filteredCoinsArray?.map((coin, index) => (
-    <DropDownRow
-      key={coin.id}
-      ref={index === focusedIndex ? resultContainer : null}
-      className={`
-    cursor-pointer
-    hover:bg-slate-200
-     ${focusedIndex === index ? "active bg-slate-200" : "bg-white"}`}
-      onMouseDown={() => handleSelection(index)}
-      onBlur={resetSearchComplete}
-    >
-      {coin.name}
-    </DropDownRow>
-  ));
+  const mappedCoinsArray = filteredCoinsArray?.map(
+    (coin: { id: Key | null | undefined; name: string }, index: number) => (
+      <DropDownRow
+        key={coin.id}
+        ref={index === focusedIndex ? resultContainer : null}
+        className={`
+    cursor-pointer text-shadowDark bg-second
+    hover:bg-shadowDark hover:text-shadowLight
+     ${
+       focusedIndex === index
+         ? "active text-shadowLight bg-shadowDark"
+         : "text-shadowDark bg-second"
+     }`}
+        onMouseDown={() => handleSelection(index)}
+        onBlur={resetSearchComplete}
+      >
+        {coin.name}
+      </DropDownRow>
+    )
+  );
 
   const handleSelection = (selectedIndex: number) => {
     const selectedItem = filteredCoinsArray[selectedIndex];
@@ -193,27 +235,24 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
   return (
     <>
       <div className="drop-shadow-xl border-[1px] border-base">
-        <div className="flex w-[700px] h-[300px] justify-center items-center flex-col bg-second text-shadowDark rounded-lg">
+        <div className="flex w-[290px] sm:w-[700px] h-[500px] sm:h-[300px] justify-center items-center flex-col bg-second text-shadowDark rounded-lg">
           <div className="flex items-center justify-between w-full">
             <div className="text-second">Select Coins</div>
-            <div className="w-16 flex justify-between mb-3">
+            <div className="hidden w-16 sm:flex justify-between ml-5 mb-5 sm:mb-3">
               <button onClick={resetForm}>
                 <ResetIcon />
               </button>
-              <button onClick={closeForm}>
-                <CloseIcon />
-              </button>
             </div>
           </div>
-          <div className=" w-full flex justify-center items-center ">
-            <div className="h-48 w-1/2 flex items-center justify-center p-10 ">
+          <div className=" w-full flex flex-col sm:flex-row justify-center items-center ">
+            <div className="h-24 border border-base rounded-md sm:border-none sm:h-48 w-1/2 flex items-center justify-center p-10 ">
               {coin?.name && (
-                <div className="relative ">
+                <div className="relative py-5 px-3 m-3 ">
                   <div className="absolute -inset-5">
-                    <div className="w-full h-full max-w-sm mx-auto lg:mx-0 opacity-30 blur-lg bg-gradient-to-r from-second to-primary"></div>
+                    <div className="w-full h-full max-w-sm mx-auto sm:mx-0 opacity-30 blur-lg bg-gradient-to-r from-accent to-primary"></div>
                   </div>
-                  <div className="flex items-center justify-center relative p-8 text-lg font-bold text-second bg-second font-pj rounded-xl ">
-                    <img src={coin?.image} className="h-16" />
+                  <div className="border border-base flex items-center justify-center relative p-12 sm:p-8 text-lg font-bold text-shadowDark bg-second font-pj rounded-xl ">
+                    <img src={coin?.image} className="h-16 pr-1" />
                     <span className={CharacterCounter(coin?.name.length)}>
                       {coin?.name}
                     </span>
@@ -221,12 +260,12 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
                 </div>
               )}
             </div>
-            <div className="flex flex-col justify-start h-48 w-1/2 items-start ">
+            <div className="flex flex-col justify-start h-48 my-8 sm:w-1/2 items-start ">
               <form>
                 {missingCoin && (
                   <p
                     role="alert"
-                    className="text-xs"
+                    className="text-xs pl-3"
                     style={{ color: "rgb(200, 0, 0)" }}
                   >
                     Please choose a coin.
@@ -241,7 +280,7 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
                     onBlur={resetSearchComplete}
                     placeholder={"Start typing to find your coin..."}
                     type="text"
-                    className={`mx-3 drop-shadow-md rounded-sm pl-3 w-72 shadow-md relative inline-block focus: border-slate-200
+                    className={`mx-3 drop-shadow-md rounded-sm pl-3 w-[240px] sm:w-72 shadow-md relative text-shadowDark bg-second inline-block focus: border-slate-200
                     ${missingCoin ? "border-2 mb-2 border-rose-600" : "my-3"}`}
                   />
                   <div className="mx-3 absolute max-h-44 overflow-y-auto w-72">
@@ -251,7 +290,7 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
                 {numError && (
                   <p
                     role="alert"
-                    className="text-xs"
+                    className="text-xs pl-3"
                     style={{ color: "rgb(200, 0, 0)" }}
                   >
                     Please make sure you've entered a <em>number</em>
@@ -260,7 +299,7 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
                 {missingAmount && (
                   <p
                     role="alert"
-                    className="text-xs"
+                    className="text-xs pl-3"
                     style={{ color: "rgb(200, 0, 0)" }}
                   >
                     Please enter an amount.
@@ -269,19 +308,19 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
                 <input
                   type="text"
                   onChange={handleAmountChange}
-                  value={amount}
-                  placeholder="How much?"
+                  value={amount ? amount : ""}
+                  placeholder="How many?"
                   inputMode="decimal"
                   pattern="[0-9]*[.,]?[0-9]+"
                   onBlur={handleBlur}
-                  className={`mx-3 drop-shadow-md rounded-sm pl-3 ${
+                  className={`mx-3 drop-shadow-md rounded-sm pl-3 text-shadowDark bg-second ${
                     numError ? "border-2 mb-2 border-rose-600" : "my-3"
                   }`}
                 />
                 {dateError && (
                   <p
                     role="alert"
-                    className="text-xs"
+                    className="text-xs pl-3"
                     style={{ color: "rgb(200, 0, 0)" }}
                   >
                     Please enter a date.
@@ -295,7 +334,7 @@ export const CoinForm = ({ allCoinsData, handleForm }) => {
                   value={date}
                   onBlur={handleDateBlur}
                   max={new Date().toISOString().split("T")[0]}
-                  className={`mx-3 drop-shadow-md rounded-sm pl-3 ${
+                  className={`mx-3 drop-shadow-md rounded-sm pl-3 text-shadowDark bg-second ${
                     dateError ? "border-2 mb-2 border-rose-600" : "my-3"
                   }`}
                 />

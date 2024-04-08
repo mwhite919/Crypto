@@ -23,44 +23,8 @@ export const priceChart = createAsyncThunk(
         time: days,
         prices: json.prices,
         volume: json.total_volumes,
+        yData: json.prices,
       })
     );
   }
 );
-
-const initialState = {
-  chartCoins: [],
-};
-
-const priceChartSlice = createSlice({
-  name: "priceChart",
-  initialState,
-  reducers: {
-    setDays: (state, action) => {
-      state.days = action.payload;
-    },
-    setPrices: (state, action) => {
-      state.prices = action.payload;
-    },
-    setVolume: (state, action) => {
-      state.total_volume = action.payload;
-    },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(priceChart.pending, (state, action) => {
-        state.loading = true;
-        state.error = "";
-      })
-      .addCase(priceChart.fulfilled, (state, action) => {
-        state.chartCoins = action.payload;
-      })
-      .addCase(priceChart.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message ?? "An unkown error occurrfetchData";
-      });
-  },
-});
-
-export const { setDays, setVolume, setPrices } = priceChartSlice.actions;
-export default priceChartSlice.reducer;

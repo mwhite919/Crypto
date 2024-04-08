@@ -29,7 +29,8 @@
     "app/Providers/CryptoProvider.tsx",
     "app/Providers/CryptoProvider.tsx",
     "app/Providers/CryptoProvider.tsx",
-    "app/constants/DropDownRow.js"
+    "app/constants/DropDownRow.js",
+    "redux/charts/timeSlice.js"
   ],
   "exclude": ["node_modules"]
 }

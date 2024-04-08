@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
-import { initializeApp, getApps, getApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { initializeApp } from "firebase/app";
 import {
   getAuth,
+  onAuthStateChanged,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut,
 } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -18,28 +17,41 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-export { app, auth };
-export default getFirestore();
+export default function initializeFirebase() {
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  return { app, auth, db };
+}
 
 export function signup(email, password) {
+  const { auth } = initializeFirebase();
   return createUserWithEmailAndPassword(auth, email, password);
 }
 
 export function login(email, password) {
+  const { auth } = initializeFirebase();
   return signInWithEmailAndPassword(auth, email, password);
 }
 
 export function logout() {
+  const { auth } = initializeFirebase();
   return signOut(auth);
 }
+
+export function getFirebaseFirestore() {
+  const { firestore } = initializeFirebase();
+  return firestore;
+}
+
 export function useAuth() {
-  const [currentUser, setCurrentUser] = useState();
+  const [currentUser, setCurrentUser] = useState(null);
+
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (user) => setCurrentUser(user));
-    return unsub;
+    const { auth } = initializeFirebase();
+    const unsubscribe = onAuthStateChanged(auth, setCurrentUser);
+    return () => unsubscribe();
   }, []);
+
   return currentUser;
 }

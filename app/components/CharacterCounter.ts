@@ -1,4 +1,4 @@
-function CharacterCounter(length: string) {
+function CharacterCounter(length: number) {
   if (length < 9) {
     return "text-center text-lg ";
   }
