@@ -87,11 +87,11 @@ export default function Page() {
           <PortfolioList handleEditForm={handleEditForm} />
         </div>
       ) : (
-        <div className="flex justify-center items-center text-lg  mt-36">
+        <div className="flex sm:flex-row flex-col text-center justify-center items-center text-lg min-h-lvh w-full ">
           Porfolio's are available only to our members. Please{" "}
           <Link
             href="/sign-in"
-            className="drop-shadow-md text-accent mx-2 hover:scale-105"
+            className=" drop-shadow-md text-accent mx-2 hover:scale-105"
           >
             Sign-in
           </Link>{" "}
