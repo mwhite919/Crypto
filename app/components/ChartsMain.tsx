@@ -198,7 +198,7 @@ export const ChartsMain = () => {
   };
 
   function pricesData(coinCount: number): ChartData<"line", any, unknown> {
-    if (coinCount <= 1) {
+    if (coinCount === 1) {
       return {
         labels: everyNth(
           combinedChartCoins[0]?.prices.map(
