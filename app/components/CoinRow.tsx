@@ -126,7 +126,7 @@ export default function CoinRow({ coin, index }: Props) {
     datasets: [
       {
         data: graphData,
-        borderColor: "red",
+        borderColor: colorsGroup?.coin1.stopColor1,
         pointRadius: 0,
         borderWidth: 1,
         fill: true,
