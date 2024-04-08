@@ -246,7 +246,19 @@ export default function Navigation() {
                   href="/"
                   className="flex items-center sm:mx-2 drop-shadow-md text-accent hover:scale-105"
                 >
-                  <img src="https://i.ibb.co/RBwgfPy/Logo.png" alt="logo"></img>
+                  {mode === "dark" ? (
+                    <img
+                      src="https://i.ibb.co/9py9W2V/site-Logo-Purple-2.png"
+                      alt="logo"
+                      className="h-16"
+                    ></img>
+                  ) : (
+                    <img
+                      src="https://i.ibb.co/Z22x96J/site-Logo-Purple-1.png"
+                      alt="logo"
+                      className="h-16"
+                    ></img>
+                  )}
                 </Link>
               </div>
               <Link
