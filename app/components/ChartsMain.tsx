@@ -27,7 +27,7 @@ import "chartjs-adapter-date-fns";
 import { Line, Bar } from "react-chartjs-2";
 import { graphStyling } from "../constants/graphStyling";
 import { useCrypto } from "../Providers/CryptoProvider";
-import { everyNth } from "./Every_nth";
+import { everyNth } from "../utils/Every_nth";
 import { convertUnixToDate } from "../utils/UnixTimeConverter";
 import { ChartCoin } from "../sharedinterfaces";
 

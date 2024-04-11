@@ -17,6 +17,7 @@ import { useAppSelector } from "@/redux/hooks";
 import { useGetSingleCoinQuery } from "@/app/Providers/api/apiSlice";
 import { useCrypto } from "@/app/Providers/CryptoProvider";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Page({ params }: { params: { id: string } }) {
   const { palette, mode } = useCrypto();
@@ -96,27 +97,25 @@ export default function Page({ params }: { params: { id: string } }) {
             </div>
             <div className="flex h-4">
               {facebookLink && (
-                <button
-                  onClick={() =>
-                    openInNewTab(`https://www.facebook.com/${facebookLink}`)
-                  }
+                <Link
+                  href={`https://www.facebook.com/${facebookLink}`}
+                  target="_blank"
                 >
                   <FacebookIcon />
-                </button>
+                </Link>
               )}
               {XScreenName && (
-                <button
-                  onClick={() =>
-                    openInNewTab(`https://www.twitter.com/${XScreenName}`)
-                  }
+                <Link
+                  target="_blank"
+                  href={`https://www.twitter.com/${XScreenName}`}
                 >
                   <XIcon />
-                </button>
+                </Link>
               )}
               {redditPage && (
-                <button onClick={() => openInNewTab(`${redditPage}`)}>
+                <Link target="_blank" href={redditPage}>
                   <RedditIcon />
-                </button>
+                </Link>
               )}
             </div>
           </div>
@@ -238,31 +237,35 @@ export default function Page({ params }: { params: { id: string } }) {
                 }}
               />
             )}
-            {description?.length > 500 && (
+            {description?.length > 500 ? (
               <button
                 className="text-accent italic drop-shadow-sm"
                 onClick={() => setShowMore(!showMore)}
               >
                 {showMore ? " See less" : "...See more"}
               </button>
+            ) : (
+              ""
             )}
           </div>
 
           <div className="flex flex-col col-span-2">
-            {publicNotice && (
+            {publicNotice ? (
               <div className="bg-second mt-4 sm:m-3 p-5 flex items-center font-italic shadow-sm shadow-accent rounded-lg">
                 <p className="italic">
                   Public Notice:{" "}
                   <div dangerouslySetInnerHTML={{ __html: publicNotice }} />
                 </p>
               </div>
+            ) : (
+              ""
             )}
 
             {webPage && (
               <div className="h-6 bg-second m-2 sm:m-3 p-5 flex items-center shadow-sm shadow-accent rounded-lg">
-                <button onClick={() => openInNewTab(`${webPage}`)}>
+                <Link target="_blank" href={`${webPage}`}>
                   <NewTabLinkIcon />
-                </button>
+                </Link>
                 <p className="m-2">{name}'s Webpage</p>
                 <CopyToClipboard text={webPage} onCopy={() => setCopied(true)}>
                   <CopyIcon />
@@ -270,11 +273,11 @@ export default function Page({ params }: { params: { id: string } }) {
               </div>
             )}
 
-            {blockChainwebPage && (
+            {blockChainwebPage ? (
               <div className="h-6 bg-second m-2 sm:m-3 p-5 flex items-center shadow-sm shadow-accent rounded-lg">
-                <button onClick={() => openInNewTab(`${blockChainwebPage}`)}>
+                <Link target="_blank" href={blockChainwebPage}>
                   <NewTabLinkIcon />
-                </button>
+                </Link>
                 <p className="m-2">{name}'s Block-Chain Webpage</p>
                 <CopyToClipboard
                   text={blockChainwebPage}
@@ -283,13 +286,15 @@ export default function Page({ params }: { params: { id: string } }) {
                   <CopyIcon />
                 </CopyToClipboard>
               </div>
+            ) : (
+              ""
             )}
 
-            {officialForumwebPage && (
+            {officialForumwebPage ? (
               <div className="h-6 bg-second m-2 p-5 flex items-center shadow-sm shadow-accent rounded-lg">
-                <button onClick={() => openInNewTab(`${officialForumwebPage}`)}>
+                <Link target="_blank" href={`${officialForumwebPage}`}>
                   <NewTabLinkIcon />
-                </button>
+                </Link>
                 <p className="m-2">{name}'s Official Forum</p>
                 <CopyToClipboard
                   text={officialForumwebPage}
@@ -298,6 +303,8 @@ export default function Page({ params }: { params: { id: string } }) {
                   <CopyIcon />
                 </CopyToClipboard>
               </div>
+            ) : (
+              ""
             )}
           </div>
         </div>
