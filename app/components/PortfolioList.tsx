@@ -89,6 +89,7 @@ function PortfolioList({ handleEditForm }: PortfolioListProps) {
                         src={c.coin.image}
                         className="h-16 hidden sm:inline"
                         width={64}
+                        height={64}
                       />
                       <div className="flex flex-col justify-center items-start font-semibold">
                         <div
@@ -105,6 +106,7 @@ function PortfolioList({ handleEditForm }: PortfolioListProps) {
                         src={c.coin.image}
                         className="h-8 sm:hidden"
                         width={32}
+                        height={32}
                       />
                     </div>
                   </div>

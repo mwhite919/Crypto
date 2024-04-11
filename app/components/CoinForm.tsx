@@ -256,6 +256,8 @@ export const CoinForm = ({ allCoinsData, handleForm }: CoinFormProps) => {
                     <Image
                       src={coin?.image}
                       className="h-16 pr-1"
+                      width={64}
+                      height={64}
                       alt="Coin Icon"
                     />
                     <span className={CharacterCounter(coin?.name.length)}>

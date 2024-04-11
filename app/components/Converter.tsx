@@ -173,6 +173,7 @@ const Converter = ({ allCoinsData }: { allCoinsData: CoinType[] }) => {
                       <Image
                         src={coin1.image as string}
                         height={32}
+                        width={32}
                         className="m-2"
                         alt="First Coin Icon"
                       />
@@ -242,6 +243,7 @@ const Converter = ({ allCoinsData }: { allCoinsData: CoinType[] }) => {
                         src={coin2.image as string}
                         className="m-2"
                         height={32}
+                        width={32}
                       />
                       <h1 className="font-semibold sm:text-xl">
                         {coin2.name}({coin2?.symbol?.toUpperCase()})

@@ -168,7 +168,7 @@ export default function CoinRow({ coin, index }: Props) {
           {index}
         </div>
         <div className="flex items-center justify-center col-span-1">
-          <Image src={coin.image} className="w-8 max-h-8 " alt="coin icon" />
+          <Image src={coin.image} width={32} height={32} alt="coin icon" />
         </div>
         <div className="col-span-2 cursor-pointer flex justify-start items-center hover:scale-105">
           <div onClick={() => handleRoute(coin.id)}>{coin.name}</div>

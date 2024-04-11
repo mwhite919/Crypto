@@ -188,6 +188,7 @@ export default function Navigation() {
               className="h-4 w-4"
               alt="Bitcoin Icon"
               width={16}
+              height={16}
             />{" "}
             <div>
               <span className="hidden sm:inline">BTC</span>{" "}
@@ -212,6 +213,7 @@ export default function Navigation() {
                 className="h-4 w-4"
                 alt="Eth Icon"
                 width={16}
+                height={16}
               />{" "}
               <div>
                 <span className="hidden sm:inline">ETC</span>{" "}
@@ -244,8 +246,8 @@ export default function Navigation() {
                     <Image
                       src="https://i.ibb.co/9py9W2V/site-Logo-Purple-2.png"
                       alt="logo"
-                      className="h-16"
                       height={64}
+                      width={140}
                     />
                   ) : (
                     <Image
@@ -253,6 +255,7 @@ export default function Navigation() {
                       alt="logo"
                       className="h-16"
                       height={64}
+                      width={140}
                     />
                   )}
                 </Link>

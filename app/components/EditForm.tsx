@@ -138,9 +138,9 @@ export const EditForm: FC<EditFormProps> = ({ coinToEdit, handleEditForm }) => {
                 <div className="flex items-center justify-center relative p-8 text-lg font-bold font-pj rounded-xl ">
                   <Image
                     src={coin.coin.image as string}
-                    className="h-16"
                     alt="Coin Icon"
                     height={64}
+                    width={64}
                   />
                   <span className={CharacterCounter(coin?.coin?.name.length)}>
                     {coin?.coin.name}

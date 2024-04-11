@@ -95,6 +95,8 @@ export const CoinSwiper: React.FC<Props> = ({
                         className="w-7 m-2"
                         src={coin.image}
                         alt={`${coin.image}'s Icon`}
+                        width={28}
+                        height={28}
                       />
                     </div>
                     <div className="flex flex-col justify-center items-even h-full ">
