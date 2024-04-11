@@ -237,24 +237,28 @@ export default function Page({ params }: { params: { id: string } }) {
                 }}
               />
             )}
-            {description?.length > 500 && (
+            {description?.length > 500 ? (
               <button
                 className="text-accent italic drop-shadow-sm"
                 onClick={() => setShowMore(!showMore)}
               >
                 {showMore ? " See less" : "...See more"}
               </button>
+            ) : (
+              ""
             )}
           </div>
 
           <div className="flex flex-col col-span-2">
-            {publicNotice && (
+            {publicNotice ? (
               <div className="bg-second mt-4 sm:m-3 p-5 flex items-center font-italic shadow-sm shadow-accent rounded-lg">
                 <p className="italic">
                   Public Notice:{" "}
                   <div dangerouslySetInnerHTML={{ __html: publicNotice }} />
                 </p>
               </div>
+            ) : (
+              ""
             )}
 
             {webPage && (
@@ -269,7 +273,7 @@ export default function Page({ params }: { params: { id: string } }) {
               </div>
             )}
 
-            {blockChainwebPage && (
+            {blockChainwebPage ? (
               <div className="h-6 bg-second m-2 sm:m-3 p-5 flex items-center shadow-sm shadow-accent rounded-lg">
                 <Link target="_blank" href={blockChainwebPage}>
                   <NewTabLinkIcon />
@@ -282,9 +286,11 @@ export default function Page({ params }: { params: { id: string } }) {
                   <CopyIcon />
                 </CopyToClipboard>
               </div>
+            ) : (
+              ""
             )}
 
-            {officialForumwebPage && (
+            {officialForumwebPage ? (
               <div className="h-6 bg-second m-2 p-5 flex items-center shadow-sm shadow-accent rounded-lg">
                 <Link target="_blank" href={`${officialForumwebPage}`}>
                   <NewTabLinkIcon />
@@ -297,6 +303,8 @@ export default function Page({ params }: { params: { id: string } }) {
                   <CopyIcon />
                 </CopyToClipboard>
               </div>
+            ) : (
+              ""
             )}
           </div>
         </div>
