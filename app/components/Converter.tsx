@@ -27,6 +27,7 @@ ChartJS.register(
 import { graphStyling } from "../constants/graphStyling";
 import { DropDownRow } from "../constants/DropDownRow";
 import { CoinType } from "../sharedinterfaces";
+import Image from "next/image";
 
 const ConverterBox = styled.div`
   width: 1010px;
@@ -169,7 +170,12 @@ const Converter = ({ allCoinsData }: { allCoinsData: CoinType[] }) => {
                   <h2 className="text-sm">You sell:</h2>
                   {coin1 && (
                     <div className="flex items-center">
-                      <img src={coin1.image} className="h-8 m-2" />
+                      <Image
+                        src={coin1.image as string}
+                        height={32}
+                        className="m-2"
+                        alt="First Coin Icon"
+                      />
                       <h1 className="sm:text-xl">
                         {coin1.name} ({coin1?.symbol?.toUpperCase()})
                       </h1>
@@ -231,10 +237,11 @@ const Converter = ({ allCoinsData }: { allCoinsData: CoinType[] }) => {
                   <h2 className="text-sm">You buy:</h2>
                   {coin2 && (
                     <div className="flex items-center">
-                      <img
+                      <Image
                         alt="coin logo"
-                        src={coin2.image}
-                        className="h-8 m-2"
+                        src={coin2.image as string}
+                        className="m-2"
+                        height={32}
                       />
                       <h1 className="font-semibold sm:text-xl">
                         {coin2.name}({coin2?.symbol?.toUpperCase()})

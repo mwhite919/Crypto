@@ -19,7 +19,6 @@ import {
   Tooltip,
   Filler,
   Legend,
-  Colors,
   BarElement,
   ChartOptions,
   ChartData,

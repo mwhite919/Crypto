@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, FC, MouseEvent, SetStateAction, useState } from "react";
+import { ChangeEvent, FC, useState } from "react";
 import axios from "axios";
 import { CloseIcon, ResetIcon } from "@/app/icons/Icons";
 import CharacterCounter from "./CharacterCounter";
@@ -8,6 +8,7 @@ import initializeFirebase from "../firebase/config";
 import { setDoc, doc, collection } from "firebase/firestore";
 import { uid } from "uid";
 import { Coin } from "../sharedinterfaces";
+import Image from "next/image";
 
 interface EditFormProps {
   coinToEdit: Coin;
@@ -135,7 +136,12 @@ export const EditForm: FC<EditFormProps> = ({ coinToEdit, handleEditForm }) => {
                   <div className="w-full h-full max-w-sm mx-auto lg:mx-0 opacity-30 blur-lg bg-gradient-to-r from-second to-primary"></div>
                 </div>
                 <div className="flex items-center justify-center relative p-8 text-lg font-bold font-pj rounded-xl ">
-                  <img src={coin?.coin.image} className="h-16" />
+                  <Image
+                    src={coin.coin.image as string}
+                    className="h-16"
+                    alt="Coin Icon"
+                    height={64}
+                  />
                   <span className={CharacterCounter(coin?.coin?.name.length)}>
                     {coin?.coin.name}
                   </span>

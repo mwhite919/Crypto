@@ -16,6 +16,7 @@ import {
 import { useAppSelector } from "@/redux/hooks";
 import { useGetSingleCoinQuery } from "@/app/Providers/api/apiSlice";
 import { useCrypto } from "@/app/Providers/CryptoProvider";
+import Image from "next/image";
 
 export default function Page({ params }: { params: { id: string } }) {
   const { palette, mode } = useCrypto();
@@ -88,7 +89,7 @@ export default function Page({ params }: { params: { id: string } }) {
           )}
           <div className="flex flex-col items-center justify-center col-span-1 p-5 h-60 bg-second shadow-sm shadow-accent m-4 sm:m-3 rounded-lg ">
             <div>
-              <img src={icon} />
+              <Image src={icon} alt="Icon" />
             </div>
             <div className="text-xl font-bold drop-shadow-sm">
               {name}({abv})

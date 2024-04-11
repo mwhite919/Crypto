@@ -26,6 +26,7 @@ ChartJS.register(
   CategoryScale
 );
 import { CoinType } from "../sharedinterfaces";
+import Image from "next/image";
 
 const Row = styled.div`
   width: 1010px;
@@ -167,7 +168,7 @@ export default function CoinRow({ coin, index }: Props) {
           {index}
         </div>
         <div className="flex items-center justify-center col-span-1">
-          <img src={coin.image} className="w-8 max-h-8 " alt="coin icon" />
+          <Image src={coin.image} className="w-8 max-h-8 " alt="coin icon" />
         </div>
         <div className="col-span-2 cursor-pointer flex justify-start items-center hover:scale-105">
           <div onClick={() => handleRoute(coin.id)}>{coin.name}</div>

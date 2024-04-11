@@ -12,6 +12,7 @@ import { useAppSelector } from "@/redux/hooks";
 import initializeFirebase from "../firebase/config";
 import { onSnapshot, collection, doc, deleteDoc } from "firebase/firestore";
 import { Coin } from "../sharedinterfaces";
+import Image from "next/image";
 
 interface PortfolioListProps {
   handleEditForm: (data: any) => void;
@@ -83,9 +84,11 @@ function PortfolioList({ handleEditForm }: PortfolioListProps) {
                 <div className="flex flex-col sm:flex-row justify-between w-full">
                   <div className="sm:h-48 sm:w-48 flex items-center justify-center  ">
                     <div className="flex items-center w-[276px] p-4 justify-between sm:justify-center sm:flex-col sm:p-8 text-shadowDark sm:text-lg sm:bg-base font-pj rounded-xl ">
-                      <img
+                      <Image
+                        alt="Coin Icon"
                         src={c.coin.image}
                         className="h-16 hidden sm:inline"
+                        width={64}
                       />
                       <div className="flex flex-col justify-center items-start font-semibold">
                         <div
@@ -97,7 +100,12 @@ function PortfolioList({ handleEditForm }: PortfolioListProps) {
                           Purchased {c.date.split("-").reverse().join("-")}
                         </div>
                       </div>
-                      <img src={c.coin.image} className="h-8 sm:hidden" />
+                      <Image
+                        alt="Coin Icon"
+                        src={c.coin.image}
+                        className="h-8 sm:hidden"
+                        width={32}
+                      />
                     </div>
                   </div>
                   <div className="flex flex-col text-center w-full">

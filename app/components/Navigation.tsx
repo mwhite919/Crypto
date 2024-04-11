@@ -1,17 +1,6 @@
 "use client";
 import Link from "next/link";
-import {
-  useState,
-  useEffect,
-  useRef,
-  useCallback,
-  JSXElementConstructor,
-  Key,
-  PromiseLikeOfReactNode,
-  ReactElement,
-  ReactNode,
-  ReactPortal,
-} from "react";
+import { useState, useEffect, useRef, useCallback, Key } from "react";
 import {
   useGetAllCoinsQuery,
   useGetTopBarInfoQuery,
@@ -35,6 +24,7 @@ import { changeCurr } from "@/redux/currency/currencySlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { useAppSelector } from "@/redux/hooks";
 import { useAuth, logout } from "../firebase/config";
+import Image from "next/image";
 
 export default function Navigation() {
   const currency = useAppSelector((state) => state.currency);
@@ -193,9 +183,11 @@ export default function Navigation() {
           </div>
 
           <div className="mx-4  flex items-center justify-center">
-            <img
+            <Image
               src="https://i.ibb.co/VpjD7V6/Bitcoin-svg.png"
               className="h-4 w-4"
+              alt="Bitcoin Icon"
+              width={16}
             />{" "}
             <div>
               <span className="hidden sm:inline">BTC</span>{" "}
@@ -215,9 +207,11 @@ export default function Navigation() {
 
           <div>
             <div className="mx-4 flex items-center justify-center">
-              <img
+              <Image
                 src="https://i.ibb.co/3Spb2vB/Ethereum-icon-purple-svg.png"
                 className="h-4 w-4"
+                alt="Eth Icon"
+                width={16}
               />{" "}
               <div>
                 <span className="hidden sm:inline">ETC</span>{" "}
@@ -247,17 +241,19 @@ export default function Navigation() {
                   className="flex items-center sm:mx-2 drop-shadow-md text-accent hover:scale-105"
                 >
                   {mode === "dark" ? (
-                    <img
+                    <Image
                       src="https://i.ibb.co/9py9W2V/site-Logo-Purple-2.png"
                       alt="logo"
                       className="h-16"
-                    ></img>
+                      height={64}
+                    />
                   ) : (
-                    <img
+                    <Image
                       src="https://i.ibb.co/Z22x96J/site-Logo-Purple-1.png"
                       alt="logo"
                       className="h-16"
-                    ></img>
+                      height={64}
+                    />
                   )}
                 </Link>
               </div>

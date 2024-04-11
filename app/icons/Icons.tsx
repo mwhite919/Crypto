@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 export default function ArrowDown() {
   return (
@@ -114,9 +115,11 @@ export function ArrowBullet() {
 
 export function XIcon() {
   return (
-    <img
+    <Image
       src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/x-social-media-black-icon.png"
       className="h-4 w-4 m-2 hover:scale-125"
+      width={16}
+      height={16}
       alt="X Social Media Black icon in SVG, PNG formats"
     />
   );
@@ -124,9 +127,11 @@ export function XIcon() {
 
 export function FacebookIcon() {
   return (
-    <img
+    <Image
       src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/facebook-app-round-icon.png"
       className="h-4 w-4 m-2 hover:scale-125"
+      width={16}
+      height={16}
       alt="Facebook App Round icon in SVG, PNG formats"
     />
   );
@@ -134,12 +139,14 @@ export function FacebookIcon() {
 
 export function RedditIcon() {
   return (
-    <img
+    <Image
       src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/reddit-icon.png"
       className="h-4 w-4 m-2 hover:scale-125"
+      width={16}
+      height={16}
       alt="Reddit icon in SVG, PNG formats "
       title="Reddit icon"
-    ></img>
+    />
   );
 }
 
