@@ -22,6 +22,7 @@ import initializeFirebase from "../firebase/config";
 import CharacterCounter from "./CharacterCounter";
 import { addDoc, collection } from "firebase/firestore";
 import { uid } from "uid";
+import Image from "next/image";
 
 interface Coin {
   id: string;
@@ -252,7 +253,13 @@ export const CoinForm = ({ allCoinsData, handleForm }: CoinFormProps) => {
                     <div className="w-full h-full max-w-sm mx-auto sm:mx-0 opacity-30 blur-lg bg-gradient-to-r from-accent to-primary"></div>
                   </div>
                   <div className="border border-base flex items-center justify-center relative p-12 sm:p-8 text-lg font-bold text-shadowDark bg-second font-pj rounded-xl ">
-                    <img src={coin?.image} className="h-16 pr-1" />
+                    <Image
+                      src={coin?.image}
+                      className="h-16 pr-1"
+                      width={64}
+                      height={64}
+                      alt="Coin Icon"
+                    />
                     <span className={CharacterCounter(coin?.name.length)}>
                       {coin?.name}
                     </span>

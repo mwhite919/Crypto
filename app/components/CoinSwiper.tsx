@@ -6,6 +6,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "@/app/constants/coin-swiper.css";
 import { useAppSelector } from "@/redux/hooks";
 import { ChartCoin } from "../sharedinterfaces";
+import Image from "next/image";
 
 interface Coin {
   id: string;
@@ -90,7 +91,13 @@ export const CoinSwiper: React.FC<Props> = ({
                     onClick={() => handleClick(coin)}
                   >
                     <div>
-                      <img className="w-7 m-2" src={coin.image} />
+                      <Image
+                        className="w-7 m-2"
+                        src={coin.image}
+                        alt={`${coin.image}'s Icon`}
+                        width={28}
+                        height={28}
+                      />
                     </div>
                     <div className="flex flex-col justify-center items-even h-full ">
                       <div className=" text-sm font-semibold sm:hidden">

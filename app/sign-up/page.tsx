@@ -1,6 +1,6 @@
 "use client";
 import { useState, useRef } from "react";
-import { signup, useAuth } from "../firebase/config";
+import { signup } from "../firebase/config";
 import { useCrypto } from "../Providers/CryptoProvider";
 import Link from "next/link";
 import { useRouter } from "next/navigation";

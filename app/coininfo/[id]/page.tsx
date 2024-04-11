@@ -16,6 +16,7 @@ import {
 import { useAppSelector } from "@/redux/hooks";
 import { useGetSingleCoinQuery } from "@/app/Providers/api/apiSlice";
 import { useCrypto } from "@/app/Providers/CryptoProvider";
+import Image from "next/image";
 
 export default function Page({ params }: { params: { id: string } }) {
   const { palette, mode } = useCrypto();
@@ -88,7 +89,7 @@ export default function Page({ params }: { params: { id: string } }) {
           )}
           <div className="flex flex-col items-center justify-center col-span-1 p-5 h-60 bg-second shadow-sm shadow-accent m-4 sm:m-3 rounded-lg ">
             <div>
-              <img src={icon} />
+              <Image src={icon} alt="Icon" width={32} height={32} />
             </div>
             <div className="text-xl font-bold drop-shadow-sm">
               {name}({abv})
@@ -262,7 +263,7 @@ export default function Page({ params }: { params: { id: string } }) {
                 <button onClick={() => openInNewTab(`${webPage}`)}>
                   <NewTabLinkIcon />
                 </button>
-                {webPage}
+                <p className="m-2">{name}'s Webpage</p>
                 <CopyToClipboard text={webPage} onCopy={() => setCopied(true)}>
                   <CopyIcon />
                 </CopyToClipboard>
@@ -274,7 +275,7 @@ export default function Page({ params }: { params: { id: string } }) {
                 <button onClick={() => openInNewTab(`${blockChainwebPage}`)}>
                   <NewTabLinkIcon />
                 </button>
-                {webPage}
+                <p className="m-2">{name}'s Block-Chain Webpage</p>
                 <CopyToClipboard
                   text={blockChainwebPage}
                   onCopy={() => setCopied(true)}
@@ -289,7 +290,7 @@ export default function Page({ params }: { params: { id: string } }) {
                 <button onClick={() => openInNewTab(`${officialForumwebPage}`)}>
                   <NewTabLinkIcon />
                 </button>
-                {webPage}
+                <p className="m-2">{name}'s Official Forum</p>
                 <CopyToClipboard
                   text={officialForumwebPage}
                   onCopy={() => setCopied(true)}
