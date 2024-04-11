@@ -17,6 +17,7 @@ import { useAppSelector } from "@/redux/hooks";
 import { useGetSingleCoinQuery } from "@/app/Providers/api/apiSlice";
 import { useCrypto } from "@/app/Providers/CryptoProvider";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Page({ params }: { params: { id: string } }) {
   const { palette, mode } = useCrypto();
@@ -96,27 +97,25 @@ export default function Page({ params }: { params: { id: string } }) {
             </div>
             <div className="flex h-4">
               {facebookLink && (
-                <button
-                  onClick={() =>
-                    openInNewTab(`https://www.facebook.com/${facebookLink}`)
-                  }
+                <Link
+                  href={`https://www.facebook.com/${facebookLink}`}
+                  target="_blank"
                 >
                   <FacebookIcon />
-                </button>
+                </Link>
               )}
               {XScreenName && (
-                <button
-                  onClick={() =>
-                    openInNewTab(`https://www.twitter.com/${XScreenName}`)
-                  }
+                <Link
+                  target="_blank"
+                  href={`https://www.twitter.com/${XScreenName}`}
                 >
                   <XIcon />
-                </button>
+                </Link>
               )}
               {redditPage && (
-                <button onClick={() => openInNewTab(`${redditPage}`)}>
+                <Link target="_blank" href={redditPage}>
                   <RedditIcon />
-                </button>
+                </Link>
               )}
             </div>
           </div>
@@ -260,9 +259,9 @@ export default function Page({ params }: { params: { id: string } }) {
 
             {webPage && (
               <div className="h-6 bg-second m-2 sm:m-3 p-5 flex items-center shadow-sm shadow-accent rounded-lg">
-                <button onClick={() => openInNewTab(`${webPage}`)}>
+                <Link target="_blank" href={`${webPage}`}>
                   <NewTabLinkIcon />
-                </button>
+                </Link>
                 <p className="m-2">{name}'s Webpage</p>
                 <CopyToClipboard text={webPage} onCopy={() => setCopied(true)}>
                   <CopyIcon />
@@ -272,9 +271,9 @@ export default function Page({ params }: { params: { id: string } }) {
 
             {blockChainwebPage && (
               <div className="h-6 bg-second m-2 sm:m-3 p-5 flex items-center shadow-sm shadow-accent rounded-lg">
-                <button onClick={() => openInNewTab(`${blockChainwebPage}`)}>
+                <Link target="_blank" href={blockChainwebPage}>
                   <NewTabLinkIcon />
-                </button>
+                </Link>
                 <p className="m-2">{name}'s Block-Chain Webpage</p>
                 <CopyToClipboard
                   text={blockChainwebPage}
@@ -287,9 +286,9 @@ export default function Page({ params }: { params: { id: string } }) {
 
             {officialForumwebPage && (
               <div className="h-6 bg-second m-2 p-5 flex items-center shadow-sm shadow-accent rounded-lg">
-                <button onClick={() => openInNewTab(`${officialForumwebPage}`)}>
+                <Link target="_blank" href={`${officialForumwebPage}`}>
                   <NewTabLinkIcon />
-                </button>
+                </Link>
                 <p className="m-2">{name}'s Official Forum</p>
                 <CopyToClipboard
                   text={officialForumwebPage}

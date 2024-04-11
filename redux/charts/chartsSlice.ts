@@ -5,7 +5,7 @@ import {
   mapGraphData,
   mapGraphData2,
   mapGraphDataTime,
-} from "@/app/components/MapGraphData";
+} from "@/app/utils/MapGraphData";
 import { ChartCoin } from "@/app/sharedinterfaces";
 
 interface ChartCoinsState {

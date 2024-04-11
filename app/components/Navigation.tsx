@@ -283,13 +283,12 @@ export default function Navigation() {
                       User:{" "}
                       <span className="text-accent2">{currentUser?.email}</span>
                     </div>
-                    <Link href="/">
-                      <button
-                        className="drop-shadow-md text-accent mx-2 hover:scale-105"
-                        onClick={() => logout()}
-                      >
-                        Log out
-                      </button>
+                    <Link
+                      className="drop-shadow-md text-accent mx-2 hover:scale-105"
+                      href="/"
+                      onClick={() => logout()}
+                    >
+                      Log out
                     </Link>
                   </div>
                 ) : (

@@ -19,7 +19,7 @@ import axios from "axios";
 import { CloseIcon, ResetIcon } from "@/app/icons/Icons";
 import { DropDownRow } from "../constants/DropDownRow";
 import initializeFirebase from "../firebase/config";
-import CharacterCounter from "./CharacterCounter";
+import CharacterCounter from "../utils/CharacterCounter";
 import { addDoc, collection } from "firebase/firestore";
 import { uid } from "uid";
 import Image from "next/image";
